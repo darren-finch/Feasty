@@ -6,23 +6,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 
 import com.darrenfinch.mymealplanner.R
+import com.darrenfinch.mymealplanner.databinding.FragmentSettingsBinding
 
-/**
- * A simple [Fragment] subclass.
- */
-class SettingsFragment : Fragment() {
-
+class SettingsFragment : Fragment()
+{
+    private lateinit var binding: FragmentSettingsBinding
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
-        super.onCreate(savedInstanceState)
-        Log.d("SettingsFragment", "We're at the settings fragment!")
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
+        return binding.root
     }
 }

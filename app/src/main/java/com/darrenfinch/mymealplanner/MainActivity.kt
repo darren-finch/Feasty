@@ -2,16 +2,14 @@ package com.darrenfinch.mymealplanner
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import com.darrenfinch.mymealplanner.fragments.FoodsFragment
-import com.darrenfinch.mymealplanner.fragments.MealPlanFragment
-import com.darrenfinch.mymealplanner.fragments.MealsFragment
-import com.darrenfinch.mymealplanner.fragments.SettingsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity()
@@ -25,17 +23,20 @@ class MainActivity : AppCompatActivity()
         navController.setGraph(R.navigation.nav_main)
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNav.setupWithNavController(navController)
-        bottomNav.setOnNavigationItemSelectedListener { item ->
+        bottomNav.setOnNavigationItemSelectedListener{ item ->
             NavigationUI.onNavDestinationSelected(item, navController)
-            Log.d("MainActivity", "setOnNavigationItemSelectedListener was called.")
             true
         }
     }
-
-    private fun loadFragment(fragment: Fragment)
-    {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container, fragment)
-        transaction.commit()
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean
+//    {
+//        menuInflater.inflate(R.menu.options_menu, menu)
+//        return true
+//    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean
+//    {
+//        if(item.itemId == R.id.settingsFragment)
+//            Navigation.findNavController(this, R.id.container).navigate(R.id.settingsFragment)
+//        return true
+//    }
 }

@@ -9,16 +9,17 @@
     <item
         android:id="@+id/mealsFragment"
         android:icon="@drawable/ic_meal"
-        android:title="Meals"
+        android:title="All Meals"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/foodsFragment"
         android:icon="@drawable/ic_food"
-        android:title="Foods"
+        android:title="All Foods"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_settings"
+        android:iconTint="#FFF"
         android:title="Settings"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>

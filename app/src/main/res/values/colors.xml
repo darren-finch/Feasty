@@ -2,8 +2,8 @@
 <resources>
     <color name="colorPrimary">#BF7160</color>
     <color name="colorPrimaryDark">#8C594D</color>
-    <color name="colorTextPrimaryInverse">#303030</color>
+    <color name="colorTextPrimary">#4D4D4D</color>
     <color name="colorAccent">#8C85A6</color>
     <color name="colorSecondary">#D9BEAD</color>
-    <color name="colorFragmentBackground">#D9D9D9</color>
+    <color name="colorFragmentBackground">#F2F2F2</color>
 </resources>

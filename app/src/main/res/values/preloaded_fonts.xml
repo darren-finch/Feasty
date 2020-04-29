@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/monda</item>
+        <item>@font/monda_bold</item>
+        <item>@font/overpass</item>
+        <item>@font/overpass_bold</item>
+    </array>
+</resources>

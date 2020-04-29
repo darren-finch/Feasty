@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/foodsFragment"
-        android:name="com.darrenfinch.mymealplanner.fragments.FoodsFragment"
+        android:name="com.darrenfinch.mymealplanner.fragments.AllFoodsFragment"
         android:label="fragment_foods"
-        tools:layout="@layout/fragment_foods" />
+        tools:layout="@layout/fragment_all_foods" />
     <fragment
         android:id="@+id/mealPlanFragment"
         android:name="com.darrenfinch.mymealplanner.fragments.MealPlanFragment"
@@ -22,7 +22,7 @@
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/mealsFragment"
-        android:name="com.darrenfinch.mymealplanner.fragments.MealsFragment"
+        android:name="com.darrenfinch.mymealplanner.fragments.AllMealsFragment"
         android:label="fragment_meals"
-        tools:layout="@layout/fragment_meals" />
+        tools:layout="@layout/fragment_all_meals" />
 </navigation>
