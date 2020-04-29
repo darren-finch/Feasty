@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mealPlanFragment"
+        android:icon="@drawable/ic_view_list"
+        android:title="Meal Plan"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/mealsFragment"
+        android:icon="@drawable/ic_meal"
+        android:title="Meals"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/foodsFragment"
+        android:icon="@drawable/ic_food"
+        android:title="Foods"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings"
+        app:showAsAction="ifRoom" />
+</menu>

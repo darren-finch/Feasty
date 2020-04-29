@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/mealPlanFragment">
+
+    <fragment
+        android:id="@+id/foodsFragment"
+        android:name="com.darrenfinch.mymealplanner.fragments.FoodsFragment"
+        android:label="fragment_foods"
+        tools:layout="@layout/fragment_foods" />
+    <fragment
+        android:id="@+id/mealPlanFragment"
+        android:name="com.darrenfinch.mymealplanner.fragments.MealPlanFragment"
+        android:label="fragment_meal_plan"
+        tools:layout="@layout/fragment_meal_plan" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.darrenfinch.mymealplanner.fragments.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/mealsFragment"
+        android:name="com.darrenfinch.mymealplanner.fragments.MealsFragment"
+        android:label="fragment_meals"
+        tools:layout="@layout/fragment_meals" />
+</navigation>
