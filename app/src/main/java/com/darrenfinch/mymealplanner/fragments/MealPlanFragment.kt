@@ -33,7 +33,7 @@ class MealPlanFragment : Fragment()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate<FragmentMealPlanBinding>(inflater, R.layout.fragment_meal_plan, container,false).apply {
+        binding = DataBindingUtil.inflate<FragmentMealPlanBinding>(inflater, R.layout.fragment_meal_plan, container, false).apply {
             calculateMealMacroNutrients()
             macroNutrients = TotalsVsRequiredMacros(totalCalories, totalProtein, totalFat, totalCarbohydrates, requiredCalories, requiredProtein, requiredFat, requiredCarbohydrates)
             mealsRecyclerView.adapter = MealsRecyclerViewAdapter(allMeals)
