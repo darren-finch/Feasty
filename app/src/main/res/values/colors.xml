@@ -5,5 +5,5 @@
     <color name="colorTextPrimary">#4D4D4D</color>
     <color name="colorAccent">#8C85A6</color>
     <color name="colorSecondary">#D9BEAD</color>
-    <color name="colorFragmentBackground">#F2F2F2</color>
+    <color name="colorFragmentBackground">#D8D8D8</color>
 </resources>

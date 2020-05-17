@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.fragments
+package com.darrenfinch.mymealplanner.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.darrenfinch.mymealplanner.MarginItemDecoration
+import com.darrenfinch.mymealplanner.adapters.MarginItemDecoration
 
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.adapters.FoodsRecyclerViewAdapter

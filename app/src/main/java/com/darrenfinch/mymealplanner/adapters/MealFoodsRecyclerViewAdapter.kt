@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.data.FoodModel
+import com.darrenfinch.mymealplanner.model.room.Food
 
-class MealFoodsRecyclerViewAdapter(private val allFoods: List<FoodModel>) : RecyclerView.Adapter<MealFoodViewHolder>()
+class MealFoodsRecyclerViewAdapter(private val allFoods: List<Food>) : RecyclerView.Adapter<MealFoodViewHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealFoodViewHolder
     {

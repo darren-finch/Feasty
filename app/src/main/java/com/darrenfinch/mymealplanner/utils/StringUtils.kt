@@ -1,9 +1,8 @@
 package com.darrenfinch.mymealplanner.utils
 
-import com.darrenfinch.mymealplanner.data.FoodModel
-import com.darrenfinch.mymealplanner.data.MacroType
-import com.darrenfinch.mymealplanner.data.MealModel
-import com.darrenfinch.mymealplanner.data.MeasurementUnit
+import com.darrenfinch.mymealplanner.model.room.Food
+import com.darrenfinch.mymealplanner.model.helpers.MacroType
+import com.darrenfinch.mymealplanner.model.room.Meal
 
 object StringUtils
 {
@@ -11,7 +10,7 @@ object StringUtils
     {
         return "$calories calories | ${protein}P | ${carbohydrates}C | ${fat}F"
     }
-    fun makeFoodMacroNutrientsString(food: FoodModel) : String
+    fun makeFoodMacroNutrientsString(food: Food) : String
     {
         return makeMacroNutrientString(food.calories, food.protein, food.carbohydrates, food.fat)
     }
@@ -29,17 +28,17 @@ object StringUtils
             MacroType.CARBOHYDRATE -> "Carbs"
         }
     }
-    fun calculateMealMacroNutrients(mealModel: MealModel) : String
+    fun calculateMealMacroNutrients(meal: Meal) : String
     {
         var totalCalories = 0
         var totalProtein = 0
         var totalCarbohydrates = 0
         var totalFat = 0
 
-        mealModel.foods.forEach { food -> totalCalories += food.calories }
-        mealModel.foods.forEach { food -> totalProtein += food.protein }
-        mealModel.foods.forEach { food -> totalCarbohydrates += food.carbohydrates }
-        mealModel.foods.forEach { food -> totalFat += food.fat }
+        meal.foods.forEach { food -> totalCalories += food.calories }
+        meal.foods.forEach { food -> totalProtein += food.protein }
+        meal.foods.forEach { food -> totalCarbohydrates += food.carbohydrates }
+        meal.foods.forEach { food -> totalFat += food.fat }
 
         return makeMacroNutrientString(totalCalories, totalProtein, totalCarbohydrates, totalFat)
     }

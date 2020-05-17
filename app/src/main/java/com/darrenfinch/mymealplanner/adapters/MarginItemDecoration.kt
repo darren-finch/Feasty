@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner
+package com.darrenfinch.mymealplanner.adapters
 
 import android.graphics.Rect
 import android.view.View

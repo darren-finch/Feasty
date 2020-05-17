@@ -1,26 +1,28 @@
-package com.darrenfinch.mymealplanner.data
+package com.darrenfinch.mymealplanner.model.helpers
 
-data class MealModel(var title: String, var foods: List<FoodModel>)
+import com.darrenfinch.mymealplanner.model.room.Food
+
+object MacroCalculator
 {
-    fun calculateTotalCalories() : Int
+    fun calculateTotalCalories(foods: List<Food>) : Int
     {
         var totalCalories = 0
         foods.forEach { food -> totalCalories += food.calories }
         return totalCalories
     }
-    fun calculateTotalProtein() : Int
+    fun calculateTotalProtein(foods: List<Food>) : Int
     {
         var totalProtein = 0
         foods.forEach { food -> totalProtein += food.protein }
         return totalProtein
     }
-    fun calculateTotalCarbohydrates() : Int
+    fun calculateTotalCarbohydrates(foods: List<Food>) : Int
     {
         var totalCarbohydrates = 0
         foods.forEach { food -> totalCarbohydrates += food.carbohydrates }
         return totalCarbohydrates
     }
-    fun calculateTotalFat() : Int
+    fun calculateTotalFat(foods: List<Food>) : Int
     {
         var totalFat = 0
         foods.forEach { food -> totalFat += food.fat }

@@ -4,11 +4,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <import type="com.darrenfinch.mymealplanner.data.MacroType"/>
+        <import type="com.darrenfinch.mymealplanner.model.helpers.MacroType"/>
         <import type="com.darrenfinch.mymealplanner.utils.StringUtils"/>
         <variable
             name="macroNutrients"
-            type="com.darrenfinch.mymealplanner.data.frontend.TotalsVsRequiredMacros" />
+            type="com.darrenfinch.mymealplanner.model.frontend.TotalsVsRequiredMacros" />
     </data>
 
 
@@ -16,7 +16,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.MealPlanFragment">
+        tools:context=".view.MealPlanFragment">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/mealsListTop"

@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:fontFamily">@font/overpass</item>
+        <item name="android:fontFamily">@font/monda</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:textColorPrimary">#FFF</item>
         <item name="cardCornerRadius">4dp</item>

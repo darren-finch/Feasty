@@ -5,7 +5,7 @@
         <import type="com.darrenfinch.mymealplanner.utils.StringUtils"/>
         <variable
             name="food"
-            type="com.darrenfinch.mymealplanner.data.FoodModel" />
+            type="com.darrenfinch.mymealplanner.model.room.Food" />
     </data>
 
     <androidx.cardview.widget.CardView

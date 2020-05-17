@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.data
+package com.darrenfinch.mymealplanner.model.helpers
 
 enum class MacroType
 {

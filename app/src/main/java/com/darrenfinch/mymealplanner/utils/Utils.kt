@@ -1,43 +1,188 @@
 package com.darrenfinch.mymealplanner.utils
 
-import com.darrenfinch.mymealplanner.data.FoodModel
-import com.darrenfinch.mymealplanner.data.MeasurementUnit
-import com.darrenfinch.mymealplanner.data.MealModel
+import com.darrenfinch.mymealplanner.model.room.Food
+import com.darrenfinch.mymealplanner.model.helpers.MeasurementUnit
+import com.darrenfinch.mymealplanner.model.room.Meal
 
-object Utils
-{
-    fun createSampleMeals() : MutableList<MealModel>
-    {
-        val meals = mutableListOf<MealModel>()
+object Utils {
+    fun createSampleMeals(): MutableList<Meal> {
+        val meals = mutableListOf<Meal>()
 
         //Breakfast
-        val breakfastFoods = mutableListOf<FoodModel>()
-        breakfastFoods.add(FoodModel("Eggs", 3.0, MeasurementUnit.UNIT,180, 0, 18, 18))
-        breakfastFoods.add(FoodModel("Toast", 2.0, MeasurementUnit.UNIT, 120, 28, 8, 2))
-        meals.add(MealModel("Breakfast", breakfastFoods))
+        val breakfastFoods = mutableListOf<Food>()
+        breakfastFoods.add(
+            Food(
+                0,
+                "Eggs",
+                3.0,
+                MeasurementUnit.UNIT,
+                180,
+                0,
+                18,
+                18
+            )
+        )
+        breakfastFoods.add(
+            Food(
+                1,
+                "Toast",
+                2.0,
+                MeasurementUnit.UNIT,
+                120,
+                28,
+                8,
+                2
+            )
+        )
+        meals.add(
+            Meal(
+                "Breakfast",
+                breakfastFoods
+            )
+        )
 
-        val lunchFoods = mutableListOf<FoodModel>()
-        lunchFoods.add(FoodModel("Chicken", 4.0, MeasurementUnit.OUNCE,170, 0, 26, 8))
-        lunchFoods.add(FoodModel("Rice", 150.0, MeasurementUnit.GRAM,170, 38, 8, 3))
-        meals.add(MealModel("Lunch", lunchFoods))
+        val lunchFoods = mutableListOf<Food>()
+        lunchFoods.add(
+            Food(
+                2,
+                "Chicken",
+                4.0,
+                MeasurementUnit.OUNCE,
+                170,
+                0,
+                26,
+                8
+            )
+        )
+        lunchFoods.add(
+            Food(
+                3,
+                "Rice",
+                150.0,
+                MeasurementUnit.GRAM,
+                170,
+                38,
+                8,
+                3
+            )
+        )
+        meals.add(
+            Meal(
+                "Lunch",
+                lunchFoods
+            )
+        )
 
-        val dinnerFoods = mutableListOf<FoodModel>()
-        dinnerFoods.add(FoodModel("Steak", 4.0, MeasurementUnit.OUNCE,206, 0, 28, 14))
-        dinnerFoods.add(FoodModel("Sweet Potato", 150.0, MeasurementUnit.GRAM,135, 30, 5, 2))
-        meals.add(MealModel("Dinner", dinnerFoods))
+        val dinnerFoods = mutableListOf<Food>()
+        dinnerFoods.add(
+            Food(
+                4,
+                "Steak",
+                4.0,
+                MeasurementUnit.OUNCE,
+                206,
+                0,
+                28,
+                14
+            )
+        )
+        dinnerFoods.add(
+            Food(
+                5,
+                "Sweet Potato",
+                150.0,
+                MeasurementUnit.GRAM,
+                135,
+                30,
+                5,
+                2
+            )
+        )
+        meals.add(
+            Meal(
+                "Dinner",
+                dinnerFoods
+            )
+        )
 
         return meals
     }
 
-    fun createSampleFoods() : MutableList<FoodModel>
-    {
-        var foodsList = mutableListOf<FoodModel>()
-        foodsList.add(FoodModel("Eggs", 3.0, MeasurementUnit.UNIT,180, 0, 18, 18))
-        foodsList.add(FoodModel("Toast", 2.0, MeasurementUnit.UNIT, 120, 28, 8, 2))
-        foodsList.add(FoodModel("Chicken", 4.0, MeasurementUnit.OUNCE,170, 0, 26, 8))
-        foodsList.add(FoodModel("Rice", 150.0, MeasurementUnit.GRAM,170, 38, 8, 3))
-        foodsList.add(FoodModel("Steak", 4.0, MeasurementUnit.OUNCE,206, 0, 28, 14))
-        foodsList.add(FoodModel("Sweet Potato", 150.0, MeasurementUnit.GRAM,135, 30, 5, 2))
+    fun createSampleFoods(): MutableList<Food> {
+        val foodsList = mutableListOf<Food>().apply {
+            add(
+                Food(
+                    0,
+                    "Eggs",
+                    3.0,
+                    MeasurementUnit.UNIT,
+                    180,
+                    0,
+                    18,
+                    18
+                )
+            )
+            add(
+                Food(
+                    1,
+                    "Toast",
+                    2.0,
+                    MeasurementUnit.UNIT,
+                    120,
+                    28,
+                    8,
+                    2
+                )
+            )
+            add(
+                Food(
+                    2,
+                    "Rice",
+                    150.0,
+                    MeasurementUnit.GRAM,
+                    170,
+                    38,
+                    8,
+                    3
+                )
+            )
+            add(
+                Food(
+                    3,
+                    "Chicken",
+                    4.0,
+                    MeasurementUnit.OUNCE,
+                    170,
+                    0,
+                    26,
+                    8
+                )
+            )
+            add(
+                Food(
+                    4,
+                    "Steak",
+                    4.0,
+                    MeasurementUnit.OUNCE,
+                    206,
+                    0,
+                    28,
+                    14
+                )
+            )
+            add(
+                Food(
+                    5,
+                    "Sweet Potato",
+                    150.0,
+                    MeasurementUnit.GRAM,
+                    135,
+                    30,
+                    5,
+                    2
+                )
+            )
+        }
         return foodsList
     }
 }

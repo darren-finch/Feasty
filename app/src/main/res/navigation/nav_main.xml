@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/foodsFragment"
-        android:name="com.darrenfinch.mymealplanner.fragments.AllFoodsFragment"
+        android:name="com.darrenfinch.mymealplanner.view.AllFoodsFragment"
         android:label="fragment_foods"
         tools:layout="@layout/fragment_all_foods" />
     <fragment
         android:id="@+id/mealPlanFragment"
-        android:name="com.darrenfinch.mymealplanner.fragments.MealPlanFragment"
+        android:name="com.darrenfinch.mymealplanner.view.MealPlanFragment"
         android:label="fragment_meal_plan"
         tools:layout="@layout/fragment_meal_plan" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.darrenfinch.mymealplanner.fragments.SettingsFragment"
+        android:name="com.darrenfinch.mymealplanner.view.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/mealsFragment"
-        android:name="com.darrenfinch.mymealplanner.fragments.AllMealsFragment"
+        android:name="com.darrenfinch.mymealplanner.view.AllMealsFragment"
         android:label="fragment_meals"
         tools:layout="@layout/fragment_all_meals" />
 </navigation>
