@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.model.helpers
+package com.darrenfinch.mymealplanner.model.room
 
 enum class MeasurementUnit
 {

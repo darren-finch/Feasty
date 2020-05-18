@@ -6,27 +6,30 @@ import com.darrenfinch.mymealplanner.model.room.MealPlannerDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
-class MealPlannerRepository private constructor(private val database: MealPlannerDatabase)
+class MealPlannerRepository
+@Inject
+constructor(database: MealPlannerDatabase)
 {
-    companion object
-    {
-        private var INSTANCE: MealPlannerRepository? = null
+//    companion object
+//    {
+//        private var INSTANCE: MealPlannerRepository? = null
+//
+//        fun getInstance(database: MealPlannerDatabase) : MealPlannerRepository
+//        {
+//            return if(INSTANCE == null)
+//            {
+//                INSTANCE = MealPlannerRepository()
+//                INSTANCE!!
+//            }
+//            else
+//                INSTANCE!!
+//        }
+//    }
 
-        fun getInstance(database: MealPlannerDatabase) : MealPlannerRepository
-        {
-            return if(INSTANCE == null)
-            {
-                INSTANCE = MealPlannerRepository(database)
-                INSTANCE!!
-            }
-            else
-                INSTANCE!!
-        }
-    }
-
-    private val mealsDao = database.MealsDao()
-    private val foodsDao = database.FoodsDao()
+    private val mealsDao = database.mealsDao()
+    private val foodsDao = database.foodsDao()
 
     suspend fun getMeals() : List<Meal>
     {
@@ -41,5 +44,12 @@ class MealPlannerRepository private constructor(private val database: MealPlanne
     }
     private fun <A, B>List<A>.pmap(f: suspend (A) -> B): List<B> = runBlocking {
         map { async(Dispatchers.IO) { f(it) } }.map { it.await() }
+    }
+
+    fun insertMeal(meal: DatabaseMeal)
+    {
+        runBlocking(Dispatchers.IO){
+            mealsDao.insertMeal(meal)
+        }
     }
 }

@@ -13,7 +13,6 @@ import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.adapters.MealsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.model.frontend.TotalsVsRequiredMacros
 import com.darrenfinch.mymealplanner.databinding.FragmentMealPlanBinding
-import com.darrenfinch.mymealplanner.utils.Utils
 
 class MealPlanFragment : Fragment()
 {
@@ -23,12 +22,14 @@ class MealPlanFragment : Fragment()
     private var totalProtein = ObservableInt()
     private var totalCarbohydrates = ObservableInt()
     private var totalFat = ObservableInt()
+
+    //These required values can and will change of course.
     private var requiredCalories = ObservableInt(2776)
     private var requiredProtein = ObservableInt(150)
     private var requiredCarbohydrates = ObservableInt(295)
     private var requiredFat = ObservableInt(81)
 
-    private var allMeals = Utils.createSampleMeals()
+//    private var allMeals = Utils.createSampleMeals()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
@@ -36,7 +37,7 @@ class MealPlanFragment : Fragment()
         binding = DataBindingUtil.inflate<FragmentMealPlanBinding>(inflater, R.layout.fragment_meal_plan, container, false).apply {
 //            calculateMealMacroNutrients()
             macroNutrients = TotalsVsRequiredMacros(totalCalories, totalProtein, totalFat, totalCarbohydrates, requiredCalories, requiredProtein, requiredFat, requiredCarbohydrates)
-            mealsRecyclerView.adapter = MealsRecyclerViewAdapter(allMeals)
+            mealsRecyclerView.adapter = MealsRecyclerViewAdapter(mutableListOf())
             mealsRecyclerView.layoutManager = LinearLayoutManager(context)
             mealsRecyclerView.addItemDecoration(MarginItemDecoration(16))
         }

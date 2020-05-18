@@ -8,6 +8,12 @@ import com.darrenfinch.mymealplanner.model.room.Meal
 
 class MealsRecyclerViewAdapter(private val allMeals: MutableList<Meal>) : RecyclerView.Adapter<MealViewHolder>()
 {
+    fun updateMeals(newMeals: List<Meal>)
+    {
+        allMeals.clear()
+        allMeals.addAll(newMeals)
+        notifyDataSetChanged()
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealViewHolder
     {
         return MealViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.meal_item, parent, false))

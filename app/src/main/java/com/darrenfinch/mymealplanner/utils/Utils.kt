@@ -1,7 +1,8 @@
 package com.darrenfinch.mymealplanner.utils
 
+import com.darrenfinch.mymealplanner.model.room.DatabaseMeal
 import com.darrenfinch.mymealplanner.model.room.Food
-import com.darrenfinch.mymealplanner.model.helpers.MeasurementUnit
+import com.darrenfinch.mymealplanner.model.room.MeasurementUnit
 import com.darrenfinch.mymealplanner.model.room.Meal
 
 object Utils {
@@ -105,6 +106,32 @@ object Utils {
             )
         )
 
+        return meals
+    }
+
+    fun createSampleDatabaseMeals(): MutableList<DatabaseMeal> {
+        val meals = mutableListOf<DatabaseMeal>()
+        meals.add(
+            DatabaseMeal(
+                0,
+                "Breakfast",
+                mutableListOf()
+            )
+        )
+        meals.add(
+            DatabaseMeal(
+                1,
+                "Breakfast",
+                mutableListOf()
+            )
+        )
+        meals.add(
+            DatabaseMeal(
+                2,
+                "Breakfast",
+                mutableListOf()
+            )
+        )
         return meals
     }
 

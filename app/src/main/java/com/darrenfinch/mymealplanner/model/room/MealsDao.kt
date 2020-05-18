@@ -1,17 +1,14 @@
 package com.darrenfinch.mymealplanner.model.room
 
-import androidx.lifecycle.LiveData
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 
+@Dao
 interface MealsDao
 {
     @Query("SELECT * FROM meals")
     suspend fun getMeals() : List<DatabaseMeal>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMeal(meal: DatabaseMeal)
 
     @Update

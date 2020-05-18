@@ -1,33 +1,13 @@
 package com.darrenfinch.mymealplanner.model.room
 
-import android.content.Context
-import androidx.room.Room
+import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
+@Database(entities = [DatabaseMeal::class, Food::class], version = 1, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class MealPlannerDatabase : RoomDatabase()
 {
-    abstract fun MealsDao() : MealsDao
-    abstract fun FoodsDao() : FoodsDao
-
-    fun getInstance(context: Context) : MealPlannerDatabase
-    {
-        if(INSTANCE == null)
-        {
-            synchronized(this)
-            {
-                INSTANCE = Room.databaseBuilder(context, MealPlannerDatabase::class.java, "MealPlannerDatabase")
-                    .fallbackToDestructiveMigration()
-                    .build()
-                return INSTANCE!!
-            }
-        }
-        else
-            return INSTANCE!!
-    }
-
-    companion object
-    {
-        private var INSTANCE: MealPlannerDatabase? = null
-    }
+    abstract fun mealsDao() : MealsDao
+    abstract fun foodsDao() : FoodsDao
 }

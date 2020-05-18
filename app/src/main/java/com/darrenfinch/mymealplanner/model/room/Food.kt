@@ -2,7 +2,6 @@ package com.darrenfinch.mymealplanner.model.room
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.darrenfinch.mymealplanner.model.helpers.MeasurementUnit
 
 @Entity(tableName = "foods")
 data class Food(
