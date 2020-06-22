@@ -6,8 +6,7 @@ import com.darrenfinch.mymealplanner.di.AppModule
 import com.darrenfinch.mymealplanner.di.DaggerApplicationComponent
 import com.darrenfinch.mymealplanner.di.RoomModule
 import com.darrenfinch.mymealplanner.model.FoodsRepository
-import com.darrenfinch.mymealplanner.model.MealsRepository
-import com.darrenfinch.mymealplanner.model.room.Food
+import com.darrenfinch.mymealplanner.model.data.Food
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

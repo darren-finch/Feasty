@@ -6,7 +6,7 @@
     <data>
         <variable
             name="food"
-            type="com.darrenfinch.mymealplanner.model.room.Food" />
+            type="com.darrenfinch.mymealplanner.model.data.Food" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -129,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/food_quantity"
                 android:inputType="numberDecimal"
-                android:text="@{String.valueOf(food.quantity)}" />
+                android:text="@{String.valueOf(food.servingSize)}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

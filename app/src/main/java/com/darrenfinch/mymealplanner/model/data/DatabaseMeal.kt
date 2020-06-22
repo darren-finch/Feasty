@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.model.room
+package com.darrenfinch.mymealplanner.model.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -14,4 +14,4 @@ import androidx.room.PrimaryKey
 data class DatabaseMeal(@PrimaryKey(autoGenerate = true)
                 val id: Int = 0,
                 val title: String,
-                val foodsIds: List<Int>)
+                val mealFoods: List<DatabaseMealFood>)

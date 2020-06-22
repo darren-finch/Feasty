@@ -2,14 +2,11 @@ package com.darrenfinch.mymealplanner.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
 import com.darrenfinch.mymealplanner.di.AppModule
 import com.darrenfinch.mymealplanner.di.DaggerApplicationComponent
 import com.darrenfinch.mymealplanner.di.RoomModule
 import com.darrenfinch.mymealplanner.model.FoodsRepository
-import com.darrenfinch.mymealplanner.model.room.Food
-import kotlinx.coroutines.launch
+import com.darrenfinch.mymealplanner.model.data.Food
 import javax.inject.Inject
 
 class AddEditFoodViewModel(application: Application) : AndroidViewModel(application) {

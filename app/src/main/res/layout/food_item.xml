@@ -7,7 +7,7 @@
         <import type="com.darrenfinch.mymealplanner.utils.StringUtils"/>
         <variable
             name="food"
-            type="com.darrenfinch.mymealplanner.model.room.Food" />
+            type="com.darrenfinch.mymealplanner.model.data.Food" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -54,15 +54,27 @@
             <!-- Combines food quantity and food quantity unit -->
 
             <TextView
+                android:id="@+id/servingSizeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/standard_margin_half"
+                android:layout_marginEnd="@dimen/standard_margin_half"
+                android:gravity="end"
+                android:text="@string/serving_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/foodQuantityTextView"
+                app:layout_constraintTop_toBottomOf="@+id/foodTitleTextView" />
+
+            <TextView
                 android:id="@+id/foodQuantityTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/standard_margin_half"
-                android:layout_marginStart="@dimen/standard_margin_half"
+                android:layout_marginEnd="@dimen/standard_margin_half"
                 android:gravity="end"
-                android:text="@{StringUtils.INSTANCE.makeFoodQuantityString(food.quantity, food.quantityUnit)}"
+                android:text="@{StringUtils.INSTANCE.makeFoodQuantityString(food.servingSize, food.servingSizeUnit)}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/foodTitleTextView"
                 tools:text="2 units" />
 

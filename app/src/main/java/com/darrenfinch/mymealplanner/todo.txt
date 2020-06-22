@@ -6,4 +6,10 @@ Add ability to add meals. To do this:
     b. Inserting and updating foods by opening up the AddEditFoodFragment (could be a dialog)
     c. Deleting foods
 3. Since we need to create food types to test, AddEditFoodFragment needs to be created before AllFoodsFragment or AllFoodsViewModel.
-4. Once the All Foods screen is finished, we can test the functionality for adding meals, so finish AddEditMealsFragment.
+4. Once the All Foods screen is finished, we can test the functionality for adding meals, so finish AddEditMealFragment.
+5. To finish AddEditMealFragment, when "addNewFood" is clicked, we'll need a screen that displays a list of foods to chose from.
+   This screen will display foods without their "view more" icon.
+   When the food is clicked, the screen will route to a new screen which allows you to change the quantity of the food and see the macros.
+   Once the user is satisfied with the food and quantity, he can click "Done" which will route back to the AddEditMealFragment (passing the food id of course).
+   Then the AddEditMealFragment will give that id to the view model to update its list of food ids.
+   Once this list is updated, the list of foods shown in the AddEditMealFragment is updated too.

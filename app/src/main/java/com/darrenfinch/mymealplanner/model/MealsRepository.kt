@@ -1,7 +1,8 @@
 package com.darrenfinch.mymealplanner.model
 
-import com.darrenfinch.mymealplanner.model.room.DatabaseMeal
-import com.darrenfinch.mymealplanner.model.room.Meal
+import com.darrenfinch.mymealplanner.model.data.DataConverters.convertDatabaseMealToRegularMeal
+import com.darrenfinch.mymealplanner.model.data.DataConverters.convertMealToDatabaseMeal
+import com.darrenfinch.mymealplanner.model.data.Meal
 import com.darrenfinch.mymealplanner.model.room.MealPlannerDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -13,23 +14,14 @@ class MealsRepository
 @Inject
 constructor(database: MealPlannerDatabase) {
     private val mealsDao = database.mealsDao()
+    private val foodsDao = database.foodsDao() //Minimize usage of this. Right now, there isn't a good way to get around needing this.
 
     suspend fun getMeals(): List<Meal> {
         val allDatabaseMeals = mealsDao.getMeals()
         return allDatabaseMeals.parallelMap {
-            convertDatabaseMealToRegularMeal(it)
+            convertDatabaseMealToRegularMeal(it, foodsDao)
         }
     }
-    private fun <A, B> List<A>.parallelMap(f: suspend (A) -> B): List<B> = runBlocking {
-        map { async(Dispatchers.IO) { f(it) } }.awaitAll()
-    }
-    private suspend fun convertDatabaseMealToRegularMeal(databaseMeal: DatabaseMeal): Meal {
-        return Meal(databaseMeal.id, databaseMeal.title, mealsDao.getMealFoodsWithIds(databaseMeal.foodsIds))
-    }
-    private fun convertMealToDatabaseMeal(meal: Meal): DatabaseMeal {
-        return DatabaseMeal(meal.id, meal.title, meal.foods.map { it.id })
-    }
-
     fun insertMeal(meal: Meal) {
         runBlocking(Dispatchers.IO) {
             mealsDao.insertMeal(convertMealToDatabaseMeal(meal))
@@ -46,5 +38,9 @@ constructor(database: MealPlannerDatabase) {
         runBlocking(Dispatchers.IO) {
             mealsDao.deleteMeal(convertMealToDatabaseMeal(meal))
         }
+    }
+
+    private fun <A, B> List<A>.parallelMap(f: suspend (A) -> B): List<B> = runBlocking {
+        map { async(Dispatchers.IO) { f(it) } }.awaitAll()
     }
 }

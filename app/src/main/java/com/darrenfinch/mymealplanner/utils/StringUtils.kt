@@ -1,8 +1,8 @@
 package com.darrenfinch.mymealplanner.utils
 
 import com.darrenfinch.mymealplanner.model.helpers.MacroType
-import com.darrenfinch.mymealplanner.model.room.Food
-import com.darrenfinch.mymealplanner.model.room.Meal
+import com.darrenfinch.mymealplanner.model.data.Food
+import com.darrenfinch.mymealplanner.model.data.Meal
 import com.darrenfinch.mymealplanner.model.room.MeasurementUnit
 
 object StringUtils {

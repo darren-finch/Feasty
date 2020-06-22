@@ -16,7 +16,7 @@ import androidx.navigation.fragment.navArgs
 
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.databinding.FragmentAddEditFoodBinding
-import com.darrenfinch.mymealplanner.model.room.Food
+import com.darrenfinch.mymealplanner.model.data.Food
 import com.darrenfinch.mymealplanner.model.room.MeasurementUnit
 import com.darrenfinch.mymealplanner.viewmodels.AddEditFoodViewModel
 
@@ -61,7 +61,7 @@ class AddEditFoodFragment : Fragment() {
     }
     private fun bindFood(newFood: Food) {
         binding.food = newFood
-        setSelectedSpinnerMeasurementUnit(newFood.quantityUnit)
+        setSelectedSpinnerMeasurementUnit(newFood.servingSizeUnit)
     }
 
     private fun setupUI() {
@@ -119,8 +119,8 @@ class AddEditFoodFragment : Fragment() {
             carbohydrates = getCarbohydrates(),
             fat = getFat(),
             protein = getProtein(),
-            quantity = getFoodQuantity(),
-            quantityUnit = getMeasurementUnit()
+            servingSize = getFoodQuantity(),
+            servingSizeUnit = getMeasurementUnit()
         )
         saveFood(newFood)
         navigateToAllFoodsFragment()

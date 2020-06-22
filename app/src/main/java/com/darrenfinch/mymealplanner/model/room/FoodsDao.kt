@@ -2,6 +2,7 @@ package com.darrenfinch.mymealplanner.model.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.darrenfinch.mymealplanner.model.data.Food
 
 @Dao
 interface FoodsDao
@@ -10,7 +11,10 @@ interface FoodsDao
     suspend fun getFoods() : List<Food>
 
     @Query("SELECT * FROM foods WHERE id = :foodId")
-    fun getFood(foodId: Int) : LiveData<Food>
+    suspend fun getFood(foodId: Int) : Food
+
+    @Query("SELECT * FROM foods WHERE id = :foodId")
+    fun getFoodObservable(foodId: Int) : LiveData<Food>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFood(food: Food)
