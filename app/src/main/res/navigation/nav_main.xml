@@ -6,10 +6,14 @@
     app:startDestination="@id/mealPlanFragment">
 
     <fragment
-        android:id="@+id/foodsFragment"
+        android:id="@+id/allFoodsFragment"
         android:name="com.darrenfinch.mymealplanner.view.AllFoodsFragment"
         android:label="fragment_foods"
-        tools:layout="@layout/fragment_all_foods" />
+        tools:layout="@layout/fragment_all_foods" >
+        <action
+            android:id="@+id/action_foodsFragment_to_addEditFoodFragment"
+            app:destination="@id/addEditFoodFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mealPlanFragment"
         android:name="com.darrenfinch.mymealplanner.view.MealPlanFragment"
@@ -21,8 +25,30 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
-        android:id="@+id/mealsFragment"
+        android:id="@+id/allMealsFragment"
         android:name="com.darrenfinch.mymealplanner.view.AllMealsFragment"
         android:label="fragment_meals"
-        tools:layout="@layout/fragment_all_meals" />
+        tools:layout="@layout/fragment_all_meals" >
+        <action
+            android:id="@+id/action_mealsFragment_to_addEditMealFragment"
+            app:destination="@id/addEditMealFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEditFoodFragment"
+        android:name="com.darrenfinch.mymealplanner.view.AddEditFoodFragment"
+        android:label="fragment_add_edit_food"
+        tools:layout="@layout/fragment_add_edit_food" >
+        <argument
+            android:name="foodId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEditMealFragment"
+        android:name="com.darrenfinch.mymealplanner.view.AddEditMealFragment"
+        android:label="fragment_add_edit_meal"
+        tools:layout="@layout/fragment_add_edit_meal" />
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.darrenfinch.mymealplanner.view.MainFragment"
+        android:label="MainFragment" />
 </navigation>

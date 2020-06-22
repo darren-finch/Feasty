@@ -7,12 +7,12 @@
         android:title="Meal Plan"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/mealsFragment"
+        android:id="@+id/allMealsFragment"
         android:icon="@drawable/ic_meal"
         android:title="All Meals"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/foodsFragment"
+        android:id="@+id/allFoodsFragment"
         android:icon="@drawable/ic_food"
         android:title="All Foods"
         app:showAsAction="ifRoom" />

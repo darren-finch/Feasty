@@ -5,30 +5,38 @@
         <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/monda</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
-        <item name="android:textColorPrimary">#FFF</item>
         <item name="cardCornerRadius">4dp</item>
         <item name="cornerRadius">4dp</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="textInputStyle">@style/TextInputStyle</item>
     </style>
 
-    <style name="TextAppearanceSmall" parent="TextAppearance.AppCompat.Small">
-        <item name="android:textColor">@color/colorTextPrimary</item>
+    <style name="DefaultButton" parent="Widget.MaterialComponents.Button">
+        <item name="textAllCaps">false</item>
     </style>
 
-    <style name="TextAppearanceMedium" parent="TextAppearance.AppCompat.Medium">
-        <item name="android:textColor">@color/colorTextPrimary</item>
+    <style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">#FFF</item>
     </style>
 
-    <style name="TextAppearanceLarge" parent="TextAppearance.AppCompat.Large">
-        <item name="android:textColor">@color/colorTextPrimary</item>
-    </style>
-
-    <style name="TextAppearanceExtraLarge" parent="TextAppearanceLarge">
+    <style name="H1" parent="H2">
         <item name="android:textColor">@color/colorTextPrimary</item>
         <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="H2" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+    </style>
+
+    <style name="H3" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+    </style>
+
+    <style name="H4" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/colorTextPrimary</item>
     </style>
 
 </resources>

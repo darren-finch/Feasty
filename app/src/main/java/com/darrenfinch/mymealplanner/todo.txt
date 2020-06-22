@@ -1,0 +1,9 @@
+TODO:
+Add ability to add meals. To do this:
+1. Create AllFoodsFragment and corresponding ViewModel for the All Foods screen.
+2. The All Foods screen needs to support the following operations:
+    a. Getting all foods
+    b. Inserting and updating foods by opening up the AddEditFoodFragment (could be a dialog)
+    c. Deleting foods
+3. Since we need to create food types to test, AddEditFoodFragment needs to be created before AllFoodsFragment or AllFoodsViewModel.
+4. Once the All Foods screen is finished, we can test the functionality for adding meals, so finish AddEditMealsFragment.

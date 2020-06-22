@@ -2,7 +2,8 @@ package com.darrenfinch.mymealplanner.di
 
 import android.app.Application
 import androidx.room.Room
-import com.darrenfinch.mymealplanner.model.MealPlannerRepository
+import com.darrenfinch.mymealplanner.model.FoodsRepository
+import com.darrenfinch.mymealplanner.model.MealsRepository
 import com.darrenfinch.mymealplanner.model.room.MealPlannerDatabase
 import dagger.Module
 import dagger.Provides
@@ -24,8 +25,14 @@ class RoomModule(application: Application)
     }
     @Provides
     @Singleton
-    fun provideRepository(database: MealPlannerDatabase) : MealPlannerRepository
+    fun provideMealsRepository(database: MealPlannerDatabase) : MealsRepository
     {
-        return MealPlannerRepository(database)
+        return MealsRepository(database)
+    }
+    @Provides
+    @Singleton
+    fun provideFoodsRepository(database: MealPlannerDatabase) : FoodsRepository
+    {
+        return FoodsRepository(database)
     }
 }

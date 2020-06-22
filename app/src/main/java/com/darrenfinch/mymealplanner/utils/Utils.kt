@@ -37,6 +37,7 @@ object Utils {
         )
         meals.add(
             Meal(
+                0,
                 "Breakfast",
                 breakfastFoods
             )
@@ -69,6 +70,7 @@ object Utils {
         )
         meals.add(
             Meal(
+                1,
                 "Lunch",
                 lunchFoods
             )
@@ -101,6 +103,7 @@ object Utils {
         )
         meals.add(
             Meal(
+                3,
                 "Dinner",
                 dinnerFoods
             )
@@ -121,14 +124,14 @@ object Utils {
         meals.add(
             DatabaseMeal(
                 1,
-                "Breakfast",
+                "Lunch",
                 mutableListOf()
             )
         )
         meals.add(
             DatabaseMeal(
                 2,
-                "Breakfast",
+                "Supper",
                 mutableListOf()
             )
         )
@@ -212,4 +215,8 @@ object Utils {
         }
         return foodsList
     }
+    fun calculateTotalCalories(meal: Meal) = meal.foods.sumBy { it.calories }
+    fun calculateTotalCarbohydrates(meal: Meal) = meal.foods.sumBy { it.carbohydrates }
+    fun calculateTotalFats(meal: Meal) = meal.foods.sumBy { it.fat }
+    fun calculateTotalProteins(meal: Meal) = meal.foods.sumBy { it.protein }
 }

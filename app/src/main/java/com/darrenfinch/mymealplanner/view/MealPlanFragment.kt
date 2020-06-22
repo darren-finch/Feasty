@@ -13,9 +13,12 @@ import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.adapters.MealsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.model.frontend.TotalsVsRequiredMacros
 import com.darrenfinch.mymealplanner.databinding.FragmentMealPlanBinding
+import com.darrenfinch.mymealplanner.utils.Utils
 
 class MealPlanFragment : Fragment()
 {
+    private val adapter = MealsRecyclerViewAdapter(mutableListOf())
+
     private lateinit var binding: FragmentMealPlanBinding
 
     private var totalCalories = ObservableInt()
@@ -29,25 +32,26 @@ class MealPlanFragment : Fragment()
     private var requiredCarbohydrates = ObservableInt(295)
     private var requiredFat = ObservableInt(81)
 
-//    private var allMeals = Utils.createSampleMeals()
+    private var allMeals = Utils.createSampleMeals()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate<FragmentMealPlanBinding>(inflater, R.layout.fragment_meal_plan, container, false).apply {
-//            calculateMealMacroNutrients()
+            calculateMealMacroNutrients()
             macroNutrients = TotalsVsRequiredMacros(totalCalories, totalProtein, totalFat, totalCarbohydrates, requiredCalories, requiredProtein, requiredFat, requiredCarbohydrates)
-            mealsRecyclerView.adapter = MealsRecyclerViewAdapter(mutableListOf())
+            mealsRecyclerView.adapter = adapter
             mealsRecyclerView.layoutManager = LinearLayoutManager(context)
             mealsRecyclerView.addItemDecoration(MarginItemDecoration(16))
+            adapter.updateMeals(allMeals)
         }
         return binding.root
     }
-//    fun calculateMealMacroNutrients()
-//    {
-//        allMeals.forEach { meal -> totalCalories.set(totalCalories.get() + meal.calculateTotalCalories()) }
-//        allMeals.forEach { meal -> totalProtein.set(totalProtein.get() + meal.calculateTotalProtein()) }
-//        allMeals.forEach { meal -> totalCarbohydrates.set(totalCarbohydrates.get() + meal.calculateTotalCarbohydrates()) }
-//        allMeals.forEach { meal -> totalFat.set(totalFat.get() + meal.calculateTotalFat()) }
-//    }
+    fun calculateMealMacroNutrients()
+    {
+        allMeals.forEach { meal -> totalCalories.set(totalCalories.get() + Utils.calculateTotalCalories(meal)) }
+        allMeals.forEach { meal -> totalProtein.set(totalProtein.get() + Utils.calculateTotalCarbohydrates(meal)) }
+        allMeals.forEach { meal -> totalCarbohydrates.set(totalCarbohydrates.get() + Utils.calculateTotalFats(meal)) }
+        allMeals.forEach { meal -> totalFat.set(totalFat.get() + Utils.calculateTotalProteins(meal)) }
+    }
 }

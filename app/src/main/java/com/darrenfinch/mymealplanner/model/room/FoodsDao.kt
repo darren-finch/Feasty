@@ -7,17 +7,17 @@ import androidx.room.*
 interface FoodsDao
 {
     @Query("SELECT * FROM foods")
-    fun getFoods() : LiveData<Food>
+    suspend fun getFoods() : List<Food>
 
-    @Query("SELECT * FROM foods WHERE id IN (:ids)")
-    suspend fun getFoodsWithIds(ids: List<Int>) : List<Food>
+    @Query("SELECT * FROM foods WHERE id = :foodId")
+    fun getFood(foodId: Int) : LiveData<Food>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFood(food: Food)
 
     @Update
     suspend fun updateFood(food: Food)
 
-    @Delete
-    suspend fun deleteFood(food: Food)
+    @Query("DELETE FROM foods WHERE id = :foodId")
+    suspend fun deleteFood(foodId: Int)
 }

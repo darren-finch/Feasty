@@ -41,7 +41,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:text="Today"
-                    android:textAppearance="@style/TextAppearanceLarge"
+                    android:textAppearance="@style/H2"
                     android:textColor="#FFFFFF"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -71,7 +71,7 @@
                 android:foregroundGravity="center"
                 android:gravity="center"
                 android:text="@{StringUtils.INSTANCE.makeTotalVsRequiredNutrientString(macroNutrients.totalCalories, macroNutrients.requiredCalories, MacroType.CALORIE, false)}"
-                android:textAppearance="@style/TextAppearanceExtraLarge"
+                android:textAppearance="@style/H1"
                 android:textColor="@color/colorTextPrimary" />
 
             <ProgressBar
@@ -106,7 +106,7 @@
                 android:progress="@{macroNutrients.totalCarbohydrates}" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/allMealsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

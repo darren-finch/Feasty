@@ -12,6 +12,6 @@ import androidx.room.PrimaryKey
 */
 @Entity(tableName = "meals")
 data class DatabaseMeal(@PrimaryKey(autoGenerate = true)
-                val id: Int,
+                val id: Int = 0,
                 val title: String,
                 val foodsIds: List<Int>)

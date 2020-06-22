@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">My Meal Planner</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="meal_name">Meal Name</string>
+    <string name="foods">Foods</string>
+    <string name="food_quantity">Food Quantity</string>
+    <string name="protein">Protein</string>
+    <string name="fats">Fats</string>
+    <string name="carbohydrates">Carbohydrates</string>
+    <string name="calories">Calories</string>
+    <string name="food_name">Food Name</string>
+    <string name="food_unit">Food Unit</string>
+    <string name="done">Done</string>
+    <string name="add_food">Add Food</string>
+    <string name="edit_food">Edit Food</string>
+    <string name="all_foods">All Foods</string>
+    <string name="all_meals">All Meals</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>
