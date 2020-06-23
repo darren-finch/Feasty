@@ -17,7 +17,7 @@ import androidx.navigation.fragment.navArgs
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.databinding.FragmentAddEditFoodBinding
 import com.darrenfinch.mymealplanner.model.data.Food
-import com.darrenfinch.mymealplanner.model.room.MeasurementUnit
+import com.darrenfinch.mymealplanner.model.data.MetricUnit
 import com.darrenfinch.mymealplanner.viewmodels.AddEditFoodViewModel
 
 class AddEditFoodFragment : Fragment() {
@@ -33,7 +33,7 @@ class AddEditFoodFragment : Fragment() {
 
     private lateinit var binding: FragmentAddEditFoodBinding
 
-    private var selectedSpinnerMeasurementUnit = MeasurementUnit.defaultUnit
+    private var selectedSpinnerMeasurementUnit = MetricUnit.defaultUnit
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,13 +84,13 @@ class AddEditFoodFragment : Fragment() {
                 ) {
                     //This will fail if the array of strings given to the parent is incorrect.
                     selectedSpinnerMeasurementUnit =
-                        MeasurementUnit.fromString(parent?.getItemAtPosition(position).toString())
+                        MetricUnit.fromString(parent?.getItemAtPosition(position).toString())
                 }
             }
     }
 
-    private fun setSelectedSpinnerMeasurementUnit(measurementUnit: MeasurementUnit) {
-        selectedSpinnerMeasurementUnit = measurementUnit
+    private fun setSelectedSpinnerMeasurementUnit(metricUnit: MetricUnit) {
+        selectedSpinnerMeasurementUnit = metricUnit
         binding.foodUnitSpinner.setSelection(selectedSpinnerMeasurementUnit.ordinal)
     }
 
@@ -109,7 +109,7 @@ class AddEditFoodFragment : Fragment() {
     }
 
     private fun getAllMeasurementUnitsAsStrings() =
-        MeasurementUnit.measurementUnitsToStringValues.keys.toList().map { it.toString() }
+        MetricUnit.metricUnitsToStringValues.keys.toList().map { it.toString() }
 
     private fun onPositiveButtonSelected() {
         val newFood = Food(

@@ -4,10 +4,7 @@ import android.app.Application
 import com.darrenfinch.mymealplanner.model.FoodsRepository
 import com.darrenfinch.mymealplanner.model.MealsRepository
 import com.darrenfinch.mymealplanner.model.room.MealPlannerDatabase
-import com.darrenfinch.mymealplanner.viewmodels.AddEditFoodViewModel
-import com.darrenfinch.mymealplanner.viewmodels.AddEditMealViewModel
-import com.darrenfinch.mymealplanner.viewmodels.AllFoodsViewModel
-import com.darrenfinch.mymealplanner.viewmodels.AllMealsViewModel
+import com.darrenfinch.mymealplanner.viewmodels.*
 import dagger.Component
 import javax.inject.Singleton
 
@@ -16,6 +13,7 @@ import javax.inject.Singleton
 interface ApplicationComponent
 {
     fun inject(viewModel: AllFoodsViewModel)
+    fun inject(viewModel: SelectFoodForMealViewModel)
     fun inject(viewModel: AddEditFoodViewModel)
     fun inject(viewModel: AddEditMealViewModel)
     fun inject(viewModel: AllMealsViewModel)

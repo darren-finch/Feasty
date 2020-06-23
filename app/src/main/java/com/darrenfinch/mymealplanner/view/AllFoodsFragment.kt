@@ -27,6 +27,8 @@ class AllFoodsFragment : Fragment()
     private lateinit var binding: FragmentAllFoodsBinding
 
     private val foodsListItemEventListener = object : FoodsRecyclerViewAdapter.ItemEventListener {
+        override fun onItemClick(foodId: Int) {}
+
         override fun onItemEdit(foodId: Int) {
             navigateToAddEditFoodFragment(foodId)
         }
@@ -42,7 +44,7 @@ class AllFoodsFragment : Fragment()
         findNavController().navigate(directions)
     }
 
-    private val foodsListAdapter = FoodsRecyclerViewAdapter(mutableListOf()).apply { setOnItemEventListener(foodsListItemEventListener) }
+    private val foodsListAdapter = FoodsRecyclerViewAdapter(FoodsRecyclerViewAdapter.Config(), mutableListOf()).apply { setOnItemEventListener(foodsListItemEventListener) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {

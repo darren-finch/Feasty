@@ -1,9 +1,10 @@
 package com.darrenfinch.mymealplanner.utils
 
-import com.darrenfinch.mymealplanner.model.helpers.MacroType
+import com.darrenfinch.mymealplanner.model.data.MacroType
 import com.darrenfinch.mymealplanner.model.data.Food
 import com.darrenfinch.mymealplanner.model.data.Meal
-import com.darrenfinch.mymealplanner.model.room.MeasurementUnit
+import com.darrenfinch.mymealplanner.model.data.MealFood
+import com.darrenfinch.mymealplanner.model.data.MetricUnit
 
 object StringUtils {
     private fun makeMacroNutrientString(
@@ -13,6 +14,10 @@ object StringUtils {
         fat: Int
     ): String {
         return "$calories calories | ${protein}P | ${carbohydrates}C | ${fat}F"
+    }
+
+    fun makeMealFoodMacroNutrientsString(mealFood: MealFood): String {
+        return makeMacroNutrientString(mealFood.calories, mealFood.protein, mealFood.carbohydrates, mealFood.fat)
     }
 
     fun makeFoodMacroNutrientsString(food: Food): String {
@@ -30,7 +35,7 @@ object StringUtils {
         )}"
     }
 
-    fun makeFoodQuantityString(foodQuantity: Double, foodQuantityUnit: MeasurementUnit) : String {
+    fun makeFoodQuantityString(foodQuantity: Double, foodQuantityUnit: MetricUnit) : String {
         return "$foodQuantity $foodQuantityUnit"
     }
 

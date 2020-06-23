@@ -11,6 +11,8 @@
     </data>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/foodCardView"
+        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="#FFF"

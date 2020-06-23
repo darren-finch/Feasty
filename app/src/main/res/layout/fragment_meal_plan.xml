@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <import type="com.darrenfinch.mymealplanner.model.helpers.MacroType"/>
+        <import type="com.darrenfinch.mymealplanner.model.data.MacroType"/>
         <import type="com.darrenfinch.mymealplanner.utils.StringUtils"/>
         <variable
             name="macroNutrients"
