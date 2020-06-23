@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.darrenfinch.mymealplanner.model.data.DatabaseMeal
 import com.darrenfinch.mymealplanner.model.data.Food
 
-@Database(entities = [DatabaseMeal::class, Food::class], version = 3, exportSchema = false)
+@Database(entities = [DatabaseMeal::class, Food::class], version = 4, exportSchema = false)
 @TypeConverters(RoomConverters::class)
 abstract class MealPlannerDatabase : RoomDatabase()
 {

@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:text="@{String.valueOf(food.calories)}"
+                android:text="@{String.valueOf(food.macroNutrients.calories)}"
                 android:hint="@string/calories" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:text="@{String.valueOf(food.carbohydrates)}"
+                android:text="@{String.valueOf(food.macroNutrients.carbohydrates)}"
                 android:hint="@string/carbohydrates" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -88,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:text="@{String.valueOf(food.fat)}"
+                android:text="@{String.valueOf(food.macroNutrients.fat)}"
                 android:hint="@string/fats" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -108,7 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:text="@{String.valueOf(food.protein)}"
+                android:text="@{String.valueOf(food.macroNutrients.protein)}"
                 android:hint="@string/protein" />
 
         </com.google.android.material.textfield.TextInputLayout>

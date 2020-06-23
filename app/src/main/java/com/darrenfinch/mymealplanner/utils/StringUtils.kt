@@ -15,13 +15,13 @@ object StringUtils {
     ): String {
         return "$calories calories | ${protein}P | ${carbohydrates}C | ${fat}F"
     }
-
-    fun makeMealFoodMacroNutrientsString(mealFood: MealFood): String {
-        return makeMacroNutrientString(mealFood.calories, mealFood.protein, mealFood.carbohydrates, mealFood.fat)
-    }
+//
+//    fun makeMealFoodMacroNutrientsString(mealFood: MealFood): String {
+//        return makeMacroNutrientString(mealFood.calories, mealFood.protein, mealFood.carbohydrates, mealFood.fat)
+//    }
 
     fun makeFoodMacroNutrientsString(food: Food): String {
-        return makeMacroNutrientString(food.calories, food.protein, food.carbohydrates, food.fat)
+        return makeMacroNutrientString(food.macroNutrients.calories, food.macroNutrients.protein, food.macroNutrients.carbohydrates, food.macroNutrients.fat)
     }
 
     fun makeTotalVsRequiredNutrientString(
@@ -54,10 +54,10 @@ object StringUtils {
         var totalCarbohydrates = 0
         var totalFat = 0
 
-        meal.foods.forEach { food -> totalCalories += food.calories }
-        meal.foods.forEach { food -> totalProtein += food.protein }
-        meal.foods.forEach { food -> totalCarbohydrates += food.carbohydrates }
-        meal.foods.forEach { food -> totalFat += food.fat }
+        meal.foods.forEach { food -> totalCalories += food.macroNutrients.calories }
+        meal.foods.forEach { food -> totalProtein += food.macroNutrients.protein }
+        meal.foods.forEach { food -> totalCarbohydrates += food.macroNutrients.carbohydrates }
+        meal.foods.forEach { food -> totalFat += food.macroNutrients.fat }
 
         return makeMacroNutrientString(totalCalories, totalProtein, totalCarbohydrates, totalFat)
     }

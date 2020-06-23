@@ -13,10 +13,12 @@ object DataConverters {
             title = mealFood.title,
             servingSizeUnit = mealFood.servingSizeUnit,
             servingSize = mealFood.servingSize,
-            calories = mealFood.calories,
-            carbohydrates = mealFood.carbohydrates,
-            fat = mealFood.fat,
-            protein = mealFood.protein
+            macroNutrients = MacroNutrients(
+                calories = mealFood.macroNutrients.calories,
+                carbohydrates = mealFood.macroNutrients.carbohydrates,
+                fat = mealFood.macroNutrients.fat,
+                protein = mealFood.macroNutrients.protein
+            )
         )
     }
     suspend fun convertDatabaseMealToRegularMeal(
@@ -46,10 +48,12 @@ object DataConverters {
             quantity = databaseMealFood.quantity,
             servingSizeUnit = foodFromDatabase.servingSizeUnit,
             servingSize = foodFromDatabase.servingSize,
-            calories = foodFromDatabase.calories,
-            carbohydrates = foodFromDatabase.carbohydrates,
-            fat = foodFromDatabase.fat,
-            protein = foodFromDatabase.protein
+            macroNutrients = MacroNutrients(
+                calories = foodFromDatabase.macroNutrients.calories,
+                carbohydrates = foodFromDatabase.macroNutrients.carbohydrates,
+                fat = foodFromDatabase.macroNutrients.fat,
+                protein = foodFromDatabase.macroNutrients.protein
+            )
         )
     }
 

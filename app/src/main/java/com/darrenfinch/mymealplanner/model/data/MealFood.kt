@@ -6,8 +6,5 @@ data class MealFood(
     val quantity: Double,
     val servingSize: Double,
     val servingSizeUnit: MetricUnit,
-    val calories: Int,
-    val carbohydrates: Int,
-    val protein: Int,
-    val fat: Int
+    val macroNutrients: MacroNutrients
 )

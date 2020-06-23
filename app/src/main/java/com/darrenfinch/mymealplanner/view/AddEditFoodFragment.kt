@@ -17,6 +17,7 @@ import androidx.navigation.fragment.navArgs
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.databinding.FragmentAddEditFoodBinding
 import com.darrenfinch.mymealplanner.model.data.Food
+import com.darrenfinch.mymealplanner.model.data.MacroNutrients
 import com.darrenfinch.mymealplanner.model.data.MetricUnit
 import com.darrenfinch.mymealplanner.viewmodels.AddEditFoodViewModel
 
@@ -115,10 +116,12 @@ class AddEditFoodFragment : Fragment() {
         val newFood = Food(
             id = getFoodId(),
             title = getFoodName(),
-            calories = getCalories(),
-            carbohydrates = getCarbohydrates(),
-            fat = getFat(),
-            protein = getProtein(),
+            macroNutrients = MacroNutrients(
+                calories = getCalories(),
+                carbohydrates = getCarbohydrates(),
+                fat = getFat(),
+                protein = getProtein()
+            ),
             servingSize = getFoodQuantity(),
             servingSizeUnit = getMeasurementUnit()
         )

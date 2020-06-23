@@ -216,8 +216,8 @@ object Utils {
 //        }
 //        return foodsList
 //    }
-    fun calculateTotalCalories(meal: Meal) = meal.foods.sumBy { it.calories }
-    fun calculateTotalCarbohydrates(meal: Meal) = meal.foods.sumBy { it.carbohydrates }
-    fun calculateTotalFats(meal: Meal) = meal.foods.sumBy { it.fat }
-    fun calculateTotalProteins(meal: Meal) = meal.foods.sumBy { it.protein }
+    fun calculateTotalCalories(meal: Meal) = meal.foods.sumBy { it.macroNutrients.calories }
+    fun calculateTotalCarbohydrates(meal: Meal) = meal.foods.sumBy { it.macroNutrients.carbohydrates }
+    fun calculateTotalFats(meal: Meal) = meal.foods.sumBy { it.macroNutrients.fat }
+    fun calculateTotalProteins(meal: Meal) = meal.foods.sumBy { it.macroNutrients.protein }
 }
