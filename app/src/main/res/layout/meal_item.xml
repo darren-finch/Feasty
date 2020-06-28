@@ -10,7 +10,7 @@
             type="com.darrenfinch.mymealplanner.model.data.Meal" />
         <variable
             name="viewHolder"
-            type="com.darrenfinch.mymealplanner.adapters.MealViewHolder" />
+            type="com.darrenfinch.mymealplanner.reusable.mealsrecyclerviewadapter.MealViewHolder" />
     </data>
 
     <androidx.cardview.widget.CardView
