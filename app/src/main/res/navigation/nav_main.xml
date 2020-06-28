@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/allFoodsFragment"
-        android:name="com.darrenfinch.mymealplanner.allfoods.controller.AllFoodsFragment"
+        android:name="com.darrenfinch.mymealplanner.domain.allfoods.controller.AllFoodsFragment"
         android:label="fragment_foods"
         tools:layout="@layout/fragment_all_foods" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/mealPlanFragment"
-        android:name="com.darrenfinch.mymealplanner.dailymealplan.controller.MealPlanFragment"
+        android:name="com.darrenfinch.mymealplanner.domain.dailymealplan.controller.MealPlanFragment"
         android:label="fragment_meal_plan"
         tools:layout="@layout/fragment_meal_plan" />
     <fragment
@@ -26,7 +26,7 @@
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/allMealsFragment"
-        android:name="com.darrenfinch.mymealplanner.allmeals.controller.AllMealsFragment"
+        android:name="com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsFragment"
         android:label="fragment_meals"
         tools:layout="@layout/fragment_all_meals" >
         <action
@@ -35,7 +35,7 @@
     </fragment>
     <fragment
         android:id="@+id/addEditFoodFragment"
-        android:name="com.darrenfinch.mymealplanner.addeditfood.controller.AddEditFoodFragment"
+        android:name="com.darrenfinch.mymealplanner.domain.addeditfood.controller.AddEditFoodFragment"
         android:label="fragment_add_edit_food"
         tools:layout="@layout/fragment_add_edit_food" >
         <argument
@@ -44,11 +44,11 @@
     </fragment>
     <fragment
         android:id="@+id/addEditMealFragment"
-        android:name="com.darrenfinch.mymealplanner.addeditmeal.controller.AddEditMealFragment"
+        android:name="com.darrenfinch.mymealplanner.domain.addeditmeal.controller.AddEditMealFragment"
         android:label="fragment_add_edit_meal"
         tools:layout="@layout/fragment_add_edit_meal" />
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.darrenfinch.mymealplanner.main.MainFragment"
+        android:name="com.darrenfinch.mymealplanner.domain.main.MainFragment"
         android:label="MainFragment" />
 </navigation>

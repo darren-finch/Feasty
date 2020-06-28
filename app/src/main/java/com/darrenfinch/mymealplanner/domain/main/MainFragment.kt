@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.main
+package com.darrenfinch.mymealplanner.domain.main
 
 import android.os.Bundle
 import android.view.LayoutInflater

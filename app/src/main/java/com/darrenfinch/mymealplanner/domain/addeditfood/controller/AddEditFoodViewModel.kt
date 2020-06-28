@@ -1,16 +1,15 @@
-package com.darrenfinch.mymealplanner.selectfoodformeal.controller
+package com.darrenfinch.mymealplanner.domain.addeditfood.controller
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
 import com.darrenfinch.mymealplanner.di.AppModule
 import com.darrenfinch.mymealplanner.di.DaggerApplicationComponent
 import com.darrenfinch.mymealplanner.di.RoomModule
 import com.darrenfinch.mymealplanner.model.FoodsRepository
 import com.darrenfinch.mymealplanner.model.data.Food
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SelectFoodForMealViewModel(application: Application) : AndroidViewModel(application) {
+class AddEditFoodViewModel(application: Application) : AndroidViewModel(application) {
     @Inject
     lateinit var repo: FoodsRepository
 
@@ -22,12 +21,7 @@ class SelectFoodForMealViewModel(application: Application) : AndroidViewModel(ap
             .inject(this)
     }
 
-    private val allFoodsLiveData: MutableLiveData<List<Food>> = MutableLiveData()
-
-    fun fetchAllFoods(): LiveData<List<Food>> {
-        viewModelScope.launch {
-            allFoodsLiveData.postValue(repo.getFoods())
-        }
-        return allFoodsLiveData
-    }
+    fun fetchFood(foodId: Int) = repo.fetchFood(foodId)
+    fun insertFood(food: Food) = repo.insertFood(food)
+    fun updateFood(food: Food) = repo.updateFood(food)
 }

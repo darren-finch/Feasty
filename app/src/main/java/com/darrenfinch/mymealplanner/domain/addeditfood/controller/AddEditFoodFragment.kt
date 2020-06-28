@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.addeditfood.controller
+package com.darrenfinch.mymealplanner.domain.addeditfood.controller
 
 import android.os.Bundle
 import android.view.LayoutInflater

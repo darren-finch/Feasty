@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.SelectMealFoodQuantityDialog">
+        tools:context=".domain.selectmealfoodquantity.controller.SelectMealFoodQuantityDialog">
 
         <TextView
             android:id="@+id/foodNameTextView"
