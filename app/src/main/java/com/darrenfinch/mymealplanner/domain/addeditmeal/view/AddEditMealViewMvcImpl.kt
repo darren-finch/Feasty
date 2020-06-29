@@ -9,13 +9,13 @@ import com.darrenfinch.mymealplanner.databinding.FragmentAddEditMealBinding
 
 class AddEditMealViewMvcImpl(
     inflater: LayoutInflater,
-    container: ViewGroup?
+    parent: ViewGroup?
 ) : BaseObservableViewMvc<AddEditMealViewMvc.Listener>(), AddEditMealViewMvc {
 
     private val binding: FragmentAddEditMealBinding = DataBindingUtil.inflate(
         inflater,
         R.layout.fragment_add_edit_meal,
-        container,
+        parent,
         false
     )
 

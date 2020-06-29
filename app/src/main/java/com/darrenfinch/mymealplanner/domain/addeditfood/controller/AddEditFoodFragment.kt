@@ -4,71 +4,62 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 
-import com.darrenfinch.mymealplanner.R
+import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
 import com.darrenfinch.mymealplanner.domain.addeditfood.view.AddEditFoodViewMvc
-import com.darrenfinch.mymealplanner.domain.addeditfood.view.AddEditFoodViewMvcImpl
-import com.darrenfinch.mymealplanner.model.data.Food
 
-class AddEditFoodFragment : Fragment(), AddEditFoodViewMvc.Listener {
+class AddEditFoodFragment : BaseFragment() {
 
-    private lateinit var viewMvc: AddEditFoodViewMvc
+    private val CONTROLLER_STATE_EXTRA = "CONTROLLER_STATE_EXTRA"
 
-    private val viewModel: AddEditFoodViewModel by viewModels {
-        ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
-    }
+    private lateinit var controller: AddEditFoodController
 
     private val args: AddEditFoodFragmentArgs by navArgs()
-
-    private val insertingFood: Boolean by lazy {
-        args.foodId < 0
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        initViewMvc(inflater, container)
-        if (canFetchFoodDetails()) {
-            fetchFoodDetails()
-        }
+        val viewMvc = initViewMvc(container)
+        initController(viewMvc, savedInstanceState)
+
+        viewMvc.bindFoodDetails(controller.getObservableFood())
+
         return viewMvc.getRootView()
     }
 
-    private fun canFetchFoodDetails() = !insertingFood && !viewModel.getObservableFood().dirty
+    private fun initViewMvc(container: ViewGroup?) = controllerCompositionRoot.getViewMvcFactory().getAddEditFoodViewMvc(container, args.foodId < 0)
 
-    private fun initViewMvc(inflater: LayoutInflater, container: ViewGroup?) {
-        viewMvc = AddEditFoodViewMvcImpl(inflater, container, insertingFood)
-        viewMvc.bindFoodDetails(viewModel.getObservableFood())
+    private fun initController(viewMvc: AddEditFoodViewMvc, savedInstanceState: Bundle?) {
+        //It's ok to manually instantiate this. The only reason we have a controller in the first place is to make this fragment testable (in the future maybe ha-ha).
+        controller = AddEditFoodController(controllerCompositionRoot.getFoodsRepository(), args.foodId)
+        controller.bindView(viewMvc)
+
+        restoreSavedControllerState(savedInstanceState)
+
+        //fetchFoodIfPossible() overrides saved controller state if called before restoreSavedControllerState()
+        controller.fetchFoodIfPossible(viewLifecycleOwner)
     }
 
-    private fun fetchFoodDetails() {
-        viewModel.fetchFood(args.foodId, viewLifecycleOwner)
+    private fun restoreSavedControllerState(savedInstanceState: Bundle?) {
+        if(savedInstanceState != null)
+            controller.restoreSavedState(savedInstanceState.getSerializable(CONTROLLER_STATE_EXTRA) as AddEditFoodController.SavedState)
     }
 
     override fun onStart() {
         super.onStart()
-        viewMvc.registerListener(this)
+        controller.onStart()
     }
 
     override fun onStop() {
         super.onStop()
-        viewMvc.unregisterListener(this)
+        controller.onStop()
     }
 
-    override fun onDoneButtonClicked(editedFoodDetails: Food) {
-        saveFoodDetails(editedFoodDetails)
-        findNavController().navigate(R.id.allFoodsFragment)
-    }
-
-    private fun saveFoodDetails(editedFoodDetails: Food) {
-        if (insertingFood) viewModel.insertFood(editedFoodDetails) else viewModel.updateFood(editedFoodDetails)
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putSerializable(CONTROLLER_STATE_EXTRA, controller.getSavedState())
     }
 }
