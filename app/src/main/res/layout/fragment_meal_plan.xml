@@ -5,7 +5,7 @@
 
     <data>
         <import type="com.darrenfinch.mymealplanner.model.data.MacroType"/>
-        <import type="com.darrenfinch.mymealplanner.utils.StringUtils"/>
+        <import type="com.darrenfinch.mymealplanner.common.utils.StringUtils"/>
         <variable
             name="macroNutrients"
             type="com.darrenfinch.mymealplanner.model.frontend.TotalsVsRequiredMacros" />

@@ -3,14 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <import type="com.darrenfinch.mymealplanner.utils.StringUtils"/>
+        <import type="com.darrenfinch.mymealplanner.common.utils.StringUtils"/>
         <import type="android.view.View"/>
         <variable
             name="meal"
             type="com.darrenfinch.mymealplanner.model.data.Meal" />
         <variable
             name="viewHolder"
-            type="com.darrenfinch.mymealplanner.reusable.mealsrecyclerviewadapter.MealViewHolder" />
+            type="com.darrenfinch.mymealplanner.common.reusable.mealsrecyclerviewadapter.MealViewHolder" />
     </data>
 
     <androidx.cardview.widget.CardView

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-        <import type="com.darrenfinch.mymealplanner.utils.StringUtils"/>
+        <import type="com.darrenfinch.mymealplanner.common.utils.StringUtils"/>
         <variable
             name="food"
             type="com.darrenfinch.mymealplanner.model.data.Food" />
