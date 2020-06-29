@@ -1,8 +1,6 @@
 package com.darrenfinch.mymealplanner.common.di
 
 import android.app.Application
-import com.darrenfinch.mymealplanner.domain.addeditfood.controller.AddEditFoodViewModel
-import com.darrenfinch.mymealplanner.domain.addeditmeal.controller.AddEditMealViewModel
 import com.darrenfinch.mymealplanner.domain.allfoods.controller.AllFoodsViewModel
 import com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsViewModel
 import com.darrenfinch.mymealplanner.model.FoodsRepository
@@ -18,8 +16,6 @@ interface ApplicationComponent
 {
     fun inject(viewModel: AllFoodsViewModel)
     fun inject(viewModel: SelectFoodForMealViewModel)
-    fun inject(viewModel: AddEditFoodViewModel)
-    fun inject(viewModel: AddEditMealViewModel)
     fun inject(viewModel: AllMealsViewModel)
     fun mealsRepository() : MealsRepository
     fun foodsRepository() : FoodsRepository

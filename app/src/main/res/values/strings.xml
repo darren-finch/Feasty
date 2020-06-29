@@ -17,8 +17,5 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="serving_size">Serving Size:</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="select_food">Select Food</string>
 </resources>

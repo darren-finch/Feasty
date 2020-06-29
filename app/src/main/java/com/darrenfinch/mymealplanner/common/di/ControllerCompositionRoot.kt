@@ -25,6 +25,5 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
         return ViewMvcFactory(getLayoutInflater())
     }
 
-    fun getAddEditFoodViewModel() = ViewModelProvider.AndroidViewModelFactory(activityCompositionRoot.getActivity().application)
     fun getFoodsRepository() = activityCompositionRoot.getFoodsRepository()
 }
