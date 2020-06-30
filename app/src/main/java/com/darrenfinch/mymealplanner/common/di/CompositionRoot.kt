@@ -13,6 +13,9 @@ class CompositionRoot(private val application: Application) {
             .fallbackToDestructiveMigration()
             .build()
 
+    private val mealsRepository = MealsRepository(getDatabase())
+    private val foodsRepository = FoodsRepository(getDatabase())
+
     fun getApplication(): Application {
         return application
     }
@@ -22,10 +25,10 @@ class CompositionRoot(private val application: Application) {
     }
 
     fun getMealsRepository(): MealsRepository {
-        return MealsRepository(getDatabase())
+        return mealsRepository
     }
 
     fun getFoodsRepository(): FoodsRepository {
-        return FoodsRepository(getDatabase())
+        return foodsRepository
     }
 }

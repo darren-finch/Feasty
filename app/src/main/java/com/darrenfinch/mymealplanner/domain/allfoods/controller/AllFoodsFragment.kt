@@ -1,81 +1,29 @@
 package com.darrenfinch.mymealplanner.domain.allfoods.controller
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.darrenfinch.mymealplanner.common.reusable.recyclerviewitemdecorations.MarginItemDecoration
+import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
 
-import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.common.reusable.foodrecyclerviewadapter.FoodsRecyclerViewAdapter
-import com.darrenfinch.mymealplanner.databinding.FragmentAllFoodsBinding
+class AllFoodsFragment : BaseFragment() {
+    private lateinit var controller: AllFoodsController
 
-class AllFoodsFragment : Fragment()
-{
-    private val viewModel: AllFoodsViewModel by viewModels {
-        ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val viewMvc = controllerCompositionRoot.getViewMvcFactory().getAllFoodsViewMvc(container)
+        controller = AllFoodsController(controllerCompositionRoot.getFoodsRepository())
+        controller.bindView(viewMvc)
+        controller.fetchFoods(viewLifecycleOwner)
+        return viewMvc.getRootView()
     }
 
-    private lateinit var binding: FragmentAllFoodsBinding
-
-    private val foodsListItemEventListener = object : FoodsRecyclerViewAdapter.ItemEventListener {
-        override fun onItemClick(foodId: Int) {}
-
-        override fun onItemEdit(foodId: Int) {
-            navigateToAddEditFoodFragment(foodId)
-        }
-        override fun onItemDelete(foodId: Int) {
-            deleteFood(foodId)
-        }
-    }
-    private fun deleteFood(foodId: Int) {
-        viewModel.deleteFood(foodId)
-    }
-    private fun navigateToAddEditFoodFragment(foodId: Int) {
-        val directions =
-            AllFoodsFragmentDirections.actionFoodsFragmentToAddEditFoodFragment(
-                foodId
-            )
-        findNavController().navigate(directions)
+    override fun onStart() {
+        super.onStart()
+        controller.onStart()
     }
 
-    private val foodsListAdapter = FoodsRecyclerViewAdapter(
-        FoodsRecyclerViewAdapter.Config(),
-        mutableListOf()
-    ).apply { setOnItemEventListener(foodsListItemEventListener) }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
-    {
-        // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate<FragmentAllFoodsBinding>(inflater, R.layout.fragment_all_foods, container, false).apply {
-            foodsRecyclerView.adapter = foodsListAdapter
-            foodsRecyclerView.layoutManager = LinearLayoutManager(context)
-            foodsRecyclerView.addItemDecoration(
-                MarginItemDecoration(
-                    16
-                )
-            )
-
-            addNewFood.setOnClickListener {
-                navigateToAddEditFoodFragment(-1)
-            }
-        }
-        return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel.fetchAllFoods().observe(viewLifecycleOwner, Observer { newFoods ->
-            newFoods?.let {
-                foodsListAdapter.updateFoods(newFoods)
-            }
-        })
+    override fun onStop() {
+        super.onStop()
+        controller.onStop()
     }
 }

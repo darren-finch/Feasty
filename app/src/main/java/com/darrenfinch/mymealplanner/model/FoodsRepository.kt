@@ -13,7 +13,7 @@ constructor(database: MealPlannerDatabase)
 {
     private val foodsDao = database.foodsDao()
 
-    suspend fun getFoods(): List<Food> {
+    fun getFoods(): LiveData<List<Food>> {
         return foodsDao.getFoods()
     }
 

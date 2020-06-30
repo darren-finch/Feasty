@@ -1,5 +1,6 @@
 package com.darrenfinch.mymealplanner.model.room
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.darrenfinch.mymealplanner.model.data.DatabaseMeal
 import com.darrenfinch.mymealplanner.model.data.Food
@@ -8,7 +9,7 @@ import com.darrenfinch.mymealplanner.model.data.Food
 interface MealsDao
 {
     @Query("SELECT * FROM meals")
-    suspend fun getMeals() : List<DatabaseMeal>
+    fun getMeals() : LiveData<List<DatabaseMeal>>
 
     //This is a hack (should be in FoodsDAO), but I'm not going to invest the effort to do this properly atm.
     @Query("SELECT * FROM foods WHERE id IN (:mealFoodIds)")

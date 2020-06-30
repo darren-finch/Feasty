@@ -26,4 +26,5 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     }
 
     fun getFoodsRepository() = activityCompositionRoot.getFoodsRepository()
+    fun getMealsRepository() = activityCompositionRoot.getMealsRepository()
 }

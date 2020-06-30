@@ -1,7 +1,10 @@
 package com.darrenfinch.mymealplanner.model
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.darrenfinch.mymealplanner.model.data.DataConverters.convertDatabaseMealToRegularMeal
 import com.darrenfinch.mymealplanner.model.data.DataConverters.convertMealToDatabaseMeal
+import com.darrenfinch.mymealplanner.model.data.DatabaseMeal
 import com.darrenfinch.mymealplanner.model.data.Meal
 import com.darrenfinch.mymealplanner.model.room.MealPlannerDatabase
 import kotlinx.coroutines.Dispatchers
@@ -16,11 +19,15 @@ constructor(database: MealPlannerDatabase) {
     private val mealsDao = database.mealsDao()
     private val foodsDao = database.foodsDao() //Minimize usage of this. Right now, there isn't a good way to get around needing this.
 
-    suspend fun getMeals(): List<Meal> {
-        val allDatabaseMeals = mealsDao.getMeals()
-        return allDatabaseMeals.parallelMap {
-            convertDatabaseMealToRegularMeal(it, foodsDao)
+    private val allDatabaseMeals: LiveData<List<DatabaseMeal>> = mealsDao.getMeals()
+    private val allMeals = Transformations.map(allDatabaseMeals) {
+        allDatabaseMeals.value!!.parallelMap { databaseMeal ->
+            convertDatabaseMealToRegularMeal(databaseMeal, foodsDao)
         }
+    }
+
+    fun getMeals(): LiveData<List<Meal>> {
+        return allMeals
     }
     fun insertMeal(meal: Meal) {
         runBlocking(Dispatchers.IO) {
@@ -41,6 +48,6 @@ constructor(database: MealPlannerDatabase) {
     }
 
     private fun <A, B> List<A>.parallelMap(f: suspend (A) -> B): List<B> = runBlocking {
-        map { async(Dispatchers.IO) { f(it) } }.awaitAll()
+        map { async(Dispatchers.Default) { f(it) } }.awaitAll()
     }
 }

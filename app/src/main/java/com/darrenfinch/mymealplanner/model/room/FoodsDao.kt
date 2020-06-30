@@ -8,7 +8,7 @@ import com.darrenfinch.mymealplanner.model.data.Food
 interface FoodsDao
 {
     @Query("SELECT * FROM foods")
-    suspend fun getFoods() : List<Food>
+    fun getFoods() : LiveData<List<Food>>
 
     @Query("SELECT * FROM foods WHERE id = :foodId")
     suspend fun getFood(foodId: Int) : Food
