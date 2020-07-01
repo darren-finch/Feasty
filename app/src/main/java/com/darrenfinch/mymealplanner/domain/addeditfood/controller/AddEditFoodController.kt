@@ -5,23 +5,18 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation.findNavController
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.domain.addeditfood.view.AddEditFoodViewMvc
-import com.darrenfinch.mymealplanner.domain.common.ObservableFood
 import com.darrenfinch.mymealplanner.model.FoodsRepository
 import com.darrenfinch.mymealplanner.model.data.Food
 import java.io.Serializable
 
 class AddEditFoodController(
     private val repository: FoodsRepository,
-    private val foodId: Int
+    private val viewModel: AddEditFoodViewModel
 ) : AddEditFoodViewMvc.Listener {
 
     private lateinit var viewMvc: AddEditFoodViewMvc
-    private val insertingFood = foodId < 0
 
-    private fun canFetchFoodDetails() = !insertingFood && !getObservableFood().dirty
-
-    private val observableFood = ObservableFood()
-    fun getObservableFood() = observableFood
+    private fun canFetchFoodDetails() = !viewModel.insertingFood && !viewModel.getObservableFood().dirty
 
     fun bindView(viewMvc: AddEditFoodViewMvc) {
         this.viewMvc = viewMvc
@@ -35,23 +30,21 @@ class AddEditFoodController(
         viewMvc.unregisterListener(this)
     }
 
-    fun getSavedState(): SavedState {
-        return SavedState(observableFood.get())
+    private fun bindFoodDetailsToViewModelAndViewMvc(foodDetails: Food) {
+        viewModel.setObservableFoodData(foodDetails)
+        viewMvc.bindFoodDetails(viewModel.getObservableFood())
     }
 
-    fun restoreSavedState(savedState: SavedState) {
-        observableFood.set(savedState.foodDetails)
-        viewMvc.bindFoodDetails(observableFood)
-    }
-
-    fun fetchFoodIfPossible(viewLifecycleOwner: LifecycleOwner) {
+    fun fetchFoodDetailsIfPossibleRebindToViewMvcOtherwise(viewLifecycleOwner: LifecycleOwner) {
         if (canFetchFoodDetails())
             fetchFoodDetailsFromRepository(viewLifecycleOwner)
+        else
+            viewMvc.bindFoodDetails(viewModel.getObservableFood())
     }
 
     private fun fetchFoodDetailsFromRepository(viewLifecycleOwner: LifecycleOwner) {
-        repository.fetchFood(foodId).observe(viewLifecycleOwner, Observer { food ->
-            observableFood.set(food)
+        repository.fetchFood(viewModel.foodId).observe(viewLifecycleOwner, Observer { food ->
+            bindFoodDetailsToViewModelAndViewMvc(food)
         })
     }
 
@@ -63,7 +56,7 @@ class AddEditFoodController(
     }
 
     private fun saveFoodDetails(editedFoodDetails: Food) {
-        if (insertingFood)
+        if (viewModel.insertingFood)
             insertFood(editedFoodDetails)
         else
             updateFood(editedFoodDetails)

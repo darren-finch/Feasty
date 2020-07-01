@@ -1,10 +1,13 @@
 package com.darrenfinch.mymealplanner.common.di
 
+import android.app.Application
 import android.content.Context
 import android.view.LayoutInflater
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.darrenfinch.mymealplanner.common.views.ViewMvcFactory
+import com.darrenfinch.mymealplanner.domain.addeditfood.controller.AddEditFoodController
+import com.darrenfinch.mymealplanner.domain.addeditfood.controller.AddEditFoodViewModel
 import com.darrenfinch.mymealplanner.model.FoodsRepository
 
 //This composition root is scoped to a controller - e.g fragments or possibly an entire activity
@@ -21,10 +24,16 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
         return LayoutInflater.from(getContext())
     }
 
+    fun getApplication() : Application {
+        return activityCompositionRoot.getApplication()
+    }
+
     fun getViewMvcFactory(): ViewMvcFactory {
         return ViewMvcFactory(getLayoutInflater())
     }
 
     fun getFoodsRepository() = activityCompositionRoot.getFoodsRepository()
     fun getMealsRepository() = activityCompositionRoot.getMealsRepository()
+
+    fun getAddEditFoodController(viewModel: AddEditFoodViewModel) = AddEditFoodController(getFoodsRepository(), viewModel)
 }
