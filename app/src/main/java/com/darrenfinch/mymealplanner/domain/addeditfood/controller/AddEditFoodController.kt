@@ -64,6 +64,4 @@ class AddEditFoodController(
 
     private fun insertFood(food: Food) = repository.insertFood(food)
     private fun updateFood(food: Food) = repository.updateFood(food)
-
-    data class SavedState(val foodDetails: Food) : Serializable
 }

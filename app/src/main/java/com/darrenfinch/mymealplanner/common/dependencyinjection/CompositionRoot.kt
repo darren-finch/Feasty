@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.common.di
+package com.darrenfinch.mymealplanner.common.dependencyinjection
 
 import android.app.Application
 import androidx.room.Room

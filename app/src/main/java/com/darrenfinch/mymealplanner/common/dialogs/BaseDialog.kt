@@ -1,11 +1,11 @@
-package com.darrenfinch.mymealplanner.common.controllers
+package com.darrenfinch.mymealplanner.common.dialogs
 
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import com.darrenfinch.mymealplanner.common.dependencyinjection.ControllerCompositionRoot
 import com.darrenfinch.mymealplanner.domain.main.MainActivity
 
-open class BaseFragment : Fragment() {
-    protected val controllerCompositionRoot by lazy {
+abstract class BaseDialog : DialogFragment() {
+    val controllerCompositionRoot: ControllerCompositionRoot by lazy {
         ControllerCompositionRoot((requireActivity() as MainActivity).activityCompositionRoot)
     }
 }

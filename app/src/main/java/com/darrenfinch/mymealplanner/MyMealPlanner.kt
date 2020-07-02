@@ -1,7 +1,7 @@
 package com.darrenfinch.mymealplanner
 
 import android.app.Application
-import com.darrenfinch.mymealplanner.common.di.CompositionRoot
+import com.darrenfinch.mymealplanner.common.dependencyinjection.CompositionRoot
 
 class MyMealPlanner : Application() {
     private lateinit var compositionRoot: CompositionRoot

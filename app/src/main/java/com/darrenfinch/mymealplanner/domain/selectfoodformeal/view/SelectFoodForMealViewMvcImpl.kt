@@ -1,14 +1,15 @@
 package com.darrenfinch.mymealplanner.domain.selectfoodformeal.view
 
+import android.app.AlertDialog
 import android.app.Dialog
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.reusable.foodrecyclerviewadapter.FoodsRecyclerViewAdapter
+import com.darrenfinch.mymealplanner.common.reusable.recyclerviewitemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentSelectFoodForMealBinding
 import com.darrenfinch.mymealplanner.model.data.Food
@@ -18,12 +19,12 @@ class SelectFoodForMealViewMvcImpl(
     parent: ViewGroup?
 ) : BaseObservableViewMvc<SelectFoodForMealViewMvc.Listener>(), SelectFoodForMealViewMvc {
 
-    private val binding: FragmentSelectFoodForMealBinding = DataBindingUtil.inflate(
-        inflater,
-        R.layout.fragment_select_food_for_meal,
-        parent,
-        false
-    )
+    private val binding: FragmentSelectFoodForMealBinding = DataBindingUtil.inflate<FragmentSelectFoodForMealBinding>(inflater, R.layout.fragment_select_food_for_meal, parent, false)
+
+    init {
+        setRootView(binding.root)
+        initUI()
+    }
 
     private val foodsListItemEventListener = object : FoodsRecyclerViewAdapter.ItemEventListener {
         override fun onItemClick(foodId: Int) {
@@ -41,7 +42,7 @@ class SelectFoodForMealViewMvcImpl(
         mutableListOf()
     ).apply { setOnItemEventListener(foodsListItemEventListener) }
 
-    fun makeDialog(): AlertDialog {
+    override fun makeDialog(): Dialog {
         return AlertDialog.Builder(getContext())
             .setView(getRootView())
             .setTitle(getString(R.string.select_food))
@@ -50,6 +51,18 @@ class SelectFoodForMealViewMvcImpl(
             }
             .setNegativeButton(getString(android.R.string.cancel)) { _, _ -> }
             .show()
+    }
+
+    private fun initUI() {
+        binding.apply {
+            foodsRecyclerView.adapter = foodsListAdapter
+            foodsRecyclerView.layoutManager = LinearLayoutManager(getContext())
+            foodsRecyclerView.addItemDecoration(
+                MarginItemDecoration(
+                    16
+                )
+            )
+        }
     }
 
     private fun onPositiveButtonSelected() {
