@@ -4,9 +4,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.darrenfinch.mymealplanner.domain.allmeals.view.AllMealsViewMvc
+import com.darrenfinch.mymealplanner.domain.usecases.GetAllMealsUseCase
 import com.darrenfinch.mymealplanner.model.MealsRepository
 
-class AllMealsController(private val mealsRepository: MealsRepository) : AllMealsViewMvc.Listener {
+class AllMealsController(private val getAllMealsUseCase: GetAllMealsUseCase) : AllMealsViewMvc.Listener {
     private lateinit var viewMvc: AllMealsViewMvc
 
     private fun navigateToAddEditMealsFragment() {
@@ -19,7 +20,7 @@ class AllMealsController(private val mealsRepository: MealsRepository) : AllMeal
     }
 
     fun fetchMeals(viewLifecycleOwner: LifecycleOwner) {
-        mealsRepository.getMeals().observe(viewLifecycleOwner, Observer { newMeals ->
+        getAllMealsUseCase.fetchAllMeals().observe(viewLifecycleOwner, Observer { newMeals ->
             viewMvc.bindMeals(newMeals)
         })
     }

@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import androidx.fragment.app.FragmentActivity
 import com.darrenfinch.mymealplanner.domain.addeditfood.controller.AddEditFoodController
 import com.darrenfinch.mymealplanner.domain.addeditfood.controller.AddEditFoodViewModel
+import com.darrenfinch.mymealplanner.domain.allfoods.controller.AllFoodsController
+import com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsController
+import com.darrenfinch.mymealplanner.domain.usecases.*
 
 //This composition root is scoped to a controller - e.g fragments or possibly an entire activity
 class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCompositionRoot) {
@@ -29,8 +32,17 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
         return ViewMvcFactory(getLayoutInflater())
     }
 
-    fun getFoodsRepository() = activityCompositionRoot.getFoodsRepository()
-    fun getMealsRepository() = activityCompositionRoot.getMealsRepository()
+    private fun getFoodsRepository() = activityCompositionRoot.getFoodsRepository()
+    private fun getMealsRepository() = activityCompositionRoot.getMealsRepository()
 
-    fun getAddEditFoodController(viewModel: AddEditFoodViewModel) = AddEditFoodController(getFoodsRepository(), viewModel)
+    private fun getGetAllFoodsUseCase() = GetAllFoodsUseCase(getFoodsRepository())
+    private fun getGetSingleFoodUseCase() = GetSingleFoodUseCase(getFoodsRepository())
+    private fun getInsertFoodUseCase() = InsertFoodUseCase(getFoodsRepository())
+    private fun getUpdateFoodUseCase() = UpdateFoodUseCase(getFoodsRepository())
+    private fun getDeleteFoodUseCase() = DeleteFoodUseCase(getFoodsRepository())
+    private fun getGetAllMealsUseCase() = GetAllMealsUseCase(getMealsRepository())
+
+    fun getAddEditFoodController(viewModel: AddEditFoodViewModel) = AddEditFoodController(getGetSingleFoodUseCase(), getInsertFoodUseCase(), getUpdateFoodUseCase(), viewModel)
+    fun getAllFoodsController() = AllFoodsController(getGetAllFoodsUseCase(), getDeleteFoodUseCase())
+    fun getAllMealsController() = AllMealsController(getGetAllMealsUseCase())
 }

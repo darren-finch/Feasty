@@ -5,12 +5,15 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation.findNavController
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.domain.addeditfood.view.AddEditFoodViewMvc
-import com.darrenfinch.mymealplanner.model.FoodsRepository
+import com.darrenfinch.mymealplanner.domain.usecases.GetSingleFoodUseCase
+import com.darrenfinch.mymealplanner.domain.usecases.InsertFoodUseCase
+import com.darrenfinch.mymealplanner.domain.usecases.UpdateFoodUseCase
 import com.darrenfinch.mymealplanner.model.data.Food
-import java.io.Serializable
 
 class AddEditFoodController(
-    private val repository: FoodsRepository,
+    private val getSingleFoodUseCase: GetSingleFoodUseCase,
+    private val insertFoodUseCase: InsertFoodUseCase,
+    private val updateFoodUseCase: UpdateFoodUseCase,
     private val viewModel: AddEditFoodViewModel
 ) : AddEditFoodViewMvc.Listener {
 
@@ -43,7 +46,7 @@ class AddEditFoodController(
     }
 
     private fun fetchFoodDetailsFromRepository(viewLifecycleOwner: LifecycleOwner) {
-        repository.fetchFood(viewModel.foodId).observe(viewLifecycleOwner, Observer { food ->
+        getSingleFoodUseCase.fetchSingleFood(viewModel.foodId).observe(viewLifecycleOwner, Observer { food ->
             bindFoodDetailsToViewModelAndViewMvc(food)
         })
     }
@@ -62,6 +65,6 @@ class AddEditFoodController(
             updateFood(editedFoodDetails)
     }
 
-    private fun insertFood(food: Food) = repository.insertFood(food)
-    private fun updateFood(food: Food) = repository.updateFood(food)
+    private fun insertFood(food: Food) = insertFoodUseCase.insertFood(food)
+    private fun updateFood(food: Food) = updateFoodUseCase.updateFood(food)
 }

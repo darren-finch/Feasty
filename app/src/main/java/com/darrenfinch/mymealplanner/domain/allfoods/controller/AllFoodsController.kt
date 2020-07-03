@@ -5,9 +5,13 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation.findNavController
 import com.darrenfinch.mymealplanner.common.Constants
 import com.darrenfinch.mymealplanner.domain.allfoods.view.AllFoodsViewMvc
-import com.darrenfinch.mymealplanner.model.FoodsRepository
+import com.darrenfinch.mymealplanner.domain.usecases.DeleteFoodUseCase
+import com.darrenfinch.mymealplanner.domain.usecases.GetAllFoodsUseCase
 
-class AllFoodsController(private val repository: FoodsRepository) : AllFoodsViewMvc.Listener {
+class AllFoodsController(
+    private val getAllFoodsUseCase: GetAllFoodsUseCase,
+    private val deleteFoodUseCase: DeleteFoodUseCase
+) : AllFoodsViewMvc.Listener {
 
     private lateinit var viewMvc: AllFoodsViewMvc
 
@@ -32,7 +36,7 @@ class AllFoodsController(private val repository: FoodsRepository) : AllFoodsView
     }
 
     fun fetchFoods(viewLifecycleOwner: LifecycleOwner) {
-        repository.getFoods().observe(viewLifecycleOwner, Observer { newFoods ->
+        getAllFoodsUseCase.fetchAllFoods().observe(viewLifecycleOwner, Observer { newFoods ->
             viewMvc.bindFoods(newFoods)
         })
     }
@@ -46,6 +50,6 @@ class AllFoodsController(private val repository: FoodsRepository) : AllFoodsView
     }
 
     override fun onItemDelete(foodId: Int) {
-        repository.deleteFood(foodId)
+        deleteFoodUseCase.deleteFood(foodId)
     }
 }
