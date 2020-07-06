@@ -4,19 +4,24 @@ import android.app.Application
 import android.content.Context
 import android.view.LayoutInflater
 import androidx.fragment.app.FragmentActivity
+import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.addeditfood.controller.AddEditFoodController
 import com.darrenfinch.mymealplanner.domain.addeditfood.controller.AddEditFoodViewModel
 import com.darrenfinch.mymealplanner.domain.allfoods.controller.AllFoodsController
 import com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsController
 import com.darrenfinch.mymealplanner.domain.usecases.*
 
-//This composition root is scoped to a controller - e.g fragments or possibly an entire activity
-class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCompositionRoot) {
+//This composition root is scoped to a fragment, which is a controller
+class FragmentCompositionRoot(
+    private val androidComponentsConfig: AndroidComponentsConfig,
+    private val activityCompositionRoot: ActivityCompositionRoot
+) {
+
     private fun getActivity(): FragmentActivity {
         return activityCompositionRoot.getActivity()
     }
 
-    private fun getContext(): Context? {
+    private fun getContext(): Context {
         return getActivity()
     }
 
@@ -24,7 +29,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
         return LayoutInflater.from(getContext())
     }
 
-    fun getApplication() : Application {
+    fun getApplication(): Application {
         return activityCompositionRoot.getApplication()
     }
 
@@ -42,7 +47,11 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     private fun getDeleteFoodUseCase() = DeleteFoodUseCase(getFoodsRepository())
     private fun getGetAllMealsUseCase() = GetAllMealsUseCase(getMealsRepository())
 
-    fun getAddEditFoodController(viewModel: AddEditFoodViewModel) = AddEditFoodController(getGetSingleFoodUseCase(), getInsertFoodUseCase(), getUpdateFoodUseCase(), viewModel)
-    fun getAllFoodsController() = AllFoodsController(getGetAllFoodsUseCase(), getDeleteFoodUseCase())
-    fun getAllMealsController() = AllMealsController(getGetAllMealsUseCase())
+    fun getAddEditFoodController(viewModel: AddEditFoodViewModel) =
+        AddEditFoodController(screensNavigator, getGetSingleFoodUseCase(), getInsertFoodUseCase(), getUpdateFoodUseCase(), viewModel)
+
+    fun getAllFoodsController() = AllFoodsController(screensNavigator, getGetAllFoodsUseCase(), getDeleteFoodUseCase())
+    fun getAllMealsController() = AllMealsController(screensNavigator, getGetAllMealsUseCase())
+
+    private val screensNavigator = ScreensNavigator(androidComponentsConfig.navController)
 }

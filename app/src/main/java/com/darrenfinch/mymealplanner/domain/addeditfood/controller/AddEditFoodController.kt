@@ -2,8 +2,7 @@ package com.darrenfinch.mymealplanner.domain.addeditfood.controller
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation.findNavController
-import com.darrenfinch.mymealplanner.R
+import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.addeditfood.view.AddEditFoodViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetSingleFoodUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.InsertFoodUseCase
@@ -11,11 +10,14 @@ import com.darrenfinch.mymealplanner.domain.usecases.UpdateFoodUseCase
 import com.darrenfinch.mymealplanner.model.data.Food
 
 class AddEditFoodController(
+    private val screensNavigator: ScreensNavigator,
     private val getSingleFoodUseCase: GetSingleFoodUseCase,
     private val insertFoodUseCase: InsertFoodUseCase,
     private val updateFoodUseCase: UpdateFoodUseCase,
     private val viewModel: AddEditFoodViewModel
 ) : AddEditFoodViewMvc.Listener {
+
+    data class AndroidComponents(val screensNavigator: ScreensNavigator)
 
     private lateinit var viewMvc: AddEditFoodViewMvc
 
@@ -54,8 +56,7 @@ class AddEditFoodController(
     override fun onDoneButtonClicked(editedFoodDetails: Food) {
         saveFoodDetails(editedFoodDetails)
 
-        //TODO: This is a hack, please remove once you change navigation options
-        findNavController(viewMvc.getRootView()).navigate(R.id.allFoodsFragment)
+        screensNavigator.toAllFoods()
     }
 
     private fun saveFoodDetails(editedFoodDetails: Food) {
