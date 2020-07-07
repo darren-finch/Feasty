@@ -54,7 +54,7 @@ class AddEditFoodController(
     override fun onDoneButtonClicked(editedFoodDetails: Food) {
         saveFoodDetails(editedFoodDetails)
 
-        screensNavigator.navigateToAllFoods()
+        screensNavigator.navigateToAllFoodsScreen()
     }
 
     private fun saveFoodDetails(editedFoodDetails: Food) {

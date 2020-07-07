@@ -15,8 +15,8 @@ class AllMealsFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewMvc = controllerCompositionRoot.getViewMvcFactory().getAllMealsViewMvc(container)
-        controller = controllerCompositionRoot.getAllMealsController()
+        val viewMvc = fragmentCompositionRoot.getViewMvcFactory().getAllMealsViewMvc(container)
+        controller = fragmentCompositionRoot.getAllMealsController()
         controller.bindView(viewMvc)
         controller.fetchMeals(viewLifecycleOwner)
         return viewMvc.getRootView()

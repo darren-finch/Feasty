@@ -10,10 +10,10 @@ class AllFoodsFragment : BaseFragment() {
     private lateinit var controller: AllFoodsController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val viewMvc = controllerCompositionRoot.getViewMvcFactory().getAllFoodsViewMvc(container)
-        controller = controllerCompositionRoot.getAllFoodsController()
+        val viewMvc = fragmentCompositionRoot.getViewMvcFactory().getAllFoodsViewMvc(container)
+        controller = fragmentCompositionRoot.getAllFoodsController()
         controller.bindView(viewMvc)
-        controller.fetchFoods(viewLifecycleOwner)
+        controller.fetchAllFoods(viewLifecycleOwner)
         return viewMvc.getRootView()
     }
 

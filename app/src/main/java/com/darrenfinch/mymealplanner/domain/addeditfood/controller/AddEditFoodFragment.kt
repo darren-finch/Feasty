@@ -13,7 +13,7 @@ import com.darrenfinch.mymealplanner.domain.addeditfood.view.AddEditFoodViewMvc
 class AddEditFoodFragment : BaseFragment() {
 
     private val viewModel: AddEditFoodViewModel by viewModels {
-        AddEditFoodViewModelFactory(args.foodId, controllerCompositionRoot.getApplication())
+        AddEditFoodViewModelFactory(args.foodId, fragmentCompositionRoot.getApplication())
     }
 
     private lateinit var controller: AddEditFoodController
@@ -31,10 +31,10 @@ class AddEditFoodFragment : BaseFragment() {
         return viewMvc.getRootView()
     }
 
-    private fun initViewMvc(container: ViewGroup?) = controllerCompositionRoot.getViewMvcFactory().getAddEditFoodViewMvc(container, args.foodId < 0)
+    private fun initViewMvc(container: ViewGroup?) = fragmentCompositionRoot.getViewMvcFactory().getAddEditFoodViewMvc(container, args.foodId < 0)
 
     private fun initController(viewMvc: AddEditFoodViewMvc) {
-        controller = controllerCompositionRoot.getAddEditFoodController(viewModel)
+        controller = fragmentCompositionRoot.getAddEditFoodController(viewModel)
         controller.bindView(viewMvc)
         controller.fetchFoodDetailsIfPossibleRebindToViewMvcOtherwise(viewLifecycleOwner)
     }

@@ -28,18 +28,18 @@ class AllFoodsController(
         viewMvc.unregisterListener(this)
     }
 
-    fun fetchFoods(viewLifecycleOwner: LifecycleOwner) {
+    fun fetchAllFoods(viewLifecycleOwner: LifecycleOwner) {
         getAllFoodsUseCase.fetchAllFoods().observe(viewLifecycleOwner, Observer { newFoods ->
             viewMvc.bindFoods(newFoods)
         })
     }
 
     override fun addNewFoodClicked() {
-        screensNavigator.navigateToAddEditFoodFragment(Constants.DEFAULT_FOOD_ID)
+        screensNavigator.navigateToAddEditFoodScreen(Constants.DEFAULT_FOOD_ID)
     }
 
     override fun onItemEdit(foodId: Int) {
-        screensNavigator.navigateToAddEditFoodFragment(foodId)
+        screensNavigator.navigateToAddEditFoodScreen(foodId)
     }
 
     override fun onItemDelete(foodId: Int) {

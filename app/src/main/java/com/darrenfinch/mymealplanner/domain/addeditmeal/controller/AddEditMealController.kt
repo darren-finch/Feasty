@@ -1,10 +1,11 @@
 package com.darrenfinch.mymealplanner.domain.addeditmeal.controller
 
-import androidx.fragment.app.FragmentManager
+import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.addeditmeal.view.AddEditMealViewMvc
-import com.darrenfinch.mymealplanner.domain.selectfoodformeal.controller.SelectFoodForMealDialog
 
-class AddEditMealController(private val fragmentManager: FragmentManager) : AddEditMealViewMvc.Listener {
+class AddEditMealController(
+    private val screensNavigator: ScreensNavigator
+) : AddEditMealViewMvc.Listener {
     private lateinit var viewMvc: AddEditMealViewMvc
 
     fun bindView(viewMvc: AddEditMealViewMvc) {
@@ -20,7 +21,6 @@ class AddEditMealController(private val fragmentManager: FragmentManager) : AddE
     }
 
     override fun addNewFoodClicked() {
-        val selectFoodForMealDialog = SelectFoodForMealDialog()
-        selectFoodForMealDialog.show(fragmentManager, "SelectFoodForMealDialog")
+        screensNavigator.navigateToSelectFoodForMealScreen()
     }
 }

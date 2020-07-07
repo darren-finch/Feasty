@@ -32,6 +32,6 @@ class AllMealsController(
     }
 
     override fun addNewMealClicked() {
-        screensNavigator.navigateToAddEditMealsFragment()
+        screensNavigator.navigateToAddEditMealsScreen()
     }
 }

@@ -51,4 +51,12 @@
         android:id="@+id/mainFragment"
         android:name="com.darrenfinch.mymealplanner.domain.main.MainFragment"
         android:label="MainFragment" />
+    <dialog
+        android:id="@+id/selectFoodForMealDialog"
+        android:name="com.darrenfinch.mymealplanner.domain.selectfoodformeal.controller.SelectFoodForMealDialog"
+        android:label="SelectFoodForMealDialog" />
+    <dialog
+        android:id="@+id/selectMealFoodQuantityDialog"
+        android:name="com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.controller.SelectMealFoodQuantityDialog"
+        android:label="SelectMealFoodQuantityDialog" />
 </navigation>

@@ -3,7 +3,6 @@ package com.darrenfinch.mymealplanner.domain.addeditfood.controller
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import androidx.lifecycle.MutableLiveData
 import com.darrenfinch.mymealplanner.Constants
 import com.darrenfinch.mymealplanner.InstantExecutorExtension
 import com.darrenfinch.mymealplanner.TestData
@@ -108,7 +107,7 @@ internal class AddEditFoodControllerTest {
     @Test
     internal fun `onDoneButtonClicked() navigates to all foods screen`() {
         SUT.onDoneButtonClicked(defaultFoodData)
-        verify { screensNavigator.navigateToAllFoods() }
+        verify { screensNavigator.navigateToAllFoodsScreen() }
     }
 
     private fun makeViewModelDirty() {
