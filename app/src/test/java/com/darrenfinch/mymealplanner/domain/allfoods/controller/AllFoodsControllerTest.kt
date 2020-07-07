@@ -22,6 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(InstantExecutorExtension::class)
 internal class AllFoodsControllerTest {
 
+    private val defaultFoodListLiveData = TestData.defaultFoodListLiveData
     private val defaultFoodListData = TestData.defaultFoodDataList
 
     private val viewLifecycleOwner = mockk<LifecycleOwner>()
@@ -57,7 +58,7 @@ internal class AllFoodsControllerTest {
 
     @Test
     internal fun `fetchFoods() binds foods to viewMvc from use case`() {
-        every { getAllFoodsUseCase.fetchAllFoods() } returns MutableLiveData(defaultFoodListData)
+        every { getAllFoodsUseCase.fetchAllFoods() } returns defaultFoodListLiveData
         SUT.fetchFoods(viewLifecycleOwner)
         verify { viewMvc.bindFoods(defaultFoodListData) }
         verify { getAllFoodsUseCase.fetchAllFoods() }

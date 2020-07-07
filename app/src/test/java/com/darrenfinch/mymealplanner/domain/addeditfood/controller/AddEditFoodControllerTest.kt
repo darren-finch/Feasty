@@ -26,6 +26,7 @@ internal class AddEditFoodControllerTest {
     private lateinit var observableFood: ObservableFood
 
     private val defaultFoodData = TestData.defaultFoodData
+    private val defaultFoodLiveData = TestData.defaultFoodLiveData
 
     private val viewLifecycleOwner = mockk<LifecycleOwner>()
     private val lifecycle = LifecycleRegistry(viewLifecycleOwner)
@@ -115,9 +116,7 @@ internal class AddEditFoodControllerTest {
     }
 
     private fun makeSingleFoodUseCaseReturnDefaultData() {
-        every { getSingleFoodUseCase.fetchSingleFood(Constants.DEFAULT_FOOD_ID) } returns MutableLiveData(
-            defaultFoodData
-        )
+        every { getSingleFoodUseCase.fetchSingleFood(Constants.DEFAULT_FOOD_ID) } returns defaultFoodLiveData
     }
 
     private fun setupViewModelDefaults() {

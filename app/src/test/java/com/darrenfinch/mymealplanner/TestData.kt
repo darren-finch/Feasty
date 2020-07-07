@@ -1,5 +1,6 @@
 package com.darrenfinch.mymealplanner
 
+import androidx.lifecycle.MutableLiveData
 import com.darrenfinch.mymealplanner.model.data.Food
 import com.darrenfinch.mymealplanner.model.data.MacroNutrients
 import com.darrenfinch.mymealplanner.model.data.Meal
@@ -12,6 +13,8 @@ object TestData {
     val defaultMealData = Meal(0, DEFAULT_MEAL_DATA_TITLE, listOf())
     val defaultMealData2 = Meal(1, DEFAULT_MEAL_DATA_TITLE, listOf())
     val defaultMealListData = listOf(defaultMealData, defaultMealData2)
+    val defaultMealLiveData = MutableLiveData(defaultMealData)
+    val defaultMealListLiveData = MutableLiveData(defaultMealListData)
 
     val defaultFoodData = Food(
         0,
@@ -22,4 +25,6 @@ object TestData {
         DEFAULT_FOOD_DATA_TITLE, 0.0, MetricUnit.defaultUnit, MacroNutrients(0, 0, 0, 0)
     )
     val defaultFoodDataList = listOf(defaultFoodData, defaultFoodData2)
+    val defaultFoodLiveData = MutableLiveData(defaultFoodData)
+    val defaultFoodListLiveData = MutableLiveData(defaultFoodDataList)
 }

@@ -1,9 +1,6 @@
 package com.darrenfinch.mymealplanner.domain.allmeals.controller
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import com.darrenfinch.mymealplanner.Constants
 import com.darrenfinch.mymealplanner.InstantExecutorExtension
 import com.darrenfinch.mymealplanner.TestData
@@ -26,6 +23,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(InstantExecutorExtension::class)
 internal class AllMealsControllerTest {
 
+    private val defaultMealListLiveData = TestData.defaultMealListLiveData
     private val defaultMealListData = TestData.defaultMealListData
 
     private val viewLifecycleOwner = mockk<LifecycleOwner>()
@@ -60,7 +58,7 @@ internal class AllMealsControllerTest {
 
     @Test
     internal fun `fetchFoods() binds foods to viewMvc from use case`() {
-        every { getAllMealsUseCase.fetchAllMeals() } returns MutableLiveData(defaultMealListData)
+        every { getAllMealsUseCase.fetchAllMeals() } returns defaultMealListLiveData
         SUT.fetchMeals(viewLifecycleOwner)
         verify { viewMvc.bindMeals(defaultMealListData) }
         verify { getAllMealsUseCase.fetchAllMeals() }
