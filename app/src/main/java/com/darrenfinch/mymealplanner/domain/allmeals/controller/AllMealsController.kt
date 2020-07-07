@@ -11,8 +11,6 @@ class AllMealsController(
     private val getAllMealsUseCase: GetAllMealsUseCase
 ) : AllMealsViewMvc.Listener {
 
-    data class AndroidComponents(val screensNavigator: ScreensNavigator)
-
     private lateinit var viewMvc: AllMealsViewMvc
 
     fun bindView(viewMvc: AllMealsViewMvc) {

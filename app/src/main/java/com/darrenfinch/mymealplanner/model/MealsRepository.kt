@@ -11,11 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
 
-class MealsRepository
-@Inject
-constructor(database: MealPlannerDatabase) {
+class MealsRepository constructor(database: MealPlannerDatabase) {
     private val mealsDao = database.mealsDao()
     private val foodsDao = database.foodsDao() //Minimize usage of this. Right now, there isn't a good way to get around needing this.
 

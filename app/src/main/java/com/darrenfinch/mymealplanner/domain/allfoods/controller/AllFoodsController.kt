@@ -14,8 +14,6 @@ class AllFoodsController(
     private val deleteFoodUseCase: DeleteFoodUseCase
 ) : AllFoodsViewMvc.Listener {
 
-    data class AndroidComponents(val screensNavigator: ScreensNavigator)
-
     private lateinit var viewMvc: AllFoodsViewMvc
 
     fun bindView(viewMvc: AllFoodsViewMvc) {

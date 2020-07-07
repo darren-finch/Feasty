@@ -5,11 +5,8 @@ import com.darrenfinch.mymealplanner.model.data.Food
 import com.darrenfinch.mymealplanner.model.room.MealPlannerDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
 
-class FoodsRepository
-@Inject
-constructor(database: MealPlannerDatabase)
+class FoodsRepository constructor(database: MealPlannerDatabase)
 {
     private val foodsDao = database.foodsDao()
 

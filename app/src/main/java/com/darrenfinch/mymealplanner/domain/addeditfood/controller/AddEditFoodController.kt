@@ -17,11 +17,9 @@ class AddEditFoodController(
     private val viewModel: AddEditFoodViewModel
 ) : AddEditFoodViewMvc.Listener {
 
-    data class AndroidComponents(val screensNavigator: ScreensNavigator)
-
     private lateinit var viewMvc: AddEditFoodViewMvc
 
-    private fun canFetchFoodDetails() = !viewModel.insertingFood && !viewModel.getObservableFood().dirty
+    private fun canFetchFoodDetails() = viewModel.isNotDirty()
 
     fun bindView(viewMvc: AddEditFoodViewMvc) {
         this.viewMvc = viewMvc
@@ -56,7 +54,7 @@ class AddEditFoodController(
     override fun onDoneButtonClicked(editedFoodDetails: Food) {
         saveFoodDetails(editedFoodDetails)
 
-        screensNavigator.toAllFoods()
+        screensNavigator.navigateToAllFoods()
     }
 
     private fun saveFoodDetails(editedFoodDetails: Food) {

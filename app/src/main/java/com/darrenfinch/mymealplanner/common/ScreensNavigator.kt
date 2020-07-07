@@ -19,7 +19,7 @@ class ScreensNavigator(private val navigationController: NavController)
         navigationController.navigate(directions)
     }
 
-    fun toAllFoods() {
+    fun navigateToAllFoods() {
         navigationController.navigate(R.id.allFoodsFragment)
     }
 }

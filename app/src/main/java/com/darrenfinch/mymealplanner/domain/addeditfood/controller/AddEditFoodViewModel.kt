@@ -13,4 +13,6 @@ class AddEditFoodViewModel(val foodId: Int, application: Application) : AndroidV
     fun getObservableFood() = observableFood
     fun setObservableFoodData(foodData: Food) = observableFood.set(foodData)
 
+    fun isDirty() = insertingFood && observableFood.dirty
+    fun isNotDirty() = !isDirty()
 }
