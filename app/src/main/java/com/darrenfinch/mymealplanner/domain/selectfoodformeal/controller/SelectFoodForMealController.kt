@@ -32,6 +32,6 @@ class SelectFoodForMealController(
     }
 
     override fun onFoodChosen(foodId: Int) {
-        screensNavigator.navigateToSelectFoodQuantityScreen(foodId)
+        screensNavigator.navigateFromSelectFoodForMealScreenToSelectFoodQuantityScreen(foodId)
     }
 }

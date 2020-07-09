@@ -36,7 +36,7 @@ class AddEditFoodFragment : BaseFragment() {
     private fun initController(viewMvc: AddEditFoodViewMvc) {
         controller = fragmentCompositionRoot.getAddEditFoodController(viewModel)
         controller.bindView(viewMvc)
-        controller.fetchFoodDetailsIfPossibleRebindToViewMvcOtherwise(viewLifecycleOwner)
+        controller.fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner)
     }
 
     override fun onStart() {

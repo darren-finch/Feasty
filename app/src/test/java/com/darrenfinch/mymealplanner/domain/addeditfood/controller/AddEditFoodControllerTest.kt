@@ -24,7 +24,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 internal class AddEditFoodControllerTest {
     private lateinit var observableFood: ObservableFood
 
-    private val defaultFoodData = TestData.defaultFoodData
+    private val defaultFoodData = TestData.defaultFood
     private val defaultFoodLiveData = TestData.defaultFoodLiveData
 
     private val viewLifecycleOwner = mockk<LifecycleOwner>()
@@ -71,22 +71,22 @@ internal class AddEditFoodControllerTest {
     @Test
     internal fun `fetchFoodDetailsIfPossibleRebindToViewMvcOtherwise() binds data to viewMvc and doesn't try to fetch data if viewModel is dirty`() {
         makeViewModelDirty()
-        SUT.fetchFoodDetailsIfPossibleRebindToViewMvcOtherwise(viewLifecycleOwner)
+        SUT.fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner)
         verify { viewMvc.bindFoodDetails(observableFood) }
-        verify { getSingleFoodUseCase.fetchSingleFood(Constants.DEFAULT_FOOD_ID) wasNot called }
+        verify { getSingleFoodUseCase.fetchFood(Constants.DEFAULT_FOOD_ID) wasNot called }
     }
 
     @Test
     internal fun `fetchFoodDetailsIfPossibleRebindToViewMvcOtherwise() fetches data from use case if viewModel is not dirty`() {
         makeViewModelDirty()
-        SUT.fetchFoodDetailsIfPossibleRebindToViewMvcOtherwise(viewLifecycleOwner)
-        verify { getSingleFoodUseCase.fetchSingleFood(Constants.DEFAULT_FOOD_ID) }
+        SUT.fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner)
+        verify { getSingleFoodUseCase.fetchFood(Constants.DEFAULT_FOOD_ID) }
     }
 
     @Test
     internal fun `fetchFoodDetailsIfPossibleRebindToViewMvcOtherwise() updates viewModel data and binds data to viewMvc from use case if viewModel is not dirty`() {
         makeViewModelDirty()
-        SUT.fetchFoodDetailsIfPossibleRebindToViewMvcOtherwise(viewLifecycleOwner)
+        SUT.fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner)
         verify { viewModel.setObservableFoodData(defaultFoodData) }
         verify { viewMvc.bindFoodDetails(observableFood) }
     }
@@ -115,7 +115,7 @@ internal class AddEditFoodControllerTest {
     }
 
     private fun makeSingleFoodUseCaseReturnDefaultData() {
-        every { getSingleFoodUseCase.fetchSingleFood(Constants.DEFAULT_FOOD_ID) } returns defaultFoodLiveData
+        every { getSingleFoodUseCase.fetchFood(Constants.DEFAULT_FOOD_ID) } returns defaultFoodLiveData
     }
 
     private fun setupViewModelDefaults() {

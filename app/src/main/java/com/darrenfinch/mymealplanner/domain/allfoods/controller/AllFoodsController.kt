@@ -35,11 +35,11 @@ class AllFoodsController(
     }
 
     override fun addNewFoodClicked() {
-        screensNavigator.navigateToAddEditFoodScreen(Constants.DEFAULT_FOOD_ID)
+        screensNavigator.navigateFromAllFoodsScreenToAddEditFoodScreen(Constants.DEFAULT_FOOD_ID)
     }
 
     override fun onItemEdit(foodId: Int) {
-        screensNavigator.navigateToAddEditFoodScreen(foodId)
+        screensNavigator.navigateFromAllFoodsScreenToAddEditFoodScreen(foodId)
     }
 
     override fun onItemDelete(foodId: Int) {

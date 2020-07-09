@@ -38,7 +38,7 @@ class AddEditFoodController(
         viewMvc.bindFoodDetails(viewModel.getObservableFood())
     }
 
-    fun fetchFoodDetailsIfPossibleRebindToViewMvcOtherwise(viewLifecycleOwner: LifecycleOwner) {
+    fun fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner: LifecycleOwner) {
         if (canFetchFoodDetails())
             fetchFoodDetailsFromRepository(viewLifecycleOwner)
         else
@@ -46,7 +46,7 @@ class AddEditFoodController(
     }
 
     private fun fetchFoodDetailsFromRepository(viewLifecycleOwner: LifecycleOwner) {
-        getSingleFoodUseCase.fetchSingleFood(viewModel.foodId).observe(viewLifecycleOwner, Observer { food ->
+        getSingleFoodUseCase.fetchFood(viewModel.foodId).observe(viewLifecycleOwner, Observer { food ->
             bindFoodDetailsToViewModelAndViewMvc(food)
         })
     }

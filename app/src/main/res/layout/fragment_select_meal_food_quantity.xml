@@ -7,6 +7,7 @@
         <variable
             name="food"
             type="com.darrenfinch.mymealplanner.model.data.Food" />
+        <import type="com.darrenfinch.mymealplanner.common.utils.StringUtils"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,22 +32,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/standard_margin"
-            android:text="@{}"
+            android:layout_marginTop="16dp"
+            android:text="@{StringUtils.INSTANCE.makeFoodMacroNutrientsString(food)}"
             android:textAppearance="@style/H2"
+            android:textColor="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Food Title" />
+            app:layout_constraintTop_toBottomOf="@+id/foodNameTextView"
+            tools:text="100 calories | 10 C | 10 F | 10 P" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/foodQuantityEditTextLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/standard_margin"
             android:layout_marginHorizontal="@dimen/standard_margin"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toStartOf="@+id/foodUnitSpinner"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/foodNameTextView">
+            app:layout_constraintTop_toBottomOf="@+id/macroNutrientsTextView">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/foodQuantityEditText"

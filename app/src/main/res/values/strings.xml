@@ -18,4 +18,5 @@
     <string name="delete">Delete</string>
     <string name="serving_size">Serving Size:</string>
     <string name="select_food">Select Food</string>
+    <string name="select_food_quantity">Select Food Quantity</string>
 </resources>

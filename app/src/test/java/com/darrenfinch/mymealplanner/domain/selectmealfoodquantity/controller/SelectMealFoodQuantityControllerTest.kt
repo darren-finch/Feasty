@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.domain.selectfoodformeal.controller
+package com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.controller
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -7,8 +7,8 @@ import com.darrenfinch.mymealplanner.Constants
 import com.darrenfinch.mymealplanner.InstantExecutorExtension
 import com.darrenfinch.mymealplanner.TestData
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
-import com.darrenfinch.mymealplanner.domain.selectfoodformeal.view.SelectFoodForMealViewMvc
-import com.darrenfinch.mymealplanner.domain.usecases.GetAllFoodsUseCase
+import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.view.SelectMealFoodViewMvc
+import com.darrenfinch.mymealplanner.domain.usecases.GetSingleFoodUseCase
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -17,10 +17,13 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(InstantExecutorExtension::class)
-internal class SelectFoodForMealControllerTest {
+internal class SelectMealFoodQuantityControllerTest {
+
     //region Constants -----------------------------------------------------------------------------
-    private val defaultFoodDataList = TestData.defaultFoodDataList
-    private val defaultFoodListLiveData = TestData.defaultFoodListLiveData
+    private val defaultFood = TestData.defaultFood
+    private val defaultFoodLiveData = TestData.defaultFoodLiveData
+
+    private val defaultMealFood = TestData.defaultMealFood
     //endregion Constants --------------------------------------------------------------------------
 
     //region Helper Fields -------------------------------------------------------------------------
@@ -28,17 +31,20 @@ internal class SelectFoodForMealControllerTest {
     private val lifecycle = LifecycleRegistry(viewLifecycleOwner)
 
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
-    private val getAllFoodsUseCase = mockk<GetAllFoodsUseCase>()
-
-    private val viewMvc = mockk<SelectFoodForMealViewMvc>(relaxUnitFun = true)
+    private val getSingleFoodUseCase = mockk<GetSingleFoodUseCase>(relaxUnitFun = true)
+    private val viewMvc = mockk<SelectMealFoodViewMvc>(relaxUnitFun = true)
     //endregion Helper Fields ----------------------------------------------------------------------
 
-    private lateinit var SUT: SelectFoodForMealController
+    private lateinit var SUT: SelectMealFoodQuantityController
 
     //region Set up / Tear down
     @BeforeEach
     fun setUp() {
-        SUT = SelectFoodForMealController(screensNavigator, getAllFoodsUseCase)
+        SUT = SelectMealFoodQuantityController(
+            Constants.DEFAULT_FOOD_ID,
+            screensNavigator,
+            getSingleFoodUseCase
+        )
         SUT.bindView(viewMvc)
 
         setupInstantLifecycleEventComponents()
@@ -59,17 +65,23 @@ internal class SelectFoodForMealControllerTest {
     }
 
     @Test
-    internal fun `fetchAllFoods() binds foods to viewMvc from use case`() {
-        every { getAllFoodsUseCase.fetchAllFoods() } returns defaultFoodListLiveData
-        SUT.fetchAllFoods(viewLifecycleOwner)
-        verify { viewMvc.bindFoods(defaultFoodDataList) }
-        verify { getAllFoodsUseCase.fetchAllFoods() }
+    internal fun `fetchFood() binds data to viewMvc from use case`() {
+        every { getSingleFoodUseCase.fetchFood(any()) } returns defaultFoodLiveData
+        SUT.fetchFood(viewLifecycleOwner)
+        verify { getSingleFoodUseCase.fetchFood(Constants.DEFAULT_FOOD_ID) }
+        verify { viewMvc.bindFood(defaultFood) }
     }
 
     @Test
-    internal fun `onFoodChosen() navigates to select food quantity screen and passes correct foodId`() {
-        SUT.onFoodChosen(Constants.DEFAULT_FOOD_ID)
-        verify { screensNavigator.navigateFromSelectFoodForMealScreenToSelectFoodQuantityScreen(Constants.DEFAULT_FOOD_ID) }
+    internal fun `onMealFoodQuantityChosen() updates currently edited meal`() {
+        SUT.onMealFoodQuantityChosen(defaultMealFood)
+//        assertEquals(defaultMealWithMealFood, viewModel.currentlyEditedMeal.get())
+    }
+
+    @Test
+    internal fun `onMealFoodQuantityChosen() navigates to add edit meal screen`() {
+        SUT.onMealFoodQuantityChosen(defaultMealFood)
+        verify { screensNavigator.navigateFromSelectMealFoodQuantityScreenToAddEditMealScreen() }
     }
 
     //endregion Tests ------------------------------------------------------------------------------

@@ -1,19 +1,15 @@
 package com.darrenfinch.mymealplanner.domain.usecases
 
-import androidx.lifecycle.MutableLiveData
-import com.darrenfinch.mymealplanner.Constants
 import com.darrenfinch.mymealplanner.TestData
 import com.darrenfinch.mymealplanner.model.FoodsRepository
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class InsertFoodUseCaseTest {
 
-    private val defaultFoodData = TestData.defaultFoodData
+    private val defaultFoodData = TestData.defaultFood
 
     private val repository = mockk<FoodsRepository>(relaxUnitFun = true)
 

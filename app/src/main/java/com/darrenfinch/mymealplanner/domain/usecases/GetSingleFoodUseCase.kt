@@ -5,7 +5,7 @@ import com.darrenfinch.mymealplanner.model.FoodsRepository
 import com.darrenfinch.mymealplanner.model.data.Food
 
 class GetSingleFoodUseCase(private val repository: FoodsRepository) {
-    fun fetchSingleFood(foodId: Int) : LiveData<Food> {
+    fun fetchFood(foodId: Int) : LiveData<Food> {
         return repository.fetchFood(foodId)
     }
 }

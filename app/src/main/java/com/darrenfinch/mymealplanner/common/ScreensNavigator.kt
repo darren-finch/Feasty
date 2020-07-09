@@ -1,26 +1,37 @@
 package com.darrenfinch.mymealplanner.common
 
-import android.util.Log
-import android.widget.Toast
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.domain.allfoods.controller.AllFoodsFragmentDirections
 import com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsFragmentDirections
-import com.darrenfinch.mymealplanner.domain.selectfoodformeal.controller.SelectFoodForMealDialog
-import com.darrenfinch.mymealplanner.model.data.Food
+import com.darrenfinch.mymealplanner.domain.selectfoodformeal.controller.SelectFoodForMealDialogDirections
+import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.controller.SelectMealFoodQuantityDialogDirections
+import com.darrenfinch.mymealplanner.model.data.MealFood
 
-class ScreensNavigator(private val navigationController: NavController)
-{
-    fun navigateToAddEditFoodScreen(foodId: Int) {
+private const val FOOD_ID = "FOOD_ID"
+
+class ScreensNavigator(private val navigationController: NavController) {
+    fun navigateFromAllFoodsScreenToAddEditFoodScreen(foodId: Int) {
         val directions =
             AllFoodsFragmentDirections.actionFoodsFragmentToAddEditFoodFragment(
                 foodId
             )
         navigationController.navigate(directions)
     }
-    fun navigateToAddEditMealsScreen() {
-        val directions = AllMealsFragmentDirections.actionMealsFragmentToAddEditMealFragment()
+
+    fun navigateFromSelectMealFoodQuantityScreenToAddEditMealScreen(newMealFood: MealFood?) {
+        val directions =
+            SelectMealFoodQuantityDialogDirections.actionSelectMealFoodQuantityDialogToAddEditMealFragment(
+                newMealFood
+            )
+        navigationController.navigate(directions)
+    }
+
+    fun navigateFromAllMealsScreenToSelectFoodForMealScreen() {
+        val directions =
+            AllMealsFragmentDirections.actionMealsFragmentToAddEditMealFragment(
+                null
+            )
         navigationController.navigate(directions)
     }
 
@@ -32,9 +43,11 @@ class ScreensNavigator(private val navigationController: NavController)
         navigationController.navigate(R.id.selectFoodForMealDialog)
     }
 
-    fun navigateToSelectFoodQuantityScreen(foodId: Int) {
-        //TODO(): Pass foodId to select food quantity screen
-        navigationController.popBackStack()
-        navigationController.navigate(R.id.selectMealFoodQuantityDialog)
+    fun navigateFromSelectFoodForMealScreenToSelectFoodQuantityScreen(foodId: Int) {
+        val directions =
+            SelectFoodForMealDialogDirections.actionSelectFoodForMealDialogToSelectMealFoodQuantityDialog(
+                foodId
+            )
+        navigationController.navigate(directions)
     }
 }

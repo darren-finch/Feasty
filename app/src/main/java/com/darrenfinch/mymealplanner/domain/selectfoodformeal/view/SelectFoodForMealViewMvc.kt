@@ -10,4 +10,5 @@ interface SelectFoodForMealViewMvc : ObservableViewMvc<SelectFoodForMealViewMvc.
     }
 
     fun bindFoods(foodsFromDatabase: List<Food>)
+    fun makeDialog() : Dialog
 }

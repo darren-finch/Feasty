@@ -65,7 +65,7 @@ internal class AllFoodsControllerTest {
     @Test
     internal fun `onItemEdit() navigates to add or edit food screen and passes correct foodId`() {
         SUT.onItemEdit(Constants.DEFAULT_FOOD_ID)
-        verify { screensNavigator.navigateToAddEditFoodScreen(Constants.DEFAULT_FOOD_ID) }
+        verify { screensNavigator.navigateFromAllFoodsScreenToAddEditFoodScreen(Constants.DEFAULT_FOOD_ID) }
     }
 
     @Test

@@ -7,10 +7,12 @@ import androidx.fragment.app.FragmentActivity
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.addeditfood.controller.AddEditFoodController
 import com.darrenfinch.mymealplanner.domain.addeditfood.controller.AddEditFoodViewModel
+import com.darrenfinch.mymealplanner.domain.addeditmeal.CurrentlyEditedMealViewModel
 import com.darrenfinch.mymealplanner.domain.addeditmeal.controller.AddEditMealController
 import com.darrenfinch.mymealplanner.domain.allfoods.controller.AllFoodsController
 import com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsController
 import com.darrenfinch.mymealplanner.domain.selectfoodformeal.controller.SelectFoodForMealController
+import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.controller.SelectMealFoodQuantityController
 import com.darrenfinch.mymealplanner.domain.usecases.*
 
 //This composition root is scoped to a fragment, which is a controller
@@ -39,8 +41,6 @@ class FragmentCompositionRoot(
         return ViewMvcFactory(getLayoutInflater())
     }
 
-    private fun getFragmentManager() = getActivity().supportFragmentManager
-
     private fun getFoodsRepository() = activityCompositionRoot.getFoodsRepository()
     private fun getMealsRepository() = activityCompositionRoot.getMealsRepository()
 
@@ -59,10 +59,17 @@ class FragmentCompositionRoot(
         viewModel
     )
 
+    fun getSelectMealFoodQuantityController(foodId: Int) = SelectMealFoodQuantityController(
+        foodId,
+        getScreensNavigator(),
+        getGetSingleFoodUseCase()
+    )
+
     fun getAllFoodsController() =
         AllFoodsController(getScreensNavigator(), getGetAllFoodsUseCase(), getDeleteFoodUseCase())
 
     fun getAllMealsController() = AllMealsController(getScreensNavigator(), getGetAllMealsUseCase())
+
     fun getSelectFoodForMealController() =
         SelectFoodForMealController(getScreensNavigator(), getGetAllFoodsUseCase())
 

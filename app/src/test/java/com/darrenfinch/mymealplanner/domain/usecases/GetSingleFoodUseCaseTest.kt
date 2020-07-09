@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test
 
 internal class GetSingleFoodUseCaseTest {
 
-    private val defaultFoodData = TestData.defaultFoodData
+    private val defaultFoodData = TestData.defaultFood
     private val defaultFoodLiveData = MutableLiveData(defaultFoodData)
 
     private val repository = mockk<FoodsRepository>()
@@ -28,12 +28,12 @@ internal class GetSingleFoodUseCaseTest {
 
     @Test
     internal fun `fetchSingleFood() passes foodId to repository`() {
-        SUT.fetchSingleFood(Constants.DEFAULT_FOOD_ID)
+        SUT.fetchFood(Constants.DEFAULT_FOOD_ID)
         verify { repository.fetchFood(Constants.DEFAULT_FOOD_ID) }
     }
 
     @Test
     internal fun `fetchSingleFood() returns correct data from repository`() {
-        assertEquals(SUT.fetchSingleFood(Constants.DEFAULT_FOOD_ID), defaultFoodLiveData)
+        assertEquals(SUT.fetchFood(Constants.DEFAULT_FOOD_ID), defaultFoodLiveData)
     }
 }

@@ -1,5 +1,7 @@
 package com.darrenfinch.mymealplanner.domain.selectfoodformeal.view
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -54,5 +56,14 @@ class SelectFoodForMealViewMvcImpl(
 
     override fun bindFoods(foodsFromDatabase: List<Food>) {
         foodsListAdapter.updateFoods(foodsFromDatabase)
+    }
+
+    override fun makeDialog(): Dialog {
+        return AlertDialog.Builder(getContext())
+            .setView(getRootView())
+            .setTitle(getString(R.string.select_food))
+            .setPositiveButton(android.R.string.ok) { _, _ -> }
+            .setNegativeButton(android.R.string.cancel) { _, _ -> }
+            .show()
     }
 }

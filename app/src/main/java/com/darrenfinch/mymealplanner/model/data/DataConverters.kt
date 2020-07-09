@@ -21,6 +21,21 @@ object DataConverters {
             )
         )
     }
+    fun convertFoodToMealFood(food: Food) : MealFood {
+        return MealFood(
+            id = food.id,
+            title = food.title,
+            servingSizeUnit = food.servingSizeUnit,
+            servingSize = food.servingSize,
+            macroNutrients = MacroNutrients(
+                calories = food.macroNutrients.calories,
+                carbohydrates = food.macroNutrients.carbohydrates,
+                fat = food.macroNutrients.fat,
+                protein = food.macroNutrients.protein
+            ),
+            quantity = food.servingSize
+        )
+    }
     suspend fun convertDatabaseMealToRegularMeal(
         databaseMeal: DatabaseMeal,
         foodsDao: FoodsDao

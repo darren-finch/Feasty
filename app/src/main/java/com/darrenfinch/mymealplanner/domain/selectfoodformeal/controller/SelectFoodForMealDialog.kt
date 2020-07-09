@@ -24,12 +24,7 @@ class SelectFoodForMealDialog : BaseDialog() {
         controller.bindView(viewMvc)
         controller.fetchAllFoods(this)
 
-        return AlertDialog.Builder(context)
-            .setView(viewMvc.getRootView())
-            .setTitle(getString(R.string.select_food))
-            .setPositiveButton(android.R.string.ok) { _, _ -> }
-            .setNegativeButton(android.R.string.cancel) { _, _ -> }
-            .show()
+        return viewMvc.makeDialog()
     }
 
     override fun onStart() {
