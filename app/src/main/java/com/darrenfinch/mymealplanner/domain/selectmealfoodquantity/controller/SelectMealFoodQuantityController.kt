@@ -5,12 +5,14 @@ import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.view.SelectMealFoodViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetSingleFoodUseCase
+import com.darrenfinch.mymealplanner.model.data.Meal
 import com.darrenfinch.mymealplanner.model.data.MealFood
 
 class SelectMealFoodQuantityController(
-    private val foodId: Int,
     private val screensNavigator: ScreensNavigator,
-    private val getSingleFoodUseCase: GetSingleFoodUseCase
+    private val getSingleFoodUseCase: GetSingleFoodUseCase,
+    private val foodId: Int,
+    private val currentMeal: Meal
 ) : SelectMealFoodViewMvc.Listener {
 
     private lateinit var viewMvc: SelectMealFoodViewMvc
@@ -35,7 +37,10 @@ class SelectMealFoodQuantityController(
 
     override fun onMealFoodQuantityChosen(mealFood: MealFood) {
 //        updateCurrentlyEditedMealWithNewMealFood(mealFood)
-        screensNavigator.navigateFromSelectMealFoodQuantityScreenToAddEditMealScreen(mealFood)
+        screensNavigator.navigateFromSelectMealFoodQuantityScreenToAddEditMealScreen(
+            mealFood,
+            currentMeal
+        )
     }
 
 //    private fun updateCurrentlyEditedMealWithNewMealFood(mealFood: MealFood) {

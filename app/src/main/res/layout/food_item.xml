@@ -90,7 +90,8 @@
                 android:tint="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="@+id/macroNutrientsTextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/macroNutrientsTextView" />
+                app:layout_constraintTop_toTopOf="@+id/macroNutrientsTextView"
+                android:contentDescription="@string/view_more" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

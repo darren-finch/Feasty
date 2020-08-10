@@ -25,7 +25,7 @@ class FoodViewHolder(private val config: FoodsRecyclerViewAdapter.Config, privat
         setupUI()
     }
     private fun setupUI() {
-        binding?.food?.let { food ->
+        binding.food?.let { food ->
             setupViewMoreButton()
             binding.foodCardView.setOnClickListener {
                 eventListener.onClick(food.id)
@@ -40,7 +40,7 @@ class FoodViewHolder(private val config: FoodsRecyclerViewAdapter.Config, privat
     }
     private fun openViewMoreMenu() {
         PopupMenu(itemView.context, binding.viewMoreButton).apply {
-            inflate(R.menu.food_view_more_menu)
+            inflate(R.menu.context_menu)
             setOnMenuItemClickListener { menuItem ->
                 onMenuItemClicked(menuItem.itemId)
                 true
@@ -50,13 +50,13 @@ class FoodViewHolder(private val config: FoodsRecyclerViewAdapter.Config, privat
     }
     private fun onMenuItemClicked(itemId: Int) {
         when (itemId) {
-            R.id.editFood -> {
-                binding?.food?.id?.let { foodId ->
+            R.id.edit -> {
+                binding.food?.id?.let { foodId ->
                     eventListener.onEdit(foodId)
                 }
             }
-            R.id.deleteFood -> {
-                binding?.food?.id?.let { foodId ->
+            R.id.delete -> {
+                binding.food?.id?.let { foodId ->
                     eventListener.onDelete(foodId)
                 }
             }

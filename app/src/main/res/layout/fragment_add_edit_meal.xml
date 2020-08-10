@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
+    <data>
+
+        <variable
+            name="meal"
+            type="com.darrenfinch.mymealplanner.domain.common.ObservableMeal" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -8,7 +16,7 @@
         tools:context=".domain.addeditmeal.controller.AddEditMealFragment">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/mealNameEditText"
+            android:id="@+id/mealNameEditTextLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_margin"
@@ -19,8 +27,10 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/mealNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={meal.title}"
                 android:hint="@string/meal_name" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -34,7 +44,7 @@
             android:layout_marginEnd="@dimen/standard_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mealNameEditText">
+            app:layout_constraintTop_toBottomOf="@+id/mealNameEditTextLayout">
 
             <TextView
                 android:id="@+id/foodsLabel"
@@ -65,7 +75,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/foodsRecyclerView"
+            android:id="@+id/mealFoodsRecyclerView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/standard_margin"
@@ -81,7 +91,7 @@
             android:layout_marginEnd="@dimen/standard_margin"
             android:text="@string/done"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/foodsRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/mealFoodsRecyclerView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -19,7 +19,7 @@ class AddEditFoodController(
 
     private lateinit var viewMvc: AddEditFoodViewMvc
 
-    private fun canFetchFoodDetails() = viewModel.isNotDirty()
+    private fun canFetchFoodDetails() = viewModel.isNotDirty() && !viewModel.insertingFood
 
     fun bindView(viewMvc: AddEditFoodViewMvc) {
         this.viewMvc = viewMvc

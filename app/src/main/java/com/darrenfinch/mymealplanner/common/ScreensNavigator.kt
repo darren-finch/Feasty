@@ -2,13 +2,13 @@ package com.darrenfinch.mymealplanner.common
 
 import androidx.navigation.NavController
 import com.darrenfinch.mymealplanner.R
+import com.darrenfinch.mymealplanner.domain.addeditmeal.controller.AddEditMealFragmentDirections
 import com.darrenfinch.mymealplanner.domain.allfoods.controller.AllFoodsFragmentDirections
 import com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsFragmentDirections
 import com.darrenfinch.mymealplanner.domain.selectfoodformeal.controller.SelectFoodForMealDialogDirections
 import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.controller.SelectMealFoodQuantityDialogDirections
+import com.darrenfinch.mymealplanner.model.data.Meal
 import com.darrenfinch.mymealplanner.model.data.MealFood
-
-private const val FOOD_ID = "FOOD_ID"
 
 class ScreensNavigator(private val navigationController: NavController) {
     fun navigateFromAllFoodsScreenToAddEditFoodScreen(foodId: Int) {
@@ -19,34 +19,53 @@ class ScreensNavigator(private val navigationController: NavController) {
         navigationController.navigate(directions)
     }
 
-    fun navigateFromSelectMealFoodQuantityScreenToAddEditMealScreen(newMealFood: MealFood?) {
+    fun navigateFromSelectMealFoodQuantityScreenToAddEditMealScreen(
+        newMealFood: MealFood?,
+        currentMeal: Meal
+    ) {
         val directions =
             SelectMealFoodQuantityDialogDirections.actionSelectMealFoodQuantityDialogToAddEditMealFragment(
-                newMealFood
+                newMealFood,
+                currentMeal,
+                Constants.DEFAULT_MEAL_ID
             )
         navigationController.navigate(directions)
     }
 
-    fun navigateFromAllMealsScreenToSelectFoodForMealScreen() {
+    fun navigateFromAllMealsScreenToSelectFoodForMealScreen(mealId: Int) {
         val directions =
             AllMealsFragmentDirections.actionMealsFragmentToAddEditMealFragment(
-                null
+                null,
+                null,
+                mealId
             )
         navigationController.navigate(directions)
+    }
+
+    fun navigateToAllMealsScreen() {
+        navigationController.navigate(R.id.allMealsFragment)
     }
 
     fun navigateToAllFoodsScreen() {
         navigationController.navigate(R.id.allFoodsFragment)
     }
 
-    fun navigateToSelectFoodForMealScreen() {
-        navigationController.navigate(R.id.selectFoodForMealDialog)
+    fun navigateToSelectFoodForMealScreen(currentMealData: Meal) {
+        val directions =
+            AddEditMealFragmentDirections.actionAddEditMealFragmentToSelectFoodForMealDialog(
+                currentMealData
+            )
+        navigationController.navigate(directions)
     }
 
-    fun navigateFromSelectFoodForMealScreenToSelectFoodQuantityScreen(foodId: Int) {
+    fun navigateFromSelectFoodForMealScreenToSelectFoodQuantityScreen(
+        foodId: Int,
+        currentMeal: Meal
+    ) {
         val directions =
             SelectFoodForMealDialogDirections.actionSelectFoodForMealDialogToSelectMealFoodQuantityDialog(
-                foodId
+                foodId,
+                currentMeal
             )
         navigationController.navigate(directions)
     }

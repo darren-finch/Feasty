@@ -3,7 +3,6 @@ package com.darrenfinch.mymealplanner.domain.selectfoodformeal.controller
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import com.darrenfinch.mymealplanner.Constants
 import com.darrenfinch.mymealplanner.InstantExecutorExtension
 import com.darrenfinch.mymealplanner.TestData
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
@@ -12,7 +11,6 @@ import com.darrenfinch.mymealplanner.domain.usecases.GetAllFoodsUseCase
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -36,13 +34,13 @@ internal class SelectFoodForMealControllerTest {
     private lateinit var SUT: SelectFoodForMealController
 
     //region Set up / Tear down
-    @BeforeEach
-    fun setUp() {
-        SUT = SelectFoodForMealController(screensNavigator, getAllFoodsUseCase)
-        SUT.bindView(viewMvc)
-
-        setupInstantLifecycleEventComponents()
-    }
+//    @BeforeEach
+//    fun setUp() {
+//        SUT = SelectFoodForMealController(screensNavigator, getAllFoodsUseCase)
+//        SUT.bindView(viewMvc)
+//
+//        setupInstantLifecycleEventComponents()
+//    }
     //endregion Set up / Tear down
 
     //region Tests ---------------------------------------------------------------------------------
@@ -66,11 +64,11 @@ internal class SelectFoodForMealControllerTest {
         verify { getAllFoodsUseCase.fetchAllFoods() }
     }
 
-    @Test
-    internal fun `onFoodChosen() navigates to select food quantity screen and passes correct foodId`() {
-        SUT.onFoodChosen(Constants.DEFAULT_FOOD_ID)
-        verify { screensNavigator.navigateFromSelectFoodForMealScreenToSelectFoodQuantityScreen(Constants.DEFAULT_FOOD_ID) }
-    }
+//    @Test
+//    internal fun `onFoodChosen() navigates to select food quantity screen and passes correct foodId`() {
+//        SUT.onFoodChosen(Constants.DEFAULT_FOOD_ID)
+//        verify { screensNavigator.navigateFromSelectFoodForMealScreenToSelectFoodQuantityScreen(Constants.DEFAULT_FOOD_ID) }
+//    }
 
     //endregion Tests ------------------------------------------------------------------------------
 

@@ -1,9 +1,6 @@
 package com.darrenfinch.mymealplanner.common.utils
 
-import com.darrenfinch.mymealplanner.model.data.MacroType
-import com.darrenfinch.mymealplanner.model.data.Food
-import com.darrenfinch.mymealplanner.model.data.Meal
-import com.darrenfinch.mymealplanner.model.data.MetricUnit
+import com.darrenfinch.mymealplanner.model.data.*
 
 object StringUtils {
     private fun makeMacroNutrientString(
@@ -14,13 +11,25 @@ object StringUtils {
     ): String {
         return "$calories calories | ${protein}P | ${carbohydrates}C | ${fat}F"
     }
-//
-//    fun makeMealFoodMacroNutrientsString(mealFood: MealFood): String {
-//        return makeMacroNutrientString(mealFood.calories, mealFood.protein, mealFood.carbohydrates, mealFood.fat)
-//    }
+
+    fun getMealTitleTemp(title: String) = if (title.isNotEmpty()) title else "(enter name)"
+
+    fun makeMealFoodMacroNutrientsString(mealFood: MealFood): String {
+        return makeMacroNutrientString(
+            mealFood.macroNutrients.calories,
+            mealFood.macroNutrients.protein,
+            mealFood.macroNutrients.carbohydrates,
+            mealFood.macroNutrients.fat
+        )
+    }
 
     fun makeFoodMacroNutrientsString(food: Food): String {
-        return makeMacroNutrientString(food.macroNutrients.calories, food.macroNutrients.protein, food.macroNutrients.carbohydrates, food.macroNutrients.fat)
+        return makeMacroNutrientString(
+            food.macroNutrients.calories,
+            food.macroNutrients.protein,
+            food.macroNutrients.carbohydrates,
+            food.macroNutrients.fat
+        )
     }
 
     fun makeTotalVsRequiredNutrientString(

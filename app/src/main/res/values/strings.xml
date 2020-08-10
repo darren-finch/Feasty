@@ -19,4 +19,7 @@
     <string name="serving_size">Serving Size:</string>
     <string name="select_food">Select Food</string>
     <string name="select_food_quantity">Select Food Quantity</string>
+    <string name="view_more">View More</string>
+    <string name="dropdown">Dropdown</string>
+    <string name="macro_nutrients">Macro Nutrients</string>
 </resources>

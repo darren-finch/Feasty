@@ -71,6 +71,7 @@ internal class AddEditFoodControllerTest {
     @Test
     internal fun `fetchFoodDetailsIfPossibleRebindToViewMvcOtherwise() binds data to viewMvc and doesn't try to fetch data if viewModel is dirty`() {
         makeViewModelDirty()
+        every { viewModel.insertingFood } returns false
         SUT.fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner)
         verify { viewMvc.bindFoodDetails(observableFood) }
         verify { getSingleFoodUseCase.fetchFood(Constants.DEFAULT_FOOD_ID) wasNot called }
@@ -79,6 +80,7 @@ internal class AddEditFoodControllerTest {
     @Test
     internal fun `fetchFoodDetailsIfPossibleRebindToViewMvcOtherwise() fetches data from use case if viewModel is not dirty`() {
         makeViewModelDirty()
+        every { viewModel.insertingFood } returns false
         SUT.fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner)
         verify { getSingleFoodUseCase.fetchFood(Constants.DEFAULT_FOOD_ID) }
     }
@@ -86,6 +88,7 @@ internal class AddEditFoodControllerTest {
     @Test
     internal fun `fetchFoodDetailsIfPossibleRebindToViewMvcOtherwise() updates viewModel data and binds data to viewMvc from use case if viewModel is not dirty`() {
         makeViewModelDirty()
+        every { viewModel.insertingFood } returns false
         SUT.fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner)
         verify { viewModel.setObservableFoodData(defaultFoodData) }
         verify { viewMvc.bindFoodDetails(observableFood) }

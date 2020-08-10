@@ -12,7 +12,24 @@ import com.darrenfinch.mymealplanner.databinding.FragmentAllMealsBinding
 import com.darrenfinch.mymealplanner.model.data.Meal
 
 class AllMealsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseObservableViewMvc<AllMealsViewMvc.Listener>(), AllMealsViewMvc {
-    private val mealsRecyclerViewAdapter = MealsRecyclerViewAdapter(mutableListOf())
+    private val mealItemEventListener = object : MealsRecyclerViewAdapter.ItemEventListener {
+        override fun onEdit(mealId: Int) {
+            for (listener in getListeners()) {
+                listener.onMealEdit(mealId)
+            }
+        }
+
+        override fun onDelete(meal: Meal) {
+            for (listener in getListeners()) {
+                listener.onMealDelete(meal)
+            }
+        }
+
+    }
+
+    private val mealsRecyclerViewAdapter =
+        MealsRecyclerViewAdapter(mutableListOf(), mealItemEventListener)
+
     private val binding: FragmentAllMealsBinding = DataBindingUtil.inflate(
         inflater,
         R.layout.fragment_all_meals,

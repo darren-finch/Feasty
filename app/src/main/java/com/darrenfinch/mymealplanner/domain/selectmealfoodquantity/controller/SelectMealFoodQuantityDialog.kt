@@ -18,7 +18,10 @@ class SelectMealFoodQuantityDialog : BaseDialog() {
 
         viewMvc = fragmentCompositionRoot.getViewMvcFactory().getSelectMealFoodQuantityViewMvc(null)
 
-        controller = fragmentCompositionRoot.getSelectMealFoodQuantityController(args.foodId)
+        controller = fragmentCompositionRoot.getSelectMealFoodQuantityController(
+            args.foodId,
+            args.currentMeal
+        )
         controller.bindView(viewMvc)
         controller.fetchFood(this)
 

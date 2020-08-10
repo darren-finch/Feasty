@@ -46,14 +46,22 @@
         android:id="@+id/addEditMealFragment"
         android:name="com.darrenfinch.mymealplanner.domain.addeditmeal.controller.AddEditMealFragment"
         android:label="fragment_add_edit_meal"
-        tools:layout="@layout/fragment_add_edit_meal" >
+        tools:layout="@layout/fragment_add_edit_meal">
         <action
             android:id="@+id/action_addEditMealFragment_to_selectFoodForMealDialog"
-            app:destination="@id/selectFoodForMealDialog" />
+            app:destination="@id/selectFoodForMealDialog"
+            app:launchSingleTop="true" />
         <argument
             android:name="newMealFood"
             app:argType="com.darrenfinch.mymealplanner.model.data.MealFood"
             app:nullable="true" />
+        <argument
+            android:name="currentMeal"
+            app:argType="com.darrenfinch.mymealplanner.model.data.Meal"
+            app:nullable="true" />
+        <argument
+            android:name="mealId"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
@@ -62,20 +70,27 @@
     <dialog
         android:id="@+id/selectFoodForMealDialog"
         android:name="com.darrenfinch.mymealplanner.domain.selectfoodformeal.controller.SelectFoodForMealDialog"
-        android:label="SelectFoodForMealDialog" >
+        android:label="SelectFoodForMealDialog">
         <action
             android:id="@+id/action_selectFoodForMealDialog_to_selectMealFoodQuantityDialog"
-            app:destination="@id/selectMealFoodQuantityDialog" />
+            app:destination="@id/selectMealFoodQuantityDialog"
+            app:launchSingleTop="true" />
+        <argument
+            android:name="currentMeal"
+            app:argType="com.darrenfinch.mymealplanner.model.data.Meal" />
     </dialog>
     <dialog
         android:id="@+id/selectMealFoodQuantityDialog"
         android:name="com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.controller.SelectMealFoodQuantityDialog"
-        android:label="SelectMealFoodQuantityDialog" >
+        android:label="SelectMealFoodQuantityDialog">
         <argument
             android:name="foodId"
             app:argType="integer" />
         <action
             android:id="@+id/action_selectMealFoodQuantityDialog_to_addEditMealFragment"
             app:destination="@id/addEditMealFragment" />
+        <argument
+            android:name="currentMeal"
+            app:argType="com.darrenfinch.mymealplanner.model.data.Meal" />
     </dialog>
 </navigation>

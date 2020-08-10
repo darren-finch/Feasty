@@ -47,4 +47,10 @@ class MealsRepository constructor(database: MealPlannerDatabase) {
     private fun <A, B> List<A>.parallelMap(f: suspend (A) -> B): List<B> = runBlocking {
         map { async(Dispatchers.Default) { f(it) } }.awaitAll()
     }
+
+    fun deleteAllMeals() {
+        runBlocking(Dispatchers.IO) {
+            mealsDao.deleteAllMeals()
+        }
+    }
 }

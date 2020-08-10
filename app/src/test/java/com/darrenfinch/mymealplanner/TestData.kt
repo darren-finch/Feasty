@@ -13,11 +13,11 @@ object TestData {
     )
     val defaultMealFoodLiveData = MutableLiveData(defaultMealFood)
 
-    val defaultMealData = Meal(0, DEFAULT_MEAL_DATA_TITLE, listOf())
-    val defaultMealData2 = Meal(1, DEFAULT_MEAL_DATA_TITLE, listOf())
+    val defaultMeal = Meal(0, DEFAULT_MEAL_DATA_TITLE, listOf())
+    val defaultMeal2 = Meal(1, DEFAULT_MEAL_DATA_TITLE, listOf())
     val defaultMealWithMealFood = Meal(0, DEFAULT_MEAL_DATA_TITLE, listOf(defaultMealFood))
-    val defaultMealListData = listOf(defaultMealData, defaultMealData2)
-    val defaultMealLiveData = MutableLiveData(defaultMealData)
+    val defaultMealListData = listOf(defaultMeal, defaultMeal2)
+    val defaultMealLiveData = MutableLiveData(defaultMeal)
     val defaultMealListLiveData = MutableLiveData(defaultMealListData)
 
     val defaultFood = Food(

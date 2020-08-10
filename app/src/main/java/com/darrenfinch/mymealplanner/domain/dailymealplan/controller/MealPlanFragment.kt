@@ -1,26 +1,22 @@
 package com.darrenfinch.mymealplanner.domain.dailymealplan.controller
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableInt
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.darrenfinch.mymealplanner.common.reusable.recyclerviewitemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.common.reusable.mealsrecyclerviewadapter.MealsRecyclerViewAdapter
-import com.darrenfinch.mymealplanner.model.frontend.TotalsVsRequiredMacros
-import com.darrenfinch.mymealplanner.databinding.FragmentMealPlanBinding
+import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
 import com.darrenfinch.mymealplanner.common.utils.Utils
+import com.darrenfinch.mymealplanner.databinding.FragmentMealPlanBinding
+import com.darrenfinch.mymealplanner.model.frontend.TotalsVsRequiredMacros
 
-class MealPlanFragment : Fragment()
-{
-    private val adapter =
-        MealsRecyclerViewAdapter(
-            mutableListOf()
-        )
+class MealPlanFragment : BaseFragment() {
+//    private val adapter =
+//        MealsRecyclerViewAdapter(
+//            mutableListOf()
+//        )
 
     private lateinit var binding: FragmentMealPlanBinding
 
@@ -42,15 +38,27 @@ class MealPlanFragment : Fragment()
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate<FragmentMealPlanBinding>(inflater, R.layout.fragment_meal_plan, container, false).apply {
             calculateMealMacroNutrients()
-            macroNutrients = TotalsVsRequiredMacros(totalCalories, totalProtein, totalFat, totalCarbohydrates, requiredCalories, requiredProtein, requiredFat, requiredCarbohydrates)
-            mealsRecyclerView.adapter = adapter
-            mealsRecyclerView.layoutManager = LinearLayoutManager(context)
-            mealsRecyclerView.addItemDecoration(
-                MarginItemDecoration(
-                    16
-                )
+            macroNutrients = TotalsVsRequiredMacros(
+                totalCalories,
+                totalProtein,
+                totalFat,
+                totalCarbohydrates,
+                requiredCalories,
+                requiredProtein,
+                requiredFat,
+                requiredCarbohydrates
             )
-            adapter.updateMeals(allMeals)
+//            mealsRecyclerView.adapter = adapter
+//            mealsRecyclerView.layoutManager = LinearLayoutManager(context)
+//            mealsRecyclerView.addItemDecoration(
+//                MarginItemDecoration(
+//                    16
+//                )
+//            )
+//            adapter.updateMeals(allMeals)
+            deleteAllMeals.setOnClickListener {
+                fragmentCompositionRoot.getDeleteAllMealsUseCase().deleteAllMeals()
+            }
         }
         return binding.root
     }

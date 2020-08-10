@@ -10,7 +10,8 @@ import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.utils.Defaults
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentSelectMealFoodQuantityBinding
-import com.darrenfinch.mymealplanner.model.data.*
+import com.darrenfinch.mymealplanner.model.data.Food
+import com.darrenfinch.mymealplanner.model.data.MealFood
 
 class SelectMealFoodQuantityViewMvcImpl(
     inflater: LayoutInflater,
@@ -69,13 +70,6 @@ class SelectMealFoodQuantityViewMvcImpl(
             )
         }
 
-        return MealFood(
-            0,
-            "Test Meal Food",
-            binding.foodQuantityEditText.text.toString().toDouble(),
-            1.0,
-            MetricUnit.defaultUnit,
-            MacroNutrients(10, 10, 10, 10)
-        )
+        return Defaults.defaultMealFood
     }
 }

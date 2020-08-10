@@ -17,12 +17,7 @@ class ObservableMeal : BaseObservable() {
             notifyPropertyChanged(BR.title)
         }
 
-    @get:Bindable
     var foods: List<MealFood> = mutableListOf()
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.servingSizeString)
-        }
 
     fun get(): Meal {
         return Meal(id = id, title = title, foods = foods)

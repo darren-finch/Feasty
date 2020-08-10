@@ -5,10 +5,12 @@ import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.selectfoodformeal.view.SelectFoodForMealViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetAllFoodsUseCase
+import com.darrenfinch.mymealplanner.model.data.Meal
 
 class SelectFoodForMealController(
     private val screensNavigator: ScreensNavigator,
-    private val getAllFoodsUseCase: GetAllFoodsUseCase
+    private val getAllFoodsUseCase: GetAllFoodsUseCase,
+    private val currentMeal: Meal
 ) : SelectFoodForMealViewMvc.Listener {
 
     private lateinit var viewMvc: SelectFoodForMealViewMvc
@@ -32,6 +34,9 @@ class SelectFoodForMealController(
     }
 
     override fun onFoodChosen(foodId: Int) {
-        screensNavigator.navigateFromSelectFoodForMealScreenToSelectFoodQuantityScreen(foodId)
+        screensNavigator.navigateFromSelectFoodForMealScreenToSelectFoodQuantityScreen(
+            foodId,
+            currentMeal
+        )
     }
 }

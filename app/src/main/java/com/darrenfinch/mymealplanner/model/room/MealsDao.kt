@@ -13,7 +13,7 @@ interface MealsDao
 
     //This is a hack (should be in FoodsDAO), but I'm not going to invest the effort to do this properly atm.
     @Query("SELECT * FROM foods WHERE id IN (:mealFoodIds)")
-    suspend fun getMealFoodsWithIds(mealFoodIds: List<Int>) : List<Food>
+    suspend fun getMealFoodsWithIds(mealFoodIds: List<Int>): List<Food>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMeal(meal: DatabaseMeal)
@@ -23,4 +23,7 @@ interface MealsDao
 
     @Delete
     suspend fun deleteMeal(meal: DatabaseMeal)
+
+    @Query("DELETE FROM meals")
+    suspend fun deleteAllMeals()
 }

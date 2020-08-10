@@ -6,6 +6,8 @@ import com.darrenfinch.mymealplanner.model.data.Meal
 interface AllMealsViewMvc : ObservableViewMvc<AllMealsViewMvc.Listener> {
     interface Listener {
         fun addNewMealClicked()
+        fun onMealEdit(mealId: Int)
+        fun onMealDelete(meal: Meal)
     }
 
     fun bindMeals(newMeals: List<Meal>)

@@ -41,25 +41,12 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:text="@{meal.title}"
+                    android:text="@{StringUtils.INSTANCE.getMealTitleTemp(meal.title)}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="@color/colorTextPrimary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@{StringUtils.INSTANCE.calculateMealMacroNutrients(meal)}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/dropdownImageButton"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.727" />
 
                 <ImageButton
                     android:id="@+id/dropdownImageButton"
@@ -73,17 +60,61 @@
                     android:src="@{viewHolder.expanded ? @drawable/ic_keyboard_arrow_up : @drawable/ic_keyboard_arrow_down}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/dropdown" />
+
+                <ImageButton
+                    android:id="@+id/viewMoreButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/standard_margin_half"
+                    android:background="#00FFFFFF"
+                    android:contentDescription="@string/view_more"
+                    android:src="@drawable/ic_more"
+                    android:tint="@color/colorAccent"
+                    app:layout_constraintBottom_toBottomOf="@+id/cardTop"
+                    app:layout_constraintEnd_toStartOf="@+id/dropdownImageButton"
+                    app:layout_constraintTop_toTopOf="@+id/cardTop"
+                    app:layout_constraintVertical_bias="0.521" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/foodsRecyclerView"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardBottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardTop" />
+                android:padding="@dimen/standard_margin_half"
+                app:layout_constraintTop_toBottomOf="@+id/cardTop">
+
+                <TextView
+                    android:id="@+id/macroNutrientsLabel"
+                    style="@style/H3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/macro_nutrients"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/macroNutrients"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{StringUtils.INSTANCE.calculateMealMacroNutrients(meal)}"
+                    app:layout_constraintBottom_toBottomOf="@+id/macroNutrientsLabel"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/macroNutrientsLabel"
+                    tools:text="170 cal | 10 P | 15 C | 3 F" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mealFoodsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/macroNutrients" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

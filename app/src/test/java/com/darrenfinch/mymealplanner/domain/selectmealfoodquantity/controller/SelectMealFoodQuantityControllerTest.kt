@@ -81,7 +81,11 @@ internal class SelectMealFoodQuantityControllerTest {
     @Test
     internal fun `onMealFoodQuantityChosen() navigates to add edit meal screen`() {
         SUT.onMealFoodQuantityChosen(defaultMealFood)
-        verify { screensNavigator.navigateFromSelectMealFoodQuantityScreenToAddEditMealScreen() }
+        verify {
+            screensNavigator.navigateFromSelectMealFoodQuantityScreenToAddEditMealScreen(
+                defaultMealFood
+            )
+        }
     }
 
     //endregion Tests ------------------------------------------------------------------------------

@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.allmeals.view.AllMealsViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetAllMealsUseCase
+import com.darrenfinch.mymealplanner.model.data.Meal
 
 class AllMealsController(
     private val screensNavigator: ScreensNavigator,
@@ -32,6 +33,14 @@ class AllMealsController(
     }
 
     override fun addNewMealClicked() {
-        screensNavigator.navigateFromAllMealsScreenToSelectFoodForMealScreen()
+        screensNavigator.navigateFromAllMealsScreenToSelectFoodForMealScreen(-1)
+    }
+
+    override fun onMealEdit(mealId: Int) {
+        screensNavigator.navigateFromAllMealsScreenToSelectFoodForMealScreen(mealId)
+    }
+
+    override fun onMealDelete(meal: Meal) {
+
     }
 }
