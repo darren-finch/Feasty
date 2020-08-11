@@ -1,7 +1,5 @@
 package com.darrenfinch.mymealplanner.domain.usecases
 
-import androidx.lifecycle.MutableLiveData
-import com.darrenfinch.mymealplanner.Constants
 import com.darrenfinch.mymealplanner.TestData
 import com.darrenfinch.mymealplanner.model.FoodsRepository
 import io.mockk.every

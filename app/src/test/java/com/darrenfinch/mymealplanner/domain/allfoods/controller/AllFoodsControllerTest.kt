@@ -3,9 +3,9 @@ package com.darrenfinch.mymealplanner.domain.allfoods.controller
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import com.darrenfinch.mymealplanner.Constants
 import com.darrenfinch.mymealplanner.InstantExecutorExtension
 import com.darrenfinch.mymealplanner.TestData
+import com.darrenfinch.mymealplanner.TestData.DEFAULT_VALID_FOOD_ID
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.allfoods.view.AllFoodsViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.DeleteFoodUseCase
@@ -64,14 +64,14 @@ internal class AllFoodsControllerTest {
 
     @Test
     internal fun `onItemEdit() navigates to add or edit food screen and passes correct foodId`() {
-        SUT.onItemEdit(Constants.DEFAULT_FOOD_ID)
-        verify { screensNavigator.navigateFromAllFoodsScreenToAddEditFoodScreen(Constants.DEFAULT_FOOD_ID) }
+        SUT.onItemEdit(DEFAULT_VALID_FOOD_ID)
+        verify { screensNavigator.navigateFromAllFoodsScreenToAddEditFoodScreen(DEFAULT_VALID_FOOD_ID) }
     }
 
     @Test
     internal fun `onItemDelete() deletes food with use case`() {
-        SUT.onItemDelete(Constants.DEFAULT_FOOD_ID)
-        verify { deleteFoodUseCase.deleteFood(Constants.DEFAULT_FOOD_ID) }
+        SUT.onItemDelete(DEFAULT_VALID_FOOD_ID)
+        verify { deleteFoodUseCase.deleteFood(DEFAULT_VALID_FOOD_ID) }
     }
 
     private fun setupInstantLifecycleEventComponents() {

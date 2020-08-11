@@ -1,8 +1,7 @@
 package com.darrenfinch.mymealplanner.domain.usecases
 
-import androidx.lifecycle.MutableLiveData
-import com.darrenfinch.mymealplanner.Constants
-import com.darrenfinch.mymealplanner.TestData
+import com.darrenfinch.mymealplanner.TestData.DEFAULT_VALID_FOOD_ID
+import com.darrenfinch.mymealplanner.TestData.defaultFoodLiveData
 import com.darrenfinch.mymealplanner.model.FoodsRepository
 import io.mockk.every
 import io.mockk.mockk
@@ -11,29 +10,26 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class GetSingleFoodUseCaseTest {
-
-    private val defaultFoodData = TestData.defaultFood
-    private val defaultFoodLiveData = MutableLiveData(defaultFoodData)
+internal class GetFoodUseCaseTest {
 
     private val repository = mockk<FoodsRepository>()
 
-    private lateinit var SUT: GetSingleFoodUseCase
+    private lateinit var SUT: GetFoodUseCase
 
     @BeforeEach
     internal fun setUp() {
-        SUT = GetSingleFoodUseCase(repository)
+        SUT = GetFoodUseCase(repository)
         every { repository.fetchFood(any()) } returns defaultFoodLiveData
     }
 
     @Test
     internal fun `fetchSingleFood() passes foodId to repository`() {
-        SUT.fetchFood(Constants.DEFAULT_FOOD_ID)
-        verify { repository.fetchFood(Constants.DEFAULT_FOOD_ID) }
+        SUT.fetchFood(DEFAULT_VALID_FOOD_ID)
+        verify { repository.fetchFood(DEFAULT_VALID_FOOD_ID) }
     }
 
     @Test
     internal fun `fetchSingleFood() returns correct data from repository`() {
-        assertEquals(SUT.fetchFood(Constants.DEFAULT_FOOD_ID), defaultFoodLiveData)
+        assertEquals(SUT.fetchFood(DEFAULT_VALID_FOOD_ID), defaultFoodLiveData)
     }
 }

@@ -35,7 +35,7 @@ class AllFoodsController(
     }
 
     override fun addNewFoodClicked() {
-        screensNavigator.navigateFromAllFoodsScreenToAddEditFoodScreen(Constants.DEFAULT_FOOD_ID)
+        screensNavigator.navigateFromAllFoodsScreenToAddEditFoodScreen(Constants.DEFAULT_INVALID_FOOD_ID)
     }
 
     override fun onItemEdit(foodId: Int) {

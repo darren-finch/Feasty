@@ -27,7 +27,7 @@ class ScreensNavigator(private val navigationController: NavController) {
             SelectMealFoodQuantityDialogDirections.actionSelectMealFoodQuantityDialogToAddEditMealFragment(
                 newMealFood,
                 currentMeal,
-                Constants.DEFAULT_MEAL_ID
+                Constants.DEFAULT_INVALID_MEAL_ID
             )
         navigationController.navigate(directions)
     }

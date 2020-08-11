@@ -42,14 +42,9 @@ class AddEditMealFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (isEditingFood()) {
-            controller.updateCurrentMealFoodWithNewFood()
-            controller.bindMealDetails()
-        }
+        controller.onViewCreated(args.mealId)
         println("onViewCreated was called")
     }
-
-    fun isEditingFood() = args.mealId != Constants.DEFAULT_MEAL_ID
 
     override fun onStart() {
         super.onStart()

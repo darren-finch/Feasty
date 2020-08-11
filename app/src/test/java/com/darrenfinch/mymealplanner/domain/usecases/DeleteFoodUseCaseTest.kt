@@ -1,11 +1,9 @@
 package com.darrenfinch.mymealplanner.domain.usecases
 
-import com.darrenfinch.mymealplanner.Constants
-import com.darrenfinch.mymealplanner.TestData
+import com.darrenfinch.mymealplanner.TestData.DEFAULT_VALID_FOOD_ID
 import com.darrenfinch.mymealplanner.model.FoodsRepository
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -22,7 +20,7 @@ internal class DeleteFoodUseCaseTest {
 
     @Test
     internal fun `deleteFood() passes foodId to repository`() {
-        SUT.deleteFood(Constants.DEFAULT_FOOD_ID)
-        verify { repository.deleteFood(Constants.DEFAULT_FOOD_ID) }
+        SUT.deleteFood(DEFAULT_VALID_FOOD_ID)
+        verify { repository.deleteFood(DEFAULT_VALID_FOOD_ID) }
     }
 }

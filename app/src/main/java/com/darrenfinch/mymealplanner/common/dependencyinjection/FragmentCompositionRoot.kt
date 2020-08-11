@@ -47,7 +47,7 @@ class FragmentCompositionRoot(
     private fun getMealsRepository() = activityCompositionRoot.getMealsRepository()
 
     private fun getGetAllFoodsUseCase() = GetAllFoodsUseCase(getFoodsRepository())
-    private fun getGetSingleFoodUseCase() = GetSingleFoodUseCase(getFoodsRepository())
+    private fun getGetFoodUseCase() = GetFoodUseCase(getFoodsRepository())
     private fun getInsertFoodUseCase() = InsertFoodUseCase(getFoodsRepository())
     private fun getUpdateFoodUseCase() = UpdateFoodUseCase(getFoodsRepository())
     private fun getDeleteFoodUseCase() = DeleteFoodUseCase(getFoodsRepository())
@@ -59,7 +59,7 @@ class FragmentCompositionRoot(
 
     fun getAddEditFoodController(viewModel: AddEditFoodViewModel) = AddEditFoodController(
         getScreensNavigator(),
-        getGetSingleFoodUseCase(),
+        getGetFoodUseCase(),
         getInsertFoodUseCase(),
         getUpdateFoodUseCase(),
         viewModel
@@ -68,7 +68,7 @@ class FragmentCompositionRoot(
     fun getSelectMealFoodQuantityController(foodId: Int, currentMeal: Meal) =
         SelectMealFoodQuantityController(
             getScreensNavigator(),
-            getGetSingleFoodUseCase(),
+            getGetFoodUseCase(),
             foodId,
             currentMeal
         )

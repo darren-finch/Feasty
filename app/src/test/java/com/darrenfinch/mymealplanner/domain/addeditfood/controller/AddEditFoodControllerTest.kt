@@ -3,13 +3,13 @@ package com.darrenfinch.mymealplanner.domain.addeditfood.controller
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import com.darrenfinch.mymealplanner.Constants
 import com.darrenfinch.mymealplanner.InstantExecutorExtension
 import com.darrenfinch.mymealplanner.TestData
+import com.darrenfinch.mymealplanner.TestData.DEFAULT_VALID_FOOD_ID
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.addeditfood.view.AddEditFoodViewMvc
 import com.darrenfinch.mymealplanner.domain.common.ObservableFood
-import com.darrenfinch.mymealplanner.domain.usecases.GetSingleFoodUseCase
+import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.InsertFoodUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.UpdateFoodUseCase
 import io.mockk.called
@@ -31,7 +31,7 @@ internal class AddEditFoodControllerTest {
     private val lifecycle = LifecycleRegistry(viewLifecycleOwner)
 
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
-    private val getSingleFoodUseCase = mockk<GetSingleFoodUseCase>(relaxUnitFun = true)
+    private val getSingleFoodUseCase = mockk<GetFoodUseCase>(relaxUnitFun = true)
     private val insertFoodUseCase = mockk<InsertFoodUseCase>(relaxUnitFun = true)
     private val updateFoodUseCase = mockk<UpdateFoodUseCase>(relaxUnitFun = true)
     private val viewModel = mockk<AddEditFoodViewModel>(relaxUnitFun = true)
@@ -74,7 +74,7 @@ internal class AddEditFoodControllerTest {
         every { viewModel.insertingFood } returns false
         SUT.fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner)
         verify { viewMvc.bindFoodDetails(observableFood) }
-        verify { getSingleFoodUseCase.fetchFood(Constants.DEFAULT_FOOD_ID) wasNot called }
+        verify { getSingleFoodUseCase.fetchFood(DEFAULT_VALID_FOOD_ID) wasNot called }
     }
 
     @Test
@@ -82,7 +82,7 @@ internal class AddEditFoodControllerTest {
         makeViewModelDirty()
         every { viewModel.insertingFood } returns false
         SUT.fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner)
-        verify { getSingleFoodUseCase.fetchFood(Constants.DEFAULT_FOOD_ID) }
+        verify { getSingleFoodUseCase.fetchFood(DEFAULT_VALID_FOOD_ID) }
     }
 
     @Test
@@ -118,13 +118,13 @@ internal class AddEditFoodControllerTest {
     }
 
     private fun makeSingleFoodUseCaseReturnDefaultData() {
-        every { getSingleFoodUseCase.fetchFood(Constants.DEFAULT_FOOD_ID) } returns defaultFoodLiveData
+        every { getSingleFoodUseCase.fetchFood(DEFAULT_VALID_FOOD_ID) } returns defaultFoodLiveData
     }
 
     private fun setupViewModelDefaults() {
         observableFood = ObservableFood()
         every { viewModel.getObservableFood() } returns observableFood
-        every { viewModel.foodId } returns Constants.DEFAULT_FOOD_ID
+        every { viewModel.foodId } returns DEFAULT_VALID_FOOD_ID
         every { viewModel.insertingFood } returns true
     }
 

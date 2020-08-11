@@ -4,13 +4,13 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.view.SelectMealFoodViewMvc
-import com.darrenfinch.mymealplanner.domain.usecases.GetSingleFoodUseCase
+import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.model.data.Meal
 import com.darrenfinch.mymealplanner.model.data.MealFood
 
 class SelectMealFoodQuantityController(
     private val screensNavigator: ScreensNavigator,
-    private val getSingleFoodUseCase: GetSingleFoodUseCase,
+    private val getFoodUseCase: GetFoodUseCase,
     private val foodId: Int,
     private val currentMeal: Meal
 ) : SelectMealFoodViewMvc.Listener {
@@ -22,7 +22,7 @@ class SelectMealFoodQuantityController(
     }
 
     fun fetchFood(viewLifecycleOwner: LifecycleOwner) {
-        getSingleFoodUseCase.fetchFood(foodId).observe(viewLifecycleOwner, Observer {
+        getFoodUseCase.fetchFood(foodId).observe(viewLifecycleOwner, Observer {
             viewMvc.bindFood(it)
         })
     }
@@ -36,16 +36,9 @@ class SelectMealFoodQuantityController(
     }
 
     override fun onMealFoodQuantityChosen(mealFood: MealFood) {
-//        updateCurrentlyEditedMealWithNewMealFood(mealFood)
         screensNavigator.navigateFromSelectMealFoodQuantityScreenToAddEditMealScreen(
             mealFood,
             currentMeal
         )
     }
-
-//    private fun updateCurrentlyEditedMealWithNewMealFood(mealFood: MealFood) {
-//        val mealFoods = viewModel.currentlyEditedMeal.foods.toMutableList()
-//        mealFoods.add(mealFood)
-//        viewModel.currentlyEditedMeal.foods = mealFoods
-//    }
 }

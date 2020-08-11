@@ -4,14 +4,14 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.addeditfood.view.AddEditFoodViewMvc
-import com.darrenfinch.mymealplanner.domain.usecases.GetSingleFoodUseCase
+import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.InsertFoodUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.UpdateFoodUseCase
 import com.darrenfinch.mymealplanner.model.data.Food
 
 class AddEditFoodController(
     private val screensNavigator: ScreensNavigator,
-    private val getSingleFoodUseCase: GetSingleFoodUseCase,
+    private val getFoodUseCase: GetFoodUseCase,
     private val insertFoodUseCase: InsertFoodUseCase,
     private val updateFoodUseCase: UpdateFoodUseCase,
     private val viewModel: AddEditFoodViewModel
@@ -46,7 +46,7 @@ class AddEditFoodController(
     }
 
     private fun fetchFoodDetailsFromRepository(viewLifecycleOwner: LifecycleOwner) {
-        getSingleFoodUseCase.fetchFood(viewModel.foodId).observe(viewLifecycleOwner, Observer { food ->
+        getFoodUseCase.fetchFood(viewModel.foodId).observe(viewLifecycleOwner, Observer { food ->
             bindFoodDetailsToViewModelAndViewMvc(food)
         })
     }

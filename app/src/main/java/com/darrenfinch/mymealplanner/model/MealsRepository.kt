@@ -1,6 +1,7 @@
 package com.darrenfinch.mymealplanner.model
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.darrenfinch.mymealplanner.model.data.DataConverters.convertDatabaseMealToRegularMeal
 import com.darrenfinch.mymealplanner.model.data.DataConverters.convertMealToDatabaseMeal
@@ -23,9 +24,18 @@ class MealsRepository constructor(database: MealPlannerDatabase) {
         }
     }
 
+    private val currentMeal = MutableLiveData<Meal>()
+
     fun getMeals(): LiveData<List<Meal>> {
         return allMeals
     }
+    fun getMeal(mealId: Int): LiveData<Meal> {
+        runBlocking(Dispatchers.IO) {
+            currentMeal.postValue(convertDatabaseMealToRegularMeal(mealsDao.getMeal(mealId).value!!, foodsDao))
+        }
+        return currentMeal
+    }
+
     fun insertMeal(meal: Meal) {
         runBlocking(Dispatchers.IO) {
             mealsDao.insertMeal(convertMealToDatabaseMeal(meal))

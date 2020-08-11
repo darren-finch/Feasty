@@ -1,21 +1,14 @@
 package com.darrenfinch.mymealplanner.domain.allmeals.controller
 
 import androidx.lifecycle.*
-import com.darrenfinch.mymealplanner.Constants
 import com.darrenfinch.mymealplanner.InstantExecutorExtension
 import com.darrenfinch.mymealplanner.TestData
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
-import com.darrenfinch.mymealplanner.domain.allfoods.controller.AllFoodsController
-import com.darrenfinch.mymealplanner.domain.allfoods.view.AllFoodsViewMvc
 import com.darrenfinch.mymealplanner.domain.allmeals.view.AllMealsViewMvc
-import com.darrenfinch.mymealplanner.domain.usecases.DeleteFoodUseCase
-import com.darrenfinch.mymealplanner.domain.usecases.GetAllFoodsUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.GetAllMealsUseCase
-import com.darrenfinch.mymealplanner.model.data.Meal
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith

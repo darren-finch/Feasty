@@ -4,6 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import com.darrenfinch.mymealplanner.model.data.*
 
 object TestData {
+    const val DEFAULT_INVALID_FOOD_ID = -1
+    const val DEFAULT_VALID_FOOD_ID = 0
+
+    const val DEFAULT_INVALID_MEAL_ID = -1
+    const val DEFAULT_VALID_MEAL_ID = 0
+
     private const val DEFAULT_MEAL_DATA_TITLE = ""
     private const val DEFAULT_FOOD_DATA_TITLE = ""
 

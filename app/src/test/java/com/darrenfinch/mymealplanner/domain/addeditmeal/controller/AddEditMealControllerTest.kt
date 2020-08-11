@@ -1,10 +1,13 @@
 package com.darrenfinch.mymealplanner.domain.addeditmeal.controller
 
 import com.darrenfinch.mymealplanner.TestData
+import com.darrenfinch.mymealplanner.TestData.DEFAULT_INVALID_MEAL_ID
+import com.darrenfinch.mymealplanner.TestData.DEFAULT_VALID_FOOD_ID
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.addeditmeal.view.AddEditMealViewMvc
 import com.darrenfinch.mymealplanner.domain.common.ObservableMeal
 import com.darrenfinch.mymealplanner.domain.usecases.InsertMealUseCase
+import com.darrenfinch.mymealplanner.model.data.Meal
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -20,6 +23,8 @@ internal class AddEditMealControllerTest {
     private val defaultMealFood = TestData.defaultMealFood
     private val defaultMeal = TestData.defaultMeal
 
+    private val defaultObservableMeal = ObservableMeal()
+
     private val viewModel = mockk<AddEditMealViewModel>(relaxUnitFun = true)
     private val insertMealUseCase = mockk<InsertMealUseCase>(relaxUnitFun = true)
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
@@ -31,8 +36,9 @@ internal class AddEditMealControllerTest {
     //region Set up / Tear down
     @BeforeEach
     fun setUp() {
-        SUT = AddEditMealController(viewModel, insertMealUseCase, screensNavigator, defaultMealFood)
+        SUT = AddEditMealController(viewModel, insertMealUseCase, screensNavigator, defaultMealFood, defaultMeal)
         SUT.bindView(viewMvc)
+        every { viewModel.getObservableMeal() } returns defaultObservableMeal
     }
     //endregion Set up / Tear down
 
@@ -49,31 +55,25 @@ internal class AddEditMealControllerTest {
         verify { viewMvc.unregisterListener(SUT) }
     }
 
-//    @Test
-//    internal fun `updateWithNewFoodData() adds new meal food to viewMvc and binds new meal food to viewModel`() {
-//        SUT.updateWithNewFoodData()
-//        verify { viewMvc.addNewMealFood() }
-//        verify { viewModel.addNewMealFoodToMealData(defaultMealFood) }
-//    }
-
-//    @Test
-//    internal fun `updateWithNewFoodData() doesn't interact with viewMvc or viewModel when newFoodData is null`() {
-//        SUT = AddEditMealController(viewModel, insertMealUseCase, screensNavigator, null)
-//        SUT.updateWithNewFoodData()
-//        verify { viewMvc.addNewMealFood(allAny()) wasNot called }
-//        verify { viewModel.addNewMealFoodToMealData(allAny()) wasNot called }
-//    }
-
     @Test
-    internal fun `bindMealDetails() binds meal details to viewMvc`() {
-        val observableMeal = ObservableMeal()
-        every { viewModel.getObservableMeal() } returns observableMeal
-        SUT.bindMealDetails()
-        verify { viewMvc.bindMealDetails(observableMeal) }
+    internal fun `onViewCreated() binds observable meal to view if not editing meal for the first time`() {
+        // The controller is editing a meal for the first time if mealId == -1
+        SUT.onViewCreated(DEFAULT_INVALID_MEAL_ID)
+        verify { viewMvc.bindMealDetails(defaultObservableMeal) }
     }
 
     @Test
-    internal fun `addNewFoodClicked() opens select food for meal screen and saves current meal data to viewModel`() {
+    internal fun `onViewCreated() adds new meal food to current meal if not editing meal for the first time`() {
+        // The controller is editing a meal for the first time if mealId == -1
+        SUT.onViewCreated(DEFAULT_INVALID_MEAL_ID)
+        val newMeal = Meal(defaultMeal.id, defaultMeal.title, defaultMeal.foods.toMutableList().apply {
+            add(defaultMealFood)
+        })
+        verify { viewModel.setObservableMeal(newMeal) }
+    }
+
+    @Test
+    internal fun `addNewFoodClicked() opens select food for meal screen`() {
         SUT.addNewFoodButtonClicked()
         verify { screensNavigator.navigateToSelectFoodForMealScreen(defaultMeal) }
     }

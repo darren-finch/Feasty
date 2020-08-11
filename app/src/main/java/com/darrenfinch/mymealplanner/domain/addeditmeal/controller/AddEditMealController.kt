@@ -1,5 +1,6 @@
 package com.darrenfinch.mymealplanner.domain.addeditmeal.controller
 
+import com.darrenfinch.mymealplanner.common.Constants
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.addeditmeal.view.AddEditMealViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.InsertMealUseCase
@@ -27,11 +28,25 @@ class AddEditMealController(
         viewMvc.unregisterListener(this)
     }
 
-    fun bindMealDetails() {
+    fun onViewCreated(mealId: Int) {
+        if(!isEditingFoodForTheFirstTime(mealId)) {
+            bindObservableMealToView()
+            addNewMealFoodToCurrentMeal()
+        }
+        else {
+            //Asynchronously fetch meal from repository
+            //When meal is fetched:
+            //Bind observable meal to view
+        }
+    }
+
+    private fun isEditingFoodForTheFirstTime(mealId: Int) = mealId != Constants.DEFAULT_INVALID_MEAL_ID && currentMeal == null && newMealFood == null
+
+    private fun bindObservableMealToView() {
         viewMvc.bindMealDetails(viewModel.getObservableMeal())
     }
 
-    fun updateCurrentMealFoodWithNewFood() {
+    private fun addNewMealFoodToCurrentMeal() {
         if (currentMeal != null && newMealFood != null) {
             val updatedMeal =
                 Meal(currentMeal.id, currentMeal.title, currentMeal.foods.toMutableList().apply {
