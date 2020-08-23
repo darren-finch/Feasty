@@ -9,7 +9,7 @@ import com.darrenfinch.mymealplanner.common.reusable.mealsrecyclerviewadapter.Me
 import com.darrenfinch.mymealplanner.common.reusable.recyclerviewitemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentAllMealsBinding
-import com.darrenfinch.mymealplanner.model.data.Meal
+import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 class AllMealsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseObservableViewMvc<AllMealsViewMvc.Listener>(), AllMealsViewMvc {
     private val mealItemEventListener = object : MealsRecyclerViewAdapter.ItemEventListener {

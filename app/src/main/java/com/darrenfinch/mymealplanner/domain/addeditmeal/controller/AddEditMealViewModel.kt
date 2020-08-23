@@ -2,7 +2,7 @@ package com.darrenfinch.mymealplanner.domain.addeditmeal.controller
 
 import androidx.lifecycle.ViewModel
 import com.darrenfinch.mymealplanner.domain.common.ObservableMeal
-import com.darrenfinch.mymealplanner.model.data.Meal
+import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 class AddEditMealViewModel : ViewModel() {
     private val observableMeal = ObservableMeal()

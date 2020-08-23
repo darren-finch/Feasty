@@ -1,7 +1,7 @@
 package com.darrenfinch.mymealplanner.domain.usecases
 
 import com.darrenfinch.mymealplanner.TestData
-import com.darrenfinch.mymealplanner.model.FoodsRepository
+import com.darrenfinch.mymealplanner.model.MainRepository
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.BeforeEach
@@ -11,7 +11,7 @@ internal class InsertFoodUseCaseTest {
 
     private val defaultFoodData = TestData.defaultFood
 
-    private val repository = mockk<FoodsRepository>(relaxUnitFun = true)
+    private val repository = mockk<MainRepository>(relaxUnitFun = true)
 
     private lateinit var SUT: InsertFoodUseCase
 

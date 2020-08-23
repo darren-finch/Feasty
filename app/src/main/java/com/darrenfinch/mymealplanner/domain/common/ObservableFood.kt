@@ -4,9 +4,9 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import com.darrenfinch.mymealplanner.BR
-import com.darrenfinch.mymealplanner.model.data.Food
-import com.darrenfinch.mymealplanner.model.data.MacroNutrients
-import com.darrenfinch.mymealplanner.model.data.MetricUnit
+import com.darrenfinch.mymealplanner.model.data.entities.Food
+import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
+import com.darrenfinch.mymealplanner.model.data.entitysubdata.MetricUnit
 
 class ObservableFood : BaseObservable() {
     var dirty = false

@@ -11,7 +11,7 @@ import com.darrenfinch.mymealplanner.common.reusable.foodrecyclerviewadapter.Foo
 import com.darrenfinch.mymealplanner.common.reusable.recyclerviewitemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentSelectFoodForMealBinding
-import com.darrenfinch.mymealplanner.model.data.Food
+import com.darrenfinch.mymealplanner.model.data.entities.Food
 
 class SelectFoodForMealViewMvcImpl(
     inflater: LayoutInflater,

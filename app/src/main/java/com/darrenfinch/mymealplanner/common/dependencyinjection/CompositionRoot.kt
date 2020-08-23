@@ -2,8 +2,7 @@ package com.darrenfinch.mymealplanner.common.dependencyinjection
 
 import android.app.Application
 import androidx.room.Room
-import com.darrenfinch.mymealplanner.model.FoodsRepository
-import com.darrenfinch.mymealplanner.model.MealsRepository
+import com.darrenfinch.mymealplanner.model.MainRepository
 import com.darrenfinch.mymealplanner.model.room.MealPlannerDatabase
 
 //This is the global composition root
@@ -13,8 +12,7 @@ class CompositionRoot(private val application: Application) {
             .fallbackToDestructiveMigration()
             .build()
 
-    private val mealsRepository = MealsRepository(getDatabase())
-    private val foodsRepository = FoodsRepository(getDatabase())
+    private val mainRepository = MainRepository(getDatabase())
 
     fun getApplication(): Application {
         return application
@@ -24,11 +22,7 @@ class CompositionRoot(private val application: Application) {
         return database
     }
 
-    fun getMealsRepository(): MealsRepository {
-        return mealsRepository
-    }
-
-    fun getFoodsRepository(): FoodsRepository {
-        return foodsRepository
+    fun getMainRepository(): MainRepository {
+        return mainRepository
     }
 }

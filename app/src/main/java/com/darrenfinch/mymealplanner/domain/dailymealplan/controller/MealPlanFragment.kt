@@ -10,7 +10,7 @@ import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
 import com.darrenfinch.mymealplanner.common.utils.Utils
 import com.darrenfinch.mymealplanner.databinding.FragmentMealPlanBinding
-import com.darrenfinch.mymealplanner.model.frontend.TotalsVsRequiredMacros
+import com.darrenfinch.mymealplanner.model.data.entities.TotalsVsRequiredMacros
 
 class MealPlanFragment : BaseFragment() {
 //    private val adapter =
@@ -38,16 +38,17 @@ class MealPlanFragment : BaseFragment() {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate<FragmentMealPlanBinding>(inflater, R.layout.fragment_meal_plan, container, false).apply {
             calculateMealMacroNutrients()
-            macroNutrients = TotalsVsRequiredMacros(
-                totalCalories,
-                totalProtein,
-                totalFat,
-                totalCarbohydrates,
-                requiredCalories,
-                requiredProtein,
-                requiredFat,
-                requiredCarbohydrates
-            )
+            macroNutrients =
+                TotalsVsRequiredMacros(
+                    totalCalories,
+                    totalProtein,
+                    totalFat,
+                    totalCarbohydrates,
+                    requiredCalories,
+                    requiredProtein,
+                    requiredFat,
+                    requiredCarbohydrates
+                )
 //            mealsRecyclerView.adapter = adapter
 //            mealsRecyclerView.layoutManager = LinearLayoutManager(context)
 //            mealsRecyclerView.addItemDecoration(

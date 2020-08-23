@@ -10,8 +10,8 @@ import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.utils.Defaults
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentSelectMealFoodQuantityBinding
-import com.darrenfinch.mymealplanner.model.data.Food
-import com.darrenfinch.mymealplanner.model.data.MealFood
+import com.darrenfinch.mymealplanner.model.data.entities.Food
+import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 
 class SelectMealFoodQuantityViewMvcImpl(
     inflater: LayoutInflater,

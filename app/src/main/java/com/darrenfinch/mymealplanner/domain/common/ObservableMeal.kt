@@ -3,8 +3,8 @@ package com.darrenfinch.mymealplanner.domain.common
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.darrenfinch.mymealplanner.BR
-import com.darrenfinch.mymealplanner.model.data.Meal
-import com.darrenfinch.mymealplanner.model.data.MealFood
+import com.darrenfinch.mymealplanner.model.data.entities.Meal
+import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 
 class ObservableMeal : BaseObservable() {
 
@@ -20,7 +20,11 @@ class ObservableMeal : BaseObservable() {
     var foods: List<MealFood> = mutableListOf()
 
     fun get(): Meal {
-        return Meal(id = id, title = title, foods = foods)
+        return Meal(
+            id = id,
+            title = title,
+            foods = foods
+        )
     }
     fun set(meal: Meal) {
         id = meal.id

@@ -1,9 +1,8 @@
 package com.darrenfinch.mymealplanner.model.room
 
 import androidx.room.TypeConverter
-import com.darrenfinch.mymealplanner.model.data.DatabaseMealFood
-import com.darrenfinch.mymealplanner.model.data.MacroNutrients
-import com.darrenfinch.mymealplanner.model.data.MetricUnit
+import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
+import com.darrenfinch.mymealplanner.model.data.entitysubdata.MetricUnit
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

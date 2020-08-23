@@ -2,8 +2,6 @@ package com.darrenfinch.mymealplanner.model.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.darrenfinch.mymealplanner.model.data.DatabaseMeal
-import com.darrenfinch.mymealplanner.model.data.Food
 
 @Dao
 interface MealsDao
@@ -15,7 +13,7 @@ interface MealsDao
     fun getMeal(mealId: Int): LiveData<DatabaseMeal>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMeal(meal: DatabaseMeal)
+    suspend fun insertMeal(meal: DatabaseMeal): Long
 
     @Update
     suspend fun updateMeal(meal: DatabaseMeal)

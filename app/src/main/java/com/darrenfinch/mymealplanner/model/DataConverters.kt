@@ -1,13 +1,17 @@
-package com.darrenfinch.mymealplanner.model.data
+package com.darrenfinch.mymealplanner.model
 
-import com.darrenfinch.mymealplanner.model.room.FoodsDao
+import com.darrenfinch.mymealplanner.model.data.entities.Food
+import com.darrenfinch.mymealplanner.model.data.entities.Meal
+import com.darrenfinch.mymealplanner.model.data.entities.MealFood
+import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
+import com.darrenfinch.mymealplanner.model.room.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 
 object DataConverters {
-    fun convertMealFoodToFood(mealFood: MealFood) : Food {
+    fun convertMealFoodToFood(mealFood: MealFood): Food {
         return Food(
             id = mealFood.id,
             title = mealFood.title,
@@ -21,7 +25,8 @@ object DataConverters {
             )
         )
     }
-    fun convertFoodToMealFood(food: Food) : MealFood {
+
+    fun convertFoodToMealFood(food: Food): MealFood {
         return MealFood(
             id = food.id,
             title = food.title,
@@ -33,34 +38,70 @@ object DataConverters {
                 fat = food.macroNutrients.fat,
                 protein = food.macroNutrients.protein
             ),
-            quantity = food.servingSize
+            desiredQuantity = food.servingSize
         )
     }
+
+    fun convertMealFoodToDatabaseMealFood(mealFood: MealFood, mealId: Int): DatabaseMealFood {
+        return DatabaseMealFood(mealFood.id, mealId, mealFood.desiredQuantity)
+    }
+
+    fun convertDatabaseFoodToFood(databaseFood: DatabaseFood): Food {
+        return Food(
+            databaseFood.id,
+            databaseFood.title,
+            databaseFood.servingSize,
+            databaseFood.servingSizeUnit,
+            databaseFood.macroNutrients
+        )
+    }
+
+    fun convertFoodToDatabaseFood(food: Food): DatabaseFood {
+        return DatabaseFood(
+            food.id,
+            food.title,
+            food.servingSize,
+            food.servingSizeUnit,
+            food.macroNutrients
+        )
+    }
+
     suspend fun convertDatabaseMealToRegularMeal(
         databaseMeal: DatabaseMeal,
+        mealFoodsDao: MealFoodsDao,
         foodsDao: FoodsDao
     ): Meal {
         return Meal(
             databaseMeal.id,
             databaseMeal.title,
-            convertDatabaseMealFoodsToMealFoods(databaseMeal.mealFoods, foodsDao)
+            convertDatabaseMealFoodsToMealFoods(
+                mealFoodsDao.getMealFoodsForMeal(databaseMeal.id),
+                foodsDao
+            )
         )
     }
+
     private suspend fun convertDatabaseMealFoodsToMealFoods(
         databaseMealFoods: List<DatabaseMealFood>,
         foodsDao: FoodsDao
     ): List<MealFood> {
-        return databaseMealFoods.parallelMap { convertDatabaseMealFoodToMealFood(it, foodsDao) }
+        return databaseMealFoods.parallelMap {
+            convertDatabaseMealFoodToMealFood(
+                it,
+                foodsDao
+            )
+        }
     }
+
     private suspend fun convertDatabaseMealFoodToMealFood(
         databaseMealFood: DatabaseMealFood,
         foodsDao: FoodsDao
     ): MealFood {
-        val foodFromDatabase = foodsDao.getFood(databaseMealFood.id)
+        val foodFromDatabase = foodsDao.getFood(databaseMealFood.foodId)
         return MealFood(
             id = foodFromDatabase.id,
             title = foodFromDatabase.title,
-            quantity = databaseMealFood.quantity,
+            desiredQuantity = databaseMealFood.desiredQuantity,
             servingSizeUnit = foodFromDatabase.servingSizeUnit,
             servingSize = foodFromDatabase.servingSize,
             macroNutrients = MacroNutrients(
@@ -75,14 +116,7 @@ object DataConverters {
     fun convertMealToDatabaseMeal(meal: Meal): DatabaseMeal {
         return DatabaseMeal(
             meal.id,
-            meal.title,
-            meal.foods.map { convertMealFoodToDatabaseMealFood(it) }
-        )
-    }
-    private fun convertMealFoodToDatabaseMealFood(mealFood: MealFood): DatabaseMealFood {
-        return DatabaseMealFood(
-            id = mealFood.id,
-            quantity = mealFood.quantity
+            meal.title
         )
     }
 

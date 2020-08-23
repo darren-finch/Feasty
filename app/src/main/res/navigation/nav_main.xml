@@ -53,11 +53,11 @@
             app:launchSingleTop="true" />
         <argument
             android:name="newMealFood"
-            app:argType="com.darrenfinch.mymealplanner.model.data.MealFood"
+            app:argType="com.darrenfinch.mymealplanner.model.data.entities.MealFood"
             app:nullable="true" />
         <argument
             android:name="currentMeal"
-            app:argType="com.darrenfinch.mymealplanner.model.data.Meal"
+            app:argType="com.darrenfinch.mymealplanner.model.data.entities.Meal"
             app:nullable="true" />
         <argument
             android:name="mealId"
@@ -77,7 +77,7 @@
             app:launchSingleTop="true" />
         <argument
             android:name="currentMeal"
-            app:argType="com.darrenfinch.mymealplanner.model.data.Meal" />
+            app:argType="com.darrenfinch.mymealplanner.model.data.entities.Meal" />
     </dialog>
     <dialog
         android:id="@+id/selectMealFoodQuantityDialog"
@@ -91,6 +91,6 @@
             app:destination="@id/addEditMealFragment" />
         <argument
             android:name="currentMeal"
-            app:argType="com.darrenfinch.mymealplanner.model.data.Meal" />
+            app:argType="com.darrenfinch.mymealplanner.model.data.entities.Meal" />
     </dialog>
 </navigation>

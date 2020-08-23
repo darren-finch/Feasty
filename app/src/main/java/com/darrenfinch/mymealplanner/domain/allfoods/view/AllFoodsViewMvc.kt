@@ -1,7 +1,7 @@
 package com.darrenfinch.mymealplanner.domain.allfoods.view
 
 import com.darrenfinch.mymealplanner.common.views.ObservableViewMvc
-import com.darrenfinch.mymealplanner.model.data.Food
+import com.darrenfinch.mymealplanner.model.data.entities.Food
 
 interface AllFoodsViewMvc : ObservableViewMvc<AllFoodsViewMvc.Listener> {
     interface Listener {

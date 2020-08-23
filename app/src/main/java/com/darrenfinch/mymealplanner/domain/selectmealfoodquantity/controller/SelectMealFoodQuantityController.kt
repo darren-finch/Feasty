@@ -5,8 +5,8 @@ import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.view.SelectMealFoodViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
-import com.darrenfinch.mymealplanner.model.data.Meal
-import com.darrenfinch.mymealplanner.model.data.MealFood
+import com.darrenfinch.mymealplanner.model.data.entities.Meal
+import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 
 class SelectMealFoodQuantityController(
     private val screensNavigator: ScreensNavigator,

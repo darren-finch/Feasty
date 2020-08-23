@@ -3,7 +3,7 @@ package com.darrenfinch.mymealplanner.domain.addeditfood.controller
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.darrenfinch.mymealplanner.domain.common.ObservableFood
-import com.darrenfinch.mymealplanner.model.data.Food
+import com.darrenfinch.mymealplanner.model.data.entities.Food
 
 class AddEditFoodViewModel(val foodId: Int, application: Application) : AndroidViewModel(application) {
 

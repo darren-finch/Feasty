@@ -10,9 +10,9 @@ import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentAddEditFoodBinding
 import com.darrenfinch.mymealplanner.domain.common.ObservableFood
-import com.darrenfinch.mymealplanner.model.data.Food
-import com.darrenfinch.mymealplanner.model.data.MacroNutrients
-import com.darrenfinch.mymealplanner.model.data.MetricUnit
+import com.darrenfinch.mymealplanner.model.data.entities.Food
+import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
+import com.darrenfinch.mymealplanner.model.data.entitysubdata.MetricUnit
 
 class AddEditFoodViewMvcImpl(
     inflater: LayoutInflater,

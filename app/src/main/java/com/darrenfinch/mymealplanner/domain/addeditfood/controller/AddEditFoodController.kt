@@ -7,7 +7,7 @@ import com.darrenfinch.mymealplanner.domain.addeditfood.view.AddEditFoodViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.InsertFoodUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.UpdateFoodUseCase
-import com.darrenfinch.mymealplanner.model.data.Food
+import com.darrenfinch.mymealplanner.model.data.entities.Food
 
 class AddEditFoodController(
     private val screensNavigator: ScreensNavigator,

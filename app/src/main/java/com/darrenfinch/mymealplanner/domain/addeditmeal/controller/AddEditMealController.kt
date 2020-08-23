@@ -4,8 +4,8 @@ import com.darrenfinch.mymealplanner.common.Constants
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.addeditmeal.view.AddEditMealViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.InsertMealUseCase
-import com.darrenfinch.mymealplanner.model.data.Meal
-import com.darrenfinch.mymealplanner.model.data.MealFood
+import com.darrenfinch.mymealplanner.model.data.entities.Meal
+import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 
 class AddEditMealController(
     private val viewModel: AddEditMealViewModel,
@@ -30,8 +30,8 @@ class AddEditMealController(
 
     fun onViewCreated(mealId: Int) {
         if(!isEditingFoodForTheFirstTime(mealId)) {
-            bindObservableMealToView()
             addNewMealFoodToCurrentMeal()
+            bindObservableMealToView()
         }
         else {
             //Asynchronously fetch meal from repository
@@ -49,9 +49,12 @@ class AddEditMealController(
     private fun addNewMealFoodToCurrentMeal() {
         if (currentMeal != null && newMealFood != null) {
             val updatedMeal =
-                Meal(currentMeal.id, currentMeal.title, currentMeal.foods.toMutableList().apply {
-                    add(newMealFood)
-                })
+                Meal(
+                    currentMeal.id,
+                    currentMeal.title,
+                    currentMeal.foods.toMutableList().apply {
+                        add(newMealFood)
+                    })
             viewModel.setObservableMeal(updatedMeal)
         }
     }

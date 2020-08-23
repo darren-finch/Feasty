@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.model.data.MealFood
+import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 
 class MealFoodsRecyclerViewAdapter(private val allMealFoods: MutableList<MealFood>) :
     RecyclerView.Adapter<MealFoodViewHolder>() {

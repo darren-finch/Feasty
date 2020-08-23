@@ -2,12 +2,11 @@ package com.darrenfinch.mymealplanner.domain.addeditmeal.controller
 
 import com.darrenfinch.mymealplanner.TestData
 import com.darrenfinch.mymealplanner.TestData.DEFAULT_INVALID_MEAL_ID
-import com.darrenfinch.mymealplanner.TestData.DEFAULT_VALID_FOOD_ID
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.addeditmeal.view.AddEditMealViewMvc
 import com.darrenfinch.mymealplanner.domain.common.ObservableMeal
 import com.darrenfinch.mymealplanner.domain.usecases.InsertMealUseCase
-import com.darrenfinch.mymealplanner.model.data.Meal
+import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -66,9 +65,12 @@ internal class AddEditMealControllerTest {
     internal fun `onViewCreated() adds new meal food to current meal if not editing meal for the first time`() {
         // The controller is editing a meal for the first time if mealId == -1
         SUT.onViewCreated(DEFAULT_INVALID_MEAL_ID)
-        val newMeal = Meal(defaultMeal.id, defaultMeal.title, defaultMeal.foods.toMutableList().apply {
-            add(defaultMealFood)
-        })
+        val newMeal = Meal(
+            defaultMeal.id,
+            defaultMeal.title,
+            defaultMeal.foods.toMutableList().apply {
+                add(defaultMealFood)
+            })
         verify { viewModel.setObservableMeal(newMeal) }
     }
 

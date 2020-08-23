@@ -5,7 +5,7 @@ import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.allmeals.view.AllMealsViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetAllMealsUseCase
-import com.darrenfinch.mymealplanner.model.data.Meal
+import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 class AllMealsController(
     private val screensNavigator: ScreensNavigator,

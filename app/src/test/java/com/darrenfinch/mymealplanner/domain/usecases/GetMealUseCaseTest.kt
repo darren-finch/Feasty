@@ -2,7 +2,7 @@ package com.darrenfinch.mymealplanner.domain.usecases
 
 import com.darrenfinch.mymealplanner.TestData.DEFAULT_VALID_MEAL_ID
 import com.darrenfinch.mymealplanner.TestData.defaultMealLiveData
-import com.darrenfinch.mymealplanner.model.MealsRepository
+import com.darrenfinch.mymealplanner.model.MainRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -15,7 +15,7 @@ internal class GetMealUseCaseTest {
     //endregion Constants --------------------------------------------------------------------------
 
     //region Helper Fields -------------------------------------------------------------------------
-    private val repository = mockk<MealsRepository>(relaxUnitFun = true)
+    private val repository = mockk<MainRepository>(relaxUnitFun = true)
 
     //endregion Helper Fields ----------------------------------------------------------------------
 

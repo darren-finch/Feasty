@@ -1,6 +1,6 @@
 package com.darrenfinch.mymealplanner.common.utils
 
-import com.darrenfinch.mymealplanner.model.data.Meal
+import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 object Utils {
     fun createSampleMeals() = emptyList<Meal>()

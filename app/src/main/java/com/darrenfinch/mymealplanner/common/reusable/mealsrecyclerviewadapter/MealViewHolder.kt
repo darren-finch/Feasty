@@ -11,7 +11,7 @@ import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.reusable.mealfoodsrecyclerviewadapter.MealFoodsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.common.utils.AnimationUtils
 import com.darrenfinch.mymealplanner.databinding.MealItemBinding
-import com.darrenfinch.mymealplanner.model.data.Meal
+import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 class MealViewHolder(private val listener: Listener, itemView: View) :
     RecyclerView.ViewHolder(itemView) {
@@ -59,10 +59,10 @@ class MealViewHolder(private val listener: Listener, itemView: View) :
     private fun initAdapter(meal: Meal) {
         val adapter =
             MealFoodsRecyclerViewAdapter(
-                meal.foods.toMutableList()
+                mutableListOf()
             )
         binding.mealFoodsRecyclerView.adapter = adapter
         binding.mealFoodsRecyclerView.layoutManager = LinearLayoutManager(itemView.context)
-        adapter.notifyDataSetChanged()
+        adapter.updateFoods(meal.foods.toMutableList())
     }
 }

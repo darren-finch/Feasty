@@ -1,6 +1,6 @@
 package com.darrenfinch.mymealplanner.model.helpers
 
-import com.darrenfinch.mymealplanner.model.data.Food
+import com.darrenfinch.mymealplanner.model.data.entities.Food
 
 object MacroCalculator
 {

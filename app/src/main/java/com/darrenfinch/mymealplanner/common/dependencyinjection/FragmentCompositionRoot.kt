@@ -14,8 +14,8 @@ import com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsControll
 import com.darrenfinch.mymealplanner.domain.selectfoodformeal.controller.SelectFoodForMealController
 import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.controller.SelectMealFoodQuantityController
 import com.darrenfinch.mymealplanner.domain.usecases.*
-import com.darrenfinch.mymealplanner.model.data.Meal
-import com.darrenfinch.mymealplanner.model.data.MealFood
+import com.darrenfinch.mymealplanner.model.data.entities.Meal
+import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 
 //This composition root is scoped to a fragment, which is a controller
 class FragmentCompositionRoot(
@@ -43,19 +43,18 @@ class FragmentCompositionRoot(
         return ViewMvcFactory(getLayoutInflater())
     }
 
-    private fun getFoodsRepository() = activityCompositionRoot.getFoodsRepository()
-    private fun getMealsRepository() = activityCompositionRoot.getMealsRepository()
+    private fun getMainRepository() = activityCompositionRoot.getMainRepository()
 
-    private fun getGetAllFoodsUseCase() = GetAllFoodsUseCase(getFoodsRepository())
-    private fun getGetFoodUseCase() = GetFoodUseCase(getFoodsRepository())
-    private fun getInsertFoodUseCase() = InsertFoodUseCase(getFoodsRepository())
-    private fun getUpdateFoodUseCase() = UpdateFoodUseCase(getFoodsRepository())
-    private fun getDeleteFoodUseCase() = DeleteFoodUseCase(getFoodsRepository())
-    private fun getInsertMealUseCase() = InsertMealUseCase(getMealsRepository())
-    private fun getGetAllMealsUseCase() = GetAllMealsUseCase(getMealsRepository())
+    private fun getGetAllFoodsUseCase() = GetAllFoodsUseCase(getMainRepository())
+    private fun getGetFoodUseCase() = GetFoodUseCase(getMainRepository())
+    private fun getInsertFoodUseCase() = InsertFoodUseCase(getMainRepository())
+    private fun getUpdateFoodUseCase() = UpdateFoodUseCase(getMainRepository())
+    private fun getDeleteFoodUseCase() = DeleteFoodUseCase(getMainRepository())
+    private fun getInsertMealUseCase() = InsertMealUseCase(getMainRepository())
+    private fun getGetAllMealsUseCase() = GetAllMealsUseCase(getMainRepository())
 
     //TODO: TEMP
-    fun getDeleteAllMealsUseCase() = DeleteAllMealsUseCase(getMealsRepository())
+    fun getDeleteAllMealsUseCase() = DeleteAllMealsUseCase(getMainRepository())
 
     fun getAddEditFoodController(viewModel: AddEditFoodViewModel) = AddEditFoodController(
         getScreensNavigator(),

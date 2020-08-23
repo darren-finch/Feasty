@@ -2,7 +2,7 @@ package com.darrenfinch.mymealplanner.domain.selectfoodformeal.view
 
 import android.app.Dialog
 import com.darrenfinch.mymealplanner.common.views.ObservableViewMvc
-import com.darrenfinch.mymealplanner.model.data.Food
+import com.darrenfinch.mymealplanner.model.data.entities.Food
 
 interface SelectFoodForMealViewMvc : ObservableViewMvc<SelectFoodForMealViewMvc.Listener> {
     interface Listener {

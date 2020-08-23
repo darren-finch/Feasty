@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.darrenfinch.mymealplanner.databinding.MealFoodItemBinding
-import com.darrenfinch.mymealplanner.model.data.MealFood
+import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 
 class MealFoodViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 {
