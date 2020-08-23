@@ -3,10 +3,10 @@ package com.darrenfinch.mymealplanner.model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.darrenfinch.mymealplanner.model.data.DataConverters.convertDatabaseMealToRegularMeal
-import com.darrenfinch.mymealplanner.model.data.DataConverters.convertMealToDatabaseMeal
-import com.darrenfinch.mymealplanner.model.data.DatabaseMeal
-import com.darrenfinch.mymealplanner.model.data.Meal
+import com.darrenfinch.mymealplanner.model.DataConverters.convertDatabaseMealToRegularMeal
+import com.darrenfinch.mymealplanner.model.DataConverters.convertMealToDatabaseMeal
+import com.darrenfinch.mymealplanner.model.room.DatabaseMeal
+import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import com.darrenfinch.mymealplanner.model.room.MealPlannerDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

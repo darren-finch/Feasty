@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.model.data
+package com.darrenfinch.mymealplanner.model.data.entitysubdata
 
 import java.util.*
 

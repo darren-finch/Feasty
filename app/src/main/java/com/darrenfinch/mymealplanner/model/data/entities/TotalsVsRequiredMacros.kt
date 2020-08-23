@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.model.frontend
+package com.darrenfinch.mymealplanner.model.data.entities
 
 import androidx.databinding.ObservableInt
 
