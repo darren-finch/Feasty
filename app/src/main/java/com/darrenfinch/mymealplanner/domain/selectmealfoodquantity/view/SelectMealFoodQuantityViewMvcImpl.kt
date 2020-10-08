@@ -63,13 +63,13 @@ class SelectMealFoodQuantityViewMvcImpl(
             return MealFood(
                 it.id,
                 it.title,
-                binding.foodQuantityEditText.text.toString().toDouble(),
                 it.servingSize,
-                it.servingSizeUnit,
                 it.macroNutrients
             )
         }
 
         return Defaults.defaultMealFood
     }
+
+    private fun getFoodQuantity() = binding.foodQuantityEditText.text.toString().toDouble()
 }

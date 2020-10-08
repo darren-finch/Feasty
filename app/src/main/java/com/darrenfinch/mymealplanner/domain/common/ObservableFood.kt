@@ -87,7 +87,7 @@ class ObservableFood : BaseObservable() {
         servingSizeUnit = food.servingSizeUnit
         servingSizeString = food.servingSize.toString()
         caloriesString = food.macroNutrients.calories.toString()
-        carbohydratesString = food.macroNutrients.carbohydrates.toString()
+        carbohydratesString = food.macroNutrients.carbs.toString()
         fatString = food.macroNutrients.fat.toString()
         proteinString = food.macroNutrients.protein.toString()
     }
@@ -100,7 +100,7 @@ class ObservableFood : BaseObservable() {
             servingSize = getNumericalServingSize(),
             macroNutrients = MacroNutrients(
                 calories = getNumericalCalories(),
-                carbohydrates = getNumericalCarbohydrates(),
+                carbs = getNumericalCarbohydrates(),
                 fat = getNumericalFat(),
                 protein = getNumericalProtein()
             )

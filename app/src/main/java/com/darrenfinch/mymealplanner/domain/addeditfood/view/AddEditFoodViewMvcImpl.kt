@@ -90,7 +90,7 @@ class AddEditFoodViewMvcImpl(
             title = getFoodName(),
             macroNutrients = MacroNutrients(
                 calories = getCalories(),
-                carbohydrates = getCarbohydrates(),
+                carbs = getCarbohydrates(),
                 fat = getFat(),
                 protein = getProtein()
             ),

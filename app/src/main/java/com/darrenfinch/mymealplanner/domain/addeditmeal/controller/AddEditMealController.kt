@@ -29,18 +29,19 @@ class AddEditMealController(
     }
 
     fun onViewCreated(mealId: Int) {
-        if(!isEditingFoodForTheFirstTime(mealId)) {
-            addNewMealFoodToCurrentMeal()
-            bindObservableMealToView()
-        }
-        else {
+        if(isEditingExistingMeal(mealId) && isEditingMealForTheFirstTime()) {
             //Asynchronously fetch meal from repository
             //When meal is fetched:
             //Bind observable meal to view
         }
+        else {
+            addNewMealFoodToCurrentMeal()
+            bindObservableMealToView()
+        }
     }
 
-    private fun isEditingFoodForTheFirstTime(mealId: Int) = mealId != Constants.DEFAULT_INVALID_MEAL_ID && currentMeal == null && newMealFood == null
+    private fun isEditingExistingMeal(mealId: Int) = mealId != Constants.DEFAULT_INVALID_MEAL_ID
+    private fun isEditingMealForTheFirstTime() = currentMeal == null && newMealFood == null
 
     private fun bindObservableMealToView() {
         viewMvc.bindMealDetails(viewModel.getObservableMeal())

@@ -19,7 +19,7 @@ object DataConverters {
             servingSize = mealFood.servingSize,
             macroNutrients = MacroNutrients(
                 calories = mealFood.macroNutrients.calories,
-                carbohydrates = mealFood.macroNutrients.carbohydrates,
+                carbs = mealFood.macroNutrients.carbs,
                 fat = mealFood.macroNutrients.fat,
                 protein = mealFood.macroNutrients.protein
             )
@@ -34,16 +34,16 @@ object DataConverters {
             servingSize = food.servingSize,
             macroNutrients = MacroNutrients(
                 calories = food.macroNutrients.calories,
-                carbohydrates = food.macroNutrients.carbohydrates,
+                carbs = food.macroNutrients.carbs,
                 fat = food.macroNutrients.fat,
                 protein = food.macroNutrients.protein
             ),
-            desiredQuantity = food.servingSize
+            desiredServingSize = food.servingSize
         )
     }
 
     fun convertMealFoodToDatabaseMealFood(mealFood: MealFood, mealId: Int): DatabaseMealFood {
-        return DatabaseMealFood(mealFood.id, mealId, mealFood.desiredQuantity)
+        return DatabaseMealFood(mealFood.id, mealId, mealFood.desiredServingSize)
     }
 
     fun convertDatabaseFoodToFood(databaseFood: DatabaseFood): Food {
@@ -101,12 +101,12 @@ object DataConverters {
         return MealFood(
             id = foodFromDatabase.id,
             title = foodFromDatabase.title,
-            desiredQuantity = databaseMealFood.desiredQuantity,
+            desiredServingSize = databaseMealFood.desiredQuantity,
             servingSizeUnit = foodFromDatabase.servingSizeUnit,
             servingSize = foodFromDatabase.servingSize,
             macroNutrients = MacroNutrients(
                 calories = foodFromDatabase.macroNutrients.calories,
-                carbohydrates = foodFromDatabase.macroNutrients.carbohydrates,
+                carbs = foodFromDatabase.macroNutrients.carbs,
                 fat = foodFromDatabase.macroNutrients.fat,
                 protein = foodFromDatabase.macroNutrients.protein
             )

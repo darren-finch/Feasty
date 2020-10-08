@@ -22,7 +22,7 @@ object StringUtils {
         return makeMacroNutrientString(
             mealFood.macroNutrients.calories,
             mealFood.macroNutrients.protein,
-            mealFood.macroNutrients.carbohydrates,
+            mealFood.macroNutrients.carbs,
             mealFood.macroNutrients.fat
         )
     }
@@ -31,7 +31,7 @@ object StringUtils {
         return makeMacroNutrientString(
             food.macroNutrients.calories,
             food.macroNutrients.protein,
-            food.macroNutrients.carbohydrates,
+            food.macroNutrients.carbs,
             food.macroNutrients.fat
         )
     }
@@ -68,7 +68,7 @@ object StringUtils {
 
         meal.foods.forEach { food -> totalCalories += food.macroNutrients.calories }
         meal.foods.forEach { food -> totalProtein += food.macroNutrients.protein }
-        meal.foods.forEach { food -> totalCarbohydrates += food.macroNutrients.carbohydrates }
+        meal.foods.forEach { food -> totalCarbohydrates += food.macroNutrients.carbs }
         meal.foods.forEach { food -> totalFat += food.macroNutrients.fat }
 
         return makeMacroNutrientString(totalCalories, totalProtein, totalCarbohydrates, totalFat)

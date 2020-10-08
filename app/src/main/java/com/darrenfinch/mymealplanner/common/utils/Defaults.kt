@@ -17,7 +17,7 @@ object Defaults {
         MealFood(
             id = 0,
             title = "Empty Meal",
-            desiredQuantity = 0.0,
+            desiredServingSize = 0.0,
             servingSize = 0.0,
             servingSizeUnit = MetricUnit.defaultUnit,
             macroNutrients = MacroNutrients(

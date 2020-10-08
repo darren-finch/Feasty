@@ -1,9 +1,34 @@
 package com.darrenfinch.mymealplanner.model.helpers
 
 import com.darrenfinch.mymealplanner.model.data.entities.Food
+import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
+import com.darrenfinch.physicalquantities.PhysicalQuantity
 
 object MacroCalculator
 {
+    fun updateMacrosForFoodWithNewServingSize(food: Food, newServingSize: PhysicalQuantity): Food {
+        val macros = food.macroNutrients
+        val initialCalories = macros.calories
+        val initialProtein = macros.protein
+        val initialCarbs = macros.carbs
+        val initialFat = macros.fat
+
+        val caloriesPerUnit = food.servingSize.quantity / initialCalories
+        val finalCalories = newServingSize.quantity / caloriesPerUnit
+
+        val proteinPerUnit = food.servingSize.quantity / initialProtein
+        val finalProtein = newServingSize.quantity / proteinPerUnit
+
+        val carbsPerUnit = food.servingSize.quantity / initialCarbs
+        val finalCarbs = newServingSize.quantity / carbsPerUnit
+
+        val fatPerUnit = food.servingSize.quantity / initialFat
+        val finalFat = newServingSize.quantity / fatPerUnit
+
+        return Food(food.id, food.title, newServingSize, MacroNutrients(finalCalories.toInt(), finalProtein.toInt(), finalCarbs.toInt(),
+            finalFat.toInt()
+        ))
+    }
     fun calculateTotalCalories(foods: List<Food>) : Int
     {
         var totalCalories = 0
@@ -19,7 +44,7 @@ object MacroCalculator
     fun calculateTotalCarbohydrates(foods: List<Food>) : Int
     {
         var totalCarbohydrates = 0
-        foods.forEach { food -> totalCarbohydrates += food.macroNutrients.carbohydrates }
+        foods.forEach { food -> totalCarbohydrates += food.macroNutrients.carbs }
         return totalCarbohydrates
     }
     fun calculateTotalFat(foods: List<Food>) : Int

@@ -214,7 +214,7 @@ object Utils {
 //        return foodsList
 //    }
     fun calculateTotalCalories(meal: Meal) = meal.foods.sumBy { it.macroNutrients.calories }
-    fun calculateTotalCarbohydrates(meal: Meal) = meal.foods.sumBy { it.macroNutrients.carbohydrates }
+    fun calculateTotalCarbohydrates(meal: Meal) = meal.foods.sumBy { it.macroNutrients.carbs }
     fun calculateTotalFats(meal: Meal) = meal.foods.sumBy { it.macroNutrients.fat }
     fun calculateTotalProteins(meal: Meal) = meal.foods.sumBy { it.macroNutrients.protein }
 }
