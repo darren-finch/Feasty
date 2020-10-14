@@ -5,9 +5,9 @@ import com.darrenfinch.mymealplanner.common.views.ObservableViewMvc
 import com.darrenfinch.mymealplanner.model.data.entities.Food
 import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 
-interface SelectMealFoodViewMvc : ObservableViewMvc<SelectMealFoodViewMvc.Listener> {
+interface SelectMealFoodQuantityViewMvc : ObservableViewMvc<SelectMealFoodQuantityViewMvc.Listener> {
     interface Listener {
-        fun onMealFoodQuantityChosen(mealFood: MealFood)
+        fun onMealFoodQuantityChosen(updatedMealFood: MealFood)
     }
 
     fun bindFood(food: Food)

@@ -2,9 +2,9 @@ package com.darrenfinch.mymealplanner.common
 
 import androidx.navigation.NavController
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.domain.addeditmeal.controller.AddEditMealFragmentDirections
 import com.darrenfinch.mymealplanner.domain.allfoods.controller.AllFoodsFragmentDirections
 import com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsFragmentDirections
+import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormFragmentDirections
 import com.darrenfinch.mymealplanner.domain.selectfoodformeal.controller.SelectFoodForMealDialogDirections
 import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.controller.SelectMealFoodQuantityDialogDirections
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
@@ -52,7 +52,7 @@ class ScreensNavigator(private val navigationController: NavController) {
 
     fun navigateToSelectFoodForMealScreen(currentMealData: Meal) {
         val directions =
-            AddEditMealFragmentDirections.actionAddEditMealFragmentToSelectFoodForMealDialog(
+            MealFormFragmentDirections.actionAddEditMealFragmentToSelectFoodForMealDialog(
                 currentMealData
             )
         navigationController.navigate(directions)

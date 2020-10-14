@@ -7,7 +7,7 @@ import com.darrenfinch.mymealplanner.InstantExecutorExtension
 import com.darrenfinch.mymealplanner.TestData
 import com.darrenfinch.mymealplanner.TestData.DEFAULT_VALID_FOOD_ID
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
-import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.view.SelectMealFoodViewMvc
+import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.view.SelectMealFoodQuantityViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
 import io.mockk.every
 import io.mockk.mockk
@@ -33,7 +33,7 @@ internal class SelectMealFoodQuantityControllerTest {
 
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
     private val getSingleFoodUseCase = mockk<GetFoodUseCase>(relaxUnitFun = true)
-    private val viewMvc = mockk<SelectMealFoodViewMvc>(relaxUnitFun = true)
+    private val viewMvc = mockk<SelectMealFoodQuantityViewMvc>(relaxUnitFun = true)
     //endregion Helper Fields ----------------------------------------------------------------------
 
     private lateinit var SUT: SelectMealFoodQuantityController

@@ -1,8 +1,12 @@
-package com.darrenfinch.physicalquantities
+package com.darrenfinch.mymealplanner.domain.physicalquantities
 
-import com.darrenfinch.physicalquantities.units.MeasurementUnit
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.MeasurementUnit
 
 class PhysicalQuantity(val quantity: Double, val unit: MeasurementUnit) {
+    companion object {
+        val defaultPhysicalQuantity = PhysicalQuantity(0.0, MeasurementUnit.defaultUnit)
+    }
+
     /**
      * Returns a new PhysicalQuantity with an updated unit.
      * This doesn't sound too complicated until you remember that you must also update the numerical quantity so the actual measurement remains the same.

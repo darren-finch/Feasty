@@ -1,9 +1,9 @@
-package com.darrenfinch.mymealplanner.domain.addeditmeal.controller
+package com.darrenfinch.mymealplanner.domain.mealform.controller
 
 import com.darrenfinch.mymealplanner.TestData
 import com.darrenfinch.mymealplanner.TestData.DEFAULT_INVALID_MEAL_ID
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
-import com.darrenfinch.mymealplanner.domain.addeditmeal.view.AddEditMealViewMvc
+import com.darrenfinch.mymealplanner.domain.mealform.view.MealFormViewMvc
 import com.darrenfinch.mymealplanner.domain.common.ObservableMeal
 import com.darrenfinch.mymealplanner.domain.usecases.InsertMealUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
@@ -13,7 +13,7 @@ import io.mockk.verify
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class AddEditMealControllerTest {
+internal class MealFormControllerTest {
     //region Constants -----------------------------------------------------------------------------
 
     //endregion Constants --------------------------------------------------------------------------
@@ -24,18 +24,18 @@ internal class AddEditMealControllerTest {
 
     private val defaultObservableMeal = ObservableMeal()
 
-    private val viewModel = mockk<AddEditMealViewModel>(relaxUnitFun = true)
+    private val viewModel = mockk<MealFormViewModel>(relaxUnitFun = true)
     private val insertMealUseCase = mockk<InsertMealUseCase>(relaxUnitFun = true)
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
-    private val viewMvc = mockk<AddEditMealViewMvc>(relaxUnitFun = true)
+    private val viewMvc = mockk<MealFormViewMvc>(relaxUnitFun = true)
     //endregion Helper Fields ----------------------------------------------------------------------
 
-    private lateinit var SUT: AddEditMealController
+    private lateinit var SUT: MealFormController
 
     //region Set up / Tear down
     @BeforeEach
     fun setUp() {
-        SUT = AddEditMealController(viewModel, insertMealUseCase, screensNavigator, defaultMealFood, defaultMeal)
+        SUT = MealFormController(viewModel, insertMealUseCase, screensNavigator, defaultMealFood, defaultMeal)
         SUT.bindView(viewMvc)
         every { viewModel.getObservableMeal() } returns defaultObservableMeal
     }

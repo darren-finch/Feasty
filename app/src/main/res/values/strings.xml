@@ -22,4 +22,5 @@
     <string name="view_more">View More</string>
     <string name="dropdown">Dropdown</string>
     <string name="macro_nutrients">Macro Nutrients</string>
+    <string name="unit_type">Unit Type</string>
 </resources>

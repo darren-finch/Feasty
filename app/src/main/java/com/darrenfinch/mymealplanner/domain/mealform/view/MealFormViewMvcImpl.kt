@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.domain.addeditmeal.view
+package com.darrenfinch.mymealplanner.domain.mealform.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,17 +8,17 @@ import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.reusable.mealfoodsrecyclerviewadapter.MealFoodsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.common.reusable.recyclerviewitemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
-import com.darrenfinch.mymealplanner.databinding.FragmentAddEditMealBinding
+import com.darrenfinch.mymealplanner.databinding.FragmentMealFormBinding
 import com.darrenfinch.mymealplanner.domain.common.ObservableMeal
 
-class AddEditMealViewMvcImpl(
+class MealFormViewMvcImpl(
     inflater: LayoutInflater,
     parent: ViewGroup?
-) : BaseObservableViewMvc<AddEditMealViewMvc.Listener>(), AddEditMealViewMvc {
+) : BaseObservableViewMvc<MealFormViewMvc.Listener>(), MealFormViewMvc {
 
-    private val binding: FragmentAddEditMealBinding = DataBindingUtil.inflate(
+    private val binding: FragmentMealFormBinding = DataBindingUtil.inflate(
         inflater,
-        R.layout.fragment_add_edit_meal,
+        R.layout.fragment_meal_form,
         parent,
         false
     )

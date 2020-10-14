@@ -1,8 +1,8 @@
-package com.darrenfinch.physicalquantities.units.metric
+package com.darrenfinch.mymealplanner.domain.physicalquantities.units.metric
 
-import com.darrenfinch.physicalquantities.MeasurementSystem
-import com.darrenfinch.physicalquantities.units.MeasurementUnit
-import com.darrenfinch.physicalquantities.units.MeasurementType
+import com.darrenfinch.mymealplanner.domain.physicalquantities.MeasurementSystem
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.MeasurementUnit
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.MeasurementType
 
 abstract class MetricUnit(val prefix: MetricPrefix) : MeasurementUnit() {
     /**
@@ -55,7 +55,7 @@ class Gram(prefix: MetricPrefix = NullPrefix()) : MetricUnit(prefix) {
 class Liter(prefix: MetricPrefix = NullPrefix()) : MetricUnit(prefix) {
 
     override fun getMeasurementType(): MeasurementType {
-        return MeasurementType.LiquidVolume
+        return MeasurementType.Volume
     }
 
     override fun getUnitAsString(plural: Boolean, abbreviated: Boolean): String {

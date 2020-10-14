@@ -1,13 +1,9 @@
 package com.darrenfinch.mymealplanner.model.data.entitysubdata
 
-import com.darrenfinch.mymealplanner.domain.physicalquantities.units.uscustomary.*
-import com.darrenfinch.mymealplanner.domain.physicalquantities.units.metric.*
-import com.darrenfinch.mymealplanner.domain.physicalquantities.units.imperial.*
-import com.darrenfinch.physicalquantities.PhysicalQuantity
-import com.darrenfinch.physicalquantities.units.imperial.ImperialOunce
-import com.darrenfinch.physicalquantities.units.metric.Gram
+import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.imperial.ImperialOunce
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.metric.Gram
 import org.junit.Assert.assertEquals
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class MacroNutrientsTest {

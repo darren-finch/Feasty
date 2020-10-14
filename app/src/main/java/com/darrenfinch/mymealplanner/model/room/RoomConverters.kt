@@ -1,6 +1,8 @@
 package com.darrenfinch.mymealplanner.model.room
 
 import androidx.room.TypeConverter
+import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
+import com.darrenfinch.mymealplanner.domain.physicalquantities.stringsToUnits
 import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
 import com.darrenfinch.mymealplanner.model.data.entitysubdata.MetricUnit
 import com.google.gson.Gson
@@ -29,15 +31,17 @@ class RoomConverters {
     }
 
     @TypeConverter
-    fun convertMeasurementUnitToString(value: MetricUnit) = value.name
+    fun convertPhysicalQuantityToString(value: PhysicalQuantity) = "${value.quantity} ${value.unit.getUnitAsString(plural = false, abbreviated = false)}"
 
     @TypeConverter
-    fun stringToMeasurementUnit(value: String): MetricUnit {
+    fun stringToPhysicalQuantity(value: String): PhysicalQuantity {
         return try {
-            enumValueOf(value)
+            val strings = value.split(" ")
+            val quantity = strings[0].toDouble()
+            val unit = stringsToUnits[strings[1]]!!
+            PhysicalQuantity(quantity, unit)
         } catch (e: Exception) {
-            e.printStackTrace()
-            MetricUnit.defaultUnit
+            PhysicalQuantity.defaultPhysicalQuantity
         }
     }
 }

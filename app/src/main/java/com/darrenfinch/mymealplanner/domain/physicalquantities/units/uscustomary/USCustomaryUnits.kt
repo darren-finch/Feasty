@@ -1,8 +1,8 @@
-package com.darrenfinch.physicalquantities.units.uscustomary
+package com.darrenfinch.mymealplanner.domain.physicalquantities.units.uscustomary
 
-import com.darrenfinch.physicalquantities.MeasurementSystem
-import com.darrenfinch.physicalquantities.units.MeasurementUnit
-import com.darrenfinch.physicalquantities.units.MeasurementType
+import com.darrenfinch.mymealplanner.domain.physicalquantities.MeasurementSystem
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.MeasurementUnit
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.MeasurementType
 
 //Most of the units in the imperial system also appear in the US customary system.
 abstract class USCustomaryUnit : MeasurementUnit() {
@@ -116,7 +116,7 @@ class USTon : USCustomaryUnit() {
 //region Liquid volume units
 class USCup : USCustomaryUnit() {
     override fun getMeasurementType(): MeasurementType {
-        return MeasurementType.LiquidVolume
+        return MeasurementType.Volume
     }
 
     override fun getBaseUnitRatio(): Double {
@@ -130,7 +130,7 @@ class USCup : USCustomaryUnit() {
 
 class USTeaspoon : USCustomaryUnit() {
     override fun getMeasurementType(): MeasurementType {
-        return MeasurementType.LiquidVolume
+        return MeasurementType.Volume
     }
 
     override fun getBaseUnitRatio(): Double {
@@ -144,7 +144,7 @@ class USTeaspoon : USCustomaryUnit() {
 
 class USTablespoon : USCustomaryUnit() {
     override fun getMeasurementType(): MeasurementType {
-        return MeasurementType.LiquidVolume
+        return MeasurementType.Volume
     }
 
     override fun getBaseUnitRatio(): Double {
@@ -158,7 +158,7 @@ class USTablespoon : USCustomaryUnit() {
 
 class USFluidOunce : USCustomaryUnit() {
     override fun getMeasurementType(): MeasurementType {
-        return MeasurementType.LiquidVolume
+        return MeasurementType.Volume
     }
 
     override fun getBaseUnitRatio(): Double {
@@ -172,7 +172,7 @@ class USFluidOunce : USCustomaryUnit() {
 
 class USPint : USCustomaryUnit() {
     override fun getMeasurementType(): MeasurementType {
-        return MeasurementType.LiquidVolume
+        return MeasurementType.Volume
     }
 
     override fun getBaseUnitRatio(): Double {
@@ -186,7 +186,7 @@ class USPint : USCustomaryUnit() {
 
 class USQuart : USCustomaryUnit() {
     override fun getMeasurementType(): MeasurementType {
-        return MeasurementType.LiquidVolume
+        return MeasurementType.Volume
     }
 
     override fun getBaseUnitRatio(): Double {
@@ -200,7 +200,7 @@ class USQuart : USCustomaryUnit() {
 
 class USGallon : USCustomaryUnit() {
     override fun getMeasurementType(): MeasurementType {
-        return MeasurementType.LiquidVolume
+        return MeasurementType.Volume
     }
 
     override fun getBaseUnitRatio(): Double {

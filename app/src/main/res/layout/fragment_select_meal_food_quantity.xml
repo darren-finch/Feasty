@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/standard_margin"
             android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/foodUnitSpinner"
+            app:layout_constraintEnd_toStartOf="@+id/measurementUnitSpinner"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/macroNutrientsTextView">
 
@@ -62,7 +62,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Spinner
-            android:id="@+id/foodUnitSpinner"
+            android:id="@+id/measurementUnitSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/standard_margin"

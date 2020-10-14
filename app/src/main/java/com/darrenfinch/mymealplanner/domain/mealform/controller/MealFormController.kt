@@ -1,22 +1,22 @@
-package com.darrenfinch.mymealplanner.domain.addeditmeal.controller
+package com.darrenfinch.mymealplanner.domain.mealform.controller
 
 import com.darrenfinch.mymealplanner.common.Constants
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
-import com.darrenfinch.mymealplanner.domain.addeditmeal.view.AddEditMealViewMvc
+import com.darrenfinch.mymealplanner.domain.mealform.view.MealFormViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.InsertMealUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 
-class AddEditMealController(
-    private val viewModel: AddEditMealViewModel,
+class MealFormController(
+    private val viewModel: MealFormViewModel,
     private val insertMealUseCase: InsertMealUseCase,
     private val screensNavigator: ScreensNavigator,
     private val newMealFood: MealFood?,
     private val currentMeal: Meal?
-) : AddEditMealViewMvc.Listener {
-    private lateinit var viewMvc: AddEditMealViewMvc
+) : MealFormViewMvc.Listener {
+    private lateinit var viewMvc: MealFormViewMvc
 
-    fun bindView(viewMvc: AddEditMealViewMvc) {
+    fun bindView(viewMvc: MealFormViewMvc) {
         this.viewMvc = viewMvc
     }
 

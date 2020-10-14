@@ -1,8 +1,8 @@
-package com.darrenfinch.physicalquantities.units.imperial
+package com.darrenfinch.mymealplanner.domain.physicalquantities.units.imperial
 
-import com.darrenfinch.physicalquantities.MeasurementSystem
-import com.darrenfinch.physicalquantities.units.MeasurementType
-import com.darrenfinch.physicalquantities.units.MeasurementUnit
+import com.darrenfinch.mymealplanner.domain.physicalquantities.MeasurementSystem
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.MeasurementType
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.MeasurementUnit
 
 abstract class ImperialUnit : MeasurementUnit() {
     override fun getMeasurementSystem(): MeasurementSystem {
@@ -185,7 +185,7 @@ class ImperialTon : ImperialUnit() {
 //region Liquid volume units
 class ImperialFluidOunce : ImperialUnit() {
     override fun getMeasurementType(): MeasurementType {
-        return MeasurementType.LiquidVolume
+        return MeasurementType.Volume
     }
 
     override fun getBaseUnitRatio(): Double {
@@ -199,7 +199,7 @@ class ImperialFluidOunce : ImperialUnit() {
 
 class ImperialGill : ImperialUnit() {
     override fun getMeasurementType(): MeasurementType {
-        return MeasurementType.LiquidVolume
+        return MeasurementType.Volume
     }
 
     override fun getBaseUnitRatio(): Double {
@@ -213,7 +213,7 @@ class ImperialGill : ImperialUnit() {
 
 class ImperialPint : ImperialUnit() {
     override fun getMeasurementType(): MeasurementType {
-        return MeasurementType.LiquidVolume
+        return MeasurementType.Volume
     }
 
     override fun getBaseUnitRatio(): Double {
@@ -227,7 +227,7 @@ class ImperialPint : ImperialUnit() {
 
 class ImperialQuart : ImperialUnit() {
     override fun getMeasurementType(): MeasurementType {
-        return MeasurementType.LiquidVolume
+        return MeasurementType.Volume
     }
 
     override fun getBaseUnitRatio(): Double {
@@ -241,7 +241,7 @@ class ImperialQuart : ImperialUnit() {
 
 class ImperialGallon : ImperialUnit() {
     override fun getMeasurementType(): MeasurementType {
-        return MeasurementType.LiquidVolume
+        return MeasurementType.Volume
     }
 
     override fun getBaseUnitRatio(): Double {

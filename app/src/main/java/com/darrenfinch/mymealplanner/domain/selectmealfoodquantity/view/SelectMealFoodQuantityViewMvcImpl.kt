@@ -3,20 +3,20 @@ package com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.view
 import android.app.AlertDialog
 import android.app.Dialog
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.utils.Defaults
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentSelectMealFoodQuantityBinding
+import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.model.data.entities.Food
 import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 
 class SelectMealFoodQuantityViewMvcImpl(
     inflater: LayoutInflater,
     parent: ViewGroup?
-) : BaseObservableViewMvc<SelectMealFoodViewMvc.Listener>(), SelectMealFoodViewMvc {
+) : BaseObservableViewMvc<SelectMealFoodQuantityViewMvc.Listener>(), SelectMealFoodQuantityViewMvc {
 
     private val binding: FragmentSelectMealFoodQuantityBinding = DataBindingUtil.inflate(
         inflater,
@@ -33,7 +33,7 @@ class SelectMealFoodQuantityViewMvcImpl(
     private fun initUI() {
         binding.apply {
             binding.food = Defaults.defaultFood
-            foodUnitSpinner.visibility = View.GONE //because we won't need this spinner for now.
+//            foodUnitSpinner.visibility = View.GONE //because we won't need this spinner for now.
         }
     }
 
@@ -54,15 +54,16 @@ class SelectMealFoodQuantityViewMvcImpl(
 
     private fun onPositiveButtonClicked() {
         for (listener in getListeners()) {
-            listener.onMealFoodQuantityChosen(getMealFoodData())
+            listener.onMealFoodQuantityChosen(getUpdatedMealFoodData())
         }
     }
 
-    private fun getMealFoodData(): MealFood {
+    private fun getUpdatedMealFoodData(): MealFood {
         binding.food?.let {
             return MealFood(
                 it.id,
                 it.title,
+                PhysicalQuantity(binding.foodQuantityEditText.text.toString().toDouble(), it.servingSize.unit),
                 it.servingSize,
                 it.macroNutrients
             )
@@ -70,6 +71,4 @@ class SelectMealFoodQuantityViewMvcImpl(
 
         return Defaults.defaultMealFood
     }
-
-    private fun getFoodQuantity() = binding.foodQuantityEditText.text.toString().toDouble()
 }

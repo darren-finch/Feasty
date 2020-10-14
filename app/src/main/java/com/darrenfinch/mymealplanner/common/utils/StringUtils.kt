@@ -47,10 +47,6 @@ object StringUtils {
         )}"
     }
 
-    fun makeFoodQuantityString(foodQuantity: Double, foodQuantityUnit: MetricUnit) : String {
-        return "$foodQuantity $foodQuantityUnit"
-    }
-
     fun getMacroSuffix(macroType: MacroType): String {
         return when (macroType) {
             MacroType.CALORIE -> "Calories"

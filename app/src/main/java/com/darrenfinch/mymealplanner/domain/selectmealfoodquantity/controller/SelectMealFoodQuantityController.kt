@@ -3,7 +3,7 @@ package com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.controller
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
-import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.view.SelectMealFoodViewMvc
+import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.view.SelectMealFoodQuantityViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import com.darrenfinch.mymealplanner.model.data.entities.MealFood
@@ -13,11 +13,11 @@ class SelectMealFoodQuantityController(
     private val getFoodUseCase: GetFoodUseCase,
     private val foodId: Int,
     private val currentMeal: Meal
-) : SelectMealFoodViewMvc.Listener {
+) : SelectMealFoodQuantityViewMvc.Listener {
 
-    private lateinit var viewMvc: SelectMealFoodViewMvc
+    private lateinit var viewMvc: SelectMealFoodQuantityViewMvc
 
-    fun bindView(viewMvc: SelectMealFoodViewMvc) {
+    fun bindView(viewMvc: SelectMealFoodQuantityViewMvc) {
         this.viewMvc = viewMvc
     }
 
@@ -35,9 +35,9 @@ class SelectMealFoodQuantityController(
         viewMvc.unregisterListener(this)
     }
 
-    override fun onMealFoodQuantityChosen(mealFood: MealFood) {
+    override fun onMealFoodQuantityChosen(updatedMealFood: MealFood) {
         screensNavigator.navigateFromSelectMealFoodQuantityScreenToAddEditMealScreen(
-            mealFood,
+            updatedMealFood,
             currentMeal
         )
     }

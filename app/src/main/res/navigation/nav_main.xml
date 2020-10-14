@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_all_foods" >
         <action
             android:id="@+id/action_foodsFragment_to_addEditFoodFragment"
-            app:destination="@id/addEditFoodFragment" />
+            app:destination="@id/foodFormFragment" />
     </fragment>
     <fragment
         android:id="@+id/mealPlanFragment"
@@ -31,22 +31,22 @@
         tools:layout="@layout/fragment_all_meals" >
         <action
             android:id="@+id/action_mealsFragment_to_addEditMealFragment"
-            app:destination="@id/addEditMealFragment" />
+            app:destination="@id/mealFormFragment" />
     </fragment>
     <fragment
-        android:id="@+id/addEditFoodFragment"
-        android:name="com.darrenfinch.mymealplanner.domain.addeditfood.controller.AddEditFoodFragment"
+        android:id="@+id/foodFormFragment"
+        android:name="com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormFragment"
         android:label="fragment_add_edit_food"
-        tools:layout="@layout/fragment_add_edit_food" >
+        tools:layout="@layout/fragment_food_form" >
         <argument
             android:name="foodId"
             app:argType="integer" />
     </fragment>
     <fragment
-        android:id="@+id/addEditMealFragment"
-        android:name="com.darrenfinch.mymealplanner.domain.addeditmeal.controller.AddEditMealFragment"
+        android:id="@+id/mealFormFragment"
+        android:name="com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormFragment"
         android:label="fragment_add_edit_meal"
-        tools:layout="@layout/fragment_add_edit_meal">
+        tools:layout="@layout/fragment_meal_form">
         <action
             android:id="@+id/action_addEditMealFragment_to_selectFoodForMealDialog"
             app:destination="@id/selectFoodForMealDialog"
@@ -88,7 +88,7 @@
             app:argType="integer" />
         <action
             android:id="@+id/action_selectMealFoodQuantityDialog_to_addEditMealFragment"
-            app:destination="@id/addEditMealFragment" />
+            app:destination="@id/mealFormFragment" />
         <argument
             android:name="currentMeal"
             app:argType="com.darrenfinch.mymealplanner.model.data.entities.Meal" />

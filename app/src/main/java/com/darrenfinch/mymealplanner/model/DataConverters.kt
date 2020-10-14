@@ -15,7 +15,6 @@ object DataConverters {
         return Food(
             id = mealFood.id,
             title = mealFood.title,
-            servingSizeUnit = mealFood.servingSizeUnit,
             servingSize = mealFood.servingSize,
             macroNutrients = MacroNutrients(
                 calories = mealFood.macroNutrients.calories,
@@ -30,7 +29,6 @@ object DataConverters {
         return MealFood(
             id = food.id,
             title = food.title,
-            servingSizeUnit = food.servingSizeUnit,
             servingSize = food.servingSize,
             macroNutrients = MacroNutrients(
                 calories = food.macroNutrients.calories,
@@ -51,7 +49,6 @@ object DataConverters {
             databaseFood.id,
             databaseFood.title,
             databaseFood.servingSize,
-            databaseFood.servingSizeUnit,
             databaseFood.macroNutrients
         )
     }
@@ -61,7 +58,6 @@ object DataConverters {
             food.id,
             food.title,
             food.servingSize,
-            food.servingSizeUnit,
             food.macroNutrients
         )
     }
@@ -101,9 +97,8 @@ object DataConverters {
         return MealFood(
             id = foodFromDatabase.id,
             title = foodFromDatabase.title,
-            desiredServingSize = databaseMealFood.desiredQuantity,
-            servingSizeUnit = foodFromDatabase.servingSizeUnit,
-            servingSize = foodFromDatabase.servingSize,
+            desiredServingSize = databaseMealFood.desiredServingSize,
+            servingSize = databaseMealFood.desiredServingSize,
             macroNutrients = MacroNutrients(
                 calories = foodFromDatabase.macroNutrients.calories,
                 carbs = foodFromDatabase.macroNutrients.carbs,

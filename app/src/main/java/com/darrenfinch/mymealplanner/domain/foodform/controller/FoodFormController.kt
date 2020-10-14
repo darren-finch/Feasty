@@ -1,27 +1,27 @@
-package com.darrenfinch.mymealplanner.domain.addeditfood.controller
+package com.darrenfinch.mymealplanner.domain.foodform.controller
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
-import com.darrenfinch.mymealplanner.domain.addeditfood.view.AddEditFoodViewMvc
+import com.darrenfinch.mymealplanner.domain.foodform.view.FoodFormViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.InsertFoodUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.UpdateFoodUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.Food
 
-class AddEditFoodController(
+class FoodFormController(
     private val screensNavigator: ScreensNavigator,
     private val getFoodUseCase: GetFoodUseCase,
     private val insertFoodUseCase: InsertFoodUseCase,
     private val updateFoodUseCase: UpdateFoodUseCase,
-    private val viewModel: AddEditFoodViewModel
-) : AddEditFoodViewMvc.Listener {
+    private val viewModel: FoodFormViewModel
+) : FoodFormViewMvc.Listener {
 
-    private lateinit var viewMvc: AddEditFoodViewMvc
+    private lateinit var viewMvc: FoodFormViewMvc
 
     private fun canFetchFoodDetails() = viewModel.isNotDirty() && !viewModel.insertingFood
 
-    fun bindView(viewMvc: AddEditFoodViewMvc) {
+    fun bindView(viewMvc: FoodFormViewMvc) {
         this.viewMvc = viewMvc
     }
 

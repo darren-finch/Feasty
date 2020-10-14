@@ -1,8 +1,13 @@
-package com.darrenfinch.physicalquantities.units
+package com.darrenfinch.mymealplanner.domain.physicalquantities.units
 
-import com.darrenfinch.physicalquantities.MeasurementSystem
+import com.darrenfinch.mymealplanner.domain.physicalquantities.MeasurementSystem
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.metric.Gram
 
 abstract class MeasurementUnit {
+    companion object {
+        val defaultUnit = Gram()
+    }
+
     /**
      * Returns the type of measurement this unit represents, e.g length, volume, mass, etc.
      */

@@ -23,19 +23,23 @@
     </style>
 
     <style name="H1" parent="H2">
+        <item name="font">@font/monda</item>
         <item name="android:textColor">@color/colorTextPrimary</item>
         <item name="android:textSize">30sp</item>
     </style>
 
     <style name="H2" parent="TextAppearance.AppCompat.Large">
+        <item name="font">@font/monda</item>
         <item name="android:textColor">@color/colorTextPrimary</item>
     </style>
 
     <style name="H3" parent="TextAppearance.AppCompat.Medium">
+        <item name="font">@font/monda</item>
         <item name="android:textColor">@color/colorTextPrimary</item>
     </style>
 
     <style name="H4" parent="TextAppearance.AppCompat.Small">
+        <item name="font">@font/monda</item>
         <item name="android:textColor">@color/colorTextPrimary</item>
     </style>
 

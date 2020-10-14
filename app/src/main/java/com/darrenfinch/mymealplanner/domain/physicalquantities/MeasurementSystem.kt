@@ -1,10 +1,16 @@
-package com.darrenfinch.physicalquantities
+package com.darrenfinch.mymealplanner.domain.physicalquantities
 
-import com.darrenfinch.physicalquantities.units.MeasurementType
-import com.darrenfinch.physicalquantities.units.MeasurementUnit
-import com.darrenfinch.physicalquantities.units.metric.*
-import com.darrenfinch.physicalquantities.units.uscustomary.*
-import com.darrenfinch.physicalquantities.units.imperial.*
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.MeasurementType
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.MeasurementUnit
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.imperial.ImperialInch
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.imperial.ImperialPint
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.imperial.ImperialPound
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.metric.Gram
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.metric.Liter
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.metric.Meter
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.uscustomary.USCup
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.uscustomary.USInch
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.uscustomary.USPound
 
 enum class MeasurementSystem {
     USCustomary,
@@ -27,7 +33,7 @@ enum class MeasurementSystem {
                     else -> Gram()
                 }
             }
-            MeasurementType.LiquidVolume -> {
+            MeasurementType.Volume -> {
                 when(measurementSystem) {
                     USCustomary -> USCup()
                     Imperial -> ImperialPint()

@@ -1,4 +1,4 @@
-package com.darrenfinch.physicalquantities.units.metric
+package com.darrenfinch.mymealplanner.domain.physicalquantities.units.metric
 
 abstract class MetricPrefix {
     abstract fun getMultiplier(): Double

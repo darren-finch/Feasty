@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.domain.addeditfood.controller
+package com.darrenfinch.mymealplanner.domain.foodform.controller
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,17 +8,17 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
-import com.darrenfinch.mymealplanner.domain.addeditfood.view.AddEditFoodViewMvc
+import com.darrenfinch.mymealplanner.domain.foodform.view.FoodFormViewMvc
 
-class AddEditFoodFragment : BaseFragment() {
+class FoodFormFragment : BaseFragment() {
 
-    private val viewModel: AddEditFoodViewModel by viewModels {
-        AddEditFoodViewModelFactory(args.foodId, fragmentCompositionRoot.getApplication())
+    private val viewModel: FoodFormViewModel by viewModels {
+        FoodFormViewModelFactory(args.foodId, fragmentCompositionRoot.getApplication())
     }
 
-    private lateinit var controller: AddEditFoodController
+    private lateinit var controller: FoodFormController
 
-    private val args: AddEditFoodFragmentArgs by navArgs()
+    private val args: FoodFormFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,7 +33,7 @@ class AddEditFoodFragment : BaseFragment() {
 
     private fun initViewMvc(container: ViewGroup?) = fragmentCompositionRoot.getViewMvcFactory().getAddEditFoodViewMvc(container, args.foodId < 0)
 
-    private fun initController(viewMvc: AddEditFoodViewMvc) {
+    private fun initController(viewMvc: FoodFormViewMvc) {
         controller = fragmentCompositionRoot.getAddEditFoodController(viewModel)
         controller.bindView(viewMvc)
         controller.fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner)

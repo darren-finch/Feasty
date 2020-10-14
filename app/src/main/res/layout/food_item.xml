@@ -74,7 +74,7 @@
                 android:layout_marginVertical="@dimen/standard_margin_half"
                 android:layout_marginEnd="@dimen/standard_margin_half"
                 android:gravity="end"
-                android:text="@{StringUtils.INSTANCE.makeFoodQuantityString(food.servingSize, food.servingSizeUnit)}"
+                android:text="@{food.servingSize.getAsString(true)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/foodTitleTextView"

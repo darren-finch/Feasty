@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.domain.addeditmeal.controller
+package com.darrenfinch.mymealplanner.domain.mealform.controller
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,20 +7,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-import com.darrenfinch.mymealplanner.common.Constants
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
-import com.darrenfinch.mymealplanner.domain.addeditmeal.view.AddEditMealViewMvc
+import com.darrenfinch.mymealplanner.domain.mealform.view.MealFormViewMvc
 
-class AddEditMealFragment : BaseFragment() {
+class MealFormFragment : BaseFragment() {
 
-    private val viewModel: AddEditMealViewModel by viewModels {
+    private val viewModel: MealFormViewModel by viewModels {
         ViewModelProvider.NewInstanceFactory()
     }
 
-    private val args: AddEditMealFragmentArgs by navArgs()
+    private val args: MealFormFragmentArgs by navArgs()
 
-    private lateinit var controller: AddEditMealController
-    private lateinit var viewMvc: AddEditMealViewMvc
+    private lateinit var controller: MealFormController
+    private lateinit var viewMvc: MealFormViewMvc
 
     override fun onCreateView(
         inflater: LayoutInflater,

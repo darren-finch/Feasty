@@ -1,5 +1,6 @@
 package com.darrenfinch.mymealplanner.common.utils
 
+import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.model.data.entities.Food
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import com.darrenfinch.mymealplanner.model.data.entities.MealFood
@@ -17,9 +18,8 @@ object Defaults {
         MealFood(
             id = 0,
             title = "Empty Meal",
-            desiredServingSize = 0.0,
-            servingSize = 0.0,
-            servingSizeUnit = MetricUnit.defaultUnit,
+            desiredServingSize = PhysicalQuantity.defaultPhysicalQuantity,
+            servingSize = PhysicalQuantity.defaultPhysicalQuantity,
             macroNutrients = MacroNutrients(
                 0,
                 0,
@@ -30,8 +30,7 @@ object Defaults {
 
     val defaultFood = Food(
         title = "",
-        servingSize = 0.0,
-        servingSizeUnit = MetricUnit.defaultUnit,
+        servingSize = PhysicalQuantity.defaultPhysicalQuantity,
         macroNutrients = MacroNutrients(
             0,
             0,

@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".domain.addeditfood.controller.AddEditFoodFragment">
+        tools:context=".domain.foodform.controller.FoodFormFragment">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/foodNameEditTextLayout"
@@ -28,8 +28,8 @@
                 android:id="@+id/foodNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={food.title}"
-                android:hint="@string/food_name" />
+                android:hint="@string/food_name"
+                android:text="@={food.title}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:text="@={food.carbohydratesString}"
+                android:text="@={food.carbsString}"
                 android:hint="@string/carbohydrates" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -119,7 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/standard_margin"
             android:layout_marginTop="@dimen/standard_margin"
-            app:layout_constraintEnd_toStartOf="@+id/foodUnitSpinner"
+            app:layout_constraintEnd_toStartOf="@+id/measurementUnitSpinner"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/proteinEditTextLayout">
 
@@ -129,12 +129,12 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/food_quantity"
                 android:inputType="numberDecimal"
-                android:text="@={food.servingSizeString}" />
+                android:text="@={food.servingSizeQuantity}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <Spinner
-            android:id="@+id/foodUnitSpinner"
+            android:id="@+id/measurementUnitSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/standard_margin"
@@ -142,15 +142,33 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/foodQuantityEditTextLayout" />
 
-        <Button
-            android:id="@+id/doneButton"
+        <TextView
+            android:id="@+id/textView"
+            style="@style/H3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/standard_margin"
-            android:layout_marginEnd="@dimen/standard_margin"
-            android:text="@string/done"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/standard_margin"
+            android:text="@string/unit_type"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/foodQuantityEditTextLayout" />
 
+        <Spinner
+            android:id="@+id/measurementTypeSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/foodQuantityEditTextLayout" />
+
+        <Button
+            android:id="@+id/doneButton"
+            android:layout_margin="@dimen/standard_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/done"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/measurementTypeSpinner" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

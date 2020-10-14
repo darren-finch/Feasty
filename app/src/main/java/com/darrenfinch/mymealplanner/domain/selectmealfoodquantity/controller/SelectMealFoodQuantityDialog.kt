@@ -5,12 +5,12 @@ import android.os.Bundle
 import androidx.navigation.fragment.navArgs
 
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
-import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.view.SelectMealFoodViewMvc
+import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.view.SelectMealFoodQuantityViewMvc
 
 class SelectMealFoodQuantityDialog : BaseDialog() {
 
     private lateinit var controller: SelectMealFoodQuantityController
-    private lateinit var viewMvc: SelectMealFoodViewMvc
+    private lateinit var viewMvc: SelectMealFoodQuantityViewMvc
 
     private val args: SelectMealFoodQuantityDialogArgs by navArgs()
 

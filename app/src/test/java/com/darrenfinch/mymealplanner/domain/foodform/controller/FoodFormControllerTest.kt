@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.domain.addeditfood.controller
+package com.darrenfinch.mymealplanner.domain.foodform.controller
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -7,7 +7,7 @@ import com.darrenfinch.mymealplanner.InstantExecutorExtension
 import com.darrenfinch.mymealplanner.TestData
 import com.darrenfinch.mymealplanner.TestData.DEFAULT_VALID_FOOD_ID
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
-import com.darrenfinch.mymealplanner.domain.addeditfood.view.AddEditFoodViewMvc
+import com.darrenfinch.mymealplanner.domain.foodform.view.FoodFormViewMvc
 import com.darrenfinch.mymealplanner.domain.common.ObservableFood
 import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.InsertFoodUseCase
@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(InstantExecutorExtension::class)
-internal class AddEditFoodControllerTest {
+internal class FoodFormControllerTest {
     private lateinit var observableFood: ObservableFood
 
     private val defaultFoodData = TestData.defaultFood
@@ -34,15 +34,15 @@ internal class AddEditFoodControllerTest {
     private val getSingleFoodUseCase = mockk<GetFoodUseCase>(relaxUnitFun = true)
     private val insertFoodUseCase = mockk<InsertFoodUseCase>(relaxUnitFun = true)
     private val updateFoodUseCase = mockk<UpdateFoodUseCase>(relaxUnitFun = true)
-    private val viewModel = mockk<AddEditFoodViewModel>(relaxUnitFun = true)
+    private val viewModel = mockk<FoodFormViewModel>(relaxUnitFun = true)
 
-    private val viewMvc = mockk<AddEditFoodViewMvc>(relaxUnitFun = true)
+    private val viewMvc = mockk<FoodFormViewMvc>(relaxUnitFun = true)
 
-    private lateinit var SUT: AddEditFoodController
+    private lateinit var SUT: FoodFormController
 
     @BeforeEach
     fun setUp() {
-        SUT = AddEditFoodController(
+        SUT = FoodFormController(
             screensNavigator,
             getSingleFoodUseCase,
             insertFoodUseCase,

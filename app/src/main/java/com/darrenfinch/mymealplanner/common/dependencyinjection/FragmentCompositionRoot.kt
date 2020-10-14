@@ -5,10 +5,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import androidx.fragment.app.FragmentActivity
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
-import com.darrenfinch.mymealplanner.domain.addeditfood.controller.AddEditFoodController
-import com.darrenfinch.mymealplanner.domain.addeditfood.controller.AddEditFoodViewModel
-import com.darrenfinch.mymealplanner.domain.addeditmeal.controller.AddEditMealController
-import com.darrenfinch.mymealplanner.domain.addeditmeal.controller.AddEditMealViewModel
+import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormController
+import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormViewModel
+import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormController
+import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormViewModel
 import com.darrenfinch.mymealplanner.domain.allfoods.controller.AllFoodsController
 import com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsController
 import com.darrenfinch.mymealplanner.domain.selectfoodformeal.controller.SelectFoodForMealController
@@ -56,7 +56,7 @@ class FragmentCompositionRoot(
     //TODO: TEMP
     fun getDeleteAllMealsUseCase() = DeleteAllMealsUseCase(getMainRepository())
 
-    fun getAddEditFoodController(viewModel: AddEditFoodViewModel) = AddEditFoodController(
+    fun getAddEditFoodController(viewModel: FoodFormViewModel) = FoodFormController(
         getScreensNavigator(),
         getGetFoodUseCase(),
         getInsertFoodUseCase(),
@@ -81,10 +81,10 @@ class FragmentCompositionRoot(
         SelectFoodForMealController(getScreensNavigator(), getGetAllFoodsUseCase(), currentMeal)
 
     fun getAddEditMealController(
-        viewModel: AddEditMealViewModel,
+        viewModel: MealFormViewModel,
         newMealFood: MealFood?,
         currentMeal: Meal?
-    ) = AddEditMealController(
+    ) = MealFormController(
         viewModel,
         getInsertMealUseCase(),
         getScreensNavigator(),

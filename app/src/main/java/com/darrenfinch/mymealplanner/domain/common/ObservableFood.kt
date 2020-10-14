@@ -1,12 +1,15 @@
 package com.darrenfinch.mymealplanner.domain.common
 
+import androidx.core.text.isDigitsOnly
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
+import androidx.databinding.BindingAdapter
 import androidx.databinding.Observable
 import com.darrenfinch.mymealplanner.BR
+import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
+import com.darrenfinch.mymealplanner.domain.physicalquantities.units.MeasurementUnit
 import com.darrenfinch.mymealplanner.model.data.entities.Food
 import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
-import com.darrenfinch.mymealplanner.model.data.entitysubdata.MetricUnit
 
 class ObservableFood : BaseObservable() {
     var dirty = false
@@ -29,21 +32,26 @@ class ObservableFood : BaseObservable() {
             notifyPropertyChanged(BR.title)
         }
 
+    var servingSize: PhysicalQuantity = PhysicalQuantity.defaultPhysicalQuantity
+
     @get:Bindable
-    var servingSizeString: String = "0.0"
+    var servingSizeQuantity: String = "0.0"
         set(value) {
-            field = value
-            notifyPropertyChanged(BR.servingSizeString)
+            if(value.isNotEmpty() && value.isDigitsOnly()) {
+                field = value
+                servingSize = PhysicalQuantity(value.toDouble(), servingSizeUnit)
+                notifyPropertyChanged(BR.servingSizeQuantity)
+            }
         }
 
-    fun getNumericalServingSize() = servingSizeString.toDouble()
-
     @get:Bindable
-    var servingSizeUnit: MetricUnit = MetricUnit.defaultUnit
+    var servingSizeUnit: MeasurementUnit = MeasurementUnit.defaultUnit
         set(value) {
             field = value
+            servingSize = PhysicalQuantity(servingSizeQuantity.toDouble(), value)
             notifyPropertyChanged(BR.servingSizeUnit)
         }
+
 
     @get:Bindable
     var caloriesString: String = "0"
@@ -52,16 +60,12 @@ class ObservableFood : BaseObservable() {
             notifyPropertyChanged(BR.caloriesString)
         }
 
-    fun getNumericalCalories() = caloriesString.toInt()
-
     @get:Bindable
-    var carbohydratesString: String = "0"
+    var carbsString: String = "0"
         set(value) {
             field = value
-            notifyPropertyChanged(BR.carbohydratesString)
+            notifyPropertyChanged(BR.carbsString)
         }
-
-    fun getNumericalCarbohydrates() = carbohydratesString.toInt()
 
     @get:Bindable
     var fatString: String = "0"
@@ -70,8 +74,6 @@ class ObservableFood : BaseObservable() {
             notifyPropertyChanged(BR.fatString)
         }
 
-    fun getNumericalFat() = fatString.toInt()
-
     @get:Bindable
     var proteinString: String = "0"
         set(value) {
@@ -79,15 +81,12 @@ class ObservableFood : BaseObservable() {
             notifyPropertyChanged(BR.proteinString)
         }
 
-    fun getNumericalProtein() = proteinString.toInt()
-
     fun set(food: Food) {
         id = food.id
         title = food.title
-        servingSizeUnit = food.servingSizeUnit
-        servingSizeString = food.servingSize.toString()
+        servingSize = food.servingSize
         caloriesString = food.macroNutrients.calories.toString()
-        carbohydratesString = food.macroNutrients.carbs.toString()
+        carbsString = food.macroNutrients.carbs.toString()
         fatString = food.macroNutrients.fat.toString()
         proteinString = food.macroNutrients.protein.toString()
     }
@@ -96,13 +95,12 @@ class ObservableFood : BaseObservable() {
         return Food(
             id = id,
             title = title,
-            servingSizeUnit = servingSizeUnit,
-            servingSize = getNumericalServingSize(),
+            servingSize = servingSize,
             macroNutrients = MacroNutrients(
-                calories = getNumericalCalories(),
-                carbs = getNumericalCarbohydrates(),
-                fat = getNumericalFat(),
-                protein = getNumericalProtein()
+                calories = caloriesString.toInt(),
+                carbs = carbsString.toInt(),
+                fat = fatString.toInt(),
+                protein = proteinString.toInt()
             )
         )
     }
