@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-        <import type="com.darrenfinch.mymealplanner.common.utils.StringUtils"/>
         <variable
             name="mealFood"
             type="com.darrenfinch.mymealplanner.model.data.entities.MealFood" />
@@ -29,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="@{StringUtils.INSTANCE.makeMealFoodMacroNutrientsString(mealFood)}"
+            android:text="@{mealFood.macroNutrients.toString()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

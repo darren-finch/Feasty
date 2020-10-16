@@ -37,7 +37,7 @@ class Meter(prefix: MetricPrefix = NullPrefix()) : MetricUnit(prefix) {
     }
 
     override fun getUnitAsString(plural: Boolean, abbreviated: Boolean): String {
-        return "${prefix}meter${if (plural) "s" else ""}"
+        return if(abbreviated) "${prefix.getAsString(true)}m" else "${prefix}meter${if (plural) "s" else ""}"
     }
 }
 
@@ -48,7 +48,7 @@ class Gram(prefix: MetricPrefix = NullPrefix()) : MetricUnit(prefix) {
     }
 
     override fun getUnitAsString(plural: Boolean, abbreviated: Boolean): String {
-        return "${prefix}gram${if (plural) "s" else ""}"
+        return if(abbreviated) "${prefix.getAsString(true)}m" else "${prefix}gram${if (plural) "s" else ""}"
     }
 }
 
@@ -59,6 +59,6 @@ class Liter(prefix: MetricPrefix = NullPrefix()) : MetricUnit(prefix) {
     }
 
     override fun getUnitAsString(plural: Boolean, abbreviated: Boolean): String {
-        return "${prefix}liter${if (plural) "s" else ""}"
+        return if(abbreviated) "${prefix.getAsString(true)}l" else "${prefix}liter${if (plural) "s" else ""}"
     }
 }

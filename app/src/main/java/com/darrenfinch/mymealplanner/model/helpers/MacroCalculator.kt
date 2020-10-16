@@ -26,8 +26,8 @@ object MacroCalculator
         val fatPerUnit = food.servingSize.quantity / initialFat
         val finalFat = newServingSize.quantity / fatPerUnit
 
-        return Food(food.id, food.title, newServingSize, MacroNutrients(finalCalories.toInt(), finalProtein.toInt(), finalCarbs.toInt(),
-            finalFat.toInt()
+        return Food(food.id, food.title, newServingSize, MacroNutrients(calories = finalCalories.toInt(), protein = finalProtein.toInt(), carbs = finalCarbs.toInt(),
+            fat = finalFat.toInt()
         ))
     }
 
@@ -38,20 +38,20 @@ object MacroCalculator
         val initialCarbs = macros.carbs
         val initialFat = macros.fat
 
-        val caloriesPerUnit = mealFood.servingSize.quantity / initialCalories
+        val caloriesPerUnit = mealFood.desiredServingSize.quantity / initialCalories
         val finalCalories = newServingSize.quantity / caloriesPerUnit
 
-        val proteinPerUnit = mealFood.servingSize.quantity / initialProtein
+        val proteinPerUnit = mealFood.desiredServingSize.quantity / initialProtein
         val finalProtein = newServingSize.quantity / proteinPerUnit
 
-        val carbsPerUnit = mealFood.servingSize.quantity / initialCarbs
+        val carbsPerUnit = mealFood.desiredServingSize.quantity / initialCarbs
         val finalCarbs = newServingSize.quantity / carbsPerUnit
 
-        val fatPerUnit = mealFood.servingSize.quantity / initialFat
+        val fatPerUnit = mealFood.desiredServingSize.quantity / initialFat
         val finalFat = newServingSize.quantity / fatPerUnit
 
-        return MealFood(mealFood.id, mealFood.title, newServingSize, MacroNutrients(finalCalories.toInt(), finalProtein.toInt(), finalCarbs.toInt(),
-            finalFat.toInt()
+        return MealFood(mealFood.id, mealFood.title, newServingSize, MacroNutrients(calories = finalCalories.toInt(), protein = finalProtein.toInt(), carbs = finalCarbs.toInt(),
+            fat = finalFat.toInt()
         ))
     }
 

@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/standard_margin"
             android:layout_marginTop="16dp"
-            android:text="@{StringUtils.INSTANCE.makeFoodMacroNutrientsString(food)}"
+            android:text="@{food.macroNutrients.toString()}"
             android:textAppearance="@style/H2"
             android:textColor="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/standard_margin"
             android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/measurementUnitSpinner"
+            app:layout_constraintEnd_toStartOf="@+id/measurementUnitTextView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/macroNutrientsTextView">
 
@@ -57,15 +57,16 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/food_quantity"
                 android:inputType="numberDecimal"
-                android:text="@{String.valueOf(food.servingSize)}" />
+                android:text="@{String.valueOf(food.servingSize.quantity)}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Spinner
-            android:id="@+id/measurementUnitSpinner"
+        <TextView
+            android:id="@+id/measurementUnitTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/standard_margin"
+            android:text="@{food.servingSize.unit.toString()}"
             app:layout_constraintBottom_toBottomOf="@+id/foodQuantityEditTextLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/foodQuantityEditTextLayout" />

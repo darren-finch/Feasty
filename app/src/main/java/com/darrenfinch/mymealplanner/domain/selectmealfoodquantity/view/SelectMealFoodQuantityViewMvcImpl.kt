@@ -12,6 +12,7 @@ import com.darrenfinch.mymealplanner.databinding.FragmentSelectMealFoodQuantityB
 import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.model.data.entities.Food
 import com.darrenfinch.mymealplanner.model.data.entities.MealFood
+import com.darrenfinch.mymealplanner.model.helpers.MacroCalculator
 
 class SelectMealFoodQuantityViewMvcImpl(
     inflater: LayoutInflater,
@@ -33,7 +34,10 @@ class SelectMealFoodQuantityViewMvcImpl(
     private fun initUI() {
         binding.apply {
             binding.food = Defaults.defaultFood
-//            foodUnitSpinner.visibility = View.GONE //because we won't need this spinner for now.
+
+            binding.foodQuantityEditText.setOnClickListener {
+                macroNutrientsTextView.text = getUpdatedMealFoodData().macroNutrients.toString()
+            }
         }
     }
 
@@ -60,13 +64,12 @@ class SelectMealFoodQuantityViewMvcImpl(
 
     private fun getUpdatedMealFoodData(): MealFood {
         binding.food?.let {
-            return MealFood(
+            return MacroCalculator.updateMacrosForMealFoodWithNewServingSize(MealFood(
                 it.id,
                 it.title,
-                PhysicalQuantity(binding.foodQuantityEditText.text.toString().toDouble(), it.servingSize.unit),
                 it.servingSize,
                 it.macroNutrients
-            )
+            ), PhysicalQuantity(binding.foodQuantityEditText.text.toString().toDouble(), it.servingSize.unit))
         }
 
         return Defaults.defaultMealFood

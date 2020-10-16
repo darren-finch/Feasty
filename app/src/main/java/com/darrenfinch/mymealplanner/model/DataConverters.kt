@@ -4,6 +4,7 @@ import com.darrenfinch.mymealplanner.model.data.entities.Food
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
+import com.darrenfinch.mymealplanner.model.helpers.MacroCalculator
 import com.darrenfinch.mymealplanner.model.room.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -15,7 +16,7 @@ object DataConverters {
         return Food(
             id = mealFood.id,
             title = mealFood.title,
-            servingSize = mealFood.servingSize,
+            servingSize = mealFood.desiredServingSize,
             macroNutrients = MacroNutrients(
                 calories = mealFood.macroNutrients.calories,
                 carbs = mealFood.macroNutrients.carbs,
@@ -29,7 +30,6 @@ object DataConverters {
         return MealFood(
             id = food.id,
             title = food.title,
-            servingSize = food.servingSize,
             macroNutrients = MacroNutrients(
                 calories = food.macroNutrients.calories,
                 carbs = food.macroNutrients.carbs,
@@ -94,18 +94,18 @@ object DataConverters {
         foodsDao: FoodsDao
     ): MealFood {
         val foodFromDatabase = foodsDao.getFood(databaseMealFood.foodId)
-        return MealFood(
+
+        return MacroCalculator.updateMacrosForMealFoodWithNewServingSize(MealFood(
             id = foodFromDatabase.id,
             title = foodFromDatabase.title,
-            desiredServingSize = databaseMealFood.desiredServingSize,
-            servingSize = databaseMealFood.desiredServingSize,
+            desiredServingSize = foodFromDatabase.servingSize,
             macroNutrients = MacroNutrients(
                 calories = foodFromDatabase.macroNutrients.calories,
                 carbs = foodFromDatabase.macroNutrients.carbs,
                 fat = foodFromDatabase.macroNutrients.fat,
                 protein = foodFromDatabase.macroNutrients.protein
             )
-        )
+        ), databaseMealFood.desiredServingSize)
     }
 
     fun convertMealToDatabaseMeal(meal: Meal): DatabaseMeal {
