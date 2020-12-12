@@ -48,7 +48,7 @@ class Gram(prefix: MetricPrefix = NullPrefix()) : MetricUnit(prefix) {
     }
 
     override fun getUnitAsString(plural: Boolean, abbreviated: Boolean): String {
-        return if(abbreviated) "${prefix.getAsString(true)}m" else "${prefix}gram${if (plural) "s" else ""}"
+        return if(abbreviated) "${prefix.getAsString(true)}g" else "${prefix}gram${if (plural) "s" else ""}"
     }
 }
 

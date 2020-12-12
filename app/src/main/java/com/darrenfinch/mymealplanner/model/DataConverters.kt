@@ -1,8 +1,6 @@
 package com.darrenfinch.mymealplanner.model
 
-import com.darrenfinch.mymealplanner.model.data.entities.Food
-import com.darrenfinch.mymealplanner.model.data.entities.Meal
-import com.darrenfinch.mymealplanner.model.data.entities.MealFood
+import com.darrenfinch.mymealplanner.model.data.entities.*
 import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
 import com.darrenfinch.mymealplanner.model.helpers.MacroCalculator
 import com.darrenfinch.mymealplanner.model.room.*
@@ -12,6 +10,23 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 
 object DataConverters {
+    fun convertMealPlanToDatabaseMealPlan(mealPlan: MealPlan): DatabaseMealPlan {
+        return DatabaseMealPlan(mealPlan.id)
+    }
+    suspend fun convertDatabaseMealPlanToMealPlan(databaseMealPlan: DatabaseMealPlan, mealPlanMealsDao: MealPlanMealsDao, mealsDao: MealsDao, foodsDao: FoodsDao, mealFoodsDao: MealFoodsDao): MealPlan {
+        val mealPlanMeals = mealPlanMealsDao.getMealsFromMealPlanId(databaseMealPlan.id)
+        val meals = mealPlanMeals.parallelMap {
+            convertDatabaseMealToRegularMeal(mealsDao.getMealSuspended(it.mealId), mealFoodsDao, foodsDao)
+        }
+        return MealPlan(databaseMealPlan.id, meals)
+    }
+    fun convertMealPlanMealToDatabaseMealPlanMeal(mealPlanMeal: MealPlanMeal): DatabaseMealPlanMeal {
+        return DatabaseMealPlanMeal(mealPlanId = mealPlanMeal.mealPlanId, mealId = mealPlanMeal.mealId)
+    }
+    fun convertDatabaseMealPlanMealToMealPlanMeal(databaseMealPlanMeal: DatabaseMealPlanMeal): MealPlanMeal {
+        return MealPlanMeal(mealPlanId = databaseMealPlanMeal.mealPlanId, mealId = databaseMealPlanMeal.mealId)
+    }
+
     fun convertMealFoodToFood(mealFood: MealFood): Food {
         return Food(
             id = mealFood.id,

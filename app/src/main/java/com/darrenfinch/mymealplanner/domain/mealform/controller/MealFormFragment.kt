@@ -41,7 +41,7 @@ class MealFormFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        controller.onViewCreated(args.mealId)
+        controller.onViewCreated(args.mealId, viewLifecycleOwner)
         println("onViewCreated was called")
     }
 

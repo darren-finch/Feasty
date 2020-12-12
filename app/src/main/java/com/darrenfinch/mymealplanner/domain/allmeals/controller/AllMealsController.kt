@@ -4,12 +4,14 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.allmeals.view.AllMealsViewMvc
+import com.darrenfinch.mymealplanner.domain.usecases.DeleteMealUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.GetAllMealsUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 class AllMealsController(
     private val screensNavigator: ScreensNavigator,
-    private val getAllMealsUseCase: GetAllMealsUseCase
+    private val getAllMealsUseCase: GetAllMealsUseCase,
+    private val deleteMealUseCase: DeleteMealUseCase
 ) : AllMealsViewMvc.Listener {
 
     private lateinit var viewMvc: AllMealsViewMvc
@@ -41,6 +43,6 @@ class AllMealsController(
     }
 
     override fun onMealDelete(meal: Meal) {
-
+        deleteMealUseCase.deleteMeal(meal.id)
     }
 }

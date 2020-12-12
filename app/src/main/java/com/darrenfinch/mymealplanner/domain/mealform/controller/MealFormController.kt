@@ -1,15 +1,21 @@
 package com.darrenfinch.mymealplanner.domain.mealform.controller
 
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.Constants
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.mealform.view.MealFormViewMvc
+import com.darrenfinch.mymealplanner.domain.usecases.GetMealUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.InsertMealUseCase
+import com.darrenfinch.mymealplanner.domain.usecases.UpdateMealUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 
 class MealFormController(
     private val viewModel: MealFormViewModel,
     private val insertMealUseCase: InsertMealUseCase,
+    private val updateMealUseCase: UpdateMealUseCase,
+    private val getMealUseCase: GetMealUseCase,
     private val screensNavigator: ScreensNavigator,
     private val newMealFood: MealFood?,
     private val currentMeal: Meal?
@@ -28,11 +34,12 @@ class MealFormController(
         viewMvc.unregisterListener(this)
     }
 
-    fun onViewCreated(mealId: Int) {
+    fun onViewCreated(mealId: Int, viewLifecycleOwner: LifecycleOwner) {
         if(isEditingExistingMeal(mealId) && isEditingMealForTheFirstTime()) {
-            //Asynchronously fetch meal from repository
-            //When meal is fetched:
-            //Bind observable meal to view
+            getMealUseCase.getMeal(mealId).observe(viewLifecycleOwner, Observer {
+                viewModel.setObservableMeal(it)
+                bindObservableMealToView()
+            })
         }
         else {
             addNewMealFoodToCurrentMeal()

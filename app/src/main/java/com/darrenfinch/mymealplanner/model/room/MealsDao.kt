@@ -12,14 +12,17 @@ interface MealsDao
     @Query("SELECT * FROM meals WHERE id = :mealId")
     fun getMeal(mealId: Int): LiveData<DatabaseMeal>
 
+    @Query("SELECT * FROM meals WHERE id = :mealId")
+    suspend fun getMealSuspended(mealId: Int): DatabaseMeal
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMeal(meal: DatabaseMeal): Long
 
     @Update
     suspend fun updateMeal(meal: DatabaseMeal)
 
-    @Delete
-    suspend fun deleteMeal(meal: DatabaseMeal)
+    @Query("DELETE FROM meals WHERE id = :mealId")
+    suspend fun deleteMeal(mealId: Int)
 
     @Query("DELETE FROM meals")
     suspend fun deleteAllMeals()

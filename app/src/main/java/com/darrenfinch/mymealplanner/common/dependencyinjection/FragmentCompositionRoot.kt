@@ -50,8 +50,12 @@ class FragmentCompositionRoot(
     private fun getInsertFoodUseCase() = InsertFoodUseCase(getMainRepository())
     private fun getUpdateFoodUseCase() = UpdateFoodUseCase(getMainRepository())
     private fun getDeleteFoodUseCase() = DeleteFoodUseCase(getMainRepository())
-    private fun getInsertMealUseCase() = InsertMealUseCase(getMainRepository())
+
     private fun getGetAllMealsUseCase() = GetAllMealsUseCase(getMainRepository())
+    private fun getGetMealUseCase() = GetMealUseCase(getMainRepository())
+    private fun getInsertMealUseCase() = InsertMealUseCase(getMainRepository())
+    private fun getUpdateMealUseCase() = UpdateMealUseCase(getMainRepository())
+    private fun getDeleteMealUseCase() = DeleteMealUseCase(getMainRepository())
 
     //TODO: TEMP
     fun getDeleteAllMealsUseCase() = DeleteAllMealsUseCase(getMainRepository())
@@ -75,7 +79,7 @@ class FragmentCompositionRoot(
     fun getAllFoodsController() =
         AllFoodsController(getScreensNavigator(), getGetAllFoodsUseCase(), getDeleteFoodUseCase())
 
-    fun getAllMealsController() = AllMealsController(getScreensNavigator(), getGetAllMealsUseCase())
+    fun getAllMealsController() = AllMealsController(getScreensNavigator(), getGetAllMealsUseCase(), getDeleteMealUseCase())
 
     fun getSelectFoodForMealController(currentMeal: Meal) =
         SelectFoodForMealController(getScreensNavigator(), getGetAllFoodsUseCase(), currentMeal)
@@ -87,6 +91,8 @@ class FragmentCompositionRoot(
     ) = MealFormController(
         viewModel,
         getInsertMealUseCase(),
+        getUpdateMealUseCase(),
+        getGetMealUseCase(),
         getScreensNavigator(),
         newMealFood,
         currentMeal

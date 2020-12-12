@@ -37,17 +37,17 @@ class FoodFormViewMvcImpl(
 
     override fun bindFoodDetails(observableFood: ObservableFood) {
         binding.food = observableFood
-        setupUI()
         setSelectedMeasurementType(observableFood.servingSizeUnit.getMeasurementType())
         setSelectedMeasurementUnit(observableFood.servingSizeUnit)
+        setupUI()
     }
 
     private fun setupUI() {
         binding.apply {
             doneButton.setOnClickListener { onDoneSelected() }
         }
-        setupMeasurementUnitSpinner()
         setupMeasurementTypeSpinner()
+        setupMeasurementUnitSpinner()
     }
 
     private fun setupMeasurementUnitSpinner() {
@@ -61,7 +61,8 @@ class FoodFormViewMvcImpl(
         )
         measurementUnitListArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.measurementUnitSpinner.adapter = measurementUnitListArrayAdapter
-        binding.measurementUnitSpinner.setSelection(getMeasurementUnitSpinnerSelection())
+        val measurementUnitSpinnerSelection = getMeasurementUnitSpinnerSelection()
+        binding.measurementUnitSpinner.setSelection(measurementUnitSpinnerSelection)
     }
 
     private fun setupMeasurementTypeSpinner() {
@@ -75,7 +76,8 @@ class FoodFormViewMvcImpl(
         )
         measurementTypeListArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.measurementTypeSpinner.adapter = measurementTypeListArrayAdapter
-        binding.measurementTypeSpinner.setSelection(getMeasurementTypeSpinnerSelection())
+        val measurementTypeSpinnerSelection = getMeasurementTypeSpinnerSelection()
+        binding.measurementTypeSpinner.setSelection(measurementTypeSpinnerSelection)
     }
 
     private fun getMeasurementUnitSpinnerSelection(): Int {
@@ -114,7 +116,7 @@ class FoodFormViewMvcImpl(
 
     private fun getMeasurementTypeSpinnerSelection(): Int {
         val selectedMeasurementTypeString = MeasurementType.validMeasurementTypesToStrings[selectedMeasurementType]
-        return stringsToVolumeUnits.keys.toList().indexOf(selectedMeasurementTypeString)
+        return MeasurementType.stringsToValidMeasurementTypes.keys.toList().indexOf(selectedMeasurementTypeString)
     }
 
     private fun getValidMeasurementTypesAsStrings(): List<String> {
@@ -152,7 +154,8 @@ class FoodFormViewMvcImpl(
                     id: Long
                 ) {
                     //This will fail if the array of strings given to the parent is incorrect.
-                    setSelectedMeasurementType(MeasurementType.stringsToValidMeasurementTypes[getValidMeasurementTypesAsStrings()[position]]!!)
+                    selectedMeasurementType = MeasurementType.stringsToValidMeasurementTypes[getValidMeasurementTypesAsStrings()[position]]!!
+                    setupMeasurementUnitSpinner()
                 }
             }
     }

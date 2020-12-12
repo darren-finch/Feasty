@@ -11,10 +11,7 @@ import com.darrenfinch.mymealplanner.model.DataConverters.convertMealToDatabaseM
 import com.darrenfinch.mymealplanner.model.data.entities.Food
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import com.darrenfinch.mymealplanner.model.room.MealPlannerDatabase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 class MainRepository constructor(database: MealPlannerDatabase) {
     private val mealsDao = database.mealsDao()
@@ -74,12 +71,13 @@ class MainRepository constructor(database: MealPlannerDatabase) {
         return allMeals
     }
 
-    fun getMeal(mealId: Int): LiveData<Meal> {
+    fun getMeal(id: Int): LiveData<Meal> {
         val currentMeal = MutableLiveData<Meal>()
         runBlocking(Dispatchers.IO) {
+            val mealFromDao = mealsDao.getMeal(id).value
             currentMeal.postValue(
                 convertDatabaseMealToRegularMeal(
-                    mealsDao.getMeal(mealId).value!!,
+                    mealFromDao!!,
                     mealFoodsDao,
                     foodsDao
                 )
@@ -108,9 +106,9 @@ class MainRepository constructor(database: MealPlannerDatabase) {
         }
     }
 
-    fun deleteMeal(meal: Meal) {
+    fun deleteMeal(id: Int) {
         runBlocking(Dispatchers.IO) {
-            mealsDao.deleteMeal(convertMealToDatabaseMeal(meal))
+            mealsDao.deleteMeal(id)
         }
     }
 

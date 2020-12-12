@@ -5,7 +5,9 @@ import com.darrenfinch.mymealplanner.InstantExecutorExtension
 import com.darrenfinch.mymealplanner.TestData
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.allmeals.view.AllMealsViewMvc
+import com.darrenfinch.mymealplanner.domain.usecases.DeleteMealUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.GetAllMealsUseCase
+import com.darrenfinch.mymealplanner.domain.usecases.GetMealUseCase
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -24,6 +26,7 @@ internal class AllMealsControllerTest {
 
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
     private val getAllMealsUseCase = mockk<GetAllMealsUseCase>(relaxUnitFun = true)
+    private val deleteMealUseCase = mockk<DeleteMealUseCase>(relaxUnitFun = true)
 
     private val viewMvc = mockk<AllMealsViewMvc>(relaxUnitFun = true)
 
@@ -31,7 +34,7 @@ internal class AllMealsControllerTest {
 
     @BeforeEach
     internal fun setUp() {
-        SUT = AllMealsController(screensNavigator, getAllMealsUseCase)
+        SUT = AllMealsController(screensNavigator, getAllMealsUseCase, deleteMealUseCase)
         SUT.bindView(viewMvc)
 
         setupInstantLifecycleEventComponents()

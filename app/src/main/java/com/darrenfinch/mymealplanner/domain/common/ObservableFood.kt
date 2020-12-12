@@ -37,7 +37,8 @@ class ObservableFood : BaseObservable() {
     @get:Bindable
     var servingSizeQuantity: String = "0.0"
         set(value) {
-            if(value.isNotEmpty() && value.isDigitsOnly()) {
+            //TODO(): Make sure this value is a digit value.
+            if(value.isNotEmpty()) {
                 field = value
                 servingSize = PhysicalQuantity(value.toDouble(), servingSizeUnit)
                 notifyPropertyChanged(BR.servingSizeQuantity)
@@ -85,6 +86,8 @@ class ObservableFood : BaseObservable() {
         id = food.id
         title = food.title
         servingSize = food.servingSize
+        servingSizeUnit = food.servingSize.unit
+        servingSizeQuantity = food.servingSize.quantity.toString()
         caloriesString = food.macroNutrients.calories.toString()
         carbsString = food.macroNutrients.carbs.toString()
         fatString = food.macroNutrients.fat.toString()
