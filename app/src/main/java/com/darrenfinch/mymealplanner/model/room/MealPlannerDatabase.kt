@@ -14,4 +14,6 @@ abstract class MealPlannerDatabase : RoomDatabase() {
     abstract fun mealsDao(): MealsDao
     abstract fun foodsDao(): FoodsDao
     abstract fun mealFoodsDao(): MealFoodsDao
+    abstract fun mealPlansDao(): MealPlansDao
+    abstract fun mealPlanMealsDao(): MealPlanMealsDao
 }

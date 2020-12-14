@@ -10,7 +10,7 @@ interface MealsDao
     fun getMeals() : LiveData<List<DatabaseMeal>>
 
     @Query("SELECT * FROM meals WHERE id = :mealId")
-    fun getMeal(mealId: Int): LiveData<DatabaseMeal>
+    fun getMeal(mealId: Int): DatabaseMeal
 
     @Query("SELECT * FROM meals WHERE id = :mealId")
     suspend fun getMealSuspended(mealId: Int): DatabaseMeal

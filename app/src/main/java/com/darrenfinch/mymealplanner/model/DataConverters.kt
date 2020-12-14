@@ -14,7 +14,7 @@ object DataConverters {
         return DatabaseMealPlan(mealPlan.id)
     }
     suspend fun convertDatabaseMealPlanToMealPlan(databaseMealPlan: DatabaseMealPlan, mealPlanMealsDao: MealPlanMealsDao, mealsDao: MealsDao, foodsDao: FoodsDao, mealFoodsDao: MealFoodsDao): MealPlan {
-        val mealPlanMeals = mealPlanMealsDao.getMealsFromMealPlanId(databaseMealPlan.id)
+        val mealPlanMeals = mealPlanMealsDao.getMealsForMealPlan(databaseMealPlan.id)
         val meals = mealPlanMeals.parallelMap {
             convertDatabaseMealToRegularMeal(mealsDao.getMealSuspended(it.mealId), mealFoodsDao, foodsDao)
         }
