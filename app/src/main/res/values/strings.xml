@@ -23,4 +23,16 @@
     <string name="dropdown">Dropdown</string>
     <string name="macro_nutrients">Macro Nutrients</string>
     <string name="unit_type">Unit Type</string>
+    <string name="select_meal_plan">Select Meal Plan</string>
+    <string name="meal_plan_name">Meal Plan Name</string>
+    <string name="edit_meal_plan">"Edit Meal Plan"</string>
+    <string name="new_meal_plan">"New Meal Plan"</string>
+    <string name="required_carbohydrates">Required Carbohydrates</string>
+    <string name="required_fat">Required Fat</string>
+    <string name="required_protein">Required Protein</string>
+    <string name="required_calories">Required Calories</string>
+    <string name="delete_meal_plan">Delete Meal Plan</string>
+    <string name="meal_plans">Meal Plans</string>
+    <string name="no_meal_plan_meals">There are no meals for this meal plan. Add some?</string>
+    <string name="select_item">Select Item</string>
 </resources>

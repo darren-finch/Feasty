@@ -8,7 +8,7 @@ import com.darrenfinch.mymealplanner.TestData
 import com.darrenfinch.mymealplanner.TestData.DEFAULT_VALID_FOOD_ID
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.foodform.view.FoodFormViewMvc
-import com.darrenfinch.mymealplanner.domain.common.ObservableFood
+import com.darrenfinch.mymealplanner.domain.observables.ObservableFood
 import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.InsertFoodUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.UpdateFoodUseCase

@@ -31,7 +31,7 @@ class FoodFormFragment : BaseFragment() {
         return viewMvc.getRootView()
     }
 
-    private fun initViewMvc(container: ViewGroup?) = fragmentCompositionRoot.getViewMvcFactory().getAddEditFoodViewMvc(container, args.foodId < 0)
+    private fun initViewMvc(container: ViewGroup?) = fragmentCompositionRoot.getViewMvcFactory().getFoodFormViewMvc(container, args.foodId < 0)
 
     private fun initController(viewMvc: FoodFormViewMvc) {
         controller = fragmentCompositionRoot.getAddEditFoodController(viewModel)

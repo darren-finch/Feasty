@@ -4,13 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="com.darrenfinch.mymealplanner.common.utils.StringUtils"/>
+        <import type="com.darrenfinch.mymealplanner.model.helpers.MacroCalculator"/>
         <import type="android.view.View"/>
         <variable
             name="meal"
             type="com.darrenfinch.mymealplanner.model.data.entities.Meal" />
         <variable
             name="viewHolder"
-            type="com.darrenfinch.mymealplanner.common.reusable.mealsrecyclerviewadapter.MealViewHolder" />
+            type="com.darrenfinch.mymealplanner.common.lists.mealsrecyclerviewadapter.MealViewHolder" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -74,8 +75,7 @@
                     android:tint="@color/colorAccent"
                     app:layout_constraintBottom_toBottomOf="@+id/cardTop"
                     app:layout_constraintEnd_toStartOf="@+id/dropdownImageButton"
-                    app:layout_constraintTop_toTopOf="@+id/cardTop"
-                    app:layout_constraintVertical_bias="0.521" />
+                    app:layout_constraintTop_toTopOf="@+id/cardTop"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -98,7 +98,7 @@
                     android:id="@+id/macroNutrients"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{StringUtils.INSTANCE.calculateMealMacroNutrients(meal)}"
+                    android:text="@{MacroCalculator.INSTANCE.calculateMealMacroNutrients(meal)}"
                     app:layout_constraintBottom_toBottomOf="@+id/macroNutrientsLabel"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/macroNutrientsLabel"

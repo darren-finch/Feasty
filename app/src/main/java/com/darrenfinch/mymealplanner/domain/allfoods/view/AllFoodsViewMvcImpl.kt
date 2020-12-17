@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.common.reusable.foodrecyclerviewadapter.FoodsRecyclerViewAdapter
-import com.darrenfinch.mymealplanner.common.reusable.recyclerviewitemdecorations.MarginItemDecoration
+import com.darrenfinch.mymealplanner.common.lists.foodrecyclerviewadapter.FoodsRecyclerViewAdapter
+import com.darrenfinch.mymealplanner.common.lists.recyclerviewitemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentAllFoodsBinding
 import com.darrenfinch.mymealplanner.model.data.entities.Food
@@ -35,9 +35,7 @@ class AllFoodsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
         }
     }
 
-    private val foodsListAdapter = FoodsRecyclerViewAdapter(FoodsRecyclerViewAdapter.Config(true), mutableListOf()).apply {
-        setOnItemEventListener(foodsListItemEventListener)
-    }
+    private val foodsListAdapter = FoodsRecyclerViewAdapter(FoodsRecyclerViewAdapter.Config(true), foodsListItemEventListener)
 
     private val binding: FragmentAllFoodsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_all_foods, parent, false)
 
@@ -65,6 +63,6 @@ class AllFoodsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
     }
 
     override fun bindFoods(newFoods: List<Food>) {
-        foodsListAdapter.updateFoods(newFoods)
+        foodsListAdapter.updateItems(newFoods)
     }
 }

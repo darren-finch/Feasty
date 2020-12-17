@@ -3,7 +3,9 @@ package com.darrenfinch.mymealplanner.model.helpers
 import com.darrenfinch.mymealplanner.model.data.entities.Food
 import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
 import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
+import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import com.darrenfinch.mymealplanner.model.data.entities.MealFood
+import com.darrenfinch.mymealplanner.model.data.entities.MealPlanMeal
 
 object MacroCalculator
 {
@@ -54,29 +56,34 @@ object MacroCalculator
             fat = finalFat.toInt()
         ))
     }
-
-    fun calculateTotalCalories(foods: List<Food>) : Int
-    {
+    fun calculateTotalCalories(meal: MealPlanMeal) = meal.foods.sumBy { it.macroNutrients.calories }
+    fun calculateTotalCarbohydrates(meal: MealPlanMeal) = meal.foods.sumBy { it.macroNutrients.carbs }
+    fun calculateTotalFats(meal: MealPlanMeal) = meal.foods.sumBy { it.macroNutrients.fat }
+    fun calculateTotalProteins(meal: MealPlanMeal) = meal.foods.sumBy { it.macroNutrients.protein }
+    fun calculateMealMacroNutrients(meal: Meal): String {
         var totalCalories = 0
-        foods.forEach { food -> totalCalories += food.macroNutrients.calories }
-        return totalCalories
-    }
-    fun calculateTotalProtein(foods: List<Food>) : Int
-    {
         var totalProtein = 0
-        foods.forEach { food -> totalProtein += food.macroNutrients.protein }
-        return totalProtein
-    }
-    fun calculateTotalCarbohydrates(foods: List<Food>) : Int
-    {
         var totalCarbohydrates = 0
-        foods.forEach { food -> totalCarbohydrates += food.macroNutrients.carbs }
-        return totalCarbohydrates
-    }
-    fun calculateTotalFat(foods: List<Food>) : Int
-    {
         var totalFat = 0
-        foods.forEach { food -> totalFat += food.macroNutrients.fat }
-        return totalFat
+
+        meal.foods.forEach { food -> totalCalories += food.macroNutrients.calories }
+        meal.foods.forEach { food -> totalProtein += food.macroNutrients.protein }
+        meal.foods.forEach { food -> totalCarbohydrates += food.macroNutrients.carbs }
+        meal.foods.forEach { food -> totalFat += food.macroNutrients.fat }
+
+        return MacroNutrients(totalCalories, totalCarbohydrates, totalProtein, totalFat).toString()
+    }
+    fun calculateMealMacroNutrients(mealPlanMeal: MealPlanMeal): String {
+        var totalCalories = 0
+        var totalProtein = 0
+        var totalCarbohydrates = 0
+        var totalFat = 0
+
+        mealPlanMeal.foods.forEach { food -> totalCalories += food.macroNutrients.calories }
+        mealPlanMeal.foods.forEach { food -> totalProtein += food.macroNutrients.protein }
+        mealPlanMeal.foods.forEach { food -> totalCarbohydrates += food.macroNutrients.carbs }
+        mealPlanMeal.foods.forEach { food -> totalFat += food.macroNutrients.fat }
+
+        return MacroNutrients(totalCalories, totalCarbohydrates, totalProtein, totalFat).toString()
     }
 }

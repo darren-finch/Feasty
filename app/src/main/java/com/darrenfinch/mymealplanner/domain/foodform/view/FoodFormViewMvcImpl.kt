@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentFoodFormBinding
-import com.darrenfinch.mymealplanner.domain.common.ObservableFood
+import com.darrenfinch.mymealplanner.domain.observables.ObservableFood
 import com.darrenfinch.mymealplanner.domain.physicalquantities.*
 import com.darrenfinch.mymealplanner.domain.physicalquantities.units.MeasurementType
 import com.darrenfinch.mymealplanner.domain.physicalquantities.units.MeasurementUnit

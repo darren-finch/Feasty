@@ -16,31 +16,15 @@ object StringUtils {
         macroType: MacroType,
         lineBreak: Boolean = true
     ): String {
-        return if (lineBreak) "$totalAmount/$requiredAmount\n${getMacroSuffix(macroType)}" else "$totalAmount/$requiredAmount ${getMacroSuffix(
-            macroType
-        )}"
+        return "$totalAmount/$requiredAmount${if (lineBreak) "\n" else ""}${getMacroSuffix(macroType)}"
     }
 
-    fun getMacroSuffix(macroType: MacroType): String {
+    private fun getMacroSuffix(macroType: MacroType): String {
         return when (macroType) {
             MacroType.CALORIE -> "Calories"
             MacroType.PROTEIN -> "Proteins"
             MacroType.FAT -> "Fats"
             MacroType.CARBOHYDRATE -> "Carbs"
         }
-    }
-
-    fun calculateMealMacroNutrients(meal: Meal): String {
-        var totalCalories = 0
-        var totalProtein = 0
-        var totalCarbohydrates = 0
-        var totalFat = 0
-
-        meal.foods.forEach { food -> totalCalories += food.macroNutrients.calories }
-        meal.foods.forEach { food -> totalProtein += food.macroNutrients.protein }
-        meal.foods.forEach { food -> totalCarbohydrates += food.macroNutrients.carbs }
-        meal.foods.forEach { food -> totalFat += food.macroNutrients.fat }
-
-        return MacroNutrients(totalCalories, totalCarbohydrates, totalProtein, totalFat).toString()
     }
 }

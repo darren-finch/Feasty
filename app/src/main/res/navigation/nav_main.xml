@@ -16,9 +16,13 @@
     </fragment>
     <fragment
         android:id="@+id/mealPlanFragment"
-        android:name="com.darrenfinch.mymealplanner.domain.dailymealplan.controller.MealPlanFragment"
+        android:name="com.darrenfinch.mymealplanner.domain.mealplan.controller.MealPlanFragment"
         android:label="fragment_meal_plan"
-        tools:layout="@layout/fragment_meal_plan" />
+        tools:layout="@layout/fragment_meal_plan" >
+        <action
+            android:id="@+id/action_mealPlanFragment_to_mealPlanFormDialog"
+            app:destination="@id/mealPlanFormFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.darrenfinch.mymealplanner.view.SettingsFragment"
@@ -63,18 +67,16 @@
             android:name="mealId"
             app:argType="integer" />
     </fragment>
-    <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.darrenfinch.mymealplanner.domain.main.MainFragment"
-        android:label="MainFragment" />
     <dialog
         android:id="@+id/selectFoodForMealDialog"
-        android:name="com.darrenfinch.mymealplanner.domain.selectfoodformeal.controller.SelectFoodForMealDialog"
+        android:name="com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealDialog"
         android:label="SelectFoodForMealDialog">
         <action
             android:id="@+id/action_selectFoodForMealDialog_to_selectMealFoodQuantityDialog"
             app:destination="@id/selectMealFoodQuantityDialog"
-            app:launchSingleTop="true" />
+            app:launchSingleTop="true"
+            app:popUpTo="@id/selectFoodForMealDialog"
+            app:popUpToInclusive="true" />
         <argument
             android:name="currentMeal"
             app:argType="com.darrenfinch.mymealplanner.model.data.entities.Meal" />
@@ -93,4 +95,8 @@
             android:name="currentMeal"
             app:argType="com.darrenfinch.mymealplanner.model.data.entities.Meal" />
     </dialog>
+    <fragment
+        android:id="@+id/mealPlanFormFragment"
+        android:name="com.darrenfinch.mymealplanner.domain.mealplanform.controller.MealPlanFormFragment"
+        android:label="MealPlanFormDialog" />
 </navigation>

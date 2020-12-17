@@ -5,8 +5,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
-    entities = [DatabaseMeal::class, DatabaseFood::class, DatabaseMealFood::class],
-    version = 6,
+    entities = [DatabaseMeal::class, DatabaseFood::class, DatabaseMealFood::class, DatabaseMealPlan::class, DatabaseMealPlanMeal::class],
+    version = 9,
     exportSchema = false
 )
 @TypeConverters(RoomConverters::class)

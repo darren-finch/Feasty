@@ -27,8 +27,8 @@ class MealFormFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        viewMvc = fragmentCompositionRoot.getViewMvcFactory().getAddEditMealViewMvc(container)
-        controller = fragmentCompositionRoot.getAddEditMealController(
+        viewMvc = fragmentCompositionRoot.getViewMvcFactory().getMealFormViewMvc(container)
+        controller = fragmentCompositionRoot.getMealFormController(
             viewModel,
             args.newMealFood,
             args.currentMeal

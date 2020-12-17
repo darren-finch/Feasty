@@ -5,7 +5,7 @@ import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.domain.allfoods.controller.AllFoodsFragmentDirections
 import com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsFragmentDirections
 import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormFragmentDirections
-import com.darrenfinch.mymealplanner.domain.selectfoodformeal.controller.SelectFoodForMealDialogDirections
+import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealDialogDirections
 import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.controller.SelectMealFoodQuantityDialogDirections
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import com.darrenfinch.mymealplanner.model.data.entities.MealFood
@@ -68,5 +68,17 @@ class ScreensNavigator(private val navigationController: NavController) {
                 currentMeal
             )
         navigationController.navigate(directions)
+    }
+
+    fun navigateFromMealPlanScreenToMealPlanFormScreen() {
+        navigationController.navigate(R.id.mealPlanFormFragment)
+    }
+
+    fun navigateFromMealPlanFormScreenToMealPlanScreen() {
+        navigationController.navigate(R.id.mealPlanFragment)
+    }
+
+    fun navigateFromMealPlanScreenToMealPlanMealFormScreen() {
+
     }
 }

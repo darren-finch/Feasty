@@ -1,7 +1,7 @@
 package com.darrenfinch.mymealplanner.domain.mealform.controller
 
 import androidx.lifecycle.ViewModel
-import com.darrenfinch.mymealplanner.domain.common.ObservableMeal
+import com.darrenfinch.mymealplanner.domain.observables.ObservableMeal
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 class MealFormViewModel : ViewModel() {

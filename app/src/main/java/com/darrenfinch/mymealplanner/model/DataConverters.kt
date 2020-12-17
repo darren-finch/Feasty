@@ -11,20 +11,53 @@ import kotlinx.coroutines.runBlocking
 
 object DataConverters {
     fun convertMealPlanToDatabaseMealPlan(mealPlan: MealPlan): DatabaseMealPlan {
-        return DatabaseMealPlan(mealPlan.id)
+        return DatabaseMealPlan(
+            id = mealPlan.id,
+            title = mealPlan.title,
+            requiredCalories = mealPlan.requiredCalories,
+            requiredProtein = mealPlan.requiredProtein,
+            requiredFat = mealPlan.requiredFat,
+            requiredCarbohydrates = mealPlan.requiredCarbohydrates
+        )
     }
-    suspend fun convertDatabaseMealPlanToMealPlan(databaseMealPlan: DatabaseMealPlan, mealPlanMealsDao: MealPlanMealsDao, mealsDao: MealsDao, foodsDao: FoodsDao, mealFoodsDao: MealFoodsDao): MealPlan {
-        val mealPlanMeals = mealPlanMealsDao.getMealsForMealPlan(databaseMealPlan.id)
-        val meals = mealPlanMeals.parallelMap {
-            convertDatabaseMealToRegularMeal(mealsDao.getMealSuspended(it.mealId), mealFoodsDao, foodsDao)
-        }
-        return MealPlan(databaseMealPlan.id, meals)
+
+    fun convertDatabaseMealPlanToMealPlan(databaseMealPlan: DatabaseMealPlan): MealPlan {
+        return MealPlan(
+            id = databaseMealPlan.id,
+            title = databaseMealPlan.title,
+            requiredCalories = databaseMealPlan.requiredCalories,
+            requiredProtein = databaseMealPlan.requiredProtein,
+            requiredFat = databaseMealPlan.requiredFat,
+            requiredCarbohydrates = databaseMealPlan.requiredCarbohydrates
+        )
     }
+
     fun convertMealPlanMealToDatabaseMealPlanMeal(mealPlanMeal: MealPlanMeal): DatabaseMealPlanMeal {
-        return DatabaseMealPlanMeal(mealPlanId = mealPlanMeal.mealPlanId, mealId = mealPlanMeal.mealId)
+        return DatabaseMealPlanMeal(
+            id = mealPlanMeal.id,
+            mealPlanId = mealPlanMeal.mealPlanId,
+            mealId = mealPlanMeal.mealId
+        )
     }
-    fun convertDatabaseMealPlanMealToMealPlanMeal(databaseMealPlanMeal: DatabaseMealPlanMeal): MealPlanMeal {
-        return MealPlanMeal(mealPlanId = databaseMealPlanMeal.mealPlanId, mealId = databaseMealPlanMeal.mealId)
+
+    suspend fun convertDatabaseMealPlanMealToMealPlanMeal(
+        databaseMealPlanMeal: DatabaseMealPlanMeal,
+        mealsDao: MealsDao,
+        mealFoodsDao: MealFoodsDao,
+        foodsDao: FoodsDao
+    ): MealPlanMeal {
+        val meal = convertDatabaseMealToMeal(
+            mealsDao.getMeal(databaseMealPlanMeal.mealId),
+            mealFoodsDao,
+            foodsDao
+        )
+        return MealPlanMeal(
+            id = databaseMealPlanMeal.id,
+            mealPlanId = databaseMealPlanMeal.mealPlanId,
+            mealId = databaseMealPlanMeal.mealId,
+            title = meal.title,
+            foods = meal.foods
+        )
     }
 
     fun convertMealFoodToFood(mealFood: MealFood): Food {
@@ -77,7 +110,7 @@ object DataConverters {
         )
     }
 
-    suspend fun convertDatabaseMealToRegularMeal(
+    suspend fun convertDatabaseMealToMeal(
         databaseMeal: DatabaseMeal,
         mealFoodsDao: MealFoodsDao,
         foodsDao: FoodsDao
@@ -110,17 +143,19 @@ object DataConverters {
     ): MealFood {
         val foodFromDatabase = foodsDao.getFood(databaseMealFood.foodId)
 
-        return MacroCalculator.updateMacrosForMealFoodWithNewServingSize(MealFood(
-            id = foodFromDatabase.id,
-            title = foodFromDatabase.title,
-            desiredServingSize = foodFromDatabase.servingSize,
-            macroNutrients = MacroNutrients(
-                calories = foodFromDatabase.macroNutrients.calories,
-                carbs = foodFromDatabase.macroNutrients.carbs,
-                fat = foodFromDatabase.macroNutrients.fat,
-                protein = foodFromDatabase.macroNutrients.protein
-            )
-        ), databaseMealFood.desiredServingSize)
+        return MacroCalculator.updateMacrosForMealFoodWithNewServingSize(
+            MealFood(
+                id = foodFromDatabase.id,
+                title = foodFromDatabase.title,
+                desiredServingSize = foodFromDatabase.servingSize,
+                macroNutrients = MacroNutrients(
+                    calories = foodFromDatabase.macroNutrients.calories,
+                    carbs = foodFromDatabase.macroNutrients.carbs,
+                    fat = foodFromDatabase.macroNutrients.fat,
+                    protein = foodFromDatabase.macroNutrients.protein
+                )
+            ), databaseMealFood.desiredServingSize
+        )
     }
 
     fun convertMealToDatabaseMeal(meal: Meal): DatabaseMeal {

@@ -4,7 +4,7 @@ import com.darrenfinch.mymealplanner.TestData
 import com.darrenfinch.mymealplanner.TestData.DEFAULT_INVALID_MEAL_ID
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.mealform.view.MealFormViewMvc
-import com.darrenfinch.mymealplanner.domain.common.ObservableMeal
+import com.darrenfinch.mymealplanner.domain.observables.ObservableMeal
 import com.darrenfinch.mymealplanner.domain.usecases.InsertMealUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import io.mockk.every

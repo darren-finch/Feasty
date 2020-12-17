@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.common.reusable.mealfoodsrecyclerviewadapter.MealFoodsRecyclerViewAdapter
-import com.darrenfinch.mymealplanner.common.reusable.recyclerviewitemdecorations.MarginItemDecoration
+import com.darrenfinch.mymealplanner.common.lists.mealfoodsrecyclerviewadapter.MealFoodsRecyclerViewAdapter
+import com.darrenfinch.mymealplanner.common.lists.recyclerviewitemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentMealFormBinding
-import com.darrenfinch.mymealplanner.domain.common.ObservableMeal
+import com.darrenfinch.mymealplanner.domain.observables.ObservableMeal
 
 class MealFormViewMvcImpl(
     inflater: LayoutInflater,
@@ -23,7 +23,7 @@ class MealFormViewMvcImpl(
         false
     )
 
-    private val mealFoodsRecyclerViewAdapter = MealFoodsRecyclerViewAdapter(mutableListOf())
+    private val mealFoodsRecyclerViewAdapter = MealFoodsRecyclerViewAdapter()
 
     init {
         setRootView(binding.root)
@@ -58,6 +58,6 @@ class MealFormViewMvcImpl(
 
     override fun bindMealDetails(observableMeal: ObservableMeal) {
         binding.meal = observableMeal
-        mealFoodsRecyclerViewAdapter.updateFoods(observableMeal.foods)
+        mealFoodsRecyclerViewAdapter.updateItems(observableMeal.foods)
     }
 }

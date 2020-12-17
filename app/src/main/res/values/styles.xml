@@ -6,20 +6,26 @@
         <item name="android:fontFamily">@font/monda</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="cardCornerRadius">4dp</item>
+        <item name="cardElevation">4dp</item>
         <item name="cornerRadius">4dp</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="textInputStyle">@style/TextInputStyle</item>
+        <item name="textInputStyle">@style/AppTheme.TextInputStyle</item>
     </style>
 
-    <style name="DefaultButton" parent="Widget.MaterialComponents.Button">
+    <style name="AppTheme.DefaultButton" parent="Widget.MaterialComponents.Button">
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+    <style name="AppTheme.TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="boxBackgroundColor">#FFF</item>
+    </style>
+
+    <style name="AppTheme.ToolbarStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionMenuTextColor">@color/colorTextPrimaryLight</item>
+        <item name="android:textColor">@color/colorTextPrimaryLight</item>
     </style>
 
     <style name="H1" parent="H2">
