@@ -13,6 +13,8 @@ import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 class AllMealsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseObservableViewMvc<AllMealsViewMvc.Listener>(), AllMealsViewMvc {
     private val mealItemEventListener = object : MealsRecyclerViewAdapter.ItemEventListener {
+        override fun onSelect(meal: Meal) { }
+
         override fun onEdit(mealId: Int) {
             for (listener in getListeners()) {
                 listener.onMealEdit(mealId)
@@ -28,7 +30,7 @@ class AllMealsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
     }
 
     private val mealsRecyclerViewAdapter =
-        MealsRecyclerViewAdapter(mealItemEventListener)
+        MealsRecyclerViewAdapter(MealsRecyclerViewAdapter.Config(), mealItemEventListener)
 
     private val binding: FragmentAllMealsBinding = DataBindingUtil.inflate(
         inflater,

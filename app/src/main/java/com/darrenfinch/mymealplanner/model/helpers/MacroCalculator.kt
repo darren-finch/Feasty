@@ -52,7 +52,9 @@ object MacroCalculator
         val fatPerUnit = mealFood.desiredServingSize.quantity / initialFat
         val finalFat = newServingSize.quantity / fatPerUnit
 
-        return MealFood(mealFood.id, mealFood.title, newServingSize, MacroNutrients(calories = finalCalories.toInt(), protein = finalProtein.toInt(), carbs = finalCarbs.toInt(),
+        return MealFood(mealFood.id, mealFood.foodId, mealFood.title, newServingSize, MacroNutrients(calories = finalCalories.toInt(), protein =
+        finalProtein
+            .toInt(), carbs = finalCarbs.toInt(),
             fat = finalFat.toInt()
         ))
     }

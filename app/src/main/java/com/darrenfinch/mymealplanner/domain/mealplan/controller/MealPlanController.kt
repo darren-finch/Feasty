@@ -107,7 +107,7 @@ class MealPlanController(
     }
 
     override fun onAddNewMealPlanClicked() {
-        TODO("Not yet implemented")
+        screensNavigator.navigateFromMealPlanScreenToMealPlanFormScreen()
     }
 
     override fun onDeleteMealPlanClicked() {
@@ -125,7 +125,9 @@ class MealPlanController(
     }
 
     override fun onAddNewMealPlanMealClicked() {
-//        screensNavigator.showChoseItemDialog()
+        viewModel.selectedMealPlan?.let {
+            screensNavigator.navigateFromMealPlanScreenToSelectMealPlanMealScreen(it.id)
+        }
     }
 
     override fun onDeleteMealPlanMealClicked(mealPlanMeal: MealPlanMeal) {

@@ -2,10 +2,8 @@ package com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controlle
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.navArgs
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
-import com.darrenfinch.mymealplanner.common.lists.BaseViewHolder
 import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.view.SelectFoodForMealViewMvc
 
 //TODO: Convert into generic item selection dialog
@@ -18,7 +16,7 @@ class SelectFoodForMealDialog : BaseDialog() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         viewMvc = fragmentCompositionRoot.getViewMvcFactory().getSelectFoodForMealViewMvc(null)
 
-        controller = fragmentCompositionRoot.getChoseItemController(args.currentMeal)
+        controller = fragmentCompositionRoot.getSelectFoodForMealController(args.currentMeal)
         controller.bindView(viewMvc)
         controller.fetchAllFoods(this)
 

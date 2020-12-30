@@ -1,8 +1,8 @@
-package com.darrenfinch.mymealplanner.model.room
+package com.darrenfinch.mymealplanner.model.room.daos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.darrenfinch.mymealplanner.model.data.entities.MealPlanMeal
+import com.darrenfinch.mymealplanner.model.room.entities.DatabaseMealPlanMeal
 
 @Dao
 interface MealPlanMealsDao {

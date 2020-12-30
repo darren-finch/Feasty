@@ -36,7 +36,7 @@ class MealPlanMealViewHolder(private val listener: Listener, itemView: View) : B
             setOnMenuItemClickListener { menuItem ->
                 handleMenuItemClicked(menuItem)
             }
-            menu.removeItem(R.id.delete)
+            menu.removeItem(R.id.edit)
             show()
         }
     }

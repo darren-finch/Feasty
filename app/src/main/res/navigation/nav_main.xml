@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_mealPlanFragment_to_mealPlanFormDialog"
             app:destination="@id/mealPlanFormFragment" />
+        <action
+            android:id="@+id/action_mealPlanFragment_to_selectMealPlanMealDialog"
+            app:destination="@id/selectMealPlanMealDialog" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -83,7 +86,7 @@
     </dialog>
     <dialog
         android:id="@+id/selectMealFoodQuantityDialog"
-        android:name="com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.controller.SelectMealFoodQuantityDialog"
+        android:name="com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectMealFoodQuantityDialog"
         android:label="SelectMealFoodQuantityDialog">
         <argument
             android:name="foodId"
@@ -99,4 +102,12 @@
         android:id="@+id/mealPlanFormFragment"
         android:name="com.darrenfinch.mymealplanner.domain.mealplanform.controller.MealPlanFormFragment"
         android:label="MealPlanFormDialog" />
+    <dialog
+        android:id="@+id/selectMealPlanMealDialog"
+        android:name="com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controller.SelectMealPlanMealDialog"
+        android:label="SelectMealPlanMealDialog" >
+        <argument
+            android:name="mealPlanId"
+            app:argType="integer" />
+    </dialog>
 </navigation>

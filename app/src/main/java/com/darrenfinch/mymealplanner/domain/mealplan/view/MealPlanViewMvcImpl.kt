@@ -7,8 +7,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.lists.mealplanmealsrecyclerviewadapter.MealPlanMealsRecyclerViewAdapter
+import com.darrenfinch.mymealplanner.common.lists.recyclerviewitemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentMealPlanBinding
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
@@ -41,6 +43,9 @@ class MealPlanViewMvcImpl(inflater: LayoutInflater,
 
     private fun setupUI() {
         binding.apply {
+            mealPlanMealsRecyclerView.adapter = adapter
+            mealPlanMealsRecyclerView.layoutManager = LinearLayoutManager(getContext())
+            mealPlanMealsRecyclerView.addItemDecoration(MarginItemDecoration(16))
 //            addNewMealPlan.setOnClickListener { onAddNewMealPlanClicked() }
 //            deleteMealPlan.setOnClickListener { onDeleteMealPlanClicked() }
             addNewMealPlanMealFAB.setOnClickListener { onAddNewMealPlanMealClicked() }

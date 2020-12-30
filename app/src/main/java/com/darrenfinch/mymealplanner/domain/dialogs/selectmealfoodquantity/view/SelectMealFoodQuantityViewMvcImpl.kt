@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.view
+package com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -9,6 +9,7 @@ import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.utils.Defaults
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentSelectMealFoodQuantityBinding
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectMealFoodQuantityViewMvc
 import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.model.data.entities.Food
 import com.darrenfinch.mymealplanner.model.data.entities.MealFood
@@ -58,13 +59,14 @@ class SelectMealFoodQuantityViewMvcImpl(
 
     private fun onPositiveButtonClicked() {
         for (listener in getListeners()) {
-            listener.onMealFoodQuantityChosen(getUpdatedMealFoodData())
+            listener.onMealFoodServingSizeChosen(getUpdatedMealFoodData())
         }
     }
 
     private fun getUpdatedMealFoodData(): MealFood {
         binding.food?.let {
             return MacroCalculator.updateMacrosForMealFoodWithNewServingSize(MealFood(
+                0,
                 it.id,
                 it.title,
                 it.servingSize,

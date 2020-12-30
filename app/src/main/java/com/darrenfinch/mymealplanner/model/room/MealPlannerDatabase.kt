@@ -3,10 +3,12 @@ package com.darrenfinch.mymealplanner.model.room
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.darrenfinch.mymealplanner.model.room.daos.*
+import com.darrenfinch.mymealplanner.model.room.entities.*
 
 @Database(
     entities = [DatabaseMeal::class, DatabaseFood::class, DatabaseMealFood::class, DatabaseMealPlan::class, DatabaseMealPlanMeal::class],
-    version = 9,
+    version = 11,
     exportSchema = false
 )
 @TypeConverters(RoomConverters::class)

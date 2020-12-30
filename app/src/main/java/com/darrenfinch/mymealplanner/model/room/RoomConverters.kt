@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.domain.physicalquantities.stringsToUnits
 import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
-import com.darrenfinch.mymealplanner.model.data.entitysubdata.MetricUnit
+import com.darrenfinch.mymealplanner.model.room.entities.DatabaseMealFood
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

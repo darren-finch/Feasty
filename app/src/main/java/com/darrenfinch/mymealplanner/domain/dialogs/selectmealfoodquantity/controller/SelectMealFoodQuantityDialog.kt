@@ -1,11 +1,11 @@
-package com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.controller
+package com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller
 
 import android.app.Dialog
 import android.os.Bundle
 import androidx.navigation.fragment.navArgs
 
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
-import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.view.SelectMealFoodQuantityViewMvc
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectMealFoodQuantityViewMvc
 
 class SelectMealFoodQuantityDialog : BaseDialog() {
 

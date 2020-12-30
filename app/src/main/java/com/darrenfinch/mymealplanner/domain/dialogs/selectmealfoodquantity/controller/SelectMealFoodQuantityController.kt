@@ -1,12 +1,14 @@
-package com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.controller
+package com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.ScreensNavigator
-import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.view.SelectMealFoodQuantityViewMvc
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectMealFoodQuantityViewMvc
+import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import com.darrenfinch.mymealplanner.model.data.entities.MealFood
+import com.darrenfinch.mymealplanner.model.helpers.MacroCalculator
 
 class SelectMealFoodQuantityController(
     private val screensNavigator: ScreensNavigator,
@@ -35,7 +37,7 @@ class SelectMealFoodQuantityController(
         viewMvc.unregisterListener(this)
     }
 
-    override fun onMealFoodQuantityChosen(updatedMealFood: MealFood) {
+    override fun onMealFoodServingSizeChosen(updatedMealFood: MealFood) {
         screensNavigator.navigateFromSelectMealFoodQuantityScreenToAddEditMealScreen(
             updatedMealFood,
             currentMeal

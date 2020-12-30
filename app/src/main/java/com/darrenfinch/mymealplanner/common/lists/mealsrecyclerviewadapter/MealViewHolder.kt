@@ -14,9 +14,10 @@ import com.darrenfinch.mymealplanner.common.utils.AnimationUtils
 import com.darrenfinch.mymealplanner.databinding.MealItemBinding
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
-class MealViewHolder(private val listener: Listener, itemView: View) :
+class MealViewHolder(private val config: MealsRecyclerViewAdapter.Config, private val listener: Listener, itemView: View) :
     BaseViewHolder<Meal>(itemView) {
     interface Listener {
+        fun onSelect(meal: Meal)
         fun onEdit(mealId: Int)
         fun onDelete(meal: Meal)
     }
@@ -26,29 +27,47 @@ class MealViewHolder(private val listener: Listener, itemView: View) :
     override fun bind(item: Meal) {
         binding.meal = item
         binding.viewHolder = this
-        binding.viewMoreButton.setOnClickListener {
-            displayContextMenu()
+        binding.cardTop.setOnClickListener {
+            listener.onSelect(item)
+        }
+        if(config.showViewMoreButton) {
+            binding.viewMoreButton.setOnClickListener {
+                PopupMenu(itemView.context, binding.dropdownImageButton, Gravity.BOTTOM).apply {
+                    inflate(R.menu.context_menu)
+                    setOnMenuItemClickListener { menuItem ->
+                        when (menuItem.itemId) {
+                            R.id.edit -> listener.onEdit(item.id)
+                            R.id.delete -> listener.onDelete(item)
+                        }
+                        true
+                    }
+                    show()
+                }
+            }
+        }
+        else {
+            binding.viewMoreButton.visibility = View.GONE
         }
         initAdapter(item)
     }
 
-    private fun displayContextMenu() {
-        PopupMenu(itemView.context, binding.dropdownImageButton, Gravity.BOTTOM).apply {
-            inflate(R.menu.context_menu)
-            setOnMenuItemClickListener { menuItem ->
-                handleMenuItemClicked(menuItem)
-            }
-            show()
-        }
-    }
+//    private fun displayContextMenu() {
+//        PopupMenu(itemView.context, binding.dropdownImageButton, Gravity.BOTTOM).apply {
+//            inflate(R.menu.context_menu)
+//            setOnMenuItemClickListener { menuItem ->
+//                handleMenuItemClicked(menuItem)
+//            }
+//            show()
+//        }
+//    }
 
-    private fun handleMenuItemClicked(menuItem: MenuItem): Boolean {
-        when (menuItem.itemId) {
-            R.id.edit -> listener.onEdit(binding.meal!!.id)
-            R.id.delete -> listener.onDelete(binding.meal!!)
-        }
-        return true
-    }
+//    private fun handleMenuItemClicked(menuItem: MenuItem): Boolean {
+//        when (menuItem.itemId) {
+//            R.id.edit -> listener.onEdit(binding.meal!!.id)
+//            R.id.delete -> listener.onDelete(binding.meal!!)
+//        }
+//        return true
+//    }
 
     fun inverseExpanded() {
         if (expanded.get()) AnimationUtils.collapse(binding.cardBottom) else AnimationUtils.expand(

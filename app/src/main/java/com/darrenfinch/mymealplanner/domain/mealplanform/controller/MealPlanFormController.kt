@@ -22,6 +22,6 @@ class MealPlanFormController(private val viewModel: MealPlanFormViewModel, priva
 
     override fun onDoneClicked(finalMealPlan: MealPlan) {
         insertMealPlanUseCase.insertMealPlan(finalMealPlan)
-        screensNavigator.navigateFromMealPlanFormScreenToMealPlanScreen()
+        screensNavigator.navigateFromSelectMealPlanMealScreenToMealPlanScreen()
     }
 }

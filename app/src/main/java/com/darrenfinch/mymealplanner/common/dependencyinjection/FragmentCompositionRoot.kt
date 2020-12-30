@@ -16,7 +16,8 @@ import com.darrenfinch.mymealplanner.domain.mealplan.controller.MealPlanViewMode
 import com.darrenfinch.mymealplanner.domain.mealplanform.controller.MealPlanFormController
 import com.darrenfinch.mymealplanner.domain.mealplanform.controller.MealPlanFormViewModel
 import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealController
-import com.darrenfinch.mymealplanner.domain.selectmealfoodquantity.controller.SelectMealFoodQuantityController
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectMealFoodQuantityController
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controller.SelectMealPlanMealController
 import com.darrenfinch.mymealplanner.domain.usecases.*
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import com.darrenfinch.mymealplanner.model.data.entities.MealFood
@@ -122,9 +123,12 @@ class FragmentCompositionRoot(
 
     fun getMealPlanFormController(viewModel: MealPlanFormViewModel) = MealPlanFormController(viewModel, getInsertMealPlanUseCase(), getScreensNavigator())
 
-    fun getChoseItemController(currentMeal: Meal) = SelectFoodForMealController(getGetAllFoodsUseCase(), getScreensNavigator(), currentMeal)
+    fun getSelectFoodForMealController(currentMeal: Meal) = SelectFoodForMealController(getGetAllFoodsUseCase(), getScreensNavigator(), currentMeal)
 
     private fun getScreensNavigator() =
         ScreensNavigator(androidComponentsConfig.navController)
+
+    fun getSelectMealPlanMealController(mealPlanId: Int) = SelectMealPlanMealController(mealPlanId, getGetAllMealsUseCase(),
+        getInsertMealPlanMealUseCase(), getScreensNavigator())
 
 }

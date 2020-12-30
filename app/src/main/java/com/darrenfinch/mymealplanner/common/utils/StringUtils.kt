@@ -16,7 +16,7 @@ object StringUtils {
         macroType: MacroType,
         lineBreak: Boolean = true
     ): String {
-        return "$totalAmount/$requiredAmount${if (lineBreak) "\n" else ""}${getMacroSuffix(macroType)}"
+        return "$totalAmount/$requiredAmount${if (lineBreak) "\n" else " "}${getMacroSuffix(macroType)}"
     }
 
     private fun getMacroSuffix(macroType: MacroType): String {
