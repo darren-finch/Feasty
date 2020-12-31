@@ -13,6 +13,7 @@ class FoodViewHolder(private val config: FoodsRecyclerViewAdapter.Config, privat
 
     interface EventListener {
         fun onClick(foodId: Int)
+        fun onClick(food: Food)
         fun onEdit(foodId: Int)
         fun onDelete(foodId: Int)
     }
@@ -29,6 +30,7 @@ class FoodViewHolder(private val config: FoodsRecyclerViewAdapter.Config, privat
             setupViewMoreButton()
             binding.foodCardView.setOnClickListener {
                 eventListener.onClick(food.id)
+                eventListener.onClick(food)
             }
         }
     }

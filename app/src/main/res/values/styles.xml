@@ -1,52 +1,53 @@
 <resources>
-
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Misc -->
         <item name="android:fontFamily">@font/monda</item>
-        <item name="android:statusBarColor">@color/colorPrimary</item>
-        <item name="cardCornerRadius">4dp</item>
-        <item name="cardElevation">4dp</item>
-        <item name="cornerRadius">4dp</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="android:statusBarColor">@color/brand_red</item>
+        <item name="android:actionOverflowButtonStyle">@style/AppTheme.ToolbarStyle.OverflowButtonStyle</item>
+
+        <item name="cardViewStyle">@style/AppTheme.CardViewStyle</item>
+        <item name="toolbarStyle">@style/AppTheme.ToolbarStyle</item>
+        <item name="buttonStyle">@style/AppTheme.ButtonStyle</item>
         <item name="textInputStyle">@style/AppTheme.TextInputStyle</item>
+
+        <!-- Color customization -->
+        <item name="android:colorBackground">@color/brand_off_white</item>
+        <item name="colorOnBackground">@color/brand_dark_grey</item>
+        <item name="colorPrimary">@color/brand_red</item>
+        <item name="colorOnPrimary">@color/brand_white</item>
+        <item name="colorSecondary">@color/brand_purple</item>
+        <item name="colorOnSecondary">@color/brand_white</item>
+        <item name="colorSurface">@color/brand_white</item>
+        <item name="colorOnSurface">@color/brand_dark_grey</item>
     </style>
 
-    <style name="AppTheme.DefaultButton" parent="Widget.MaterialComponents.Button">
+    <style name="AppTheme.ButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="textAllCaps">false</item>
     </style>
 
     <style name="AppTheme.TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
-        <item name="boxBackgroundColor">#FFF</item>
+        <item name="boxBackgroundColor">?attr/colorSurface</item>
     </style>
 
-    <style name="AppTheme.ToolbarStyle" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="actionMenuTextColor">@color/colorTextPrimaryLight</item>
-        <item name="android:textColor">@color/colorTextPrimaryLight</item>
+    <style name="AppTheme.ToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="titleTextAppearance">?attr/textAppearanceHeadline5</item>
+        <item name="titleTextColor">?attr/colorOnPrimary</item>
     </style>
 
-    <style name="H1" parent="H2">
-        <item name="font">@font/monda</item>
-        <item name="android:textColor">@color/colorTextPrimary</item>
-        <item name="android:textSize">30sp</item>
+    <style name="AppTheme.ToolbarStyle.OverflowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">?attr/colorOnPrimary</item>
     </style>
 
-    <style name="H2" parent="TextAppearance.AppCompat.Large">
-        <item name="font">@font/monda</item>
-        <item name="android:textColor">@color/colorTextPrimary</item>
+    <style name="AppTheme.CardViewStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">4dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cornerRadius">4dp</item>
     </style>
 
-    <style name="H3" parent="TextAppearance.AppCompat.Medium">
-        <item name="font">@font/monda</item>
-        <item name="android:textColor">@color/colorTextPrimary</item>
+    <style name="AppTheme.BigCardViewStyle" parent="AppTheme.CardViewStyle">
+        <item name="cardElevation">8dp</item>
+        <item name="cardCornerRadius">6dp</item>
     </style>
-
-    <style name="H4" parent="TextAppearance.AppCompat.Small">
-        <item name="font">@font/monda</item>
-        <item name="android:textColor">@color/colorTextPrimary</item>
-    </style>
-
 </resources>

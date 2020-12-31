@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.lists.foodrecyclerviewadapter.FoodsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.common.lists.recyclerviewitemdecorations.MarginItemDecoration
+import com.darrenfinch.mymealplanner.common.misc.KeyboardUtils
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentAllFoodsBinding
 import com.darrenfinch.mymealplanner.model.data.entities.Food
@@ -14,8 +15,8 @@ import com.darrenfinch.mymealplanner.model.data.entities.Food
 class AllFoodsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseObservableViewMvc<AllFoodsViewMvc.Listener>(), AllFoodsViewMvc {
 
     private val foodsListItemEventListener: FoodsRecyclerViewAdapter.ItemEventListener = object : FoodsRecyclerViewAdapter.ItemEventListener {
-        override fun onItemClick(foodId: Int) {}
-
+        override fun onItemClick(foodId: Int) { }
+        override fun onItemClick(food: Food) { }
         override fun onItemEdit(foodId: Int) {
             notifyListenersOfItemEdit(foodId)
         }
@@ -50,13 +51,17 @@ class AllFoodsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
             foodsRecyclerView.layoutManager = LinearLayoutManager(getContext())
             foodsRecyclerView.addItemDecoration(MarginItemDecoration(16))
 
-            addNewFood.setOnClickListener {
-                notifyListenersOfAddNewFoodClicked()
+            toolbar.inflateMenu(R.menu.add_new_item_menu)
+            toolbar.setOnMenuItemClickListener {
+                when(it.itemId) {
+                    R.id.addNewItem -> onAddNewFoodClicked()
+                }
+                true
             }
         }
     }
 
-    private fun notifyListenersOfAddNewFoodClicked() {
+    private fun onAddNewFoodClicked() {
         for(listener in getListeners()) {
             listener.addNewFoodClicked()
         }

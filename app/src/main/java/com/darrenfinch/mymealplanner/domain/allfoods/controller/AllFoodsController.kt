@@ -2,8 +2,9 @@ package com.darrenfinch.mymealplanner.domain.allfoods.controller
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import com.darrenfinch.mymealplanner.common.Constants
-import com.darrenfinch.mymealplanner.common.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.misc.Constants
+import com.darrenfinch.mymealplanner.common.misc.KeyboardUtils
+import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.allfoods.view.AllFoodsViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.DeleteFoodUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.GetAllFoodsUseCase
@@ -35,11 +36,11 @@ class AllFoodsController(
     }
 
     override fun addNewFoodClicked() {
-        screensNavigator.navigateFromAllFoodsScreenToAddEditFoodScreen(Constants.DEFAULT_INVALID_FOOD_ID)
+        screensNavigator.navigateFromAllFoodsScreenToFoodFormScreen(Constants.DEFAULT_INVALID_FOOD_ID)
     }
 
     override fun onItemEdit(foodId: Int) {
-        screensNavigator.navigateFromAllFoodsScreenToAddEditFoodScreen(foodId)
+        screensNavigator.navigateFromAllFoodsScreenToFoodFormScreen(foodId)
     }
 
     override fun onItemDelete(foodId: Int) {

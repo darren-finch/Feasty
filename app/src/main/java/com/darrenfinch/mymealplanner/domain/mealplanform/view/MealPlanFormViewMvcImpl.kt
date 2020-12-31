@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
+import com.darrenfinch.mymealplanner.common.misc.KeyboardUtils
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentMealPlanFormBinding
 import com.darrenfinch.mymealplanner.domain.observables.ObservableMealPlan
@@ -42,6 +43,8 @@ class MealPlanFormViewMvcImpl(
 //    }
 
     private fun onDoneClicked() {
+        KeyboardUtils.hideKeyboardFrom(getContext(), getRootView())
+
         for (listener in getListeners()) {
             listener.onDoneClicked(getFinalMealPlan())
         }

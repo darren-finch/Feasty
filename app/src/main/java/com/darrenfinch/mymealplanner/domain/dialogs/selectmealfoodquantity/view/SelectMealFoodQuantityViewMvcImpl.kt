@@ -4,8 +4,10 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
+import com.darrenfinch.mymealplanner.common.misc.KeyboardUtils
 import com.darrenfinch.mymealplanner.common.utils.Defaults
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentSelectMealFoodQuantityBinding
@@ -36,7 +38,7 @@ class SelectMealFoodQuantityViewMvcImpl(
         binding.apply {
             binding.food = Defaults.defaultFood
 
-            binding.foodQuantityEditText.setOnClickListener {
+            binding.foodQuantityEditText.doOnTextChanged { _, _, _, _ ->
                 macroNutrientsTextView.text = getUpdatedMealFoodData().macroNutrients.toString()
             }
         }
@@ -58,6 +60,8 @@ class SelectMealFoodQuantityViewMvcImpl(
     }
 
     private fun onPositiveButtonClicked() {
+        KeyboardUtils.hideKeyboardFrom(getContext(), getRootView())
+
         for (listener in getListeners()) {
             listener.onMealFoodServingSizeChosen(getUpdatedMealFoodData())
         }

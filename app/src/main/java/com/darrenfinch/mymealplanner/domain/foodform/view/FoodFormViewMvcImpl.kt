@@ -7,6 +7,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
+import com.darrenfinch.mymealplanner.common.misc.KeyboardUtils
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentFoodFormBinding
 import com.darrenfinch.mymealplanner.domain.observables.ObservableFood
@@ -172,6 +173,8 @@ class FoodFormViewMvcImpl(
             ),
             servingSize = getServingSize()
         )
+
+        KeyboardUtils.hideKeyboardFrom(getContext(), getRootView())
 
         for (listener in getListeners()) {
             listener.onDoneButtonClicked(newFood)

@@ -14,15 +14,23 @@
         android:layout_height="match_parent"
         tools:context=".domain.foodform.controller.FoodFormFragment">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/edit_food" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/foodNameEditTextLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/standard_margin"
-            android:layout_marginHorizontal="@dimen/standard_margin"
+            android:layout_margin="@dimen/standard_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/foodNameEditText"
@@ -144,7 +152,7 @@
 
         <TextView
             android:id="@+id/textView"
-            style="@style/H3"
+            style="?attr/textAppearanceHeadline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/standard_margin"
@@ -162,7 +170,7 @@
             app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/foodQuantityEditTextLayout" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/doneButton"
             android:layout_margin="@dimen/standard_margin"
             android:layout_width="wrap_content"

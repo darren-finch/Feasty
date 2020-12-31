@@ -11,6 +11,7 @@ class FoodsRecyclerViewAdapter(private val config: Config, private val itemEvent
 
     interface ItemEventListener {
         fun onItemClick(foodId: Int)
+        fun onItemClick(food: Food)
         fun onItemEdit(foodId: Int)
         fun onItemDelete(foodId: Int)
     }
@@ -29,6 +30,10 @@ class FoodsRecyclerViewAdapter(private val config: Config, private val itemEvent
 
     override fun onClick(foodId: Int) {
         itemEventListener.onItemClick(foodId)
+    }
+
+    override fun onClick(food: Food) {
+        itemEventListener.onItemClick(food)
     }
 
     override fun onEdit(foodId: Int) {

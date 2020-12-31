@@ -11,6 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/new_meal_plan" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textLayout1"
             android:layout_width="0dp"
@@ -18,7 +27,7 @@
             android:layout_margin="@dimen/standard_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/mealPlanNameEditText"
@@ -58,7 +67,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textLayout2">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/required_protein_edit_text"
+                android:id="@+id/requiredProteinEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/required_protein"
@@ -105,7 +114,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/doneButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

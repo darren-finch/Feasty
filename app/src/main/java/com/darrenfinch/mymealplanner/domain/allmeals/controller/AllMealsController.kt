@@ -2,7 +2,7 @@ package com.darrenfinch.mymealplanner.domain.allmeals.controller
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import com.darrenfinch.mymealplanner.common.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.allmeals.view.AllMealsViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.DeleteMealUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.GetAllMealsUseCase

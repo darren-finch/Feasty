@@ -7,50 +7,14 @@
         android:layout_height="match_parent"
         tools:context=".domain.allmeals.controller.AllMealsFragment">
 
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/mealsListTop"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/allMealsLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/all_meals"
-                    android:textAppearance="@style/H2"
-                    android:textColor="#FFFFFF"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageButton
-                    android:id="@+id/addNewMeal"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/ic_add_circle"
-                    android:backgroundTint="#FFFFFF"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/all_meals" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mealsRecyclerView"
@@ -60,6 +24,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mealsListTop" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

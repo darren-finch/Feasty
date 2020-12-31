@@ -42,8 +42,8 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:text="@{StringUtils.INSTANCE.getMealTitleTemp(mealPlanMeal.title)}"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorTextPrimary"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    tools:text="Lunch"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -71,7 +71,7 @@
                     android:background="#00FFFFFF"
                     android:contentDescription="@string/view_more"
                     android:src="@drawable/ic_more"
-                    android:tint="@color/colorAccent"
+                    android:tint="@color/brand_purple"
                     app:layout_constraintBottom_toBottomOf="@+id/cardTop"
                     app:layout_constraintEnd_toStartOf="@+id/dropdownImageButton"
                     app:layout_constraintTop_toTopOf="@+id/cardTop" />
@@ -86,10 +86,10 @@
 
                 <TextView
                     android:id="@+id/macroNutrientsLabel"
-                    style="@style/H3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/macro_nutrients"
+                    android:textAppearance="?attr/textAppearanceSubtitle2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

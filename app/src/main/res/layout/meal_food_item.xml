@@ -6,8 +6,10 @@
             type="com.darrenfinch.mymealplanner.model.data.entities.MealFood" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="35dp">
 
@@ -17,8 +19,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@{mealFood.title}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/colorTextPrimary"
+            android:textAppearance="?attr/textAppearanceSubtitle2"
+            tools:text="Toast"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -29,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:text="@{mealFood.macroNutrients.toString()}"
+            tools:text="120 calories | 8P | 23C | 2P"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -36,4 +36,5 @@
     <string name="no_meal_plan_meals">There are no meals for this meal plan. Add some?</string>
     <string name="select_item">Select Item</string>
     <string name="select_meal">Select Meal</string>
+    <string name="edit_meal">Edit Meal</string>
 </resources>

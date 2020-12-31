@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.darrenfinch.mymealplanner.InstantExecutorExtension
 import com.darrenfinch.mymealplanner.TestData
-import com.darrenfinch.mymealplanner.common.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.view.SelectFoodForMealViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetAllFoodsUseCase
 import io.mockk.every

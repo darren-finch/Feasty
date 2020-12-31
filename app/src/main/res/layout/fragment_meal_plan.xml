@@ -18,17 +18,13 @@
         android:layout_height="match_parent"
         tools:context=".domain.mealplan.controller.MealPlanFragment">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            style="@style/AppTheme.ToolbarStyle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:titleTextAppearance="@style/H2"
-            app:titleTextColor="@color/colorTextPrimaryLight"
             app:title="@string/meal_plans" />
 
         <LinearLayout
@@ -49,12 +45,12 @@
                 android:foregroundGravity="center"
                 android:gravity="center"
                 android:text="@{StringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalCalories, mealPlanMacros.requiredCalories, MacroType.CALORIE, false)}"
-                android:textAppearance="@style/H1"
-                android:textColor="@color/colorTextPrimary" />
+                android:textAppearance="?attr/textAppearanceHeadline4"
+                tools:text="1850/2200 Calories"/>
 
             <ProgressBar
-                android:id="@+id/caloriesProgressBar"
                 style="?android:attr/progressBarStyleHorizontal"
+                android:id="@+id/caloriesProgressBar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="fill"
@@ -84,13 +80,14 @@
                 android:progress="@{mealPlanMacros.totalCarbohydrates}" />
 
             <TextView
-                android:id="@+id/allMealsLabel"
+                android:id="@+id/carbsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:foregroundGravity="center_vertical"
                 android:text="@{StringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalCarbohydrates, mealPlanMacros.requiredCarbohydrates, MacroType.CARBOHYDRATE, true)}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                tools:text="154/300 Carbs"/>
         </LinearLayout>
 
         <LinearLayout
@@ -115,13 +112,14 @@
                 android:progress="@{mealPlanMacros.totalFat}" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/fatsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:foregroundGravity="center_vertical"
                 android:text="@{StringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalFat, mealPlanMacros.requiredFat, MacroType.FAT, true)}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                tools:text="33/60 Fat" />
         </LinearLayout>
 
         <LinearLayout
@@ -146,13 +144,14 @@
                 android:progress="@{mealPlanMacros.totalProtein}" />
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/proteinsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:foregroundGravity="center_vertical"
                 android:text="@{StringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalProtein, mealPlanMacros.requiredProtein, MacroType.PROTEIN, true)}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                tools:text="145/200 Carbs" />
         </LinearLayout>
 
         <TextView

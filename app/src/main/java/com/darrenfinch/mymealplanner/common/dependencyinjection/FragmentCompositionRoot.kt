@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.view.LayoutInflater
 import androidx.fragment.app.FragmentActivity
-import com.darrenfinch.mymealplanner.common.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormController
 import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormViewModel
 import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormController

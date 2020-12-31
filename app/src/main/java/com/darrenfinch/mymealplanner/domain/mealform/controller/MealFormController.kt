@@ -2,8 +2,8 @@ package com.darrenfinch.mymealplanner.domain.mealform.controller
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import com.darrenfinch.mymealplanner.common.Constants
-import com.darrenfinch.mymealplanner.common.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.misc.Constants
+import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.mealform.view.MealFormViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetMealUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.InsertMealUseCase

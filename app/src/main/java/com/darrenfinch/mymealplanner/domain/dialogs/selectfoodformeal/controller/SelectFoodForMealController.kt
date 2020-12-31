@@ -2,9 +2,10 @@ package com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controlle
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import com.darrenfinch.mymealplanner.common.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.view.SelectFoodForMealViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetAllFoodsUseCase
+import com.darrenfinch.mymealplanner.model.data.entities.Food
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 class SelectFoodForMealController(
@@ -27,8 +28,8 @@ class SelectFoodForMealController(
         viewMvc.unregisterListener(this)
     }
 
-    override fun onFoodChosen(id: Int) {
-        screensNavigator.navigateFromSelectFoodForMealScreenToSelectFoodQuantityScreen(id, currentMeal)
+    override fun onFoodChosen(food: Food) {
+        screensNavigator.navigateFromSelectFoodForMealScreenToSelectFoodQuantityScreen(food.id, currentMeal)
     }
 
     fun fetchAllFoods(viewLifecycleOwner: LifecycleOwner) {

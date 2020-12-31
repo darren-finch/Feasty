@@ -6,7 +6,7 @@ import com.darrenfinch.mymealplanner.model.data.entities.Food
 
 interface SelectFoodForMealViewMvc : ObservableViewMvc<SelectFoodForMealViewMvc.Listener> {
     interface Listener {
-        fun onFoodChosen(id: Int)
+        fun onFoodChosen(food: Food)
     }
 
     fun bindFoods(foods: List<Food>)

@@ -3,11 +3,10 @@ package com.darrenfinch.mymealplanner.domain.allmeals.controller
 import androidx.lifecycle.*
 import com.darrenfinch.mymealplanner.InstantExecutorExtension
 import com.darrenfinch.mymealplanner.TestData
-import com.darrenfinch.mymealplanner.common.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.allmeals.view.AllMealsViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.DeleteMealUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.GetAllMealsUseCase
-import com.darrenfinch.mymealplanner.domain.usecases.GetMealUseCase
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

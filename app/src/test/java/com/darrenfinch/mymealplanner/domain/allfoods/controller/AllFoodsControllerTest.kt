@@ -6,7 +6,7 @@ import androidx.lifecycle.LifecycleRegistry
 import com.darrenfinch.mymealplanner.InstantExecutorExtension
 import com.darrenfinch.mymealplanner.TestData
 import com.darrenfinch.mymealplanner.TestData.DEFAULT_VALID_FOOD_ID
-import com.darrenfinch.mymealplanner.common.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.allfoods.view.AllFoodsViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.DeleteFoodUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.GetAllFoodsUseCase
@@ -65,7 +65,7 @@ internal class AllFoodsControllerTest {
     @Test
     internal fun `onItemEdit() navigates to add or edit food screen and passes correct foodId`() {
         SUT.onItemEdit(DEFAULT_VALID_FOOD_ID)
-        verify { screensNavigator.navigateFromAllFoodsScreenToAddEditFoodScreen(DEFAULT_VALID_FOOD_ID) }
+        verify { screensNavigator.navigateFromAllFoodsScreenToFoodFormScreen(DEFAULT_VALID_FOOD_ID) }
     }
 
     @Test

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#BF7160</color>
-    <color name="colorPrimaryDark">#8C594D</color>
-    <color name="colorTextPrimary">#4D4D4D</color>
-    <color name="colorTextPrimaryLight">#FFFFFF</color>
-    <color name="colorAccent">#8C85A6</color>
-    <color name="colorSecondary">#D9BEAD</color>
-    <color name="colorFragmentBackground">#CDCDCD</color>
+    <color name="brand_red">#BF7160</color>
+    <color name="brand_dark_red">#8C594D</color>
+    <color name="brand_dark_grey">#4D4D4D</color>
+    <color name="brand_white">#FFFFFF</color>
+    <color name="brand_purple">#8C85A6</color>
+    <color name="brand_light_tan">#D9BEAD</color>
+    <color name="brand_off_white">#FAF5F5</color>
 </resources>

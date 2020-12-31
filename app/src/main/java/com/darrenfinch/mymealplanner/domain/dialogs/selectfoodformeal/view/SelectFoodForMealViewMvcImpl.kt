@@ -23,12 +23,12 @@ class SelectFoodForMealViewMvcImpl(
         DataBindingUtil.inflate(inflater, R.layout.fragment_select_item, parent, false)
 
     private val foodsListItemEventListener = object : FoodsRecyclerViewAdapter.ItemEventListener {
-        override fun onItemClick(foodId: Int) {
+        override fun onItemClick(foodId: Int) {}
+        override fun onItemClick(food: Food) {
             for (listener in getListeners()) {
-                listener.onFoodChosen(foodId)
+                listener.onFoodChosen(food)
             }
         }
-
         override fun onItemEdit(foodId: Int) {}
         override fun onItemDelete(foodId: Int) {}
     }
@@ -60,7 +60,6 @@ class SelectFoodForMealViewMvcImpl(
         return AlertDialog.Builder(getContext())
             .setView(getRootView())
             .setTitle(getString(R.string.select_food))
-            .setPositiveButton(android.R.string.ok) { _, _ -> }
             .setNegativeButton(android.R.string.cancel) { _, _ -> }
             .show()
     }
