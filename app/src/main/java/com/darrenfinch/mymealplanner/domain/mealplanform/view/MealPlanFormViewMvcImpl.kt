@@ -21,8 +21,6 @@ class MealPlanFormViewMvcImpl(
         false
     )
 
-//    private var isEditingExistingMealPlan = false
-
     init {
         setRootView(binding.root)
         setupUI()
@@ -37,10 +35,6 @@ class MealPlanFormViewMvcImpl(
     override fun bindMealPlan(mealPlan: ObservableMealPlan) {
         binding.mealPlan = mealPlan
     }
-
-//    fun setIsEditingExistingMealPlan(isEditing: Boolean) {
-//        isEditingExistingMealPlan = isEditing
-//    }
 
     private fun onDoneClicked() {
         KeyboardUtils.hideKeyboardFrom(getContext(), getRootView())
