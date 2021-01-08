@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.darrenfinch.mymealplanner.model.DataConverters.convertDatabaseFoodToFood
+import com.darrenfinch.mymealplanner.model.DataConverters.convertDatabaseMealFoodToMealFood
 import com.darrenfinch.mymealplanner.model.DataConverters.convertDatabaseMealPlanMealToMealPlanMeal
 import com.darrenfinch.mymealplanner.model.DataConverters.convertDatabaseMealPlanToMealPlan
 import com.darrenfinch.mymealplanner.model.DataConverters.convertDatabaseMealToMeal
@@ -12,10 +13,7 @@ import com.darrenfinch.mymealplanner.model.DataConverters.convertMealFoodToDatab
 import com.darrenfinch.mymealplanner.model.DataConverters.convertMealPlanMealToDatabaseMealPlanMeal
 import com.darrenfinch.mymealplanner.model.DataConverters.convertMealPlanToDatabaseMealPlan
 import com.darrenfinch.mymealplanner.model.DataConverters.convertMealToDatabaseMeal
-import com.darrenfinch.mymealplanner.model.data.entities.Food
-import com.darrenfinch.mymealplanner.model.data.entities.Meal
-import com.darrenfinch.mymealplanner.model.data.entities.MealPlan
-import com.darrenfinch.mymealplanner.model.data.entities.MealPlanMeal
+import com.darrenfinch.mymealplanner.model.data.entities.*
 import com.darrenfinch.mymealplanner.model.room.MealPlannerDatabase
 import kotlinx.coroutines.*
 
@@ -25,6 +23,9 @@ class MainRepository constructor(database: MealPlannerDatabase) {
     private val mealFoodsDao = database.mealFoodsDao()
     private val mealPlansDao = database.mealPlansDao()
     private val mealPlanMealsDao = database.mealPlanMealsDao()
+
+
+
     private val allMeals: LiveData<List<Meal>>
         get() {
             return Transformations.map(mealsDao.getMeals()) {
@@ -51,6 +52,8 @@ class MainRepository constructor(database: MealPlannerDatabase) {
                 }
             }
         }
+
+
 
     fun getFoods(): LiveData<List<Food>> {
         return allFoods
@@ -82,8 +85,23 @@ class MainRepository constructor(database: MealPlannerDatabase) {
         }
     }
 
+
+
     fun getMeals(): LiveData<List<Meal>> {
         return allMeals
+    }
+
+    fun getMealsFromMealPlanId(id: Int): LiveData<List<MealPlanMeal>> {
+        return Transformations.map(mealPlanMealsDao.getMealsFromMealPlanId(id)) {
+            it.parallelMap { databaseMealPlanMeal ->
+                convertDatabaseMealPlanMealToMealPlanMeal(databaseMealPlanMeal, mealsDao, mealFoodsDao, foodsDao)
+            }
+        }
+    }
+
+    // TODO: REMOVE ASAP. This breaks abstraction for this repository, as all other methods return LiveData
+    suspend fun getMealSuspended(id: Int): Meal {
+        return convertDatabaseMealToMeal(mealsDao.getMealSuspended(id), mealFoodsDao, foodsDao)
     }
 
     fun getMeal(id: Int): LiveData<Meal> {
@@ -127,15 +145,28 @@ class MainRepository constructor(database: MealPlannerDatabase) {
         }
     }
 
-    private fun <A, B> List<A>.parallelMap(f: suspend (A) -> B): List<B> = runBlocking {
-        map { async(Dispatchers.Default) { f(it) } }.awaitAll()
-    }
-
     fun deleteAllMeals() {
         runBlocking(Dispatchers.IO) {
             mealsDao.deleteAllMeals()
         }
     }
+
+
+
+    // TODO: REMOVE ASAP and convert to Kotlin Flow
+    suspend fun getMealFoodsFromFoodId(id: Int): List<MealFood> {
+        return mealFoodsDao.getMealFoodsFromFoodIdSuspended(id).parallelMap {
+            convertDatabaseMealFoodToMealFood(it, foodsDao)
+        }
+    }
+
+    fun deleteMealFood(id: Int) {
+        runBlocking (Dispatchers.IO) {
+            mealFoodsDao.deleteMealFood(id)
+        }
+    }
+
+
 
     fun getMealPlan(id: Int): LiveData<MealPlan> {
         val mealPlanLiveData = MutableLiveData<MealPlan>()
@@ -164,13 +195,7 @@ class MainRepository constructor(database: MealPlannerDatabase) {
         }
     }
 
-    fun getMealsForMealPlan(mealPlanId: Int): LiveData<List<MealPlanMeal>> {
-        return Transformations.map(mealPlanMealsDao.getMealsForMealPlan(mealPlanId)) {
-            it.parallelMap { databaseMealPlanMeal ->
-                convertDatabaseMealPlanMealToMealPlanMeal(databaseMealPlanMeal, mealsDao, mealFoodsDao, foodsDao)
-            }
-        }
-    }
+
 
     fun insertMealPlanMeal(mealPlanMeal: MealPlanMeal) {
         runBlocking(Dispatchers.IO) {
@@ -190,16 +215,13 @@ class MainRepository constructor(database: MealPlannerDatabase) {
         }
     }
 
-//    fun getMealPlanMeal(id: Int): LiveData<MealPlanMeal> {
-//        val mealPlanMealLiveData = MutableLiveData<MealPlanMeal>()
-//        runBlocking(Dispatchers.IO) {
-//            val databaseMealPlanMeal = mealPlanMealsDao.getMealPlanMeal(id)
-//            mealPlanMealLiveData.postValue(convertDatabaseMealPlanMealToMealPlanMeal(databaseMealPlanMeal))
-//        }
-//        return mealPlanMealLiveData
-//    }
-
     fun getMealPlans(): LiveData<List<MealPlan>> {
         return allMealPlans
+    }
+
+
+
+    private fun <A, B> List<A>.parallelMap(f: suspend (A) -> B): List<B> = runBlocking {
+        map { async(Dispatchers.Default) { f(it) } }.awaitAll()
     }
 }

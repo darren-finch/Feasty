@@ -19,9 +19,9 @@ import com.darrenfinch.mymealplanner.model.helpers.MacroCalculator
 
 class SelectMealFoodQuantityViewMvcImpl(
     inflater: LayoutInflater,
-    parent: ViewGroup?
+    parent: ViewGroup?,
+    private val mealId: Int
 ) : BaseObservableViewMvc<SelectMealFoodQuantityViewMvc.Listener>(), SelectMealFoodQuantityViewMvc {
-
     private val binding: FragmentSelectMealFoodQuantityBinding = DataBindingUtil.inflate(
         inflater,
         R.layout.fragment_select_meal_food_quantity,
@@ -72,6 +72,7 @@ class SelectMealFoodQuantityViewMvcImpl(
             return MacroCalculator.updateMacrosForMealFoodWithNewServingSize(MealFood(
                 0,
                 it.id,
+                mealId,
                 it.title,
                 it.servingSize,
                 it.macroNutrients

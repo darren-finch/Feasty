@@ -16,10 +16,4 @@
         android:icon="@drawable/ic_food"
         android:title="All Foods"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/settingsFragment"
-        android:icon="@drawable/ic_settings"
-        android:iconTint="#FFF"
-        android:title="Settings"
-        app:showAsAction="always" />
 </menu>

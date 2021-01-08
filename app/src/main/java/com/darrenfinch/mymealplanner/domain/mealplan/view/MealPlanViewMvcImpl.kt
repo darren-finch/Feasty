@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
@@ -13,7 +14,6 @@ import com.darrenfinch.mymealplanner.common.lists.mealplanmealsrecyclerviewadapt
 import com.darrenfinch.mymealplanner.common.lists.recyclerviewitemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentMealPlanBinding
-import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import com.darrenfinch.mymealplanner.model.data.entities.MealPlan
 import com.darrenfinch.mymealplanner.model.data.entities.MealPlanMeal
 import com.darrenfinch.mymealplanner.model.data.structs.MealPlanMacros
@@ -93,8 +93,9 @@ class MealPlanViewMvcImpl(inflater: LayoutInflater,
             mealPlans.map { it.title }
         )
         val spinner = binding.toolbar.menu.findItem(R.id.selectMealPlanSpinner).actionView as Spinner
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerAdapter.setDropDownViewResource(R.layout.toolbar_spinner_item)
         spinner.adapter = spinnerAdapter
+        spinner.background = ResourcesCompat.getDrawable(getContext().resources, R.drawable.toolbar_spinner_bg, getContext().theme)
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,

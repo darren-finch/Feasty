@@ -1,76 +1,60 @@
 package com.darrenfinch.mymealplanner
 
 import androidx.lifecycle.MutableLiveData
+import com.darrenfinch.mymealplanner.common.misc.Constants
+import com.darrenfinch.mymealplanner.common.utils.Defaults
+import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity.Companion.defaultPhysicalQuantity
 import com.darrenfinch.mymealplanner.model.data.entities.Food
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
-import com.darrenfinch.mymealplanner.model.data.entities.MealFood
-import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
-import com.darrenfinch.mymealplanner.model.data.entitysubdata.MetricUnit
 
 object TestData {
-    const val DEFAULT_INVALID_FOOD_ID = -1
-    const val DEFAULT_VALID_FOOD_ID = 0
+    // I re-declared these constants because they are in use already by many different tests
+    const val DEFAULT_INVALID_MEAL_FOOD_ID = Constants.DEFAULT_INVALID_MEAL_FOOD_ID
+    const val DEFAULT_VALID_MEAL_FOOD_ID = Constants.DEFAULT_VALID_MEAL_FOOD_ID
+    const val DEFAULT_MEAL_FOOD_DATA_TITLE = Constants.DEFAULT_MEAL_FOOD_DATA_TITLE
 
-    const val DEFAULT_INVALID_MEAL_ID = -1
-    const val DEFAULT_VALID_MEAL_ID = 0
+    const val DEFAULT_INVALID_FOOD_ID = Constants.DEFAULT_INVALID_FOOD_ID
+    const val DEFAULT_VALID_FOOD_ID = Constants.DEFAULT_VALID_FOOD_ID
+    const val DEFAULT_FOOD_DATA_TITLE = Constants.DEFAULT_FOOD_DATA_TITLE
 
-    private const val DEFAULT_MEAL_DATA_TITLE = ""
-    private const val DEFAULT_FOOD_DATA_TITLE = ""
+    const val DEFAULT_INVALID_MEAL_ID = Constants.DEFAULT_INVALID_MEAL_ID
+    const val DEFAULT_VALID_MEAL_ID = Constants.DEFAULT_VALID_MEAL_ID
+    const val DEFAULT_MEAL_DATA_TITLE = Constants.DEFAULT_MEAL_DATA_TITLE
 
-    val defaultMealFood =
-        MealFood(
-            0,
-            DEFAULT_FOOD_DATA_TITLE, 0.0, 0.0, MetricUnit.defaultUnit,
-            MacroNutrients(
-                0,
-                0,
-                0,
-                0
-            )
-        )
+    const val DEFAULT_CALORIES = Constants.DEFAULT_CALORIES
+    const val DEFAULT_CARBS = Constants.DEFAULT_CARBS
+    const val DEFAULT_FATS = Constants.DEFAULT_FATS
+    const val DEFAULT_PROTEINS = Constants.DEFAULT_PROTEINS
+
+
+
+    // DEFAULT MACROS
+    val defaultMacroNutrients = Defaults.defaultMacroNutrients
+
+
+    // MEAL FOODS
+    val defaultMealFood = Defaults.defaultMealFood
+    val defaultMealFood2 = defaultMealFood.copy(id = DEFAULT_VALID_MEAL_FOOD_ID + 1, foodId = DEFAULT_VALID_FOOD_ID + 1)
+    val defaultMealFoodList = listOf(defaultMealFood, defaultMealFood2)
     val defaultMealFoodLiveData = MutableLiveData(defaultMealFood)
+    val defaultMealFoodListLiveData = MutableLiveData(defaultMealFoodList)
 
-    val defaultMeal = Meal(
-        0,
-        DEFAULT_MEAL_DATA_TITLE,
-        listOf()
-    )
-    val defaultMeal2 = Meal(
-        1,
-        DEFAULT_MEAL_DATA_TITLE,
-        listOf()
-    )
-    val defaultMealWithMealFood =
-        Meal(
-            0,
-            DEFAULT_MEAL_DATA_TITLE,
-            listOf(defaultMealFood)
-        )
-    val defaultMealListData = listOf(defaultMeal, defaultMeal2)
-    val defaultMealLiveData = MutableLiveData(defaultMeal)
-    val defaultMealListLiveData = MutableLiveData(defaultMealListData)
 
-    val defaultFood = Food(
-        0,
-        DEFAULT_FOOD_DATA_TITLE, 0.0, MetricUnit.defaultUnit,
-        MacroNutrients(
-            0,
-            0,
-            0,
-            0
-        )
-    )
-    val defaultFood2 = Food(
-        1,
-        DEFAULT_FOOD_DATA_TITLE, 0.0, MetricUnit.defaultUnit,
-        MacroNutrients(
-            0,
-            0,
-            0,
-            0
-        )
-    )
+
+    // FOODS
+    val defaultFood = Defaults.defaultFood
+    val defaultFood2 = defaultFood.copy(id = DEFAULT_VALID_FOOD_ID + 1)
     val defaultFoodDataList = listOf(defaultFood, defaultFood2)
     val defaultFoodLiveData = MutableLiveData(defaultFood)
     val defaultFoodListLiveData = MutableLiveData(defaultFoodDataList)
+
+
+
+    // MEALS
+    val defaultMeal = Defaults.defaultMeal
+    val defaultMeal2 = defaultMeal.copy(id = DEFAULT_VALID_MEAL_ID + 1)
+    val defaultMealWithMealFood = defaultMeal.copy(foods = listOf(defaultMealFood))
+    val defaultMealListData = listOf(defaultMeal, defaultMeal2)
+    val defaultMealLiveData = MutableLiveData(defaultMeal)
+    val defaultMealListLiveData = MutableLiveData(defaultMealListData)
 }

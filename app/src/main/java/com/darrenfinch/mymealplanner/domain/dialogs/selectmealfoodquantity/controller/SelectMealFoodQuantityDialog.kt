@@ -16,7 +16,7 @@ class SelectMealFoodQuantityDialog : BaseDialog() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        viewMvc = fragmentCompositionRoot.getViewMvcFactory().getSelectMealFoodQuantityViewMvc(null)
+        viewMvc = fragmentCompositionRoot.getViewMvcFactory().getSelectMealFoodQuantityViewMvc(null, args.currentMeal.id)
 
         controller = fragmentCompositionRoot.getSelectMealFoodQuantityController(
             args.foodId,

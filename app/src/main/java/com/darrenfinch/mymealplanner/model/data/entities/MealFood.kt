@@ -10,6 +10,7 @@ import java.io.Serializable
 data class MealFood(
     val id: Int = 0,
     val foodId: Int = 0,
+    val mealId: Int = 0,
     val title: String,
     val desiredServingSize: PhysicalQuantity,
     val macroNutrients: MacroNutrients

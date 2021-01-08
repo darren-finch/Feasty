@@ -168,8 +168,8 @@ class FoodFormViewMvcImpl(
             macroNutrients = MacroNutrients(
                 calories = getCalories(),
                 carbs = getCarbohydrates(),
-                fat = getFat(),
-                protein = getProtein()
+                fats = getFat(),
+                proteins = getProtein()
             ),
             servingSize = getServingSize()
         )

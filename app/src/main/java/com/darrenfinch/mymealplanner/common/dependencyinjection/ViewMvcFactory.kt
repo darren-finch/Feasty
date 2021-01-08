@@ -22,7 +22,7 @@ class ViewMvcFactory(private val inflater: LayoutInflater) {
     fun getMealFormViewMvc(parent: ViewGroup?): MealFormViewMvc = MealFormViewMvcImpl(inflater, parent)
     fun getAllFoodsViewMvc(parent: ViewGroup?): AllFoodsViewMvc = AllFoodsViewMvcImpl(inflater, parent)
     fun getAllMealsViewMvc(parent: ViewGroup?): AllMealsViewMvc = AllMealsViewMvcImpl(inflater, parent)
-    fun getSelectMealFoodQuantityViewMvc(parent: ViewGroup?): SelectMealFoodQuantityViewMvc = SelectMealFoodQuantityViewMvcImpl(inflater, parent)
+    fun getSelectMealFoodQuantityViewMvc(parent: ViewGroup?, mealId: Int): SelectMealFoodQuantityViewMvc = SelectMealFoodQuantityViewMvcImpl(inflater, parent, mealId)
     fun getMealPlanViewMvc(parent: ViewGroup?) = MealPlanViewMvcImpl(inflater, parent)
     fun getMealPlanFormViewMvc(parent: ViewGroup?) = MealPlanFormViewMvcImpl(inflater, parent)
     fun getSelectFoodForMealViewMvc(parent: ViewGroup?) = SelectFoodForMealViewMvcImpl(inflater, parent)

@@ -6,13 +6,19 @@
         <item name="android:statusBarColor">@color/brand_red</item>
         <item name="android:actionOverflowButtonStyle">@style/AppTheme.ToolbarStyle.OverflowButtonStyle</item>
 
+        <!-- Various styles -->
         <item name="cardViewStyle">@style/AppTheme.CardViewStyle</item>
         <item name="toolbarStyle">@style/AppTheme.ToolbarStyle</item>
         <item name="buttonStyle">@style/AppTheme.ButtonStyle</item>
         <item name="textInputStyle">@style/AppTheme.TextInputStyle</item>
+        <item name="actionOverflowButtonStyle">@style/AppTheme.ToolbarStyle.OverflowButtonStyle</item>
+        <item name="imageButtonStyle">@style/AppTheme.ImageButtonStyle</item>
+
+        <!-- Text styles -->
+
 
         <!-- Color customization -->
-        <item name="android:colorBackground">@color/brand_off_white</item>
+        <item name="android:colorBackground">@color/brand_white</item>
         <item name="colorOnBackground">@color/brand_dark_grey</item>
         <item name="colorPrimary">@color/brand_red</item>
         <item name="colorOnPrimary">@color/brand_white</item>
@@ -36,6 +42,10 @@
         <item name="titleTextColor">?attr/colorOnPrimary</item>
     </style>
 
+    <style name="AppTheme.ImageButtonStyle" parent="Widget.AppCompat.ImageButton">
+        <item name="android:tint">?attr/colorOnSurface</item>
+    </style>
+
     <style name="AppTheme.ToolbarStyle.OverflowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">?attr/colorOnPrimary</item>
     </style>
@@ -50,4 +60,8 @@
         <item name="cardElevation">8dp</item>
         <item name="cardCornerRadius">6dp</item>
     </style>
+
+<!--    <style name="H2">-->
+<!--        <item name="android:textColor">?attr/colorOnPrimary</item>-->
+<!--    </style>-->
 </resources>

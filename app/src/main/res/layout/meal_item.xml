@@ -72,7 +72,6 @@
                     android:background="#00FFFFFF"
                     android:contentDescription="@string/view_more"
                     android:src="@drawable/ic_more"
-                    android:tint="@color/brand_purple"
                     app:layout_constraintBottom_toBottomOf="@+id/cardTop"
                     app:layout_constraintEnd_toStartOf="@+id/dropdownImageButton"
                     app:layout_constraintTop_toTopOf="@+id/cardTop"/>

@@ -27,11 +27,6 @@
             app:destination="@id/selectMealPlanMealDialog" />
     </fragment>
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.darrenfinch.mymealplanner.view.SettingsFragment"
-        android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
-    <fragment
         android:id="@+id/allMealsFragment"
         android:name="com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsFragment"
         android:label="fragment_meals"
