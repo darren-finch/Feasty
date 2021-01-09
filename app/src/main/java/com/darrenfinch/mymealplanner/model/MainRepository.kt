@@ -157,7 +157,7 @@ class MainRepository constructor(database: MealPlannerDatabase) {
     suspend fun getMealFoodsFromFoodId(id: Int): List<MealFood> {
         return mealFoodsDao.getMealFoodsFromFoodIdSuspended(id).parallelMap {
             convertDatabaseMealFoodToMealFood(it, foodsDao)
-        }
+        }.filterNotNull()
     }
 
     fun deleteMealFood(id: Int) {

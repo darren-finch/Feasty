@@ -104,7 +104,6 @@ class FragmentCompositionRoot(
     ) = MealFormController(
         viewModel,
         getInsertMealUseCase(),
-        getUpdateMealUseCase(),
         getGetMealUseCase(),
         getScreensNavigator(),
         newMealFood,

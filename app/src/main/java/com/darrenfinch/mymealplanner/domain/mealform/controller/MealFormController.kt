@@ -14,7 +14,6 @@ import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 class MealFormController(
     private val viewModel: MealFormViewModel,
     private val insertMealUseCase: InsertMealUseCase,
-    private val updateMealUseCase: UpdateMealUseCase,
     private val getMealUseCase: GetMealUseCase,
     private val screensNavigator: ScreensNavigator,
     private val newMealFood: MealFood?,

@@ -69,16 +69,34 @@ class SelectMealFoodQuantityViewMvcImpl(
 
     private fun getUpdatedMealFoodData(): MealFood {
         binding.food?.let {
-            return MacroCalculator.updateMacrosForMealFoodWithNewServingSize(MealFood(
-                0,
-                it.id,
-                mealId,
-                it.title,
-                it.servingSize,
-                it.macroNutrients
-            ), PhysicalQuantity(binding.foodQuantityEditText.text.toString().toDouble(), it.servingSize.unit))
+            return MacroCalculator.updateMacrosForMealFoodWithNewServingSize(
+                MealFood(
+                    0,
+                    it.id,
+                    mealId,
+                    it.title,
+                    it.servingSize,
+                    it.macroNutrients
+                ),
+                PhysicalQuantity(
+                    getFoodQuantity(),
+                    it.servingSize.unit
+                )
+            )
         }
 
         return Defaults.defaultMealFood
+    }
+
+    private fun getFoodQuantity(): Double {
+        return if (binding.food != null) {
+            val foodQuantityText = binding.foodQuantityEditText.text.toString()
+            if (foodQuantityText.isNotEmpty())
+                foodQuantityText.toDouble()
+            else
+                0.0
+        } else {
+            0.0
+        }
     }
 }

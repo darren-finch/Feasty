@@ -8,7 +8,7 @@ import com.darrenfinch.mymealplanner.model.room.entities.*
 
 @Database(
     entities = [DatabaseMeal::class, DatabaseFood::class, DatabaseMealFood::class, DatabaseMealPlan::class, DatabaseMealPlanMeal::class],
-    version = 11,
+    version = 14,
     exportSchema = false
 )
 @TypeConverters(RoomConverters::class)

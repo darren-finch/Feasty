@@ -123,28 +123,32 @@ object DataConverters {
                 it,
                 foodsDao
             )
-        }
+        }.filterNotNull()
     }
 
+    // TODO: REMOVE NULLABILITY. ADDED TO FIX A BUG
     suspend fun convertDatabaseMealFoodToMealFood(
         databaseMealFood: DatabaseMealFood,
         foodsDao: FoodsDao
-    ): MealFood {
-        val databaseFood = foodsDao.getFood(databaseMealFood.foodId)
-        val mealFood = MealFood(
-            id = databaseFood.id,
-            foodId = databaseMealFood.foodId,
-            mealId = databaseMealFood.mealId,
-            title = databaseFood.title,
-            desiredServingSize = databaseFood.servingSize,
-            macroNutrients = MacroNutrients(
-                calories = databaseFood.macroNutrients.calories,
-                carbs = databaseFood.macroNutrients.carbs,
-                fats = databaseFood.macroNutrients.fats,
-                proteins = databaseFood.macroNutrients.proteins
+    ): MealFood? {
+        val databaseFood: DatabaseFood? = foodsDao.getFood(databaseMealFood.foodId)
+        databaseFood?.let {
+            val mealFood = MealFood(
+                id = it.id,
+                foodId = databaseMealFood.foodId,
+                mealId = databaseMealFood.mealId,
+                title = databaseFood.title,
+                desiredServingSize = databaseFood.servingSize,
+                macroNutrients = MacroNutrients(
+                    calories = databaseFood.macroNutrients.calories,
+                    carbs = databaseFood.macroNutrients.carbs,
+                    fats = databaseFood.macroNutrients.fats,
+                    proteins = databaseFood.macroNutrients.proteins
+                )
             )
-        )
-        return MacroCalculator.updateMacrosForMealFoodWithNewServingSize(mealFood, databaseMealFood.desiredServingSize)
+            return MacroCalculator.updateMacrosForMealFoodWithNewServingSize(mealFood, databaseMealFood.desiredServingSize)
+        }
+        return null
     }
 
     fun convertMealToDatabaseMeal(meal: Meal): DatabaseMeal {
