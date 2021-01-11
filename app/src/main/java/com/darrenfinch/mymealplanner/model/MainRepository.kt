@@ -123,12 +123,11 @@ class MainRepository constructor(database: MealPlannerDatabase) {
         runBlocking(Dispatchers.IO) {
             val newMealId = mealsDao.insertMeal(convertMealToDatabaseMeal(meal))
             for (mealFood in meal.foods) {
-                mealFoodsDao.insertMealFood(
-                    convertMealFoodToDatabaseMealFood(
-                        mealFood,
-                        newMealId.toInt()
-                    )
+                val databaseMealFood = convertMealFoodToDatabaseMealFood(
+                    mealFood,
+                    newMealId.toInt()
                 )
+                mealFoodsDao.insertMealFood(databaseMealFood)
             }
         }
     }
@@ -136,6 +135,13 @@ class MainRepository constructor(database: MealPlannerDatabase) {
     fun updateMeal(meal: Meal) {
         runBlocking(Dispatchers.IO) {
             mealsDao.updateMeal(convertMealToDatabaseMeal(meal))
+            for (mealFood in meal.foods) {
+                val databaseMealFood = convertMealFoodToDatabaseMealFood(
+                    mealFood,
+                    meal.id
+                )
+                mealFoodsDao.updateMealFood(databaseMealFood)
+            }
         }
     }
 

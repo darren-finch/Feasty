@@ -6,11 +6,13 @@ import androidx.lifecycle.LifecycleRegistry
 import com.darrenfinch.mymealplanner.InstantExecutorExtension
 import com.darrenfinch.mymealplanner.TestData
 import com.darrenfinch.mymealplanner.TestData.DEFAULT_INVALID_MEAL_ID
+import com.darrenfinch.mymealplanner.TestData.DEFAULT_VALID_MEAL_ID
 import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.mealform.view.MealFormViewMvc
 import com.darrenfinch.mymealplanner.domain.observables.ObservableMeal
 import com.darrenfinch.mymealplanner.domain.usecases.GetMealUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.InsertMealUseCase
+import com.darrenfinch.mymealplanner.domain.usecases.UpdateMealUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import io.mockk.every
 import io.mockk.mockk
@@ -35,6 +37,7 @@ internal class MealFormControllerTest {
 
     private val viewModel = mockk<MealFormViewModel>(relaxUnitFun = true)
     private val insertMealUseCase = mockk<InsertMealUseCase>(relaxUnitFun = true)
+    private val updateMealUseCase = mockk<UpdateMealUseCase>(relaxUnitFun = true)
     private val getMealUseCase = mockk<GetMealUseCase>(relaxUnitFun = true)
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
 
@@ -49,10 +52,12 @@ internal class MealFormControllerTest {
         SUT = MealFormController(
             viewModel,
             insertMealUseCase,
+            updateMealUseCase,
             getMealUseCase,
             screensNavigator,
             defaultMealFood,
-            defaultMeal
+            defaultMeal,
+            DEFAULT_INVALID_MEAL_ID
         )
         SUT.bindView(viewMvc)
         every { viewModel.getObservableMeal() } returns defaultObservableMeal
@@ -75,14 +80,14 @@ internal class MealFormControllerTest {
     @Test
     internal fun `onViewCreated() binds observable meal to view if not editing meal for the first time`() {
         // The controller is editing a meal for the first time if mealId == -1
-        SUT.onViewCreated(DEFAULT_INVALID_MEAL_ID, viewLifecycleOwner)
+        SUT.onViewCreated(viewLifecycleOwner)
         verify { viewMvc.bindMealDetails(defaultObservableMeal) }
     }
 
     @Test
     internal fun `onViewCreated() adds new meal food to current meal if not editing meal for the first time`() {
         // The controller is editing a meal for the first time if mealId == -1
-        SUT.onViewCreated(DEFAULT_INVALID_MEAL_ID, viewLifecycleOwner)
+        SUT.onViewCreated(viewLifecycleOwner)
         val newMeal = Meal(
             defaultMeal.id,
             defaultMeal.title,
@@ -108,6 +113,22 @@ internal class MealFormControllerTest {
     internal fun `doneButtonClicked() inserts meal with use case`() {
         SUT.doneButtonClicked()
         verify { insertMealUseCase.insertMeal(defaultMeal) }
+    }
+
+    @Test
+    internal fun `doneButtonClicked() updates meal with use case when not editing meal for the first time`() {
+        SUT = MealFormController(
+            viewModel,
+            insertMealUseCase,
+            updateMealUseCase,
+            getMealUseCase,
+            screensNavigator,
+            defaultMealFood,
+            defaultMeal,
+            DEFAULT_VALID_MEAL_ID
+        )
+        SUT.doneButtonClicked()
+        verify { updateMealUseCase.updateMeal(defaultMeal) }
     }
 
     //endregion Tests ------------------------------------------------------------------------------

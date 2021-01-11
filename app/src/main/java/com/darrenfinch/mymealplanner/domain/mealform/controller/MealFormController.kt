@@ -14,10 +14,12 @@ import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 class MealFormController(
     private val viewModel: MealFormViewModel,
     private val insertMealUseCase: InsertMealUseCase,
+    private val updateMealUseCase: UpdateMealUseCase,
     private val getMealUseCase: GetMealUseCase,
     private val screensNavigator: ScreensNavigator,
     private val newMealFood: MealFood?,
-    private val currentMeal: Meal?
+    private val currentMeal: Meal?,
+    private val mealId: Int
 ) : MealFormViewMvc.Listener {
     private lateinit var viewMvc: MealFormViewMvc
 
@@ -33,8 +35,8 @@ class MealFormController(
         viewMvc.unregisterListener(this)
     }
 
-    fun onViewCreated(mealId: Int, viewLifecycleOwner: LifecycleOwner) {
-        if(isEditingExistingMeal(mealId) && isEditingMealForTheFirstTime()) {
+    fun onViewCreated(viewLifecycleOwner: LifecycleOwner) {
+        if(isEditingExistingMeal() && isEditingMealForTheFirstTime()) {
             getMealUseCase.getMeal(mealId).observe(viewLifecycleOwner, Observer {
                 viewModel.setObservableMeal(it)
                 bindObservableMealToView()
@@ -46,7 +48,7 @@ class MealFormController(
         }
     }
 
-    private fun isEditingExistingMeal(mealId: Int) = mealId != Constants.DEFAULT_INVALID_MEAL_ID
+    private fun isEditingExistingMeal() = mealId != Constants.DEFAULT_INVALID_MEAL_ID
     private fun isEditingMealForTheFirstTime() = currentMeal == null && newMealFood == null
 
     private fun bindObservableMealToView() {
@@ -72,6 +74,10 @@ class MealFormController(
 
     override fun doneButtonClicked() {
         screensNavigator.navigateToAllMealsScreen()
-        insertMealUseCase.insertMeal(viewModel.getObservableMeal().get())
+        val finalMeal = viewModel.getObservableMeal().get()
+        if(!isEditingExistingMeal())
+            insertMealUseCase.insertMeal(finalMeal)
+        else
+            updateMealUseCase.updateMeal(finalMeal)
     }
 }

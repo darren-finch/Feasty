@@ -100,14 +100,17 @@ class FragmentCompositionRoot(
     fun getMealFormController(
         viewModel: MealFormViewModel,
         newMealFood: MealFood?,
-        currentMeal: Meal?
+        currentMeal: Meal?,
+        mealId: Int
     ) = MealFormController(
         viewModel,
         getInsertMealUseCase(),
+        getUpdateMealUseCase(),
         getGetMealUseCase(),
         getScreensNavigator(),
         newMealFood,
-        currentMeal
+        currentMeal,
+        mealId
     )
 
     fun getMealPlanController(viewModel: MealPlanViewModel) =

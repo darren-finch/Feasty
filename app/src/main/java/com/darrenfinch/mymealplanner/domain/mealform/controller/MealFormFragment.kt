@@ -31,54 +31,26 @@ class MealFormFragment : BaseFragment() {
         controller = fragmentCompositionRoot.getMealFormController(
             viewModel,
             args.newMealFood,
-            args.currentMeal
+            args.currentMeal,
+            args.mealId
         )
         controller.bindView(viewMvc)
 
-        println("onCreateView was called")
         return viewMvc.getRootView()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        controller.onViewCreated(args.mealId, viewLifecycleOwner)
-        println("onViewCreated was called")
+        controller.onViewCreated(viewLifecycleOwner)
     }
 
     override fun onStart() {
         super.onStart()
         controller.onStart()
-        println("onStart was called")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        println("onResume was called")
     }
 
     override fun onStop() {
         super.onStop()
         controller.onStop()
-        println("onStop was called")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        println("onPause was called")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        println("onDestroyView was called")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        println("onDestroy was called")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        println("onDetach was called")
     }
 }
