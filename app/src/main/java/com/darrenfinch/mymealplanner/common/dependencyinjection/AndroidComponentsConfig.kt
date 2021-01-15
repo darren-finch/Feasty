@@ -1,5 +1,5 @@
 package com.darrenfinch.mymealplanner.common.dependencyinjection
 
-import androidx.navigation.NavController
+import com.ncapdevi.fragnav.FragNavController
 
-data class AndroidComponentsConfig(val navController: NavController)
+data class AndroidComponentsConfig(val navController: FragNavController)

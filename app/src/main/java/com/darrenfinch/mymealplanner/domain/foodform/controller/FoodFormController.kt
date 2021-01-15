@@ -1,8 +1,13 @@
 package com.darrenfinch.mymealplanner.domain.foodform.controller
 
+import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.controllers.BaseController
+import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
+import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormFragment.Companion.FOOD_DETAILS
+import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormFragment.Companion.FOOD_ID
+import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormFragment.Companion.HAS_LOADED_FOOD_DETAILS
 import com.darrenfinch.mymealplanner.domain.foodform.view.FoodFormViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.InsertFoodUseCase
@@ -13,13 +18,19 @@ class FoodFormController(
     private val screensNavigator: ScreensNavigator,
     private val getFoodUseCase: GetFoodUseCase,
     private val insertFoodUseCase: InsertFoodUseCase,
-    private val updateFoodUseCase: UpdateFoodUseCase,
-    private val viewModel: FoodFormViewModel
-) : FoodFormViewMvc.Listener {
+    private val updateFoodUseCase: UpdateFoodUseCase
+) : BaseController, FoodFormViewMvc.Listener {
 
     private lateinit var viewMvc: FoodFormViewMvc
 
-    private fun canFetchFoodDetails() = viewModel.isNotDirty() && !viewModel.insertingFood
+    private var foodId = -1
+    private var foodDetails: Food? = null
+    private var hasLoadedFoodDetails = false
+
+    private val insertingFood: Boolean
+        get() = foodId < 0
+    private val canFetchFoodDetails: Boolean
+        get() = hasLoadedFoodDetails && !insertingFood
 
     fun bindView(viewMvc: FoodFormViewMvc) {
         this.viewMvc = viewMvc
@@ -34,31 +45,35 @@ class FoodFormController(
     }
 
     private fun bindFoodDetailsToViewModelAndViewMvc(foodDetails: Food) {
-        viewModel.setObservableFoodData(foodDetails)
-        viewMvc.bindFoodDetails(viewModel.getObservableFood())
+        this.foodDetails = foodDetails
+        viewMvc.bindFoodDetails(foodDetails)
     }
 
     fun fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner: LifecycleOwner) {
-        if (canFetchFoodDetails())
+        if (canFetchFoodDetails) {
             fetchFoodDetailsFromRepository(viewLifecycleOwner)
-        else
-            viewMvc.bindFoodDetails(viewModel.getObservableFood())
+        }
+        else {
+            foodDetails?.let {
+                viewMvc.bindFoodDetails(it)
+            }
+        }
     }
 
     private fun fetchFoodDetailsFromRepository(viewLifecycleOwner: LifecycleOwner) {
-        getFoodUseCase.fetchFood(viewModel.foodId).observe(viewLifecycleOwner, Observer { food ->
+        getFoodUseCase.fetchFood(foodId).observe(viewLifecycleOwner, Observer { food ->
+            hasLoadedFoodDetails = true
             bindFoodDetailsToViewModelAndViewMvc(food)
         })
     }
 
     override fun onDoneButtonClicked(editedFoodDetails: Food) {
         saveFoodDetails(editedFoodDetails)
-
-        screensNavigator.navigateToAllFoodsScreen()
+        screensNavigator.goBack()
     }
 
     private fun saveFoodDetails(editedFoodDetails: Food) {
-        if (viewModel.insertingFood)
+        if (insertingFood)
             insertFood(editedFoodDetails)
         else
             updateFood(editedFoodDetails)
@@ -66,4 +81,17 @@ class FoodFormController(
 
     private fun insertFood(food: Food) = insertFoodUseCase.insertFood(food)
     private fun updateFood(food: Food) = updateFoodUseCase.updateFood(food)
+
+    override fun setState(state: Bundle?) {
+        foodId = state?.getInt(FOOD_ID) ?: -1
+        foodDetails = state?.getSerializable(FOOD_DETAILS) as Food?
+        hasLoadedFoodDetails = state?.getBoolean(HAS_LOADED_FOOD_DETAILS) ?: false
+    }
+    override fun getState(): Bundle {
+        return Bundle().apply {
+            putInt(FOOD_ID, foodId)
+            putSerializable(FOOD_DETAILS, viewMvc.getFoodDetails())
+            putBoolean(HAS_LOADED_FOOD_DETAILS, hasLoadedFoodDetails)
+        }
+    }
 }

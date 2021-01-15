@@ -1,5 +1,6 @@
 package com.darrenfinch.mymealplanner.common.utils
 
+import com.darrenfinch.mymealplanner.common.misc.Constants
 import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_CALORIES
 import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_CARBS
 import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_FATS
@@ -7,9 +8,7 @@ import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_FOOD_DATA_TIT
 import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_MEAL_DATA_TITLE
 import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_MEAL_FOOD_DATA_TITLE
 import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_PROTEINS
-import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_VALID_FOOD_ID
-import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_VALID_MEAL_FOOD_ID
-import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_VALID_MEAL_ID
+import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_VALID_ID
 import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.model.data.entities.Food
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
@@ -25,23 +24,23 @@ object Defaults {
     )
 
     val defaultMealFood =MealFood(
-        id = DEFAULT_VALID_MEAL_FOOD_ID,
-        foodId = DEFAULT_VALID_FOOD_ID,
-        mealId = DEFAULT_VALID_MEAL_ID,
+        id = DEFAULT_VALID_ID,
+        foodId = Constants.DEFAULT_VALID_ID,
+        mealId = Constants.DEFAULT_VALID_ID,
         title = DEFAULT_MEAL_FOOD_DATA_TITLE,
         desiredServingSize = PhysicalQuantity.defaultPhysicalQuantity,
         macroNutrients = defaultMacroNutrients
     )
 
     val defaultFood = Food(
-        id = DEFAULT_VALID_FOOD_ID,
+        id = Constants.DEFAULT_VALID_ID,
         title = DEFAULT_FOOD_DATA_TITLE,
         servingSize = PhysicalQuantity.defaultPhysicalQuantity,
         macroNutrients = defaultMacroNutrients
     )
 
     val defaultMeal = Meal(
-        id = DEFAULT_VALID_MEAL_ID,
+        id = Constants.DEFAULT_VALID_ID,
         title = DEFAULT_MEAL_DATA_TITLE,
         foods = listOf()
     )

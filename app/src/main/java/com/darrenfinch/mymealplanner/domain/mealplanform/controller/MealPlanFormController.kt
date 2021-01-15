@@ -1,11 +1,16 @@
 package com.darrenfinch.mymealplanner.domain.mealplanform.controller
 
-import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
+import android.os.Bundle
+import com.darrenfinch.mymealplanner.common.controllers.BaseController
+import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.mealplanform.view.MealPlanFormViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.InsertMealPlanUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.MealPlan
 
-class MealPlanFormController(private val viewModel: MealPlanFormViewModel, private val insertMealPlanUseCase: InsertMealPlanUseCase, private val screensNavigator: ScreensNavigator) : MealPlanFormViewMvc.Listener {
+class MealPlanFormController(
+    private val insertMealPlanUseCase: InsertMealPlanUseCase,
+    private val screensNavigator: ScreensNavigator
+) : BaseController, MealPlanFormViewMvc.Listener {
     private lateinit var viewMvc: MealPlanFormViewMvc
 
     fun bindView(viewMvc: MealPlanFormViewMvc) {
@@ -22,6 +27,11 @@ class MealPlanFormController(private val viewModel: MealPlanFormViewModel, priva
 
     override fun onDoneClicked(finalMealPlan: MealPlan) {
         insertMealPlanUseCase.insertMealPlan(finalMealPlan)
-        screensNavigator.navigateFromSelectMealPlanMealScreenToMealPlanScreen()
+        screensNavigator.goBack()
+    }
+
+    override fun setState(state: Bundle?) {}
+    override fun getState(): Bundle {
+        return Bundle()
     }
 }

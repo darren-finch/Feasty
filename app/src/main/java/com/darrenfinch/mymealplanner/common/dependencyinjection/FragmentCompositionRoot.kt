@@ -1,12 +1,9 @@
 package com.darrenfinch.mymealplanner.common.dependencyinjection
 
 import android.app.Application
-import android.content.Context
 import android.view.LayoutInflater
-import androidx.fragment.app.FragmentActivity
-import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
 import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormController
-import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormViewModel
 import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormController
 import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormViewModel
 import com.darrenfinch.mymealplanner.domain.allfoods.controller.AllFoodsController
@@ -14,42 +11,26 @@ import com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsControll
 import com.darrenfinch.mymealplanner.domain.mealplan.controller.MealPlanController
 import com.darrenfinch.mymealplanner.domain.mealplan.controller.MealPlanViewModel
 import com.darrenfinch.mymealplanner.domain.mealplanform.controller.MealPlanFormController
-import com.darrenfinch.mymealplanner.domain.mealplanform.controller.MealPlanFormViewModel
 import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealController
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectMealFoodQuantityController
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controller.SelectMealPlanMealController
 import com.darrenfinch.mymealplanner.domain.usecases.*
-import com.darrenfinch.mymealplanner.model.data.entities.Meal
-import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 
 //This composition root is scoped to a fragment, which is a controller
-class FragmentCompositionRoot(
-    private val androidComponentsConfig: AndroidComponentsConfig,
-    private val activityCompositionRoot: ActivityCompositionRoot
-) {
+class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompositionRoot) {
 
-    private fun getActivity(): FragmentActivity {
-        return activityCompositionRoot.getActivity()
-    }
-
-    private fun getContext(): Context {
-        return getActivity()
-    }
-
-    private fun getLayoutInflater(): LayoutInflater {
-        return LayoutInflater.from(getContext())
-    }
-
-    fun getApplication(): Application {
-        return activityCompositionRoot.getApplication()
-    }
-
-    fun getViewMvcFactory(): ViewMvcFactory {
-        return ViewMvcFactory(getLayoutInflater())
-    }
-
+    // Object dependencies
+    private fun getActivity() = activityCompositionRoot.getActivity()
+    private fun getContext() = getActivity()
+    private fun getLayoutInflater(): LayoutInflater = LayoutInflater.from(getContext())
+    fun getApplication(): Application = activityCompositionRoot.getApplication()
+    fun getViewMvcFactory(): ViewMvcFactory = ViewMvcFactory(getLayoutInflater())
     private fun getMainRepository() = activityCompositionRoot.getMainRepository()
+    private fun getScreensNavigator() = activityCompositionRoot.getScreensNavigator()
+    private fun getDialogsManager() = activityCompositionRoot.getsDialogManager()
 
+
+    // Use cases
     private fun getGetAllFoodsUseCase() = GetAllFoodsUseCase(getMainRepository())
     private fun getGetFoodUseCase() = GetFoodUseCase(getMainRepository())
     private fun getInsertFoodUseCase() = InsertFoodUseCase(getMainRepository())
@@ -72,24 +53,34 @@ class FragmentCompositionRoot(
     private fun getUpdateMealPlanMealUseCase() = UpdateMealPlanMealUseCase(getMainRepository())
     private fun getDeleteMealPlanMealUseCase() = DeleteMealPlanMealUseCase(getMainRepository())
 
-//    //TODO: TEMP
-//    fun getDeleteAllMealsUseCase() = DeleteAllMealsUseCase(getMainRepository())
 
-    fun getAddEditFoodController(viewModel: FoodFormViewModel) = FoodFormController(
+    // Dialog controllers
+    fun getSelectMealFoodQuantityController(
+        onDialogEventListener: BaseDialog.OnDialogEventListener
+    ) = SelectMealFoodQuantityController(
+        getGetFoodUseCase(),
+        onDialogEventListener
+    )
+
+    fun getSelectFoodForMealController(
+        onDialogEventListener: BaseDialog.OnDialogEventListener
+    ) = SelectFoodForMealController(
+        getGetAllFoodsUseCase(),
+        onDialogEventListener
+    )
+
+    fun getSelectMealPlanMealController() = SelectMealPlanMealController(
+        getGetAllMealsUseCase(),
+        getInsertMealPlanMealUseCase()
+    )
+
+    // Normal screen controllers
+    fun getFoodFormController() = FoodFormController(
         getScreensNavigator(),
         getGetFoodUseCase(),
         getInsertFoodUseCase(),
-        getUpdateFoodUseCase(),
-        viewModel
+        getUpdateFoodUseCase()
     )
-
-    fun getSelectMealFoodQuantityController(foodId: Int, currentMeal: Meal) =
-        SelectMealFoodQuantityController(
-            getScreensNavigator(),
-            getGetFoodUseCase(),
-            foodId,
-            currentMeal
-        )
 
     fun getAllFoodsController() =
         AllFoodsController(getScreensNavigator(), getGetAllFoodsUseCase(), getDeleteFoodUseCase())
@@ -98,19 +89,14 @@ class FragmentCompositionRoot(
         AllMealsController(getScreensNavigator(), getGetAllMealsUseCase(), getDeleteMealUseCase())
 
     fun getMealFormController(
-        viewModel: MealFormViewModel,
-        newMealFood: MealFood?,
-        currentMeal: Meal?,
-        mealId: Int
+        viewModel: MealFormViewModel
     ) = MealFormController(
         viewModel,
         getInsertMealUseCase(),
         getUpdateMealUseCase(),
         getGetMealUseCase(),
         getScreensNavigator(),
-        newMealFood,
-        currentMeal,
-        mealId
+        getDialogsManager()
     )
 
     fun getMealPlanController(viewModel: MealPlanViewModel) =
@@ -120,17 +106,9 @@ class FragmentCompositionRoot(
             getDeleteMealPlanUseCase(),
             getDeleteMealPlanMealUseCase(),
             viewModel,
-            getScreensNavigator()
+            getScreensNavigator(),
+            getDialogsManager()
         )
 
-    fun getMealPlanFormController(viewModel: MealPlanFormViewModel) = MealPlanFormController(viewModel, getInsertMealPlanUseCase(), getScreensNavigator())
-
-    fun getSelectFoodForMealController(currentMeal: Meal) = SelectFoodForMealController(getGetAllFoodsUseCase(), getScreensNavigator(), currentMeal)
-
-    private fun getScreensNavigator() =
-        ScreensNavigator(androidComponentsConfig.navController)
-
-    fun getSelectMealPlanMealController(mealPlanId: Int) = SelectMealPlanMealController(mealPlanId, getGetAllMealsUseCase(),
-        getInsertMealPlanMealUseCase(), getScreensNavigator())
-
+    fun getMealPlanFormController() = MealPlanFormController(getInsertMealPlanUseCase(), getScreensNavigator())
 }

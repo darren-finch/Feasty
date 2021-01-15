@@ -9,7 +9,7 @@ import com.darrenfinch.mymealplanner.TestData.DEFAULT_INVALID_MEAL_ID
 import com.darrenfinch.mymealplanner.TestData.DEFAULT_VALID_MEAL_ID
 import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.mealform.view.MealFormViewMvc
-import com.darrenfinch.mymealplanner.domain.observables.ObservableMeal
+import com.darrenfinch.mymealplanner.domain.viewmodels.ObservableMeal
 import com.darrenfinch.mymealplanner.domain.usecases.GetMealUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.InsertMealUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.UpdateMealUseCase

@@ -10,16 +10,29 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
+import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealDialog
 import com.darrenfinch.mymealplanner.domain.mealplanform.view.MealPlanFormViewMvc
+import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 
 class MealPlanFormFragment : BaseFragment() {
-    private val viewModel: MealPlanFormViewModel by viewModels {
-        ViewModelProvider.NewInstanceFactory()
+
+    companion object {
+        fun newInstance(): SelectFoodForMealDialog {
+            val bundle = Bundle()
+            val fragment = SelectFoodForMealDialog()
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 
     private lateinit var viewMvc: MealPlanFormViewMvc
     private lateinit var controller: MealPlanFormController
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        controller = fragmentCompositionRoot.getMealPlanFormController()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +41,7 @@ class MealPlanFormFragment : BaseFragment() {
     ): View? {
         viewMvc = fragmentCompositionRoot.getViewMvcFactory().getMealPlanFormViewMvc(null)
 
-        controller = fragmentCompositionRoot.getMealPlanFormController(viewModel)
+        controller.setState(savedInstanceState ?: arguments)
         controller.bindView(viewMvc)
 
         return viewMvc.getRootView()
@@ -43,6 +56,11 @@ class MealPlanFormFragment : BaseFragment() {
         super.onStop()
         controller.onStop()
         hideKeyboardFrom(requireContext(), requireView())
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putAll(controller.getState())
     }
 
     fun hideKeyboardFrom(context: Context, view: View) {

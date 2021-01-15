@@ -6,7 +6,7 @@
     <data>
         <variable
             name="food"
-            type="com.darrenfinch.mymealplanner.domain.observables.ObservableFood" />
+            type="com.darrenfinch.mymealplanner.model.data.entities.Food" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/food_name"
-                android:text="@={food.title}" />
+                android:text="@{food.title}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -56,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:text="@={food.caloriesString}"
+                android:text="@{String.valueOf(food.macroNutrients.calories)}"
                 android:hint="@string/calories" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -76,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:text="@={food.carbsString}"
+                android:text="@{String.valueOf(food.macroNutrients.carbs)}"
                 android:hint="@string/carbohydrates" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -96,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:text="@={food.fatString}"
+                android:text="@{String.valueOf(food.macroNutrients.fats)}"
                 android:hint="@string/fats" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -116,7 +116,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:text="@={food.proteinString}"
+                android:text="@{String.valueOf(food.macroNutrients.proteins)}"
                 android:hint="@string/protein" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -137,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/food_quantity"
                 android:inputType="numberDecimal"
-                android:text="@={food.servingSizeQuantity}" />
+                android:text="@{String.valueOf(food.servingSize.quantity)}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

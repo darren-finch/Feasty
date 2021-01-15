@@ -11,12 +11,21 @@ import com.darrenfinch.mymealplanner.domain.mealplan.view.MealPlanViewMvc
 
 class MealPlanFragment : BaseFragment() {
 
+    companion object {
+        fun newInstance() = MealPlanFragment()
+    }
+
     private val viewModel: MealPlanViewModel by viewModels {
         ViewModelProvider.NewInstanceFactory()
     }
 
     private lateinit var viewMvc: MealPlanViewMvc
     private lateinit var controller: MealPlanController
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        controller = fragmentCompositionRoot.getMealPlanController(viewModel)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,7 +35,7 @@ class MealPlanFragment : BaseFragment() {
         // Inflate the layout for this fragment
         viewMvc = fragmentCompositionRoot.getViewMvcFactory().getMealPlanViewMvc(null)
 
-        controller = fragmentCompositionRoot.getMealPlanController(viewModel)
+        controller.setState(savedInstanceState ?: arguments)
         controller.bindView(viewMvc)
 
         return viewMvc.getRootView()
@@ -45,5 +54,10 @@ class MealPlanFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         controller.onViewCreated(viewLifecycleOwner)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putAll(controller.getState())
     }
 }

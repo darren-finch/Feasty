@@ -9,7 +9,7 @@ import com.darrenfinch.mymealplanner.common.lists.mealfoodsrecyclerviewadapter.M
 import com.darrenfinch.mymealplanner.common.lists.recyclerviewitemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentMealFormBinding
-import com.darrenfinch.mymealplanner.domain.observables.ObservableMeal
+import com.darrenfinch.mymealplanner.domain.viewmodels.ObservableMeal
 
 class MealFormViewMvcImpl(
     inflater: LayoutInflater,

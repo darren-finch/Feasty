@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.domain.observables
+package com.darrenfinch.mymealplanner.domain.viewmodels
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable

@@ -7,20 +7,16 @@ import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.common.misc.KeyboardUtils
+import com.darrenfinch.mymealplanner.common.utils.KeyboardUtils
 import com.darrenfinch.mymealplanner.common.utils.Defaults
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentSelectMealFoodQuantityBinding
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectMealFoodQuantityViewMvc
 import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.model.data.entities.Food
-import com.darrenfinch.mymealplanner.model.data.entities.MealFood
-import com.darrenfinch.mymealplanner.model.helpers.MacroCalculator
 
 class SelectMealFoodQuantityViewMvcImpl(
     inflater: LayoutInflater,
-    parent: ViewGroup?,
-    private val mealId: Int
+    parent: ViewGroup?
 ) : BaseObservableViewMvc<SelectMealFoodQuantityViewMvc.Listener>(), SelectMealFoodQuantityViewMvc {
     private val binding: FragmentSelectMealFoodQuantityBinding = DataBindingUtil.inflate(
         inflater,
@@ -39,7 +35,7 @@ class SelectMealFoodQuantityViewMvcImpl(
             binding.food = Defaults.defaultFood
 
             binding.foodQuantityEditText.doOnTextChanged { _, _, _, _ ->
-                macroNutrientsTextView.text = getUpdatedMealFoodData().macroNutrients.toString()
+                macroNutrientsTextView.text = getFoodData().macroNutrients.toString()
             }
         }
     }
@@ -63,33 +59,16 @@ class SelectMealFoodQuantityViewMvcImpl(
         KeyboardUtils.hideKeyboardFrom(getContext(), getRootView())
 
         for (listener in getListeners()) {
-            listener.onMealFoodServingSizeChosen(getUpdatedMealFoodData())
+            listener.onFoodServingSizeChosen(getFoodData(), getFoodQuantity())
         }
     }
 
-    private fun getUpdatedMealFoodData(): MealFood {
-        binding.food?.let {
-            return MacroCalculator.updateMacrosForMealFoodWithNewServingSize(
-                MealFood(
-                    0,
-                    it.id,
-                    mealId,
-                    it.title,
-                    it.servingSize,
-                    it.macroNutrients
-                ),
-                PhysicalQuantity(
-                    getFoodQuantity(),
-                    it.servingSize.unit
-                )
-            )
-        }
-
-        return Defaults.defaultMealFood
+    private fun getFoodData(): Food {
+        return binding.food?.copy(servingSize = getFoodQuantity()) ?: Defaults.defaultFood
     }
 
-    private fun getFoodQuantity(): Double {
-        return if (binding.food != null) {
+    private fun getFoodQuantity(): PhysicalQuantity {
+        val numericalQuantity = if (binding.food != null) {
             val foodQuantityText = binding.foodQuantityEditText.text.toString()
             if (foodQuantityText.isNotEmpty())
                 foodQuantityText.toDouble()
@@ -98,5 +77,6 @@ class SelectMealFoodQuantityViewMvcImpl(
         } else {
             0.0
         }
+        return PhysicalQuantity(numericalQuantity, binding.food!!.servingSize.unit)
     }
 }

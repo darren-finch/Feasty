@@ -7,6 +7,11 @@ import android.view.ViewGroup
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
 
 class AllFoodsFragment : BaseFragment() {
+
+    companion object {
+        fun newInstance() = AllFoodsFragment()
+    }
+
     private lateinit var controller: AllFoodsController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

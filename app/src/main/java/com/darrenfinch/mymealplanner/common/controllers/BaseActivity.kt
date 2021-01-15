@@ -5,7 +5,7 @@ import com.darrenfinch.mymealplanner.MyMealPlanner
 import com.darrenfinch.mymealplanner.common.dependencyinjection.ActivityCompositionRoot
 import com.darrenfinch.mymealplanner.common.dependencyinjection.FragmentCompositionRoot
 
-open class BaseActivity : FragmentActivity() {
+abstract class BaseActivity : FragmentActivity() {
     val activityCompositionRoot: ActivityCompositionRoot by lazy {
         ActivityCompositionRoot((application as MyMealPlanner).getCompositionRoot(), this)
     }

@@ -1,8 +1,11 @@
 package com.darrenfinch.mymealplanner.domain.mealplan.controller
 
+import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.controllers.BaseController
+import com.darrenfinch.mymealplanner.common.navigation.DialogsManager
+import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.mealplan.view.MealPlanViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.DeleteMealPlanMealUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.DeleteMealPlanUseCase
@@ -19,9 +22,10 @@ class MealPlanController(
     private val deleteMealPlanUseCase: DeleteMealPlanUseCase,
     private val deleteMealPlanMealUseCase: DeleteMealPlanMealUseCase,
     private val viewModel: MealPlanViewModel,
-    private val screensNavigator: ScreensNavigator
-) :
-    MealPlanViewMvc.Listener {
+    private val screensNavigator: ScreensNavigator,
+    private val dialogsManager: DialogsManager
+) : BaseController, MealPlanViewMvc.Listener {
+
     private lateinit var viewMvc: MealPlanViewMvc
     private var viewLifecycleOwner: LifecycleOwner? = null
 
@@ -107,7 +111,7 @@ class MealPlanController(
     }
 
     override fun onAddNewMealPlanClicked() {
-        screensNavigator.navigateFromMealPlanScreenToMealPlanFormScreen()
+        screensNavigator.navigateToMealPlanFormScreen()
     }
 
     override fun onDeleteMealPlanClicked() {
@@ -126,11 +130,16 @@ class MealPlanController(
 
     override fun onAddNewMealPlanMealClicked() {
         viewModel.selectedMealPlan?.let {
-            screensNavigator.navigateFromMealPlanScreenToSelectMealPlanMealScreen(it.id)
+            dialogsManager.showSelectMealPlanMealDialog(it.id)
         }
     }
 
     override fun onDeleteMealPlanMealClicked(mealPlanMeal: MealPlanMeal) {
         deleteMealPlanMealUseCase.deleteMealPlanMeal(mealPlanMeal)
+    }
+
+    override fun setState(state: Bundle?) {}
+    override fun getState(): Bundle {
+        return Bundle()
     }
 }

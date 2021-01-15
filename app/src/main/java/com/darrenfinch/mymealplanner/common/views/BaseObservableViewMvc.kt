@@ -1,7 +1,9 @@
 package com.darrenfinch.mymealplanner.common.views
 
+import java.util.concurrent.ConcurrentLinkedDeque
+
 open class BaseObservableViewMvc<ListenerType> : BaseViewMvc(), ObservableViewMvc<ListenerType> {
-    private val listeners = mutableSetOf<ListenerType>()
+    private val listeners = ConcurrentLinkedDeque<ListenerType>()
 
     override fun registerListener(listener: ListenerType) {
         listeners.add(listener)

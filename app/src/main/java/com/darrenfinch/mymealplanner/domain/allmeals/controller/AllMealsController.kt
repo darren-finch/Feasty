@@ -1,8 +1,10 @@
 package com.darrenfinch.mymealplanner.domain.allmeals.controller
 
+import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.controllers.BaseController
+import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.allmeals.view.AllMealsViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.DeleteMealUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.GetAllMealsUseCase
@@ -12,7 +14,7 @@ class AllMealsController(
     private val screensNavigator: ScreensNavigator,
     private val getAllMealsUseCase: GetAllMealsUseCase,
     private val deleteMealUseCase: DeleteMealUseCase
-) : AllMealsViewMvc.Listener {
+) : BaseController, AllMealsViewMvc.Listener {
 
     private lateinit var viewMvc: AllMealsViewMvc
 
@@ -35,14 +37,19 @@ class AllMealsController(
     }
 
     override fun addNewMealClicked() {
-        screensNavigator.navigateFromAllMealsScreenToSelectFoodForMealScreen(-1)
+        screensNavigator.navigateToMealFormScreen(null, null, -1)
     }
 
     override fun onMealEdit(mealId: Int) {
-        screensNavigator.navigateFromAllMealsScreenToSelectFoodForMealScreen(mealId)
+        screensNavigator.navigateToMealFormScreen(null, null, mealId)
     }
 
     override fun onMealDelete(meal: Meal) {
         deleteMealUseCase.deleteMeal(meal.id)
+    }
+
+    override fun setState(state: Bundle?) { }
+    override fun getState(): Bundle {
+        return Bundle()
     }
 }

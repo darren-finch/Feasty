@@ -7,10 +7,9 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.common.misc.KeyboardUtils
+import com.darrenfinch.mymealplanner.common.utils.KeyboardUtils
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentFoodFormBinding
-import com.darrenfinch.mymealplanner.domain.observables.ObservableFood
 import com.darrenfinch.mymealplanner.domain.physicalquantities.*
 import com.darrenfinch.mymealplanner.domain.physicalquantities.units.MeasurementType
 import com.darrenfinch.mymealplanner.domain.physicalquantities.units.MeasurementUnit
@@ -19,8 +18,7 @@ import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
 
 class FoodFormViewMvcImpl(
     inflater: LayoutInflater,
-    parent: ViewGroup?,
-    private val insertingFood: Boolean
+    parent: ViewGroup?
 ) : BaseObservableViewMvc<FoodFormViewMvc.Listener>(), FoodFormViewMvc {
 
     private var selectedMeasurementUnit: MeasurementUnit = MeasurementUnit.defaultUnit
@@ -34,13 +32,13 @@ class FoodFormViewMvcImpl(
 
     init {
         setRootView(binding.root)
+        setupUI()
     }
 
-    override fun bindFoodDetails(observableFood: ObservableFood) {
-        binding.food = observableFood
-        setSelectedMeasurementType(observableFood.servingSizeUnit.getMeasurementType())
-        setSelectedMeasurementUnit(observableFood.servingSizeUnit)
-        setupUI()
+    override fun bindFoodDetails(foodDetails: Food?) {
+        binding.food = foodDetails
+        setSelectedMeasurementType(foodDetails?.servingSize?.unit?.getMeasurementType() ?: selectedMeasurementType)
+        setSelectedMeasurementUnit(foodDetails?.servingSize?.unit ?: selectedMeasurementUnit)
     }
 
     private fun setupUI() {
@@ -162,26 +160,26 @@ class FoodFormViewMvcImpl(
     }
 
     private fun onDoneSelected() {
-        val newFood = Food(
-            id = getFoodId(),
-            title = getFoodName(),
-            macroNutrients = MacroNutrients(
-                calories = getCalories(),
-                carbs = getCarbohydrates(),
-                fats = getFat(),
-                proteins = getProtein()
-            ),
-            servingSize = getServingSize()
-        )
-
         KeyboardUtils.hideKeyboardFrom(getContext(), getRootView())
 
         for (listener in getListeners()) {
-            listener.onDoneButtonClicked(newFood)
+            listener.onDoneButtonClicked(getFoodDetails())
         }
     }
 
-    private fun getFoodId() = if (insertingFood) 0 else binding.food!!.id
+    override fun getFoodDetails() = Food(
+        id = getFoodId(),
+        title = getFoodName(),
+        macroNutrients = MacroNutrients(
+            calories = getCalories(),
+            carbs = getCarbohydrates(),
+            fats = getFat(),
+            proteins = getProtein()
+        ),
+        servingSize = getServingSize()
+    )
+
+    private fun getFoodId() = binding.food?.id ?: 0
     private fun getFoodName() = binding.foodNameEditText.text.toString()
     private fun getCalories() = binding.caloriesEditText.text.toString().toInt()
     private fun getCarbohydrates() = binding.carbohydratesEditText.text.toString().toInt()

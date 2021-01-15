@@ -8,6 +8,10 @@ import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
 
 class AllMealsFragment : BaseFragment() {
 
+    companion object {
+        fun newInstance() = AllMealsFragment()
+    }
+
     private lateinit var controller: AllMealsController
 
     override fun onCreateView(

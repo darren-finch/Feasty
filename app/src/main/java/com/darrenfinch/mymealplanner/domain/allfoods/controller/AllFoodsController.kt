@@ -1,10 +1,11 @@
 package com.darrenfinch.mymealplanner.domain.allfoods.controller
 
+import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.misc.Constants
-import com.darrenfinch.mymealplanner.common.misc.KeyboardUtils
-import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.allfoods.view.AllFoodsViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.DeleteFoodUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.GetAllFoodsUseCase
@@ -13,7 +14,7 @@ class AllFoodsController(
     private val screensNavigator: ScreensNavigator,
     private val getAllFoodsUseCase: GetAllFoodsUseCase,
     private val deleteFoodUseCase: DeleteFoodUseCase
-) : AllFoodsViewMvc.Listener {
+) : BaseController, AllFoodsViewMvc.Listener {
 
     private lateinit var viewMvc: AllFoodsViewMvc
 
@@ -36,14 +37,19 @@ class AllFoodsController(
     }
 
     override fun addNewFoodClicked() {
-        screensNavigator.navigateFromAllFoodsScreenToFoodFormScreen(Constants.DEFAULT_INVALID_FOOD_ID)
+        screensNavigator.navigateToFoodFormScreen(Constants.DEFAULT_INVALID_ID)
     }
 
     override fun onItemEdit(foodId: Int) {
-        screensNavigator.navigateFromAllFoodsScreenToFoodFormScreen(foodId)
+        screensNavigator.navigateToFoodFormScreen(foodId)
     }
 
     override fun onItemDelete(foodId: Int) {
         deleteFoodUseCase.deleteFood(foodId)
+    }
+
+    override fun setState(state: Bundle?) { }
+    override fun getState(): Bundle {
+        return Bundle()
     }
 }

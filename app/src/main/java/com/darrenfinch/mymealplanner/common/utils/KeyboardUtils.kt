@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.common.misc
+package com.darrenfinch.mymealplanner.common.utils
 
 import android.app.Activity
 import android.content.Context

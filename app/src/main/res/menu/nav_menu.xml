@@ -2,17 +2,17 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/mealPlanFragment"
+        android:id="@+id/tab1"
         android:icon="@drawable/ic_view_list"
         android:title="Meal Plan"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/allMealsFragment"
+        android:id="@+id/tab2"
         android:icon="@drawable/ic_meal"
         android:title="All Meals"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/allFoodsFragment"
+        android:id="@+id/tab3"
         android:icon="@drawable/ic_food"
         android:title="All Foods"
         app:showAsAction="ifRoom" />

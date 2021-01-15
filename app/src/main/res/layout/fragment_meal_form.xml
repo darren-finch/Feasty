@@ -6,7 +6,7 @@
     <data>
         <variable
             name="meal"
-            type="com.darrenfinch.mymealplanner.domain.observables.ObservableMeal" />
+            type="com.darrenfinch.mymealplanner.domain.viewmodels.ObservableMeal" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

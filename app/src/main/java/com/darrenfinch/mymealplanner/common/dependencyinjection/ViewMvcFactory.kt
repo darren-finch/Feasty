@@ -18,11 +18,11 @@ import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.view.SelectMealPlanMealViewMvcImpl
 
 class ViewMvcFactory(private val inflater: LayoutInflater) {
-    fun getFoodFormViewMvc(parent: ViewGroup?, insertingFood: Boolean): FoodFormViewMvc = FoodFormViewMvcImpl(inflater, parent, insertingFood)
+    fun getFoodFormViewMvc(parent: ViewGroup?): FoodFormViewMvc = FoodFormViewMvcImpl(inflater, parent)
     fun getMealFormViewMvc(parent: ViewGroup?): MealFormViewMvc = MealFormViewMvcImpl(inflater, parent)
     fun getAllFoodsViewMvc(parent: ViewGroup?): AllFoodsViewMvc = AllFoodsViewMvcImpl(inflater, parent)
     fun getAllMealsViewMvc(parent: ViewGroup?): AllMealsViewMvc = AllMealsViewMvcImpl(inflater, parent)
-    fun getSelectMealFoodQuantityViewMvc(parent: ViewGroup?, mealId: Int): SelectMealFoodQuantityViewMvc = SelectMealFoodQuantityViewMvcImpl(inflater, parent, mealId)
+    fun getSelectMealFoodQuantityViewMvc(parent: ViewGroup?): SelectMealFoodQuantityViewMvc = SelectMealFoodQuantityViewMvcImpl(inflater, parent)
     fun getMealPlanViewMvc(parent: ViewGroup?) = MealPlanViewMvcImpl(inflater, parent)
     fun getMealPlanFormViewMvc(parent: ViewGroup?) = MealPlanFormViewMvcImpl(inflater, parent)
     fun getSelectFoodForMealViewMvc(parent: ViewGroup?) = SelectFoodForMealViewMvcImpl(inflater, parent)
