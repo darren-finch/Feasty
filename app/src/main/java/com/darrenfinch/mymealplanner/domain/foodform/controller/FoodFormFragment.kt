@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
+import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
 
 class FoodFormFragment : BaseFragment() {
 

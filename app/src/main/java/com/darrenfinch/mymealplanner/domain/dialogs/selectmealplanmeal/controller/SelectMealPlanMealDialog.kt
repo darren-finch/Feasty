@@ -2,11 +2,8 @@ package com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controll
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.navigation.fragment.navArgs
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
-import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealDialog
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.view.SelectMealPlanMealViewMvc
-import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 class SelectMealPlanMealDialog : BaseDialog() {
 
@@ -29,11 +26,11 @@ class SelectMealPlanMealDialog : BaseDialog() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        controller = fragmentCompositionRoot.getSelectMealPlanMealController(onDialogEventListener)
+        controller = controllerCompositionRoot.getSelectMealPlanMealController(onDialogEventListener)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        viewMvc = fragmentCompositionRoot.getViewMvcFactory().getSelectMealPlanMealViewMvc(null)
+        viewMvc = controllerCompositionRoot.getViewMvcFactory().getSelectMealPlanMealViewMvc(null)
 
         controller.setState(savedInstanceState ?: requireArguments())
         controller.bindView(viewMvc)

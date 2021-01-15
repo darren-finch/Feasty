@@ -3,6 +3,7 @@ package com.darrenfinch.mymealplanner.common.dependencyinjection
 import android.app.Application
 import android.view.LayoutInflater
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
+import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.domain.allfoods.controller.AllFoodsController
 import com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsController
 import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealController
@@ -15,7 +16,7 @@ import com.darrenfinch.mymealplanner.domain.mealplanform.controller.MealPlanForm
 import com.darrenfinch.mymealplanner.domain.usecases.*
 
 //This composition root is scoped to a fragment, which is a controller
-class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompositionRoot) {
+class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCompositionRoot) {
 
     // Object dependencies
     private fun getActivity() = activityCompositionRoot.getActivity()
@@ -26,6 +27,7 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
     private fun getMainRepository() = activityCompositionRoot.getMainRepository()
     private fun getScreensNavigator() = activityCompositionRoot.getScreensNavigator()
     private fun getDialogsManager() = activityCompositionRoot.getsDialogManager()
+    fun getBackPressDispatcher() = getActivity() as BackPressDispatcher
 
 
     // Use cases
@@ -67,7 +69,9 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
         onDialogEventListener
     )
 
-    fun getSelectMealPlanMealController(onDialogEventListener: BaseDialog.OnDialogEventListener) = SelectMealPlanMealController(
+    fun getSelectMealPlanMealController(
+        onDialogEventListener: BaseDialog.OnDialogEventListener
+    ) = SelectMealPlanMealController(
         getGetAllMealsUseCase(),
         onDialogEventListener
     )
@@ -77,7 +81,8 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
         getScreensNavigator(),
         getGetFoodUseCase(),
         getInsertFoodUseCase(),
-        getUpdateFoodUseCase()
+        getUpdateFoodUseCase(),
+        getBackPressDispatcher()
     )
 
     fun getAllFoodsController() =
@@ -91,18 +96,23 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
         getUpdateMealUseCase(),
         getGetMealUseCase(),
         getScreensNavigator(),
-        getDialogsManager()
+        getDialogsManager(),
+        getBackPressDispatcher()
     )
 
     fun getMealPlanController() = MealPlanController(
-            getGetAllMealPlansUseCase(),
-            getGetMealsForMealPlanUseCase(),
-            getInsertMealPlanMealUseCase(),
-            getDeleteMealPlanUseCase(),
-            getDeleteMealPlanMealUseCase(),
-            getScreensNavigator(),
-            getDialogsManager()
-        )
+        getGetAllMealPlansUseCase(),
+        getGetMealsForMealPlanUseCase(),
+        getInsertMealPlanMealUseCase(),
+        getDeleteMealPlanUseCase(),
+        getDeleteMealPlanMealUseCase(),
+        getScreensNavigator(),
+        getDialogsManager()
+    )
 
-    fun getMealPlanFormController() = MealPlanFormController(getInsertMealPlanUseCase(), getScreensNavigator())
+    fun getMealPlanFormController() = MealPlanFormController(
+        getInsertMealPlanUseCase(),
+        getScreensNavigator(),
+        getBackPressDispatcher()
+    )
 }

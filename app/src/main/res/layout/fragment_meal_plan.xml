@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroType" />
-        <import type="com.darrenfinch.mymealplanner.common.utils.StringUtils"/>
+
+        <import type="com.darrenfinch.mymealplanner.common.utils.StringUtils" />
 
         <variable
             name="mealPlanMacros"
@@ -27,14 +28,49 @@
             app:layout_constraintTop_toTopOf="parent"
             app:title="@string/meal_plans" />
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mealPlanSelection"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/standard_margin">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/current_meal_plan"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Spinner
+                    android:id="@+id/selectMealPlanSpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <LinearLayout
             android:id="@+id/totalCaloriesLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginTop="@dimen/standard_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+            app:layout_constraintTop_toBottomOf="@+id/mealPlanSelection">
 
             <TextView
                 android:id="@+id/caloriesTextView"
@@ -46,11 +82,11 @@
                 android:gravity="center"
                 android:text="@{StringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalCalories, mealPlanMacros.requiredCalories, MacroType.CALORIE, false)}"
                 android:textAppearance="?attr/textAppearanceHeadline4"
-                tools:text="1850/2200 Calories"/>
+                tools:text="1850/2200 Calories" />
 
             <ProgressBar
-                style="?android:attr/progressBarStyleHorizontal"
                 android:id="@+id/caloriesProgressBar"
+                style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="fill"
@@ -62,9 +98,9 @@
             android:id="@+id/totalCarbohydratesLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="@dimen/standard_margin_half"
+            android:layout_marginTop="@dimen/standard_margin_half"
+            android:layout_marginEnd="@dimen/standard_margin"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/totalFatsLayout"
@@ -87,16 +123,16 @@
                 android:foregroundGravity="center_vertical"
                 android:text="@{StringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalCarbohydrates, mealPlanMacros.requiredCarbohydrates, MacroType.CARBOHYDRATE, true)}"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
-                tools:text="154/300 Carbs"/>
+                tools:text="154/300 Carbs" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/totalFatsLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="@dimen/standard_margin_half"
+            android:layout_marginTop="@dimen/standard_margin_half"
+            android:layout_marginEnd="@dimen/standard_margin_half"
             android:orientation="vertical"
             app:layout_constraintEnd_toStartOf="@+id/totalCarbohydratesLayout"
             app:layout_constraintStart_toEndOf="@+id/totalProteinLayout"
@@ -126,9 +162,9 @@
             android:id="@+id/totalProteinLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin_half"
+            android:layout_marginEnd="@dimen/standard_margin_half"
             android:orientation="vertical"
             app:layout_constraintEnd_toStartOf="@id/totalFatsLayout"
             app:layout_constraintStart_toStartOf="parent"
@@ -168,7 +204,7 @@
             android:id="@+id/mealPlanMealsRecyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/standard_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -176,10 +212,11 @@
             app:layout_constraintTop_toBottomOf="@+id/totalFatsLayout" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addNewMealPlanMealFAB"
-            android:layout_margin="@dimen/standard_margin"
+            android:id="@+id/addMealPlanMealFab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_margin"
+            android:contentDescription="@string/add_item"
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

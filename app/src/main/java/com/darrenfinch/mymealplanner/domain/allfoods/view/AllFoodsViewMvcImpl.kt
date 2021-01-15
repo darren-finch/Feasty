@@ -49,14 +49,7 @@ class AllFoodsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
             foodsRecyclerView.adapter = foodsListAdapter
             foodsRecyclerView.layoutManager = LinearLayoutManager(getContext())
             foodsRecyclerView.addItemDecoration(MarginItemDecoration(16))
-
-            toolbar.inflateMenu(R.menu.add_new_item_menu)
-            toolbar.setOnMenuItemClickListener {
-                when(it.itemId) {
-                    R.id.addNewItem -> onAddNewFoodClicked()
-                }
-                true
-            }
+            addFoodFab.setOnClickListener { onAddNewFoodClicked() }
         }
     }
 

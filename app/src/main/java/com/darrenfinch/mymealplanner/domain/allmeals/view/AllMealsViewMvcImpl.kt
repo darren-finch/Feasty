@@ -53,12 +53,7 @@ class AllMealsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
                     16
                 )
             )
-
-            toolbar.inflateMenu(R.menu.add_new_item_menu)
-            toolbar.menu.findItem(R.id.addNewItem).setOnMenuItemClickListener {
-                onAddNewMealClicked()
-                true
-            }
+            addMealFab.setOnClickListener { onAddNewMealClicked() }
         }
     }
 

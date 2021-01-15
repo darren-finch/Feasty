@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.os.Bundle
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
 import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.view.SelectFoodForMealViewMvc
-import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 //TODO: Convert into generic item selection dialog
 class SelectFoodForMealDialog : BaseDialog() {
@@ -28,11 +27,11 @@ class SelectFoodForMealDialog : BaseDialog() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        controller = fragmentCompositionRoot.getSelectFoodForMealController(onDialogEventListener)
+        controller = controllerCompositionRoot.getSelectFoodForMealController(onDialogEventListener)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        viewMvc = fragmentCompositionRoot.getViewMvcFactory().getSelectFoodForMealViewMvc(null)
+        viewMvc = controllerCompositionRoot.getViewMvcFactory().getSelectFoodForMealViewMvc(null)
 
         controller.setState(savedInstanceState ?: requireArguments())
         controller.bindView(viewMvc)

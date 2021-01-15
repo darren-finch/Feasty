@@ -1,4 +1,6 @@
 package com.darrenfinch.mymealplanner.common.navigation
 
-class BackPressDispatcher {
+interface BackPressDispatcher {
+    fun registerListener(listener: BackPressListener)
+    fun unregisterListener(listener: BackPressListener)
 }

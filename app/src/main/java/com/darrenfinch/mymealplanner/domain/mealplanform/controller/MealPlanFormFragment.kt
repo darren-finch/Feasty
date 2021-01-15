@@ -20,9 +20,9 @@ class MealPlanFormFragment : BaseFragment() {
     companion object {
         const val MEAL_PLAN_DETAILS = "MEAL_PLAN_DETAILS"
 
-        fun newInstance(): SelectFoodForMealDialog {
+        fun newInstance(): MealPlanFormFragment {
             val bundle = Bundle()
-            val fragment = SelectFoodForMealDialog()
+            val fragment = MealPlanFormFragment()
             fragment.arguments = bundle
             return fragment
         }

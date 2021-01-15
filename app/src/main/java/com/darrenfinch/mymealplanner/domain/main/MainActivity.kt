@@ -6,10 +6,15 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.replace
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.controllers.BaseActivity
+import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
+import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
 import com.ncapdevi.fragnav.FragNavController
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), BackPressDispatcher {
+
+    private val backPressedListeners = hashSetOf<BackPressListener>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -39,5 +44,25 @@ class MainActivity : BaseActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         activityCompositionRoot.getScreensNavigator().onSaveInstanceState(outState)
+    }
+
+    override fun registerListener(listener: BackPressListener) {
+        backPressedListeners.add(listener)
+    }
+
+    override fun unregisterListener(listener: BackPressListener) {
+        backPressedListeners.remove(listener)
+    }
+
+    override fun onBackPressed() {
+        var backPressWasConsumed = false
+        for (listener in backPressedListeners) {
+            if(listener.onBackPressed()) {
+                backPressWasConsumed = true
+            }
+        }
+        if(!backPressWasConsumed) {
+            super.onBackPressed()
+        }
     }
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Meal Planner</string>
+    <string name="app_name">Feasty</string>
     <string name="meal_name">Meal Name</string>
     <string name="foods">Foods</string>
     <string name="food_quantity">Food Quantity</string>
@@ -37,4 +37,7 @@
     <string name="select_item">Select Item</string>
     <string name="select_meal">Select Meal</string>
     <string name="edit_meal">Edit Meal</string>
+    <string name="add_meal">Add Meal</string>
+    <string name="add_item">Add Item</string>
+    <string name="current_meal_plan">Current Meal Plan</string>
 </resources>

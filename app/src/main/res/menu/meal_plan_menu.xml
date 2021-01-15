@@ -4,6 +4,4 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/addNewMealPlan" android:title="@string/new_meal_plan" />
     <item android:id="@+id/deleteMealPlan" android:title="@string/delete_meal_plan" />
-    <item android:id="@+id/selectMealPlanSpinner" android:iconTint="?attr/colorOnPrimary" app:actionViewClass="android.widget.Spinner" app:showAsAction="always"
-        android:title=""/>
 </menu>

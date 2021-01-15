@@ -32,11 +32,11 @@ class SelectFoodQuantityDialog : BaseDialog() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        controller = fragmentCompositionRoot.getSelectMealFoodQuantityController(onDialogEventListener)
+        controller = controllerCompositionRoot.getSelectMealFoodQuantityController(onDialogEventListener)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        viewMvc = fragmentCompositionRoot.getViewMvcFactory().getSelectMealFoodQuantityViewMvc(null)
+        viewMvc = controllerCompositionRoot.getViewMvcFactory().getSelectMealFoodQuantityViewMvc(null)
 
         controller.setState(savedInstanceState ?: requireArguments())
         controller.bindView(viewMvc)

@@ -47,7 +47,9 @@ class MealPlanViewMvcImpl(
             mealPlanMealsRecyclerView.adapter = adapter
             mealPlanMealsRecyclerView.layoutManager = LinearLayoutManager(getContext())
             mealPlanMealsRecyclerView.addItemDecoration(MarginItemDecoration(16))
-            addNewMealPlanMealFAB.setOnClickListener { onAddNewMealPlanMealClicked() }
+
+            addMealPlanMealFab.setOnClickListener { onAddNewMealPlanMealClicked() }
+
             toolbar.inflateMenu(R.menu.meal_plan_menu)
             toolbar.menu.findItem(R.id.addNewMealPlan).setOnMenuItemClickListener {
                 onAddNewMealPlanClicked()
@@ -91,22 +93,23 @@ class MealPlanViewMvcImpl(
             android.R.layout.simple_spinner_item,
             mealPlans.map { it.title }
         )
-        val spinner = binding.toolbar.menu.findItem(R.id.selectMealPlanSpinner).actionView as Spinner
         spinnerAdapter.setDropDownViewResource(R.layout.toolbar_spinner_item)
-        spinner.adapter = spinnerAdapter
-        spinner.background = ResourcesCompat.getDrawable(getContext().resources, R.drawable.toolbar_spinner_bg, getContext().theme)
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                onMealPlanSelected(position)
-            }
+        binding.selectMealPlanSpinner.apply {
+            adapter = spinnerAdapter
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    onMealPlanSelected(position)
+                }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
         }
+
     }
 
     private fun onMealPlanSelected(index: Int) {
@@ -129,14 +132,14 @@ class MealPlanViewMvcImpl(
     }
 
     override fun setSelectedMealPlanIndex(index: Int) {
-        (binding.toolbar.menu.findItem(R.id.selectMealPlanSpinner).actionView as Spinner).setSelection(index)
+        binding.selectMealPlanSpinner.setSelection(index)
     }
 
     override fun hideMealPlans() {
-        (binding.toolbar.menu.findItem(R.id.selectMealPlanSpinner).actionView as Spinner).visibility = View.GONE
+        binding.selectMealPlanSpinner.visibility = View.GONE
     }
 
     override fun showMealPlans() {
-        (binding.toolbar.menu.findItem(R.id.selectMealPlanSpinner).actionView as Spinner).visibility = View.VISIBLE
+        binding.selectMealPlanSpinner.visibility = View.VISIBLE
     }
 }

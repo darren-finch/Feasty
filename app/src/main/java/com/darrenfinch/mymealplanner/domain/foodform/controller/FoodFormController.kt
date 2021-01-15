@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
+import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
+import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormFragment.Companion.FOOD_DETAILS
 import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormFragment.Companion.FOOD_ID
@@ -18,8 +20,9 @@ class FoodFormController(
     private val screensNavigator: ScreensNavigator,
     private val getFoodUseCase: GetFoodUseCase,
     private val insertFoodUseCase: InsertFoodUseCase,
-    private val updateFoodUseCase: UpdateFoodUseCase
-) : BaseController, FoodFormViewMvc.Listener {
+    private val updateFoodUseCase: UpdateFoodUseCase,
+    private val backPressDispatcher: BackPressDispatcher
+) : BaseController, FoodFormViewMvc.Listener, BackPressListener {
 
     private lateinit var viewMvc: FoodFormViewMvc
 
@@ -38,10 +41,12 @@ class FoodFormController(
 
     fun onStart() {
         viewMvc.registerListener(this)
+        backPressDispatcher.registerListener(this)
     }
 
     fun onStop() {
         viewMvc.unregisterListener(this)
+        backPressDispatcher.unregisterListener(this)
     }
 
     private fun bindFoodDetailsToViewModelAndViewMvc(foodDetails: Food) {
@@ -82,5 +87,10 @@ class FoodFormController(
             putSerializable(FOOD_DETAILS, viewMvc.getFoodDetails())
             putBoolean(HAS_LOADED_FOOD_DETAILS, hasLoadedFoodDetails)
         }
+    }
+
+    override fun onBackPressed(): Boolean {
+        screensNavigator.goBack()
+        return true
     }
 }

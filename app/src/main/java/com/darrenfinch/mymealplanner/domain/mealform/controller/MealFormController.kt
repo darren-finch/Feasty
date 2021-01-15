@@ -5,6 +5,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.misc.Constants
+import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
+import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
 import com.darrenfinch.mymealplanner.common.navigation.DialogsManager
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.common.utils.DefaultModels
@@ -29,8 +31,9 @@ class MealFormController(
     private val updateMealUseCase: UpdateMealUseCase,
     private val getMealUseCase: GetMealUseCase,
     private val screensNavigator: ScreensNavigator,
-    private val dialogsManager: DialogsManager
-) : BaseController, MealFormViewMvc.Listener, DialogsManager.OnDialogEventListener {
+    private val dialogsManager: DialogsManager,
+    private val backPressDispatcher: BackPressDispatcher
+) : BaseController, MealFormViewMvc.Listener, DialogsManager.OnDialogEventListener, BackPressListener {
 
     private var mealId = Constants.INVALID_ID
     private var hasLoadedMealDetails = false
@@ -48,15 +51,17 @@ class MealFormController(
     fun onStart() {
         viewMvc.registerListener(this)
         dialogsManager.registerListener(this)
+        backPressDispatcher.registerListener(this)
     }
 
     fun onStop() {
         viewMvc.unregisterListener(this)
         dialogsManager.unregisterListener(this)
+        backPressDispatcher.unregisterListener(this)
     }
 
     fun fetchMealDetailsIfPossibleRebindToViewMvcOtherwise(viewLifecycleOwner: LifecycleOwner) {
-        if (isEditingExistingMeal && !hasLoadedMealDetails) { // TODO: Can't fetch meal if current meal is dirty (has been edited)
+        if (isEditingExistingMeal && !hasLoadedMealDetails) {
             getMealUseCase.getMeal(mealId).observe(viewLifecycleOwner, Observer {
                 mealDetails = it
                 viewMvc.bindMealDetails(it)
@@ -96,6 +101,7 @@ class MealFormController(
     }
 
     override fun onDialogStart(dialogTag: String) {
+        // You have to keep meal details current
         mealDetails = viewMvc.getMealDetails()
     }
     override fun onDialogDismiss(dialogTag: String) {}
@@ -116,5 +122,10 @@ class MealFormController(
             mealDetails = mealDetails!!.copy(foods = mealDetails!!.foods + mealFoodFromSelectedFood)
             viewMvc.bindMealDetails(mealDetails!!)
         }
+    }
+
+    override fun onBackPressed(): Boolean {
+        screensNavigator.goBack()
+        return true
     }
 }

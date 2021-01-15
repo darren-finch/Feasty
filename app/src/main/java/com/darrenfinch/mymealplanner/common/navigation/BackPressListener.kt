@@ -1,4 +1,5 @@
 package com.darrenfinch.mymealplanner.common.navigation
 
-class BackPressListener {
+interface BackPressListener {
+    fun onBackPressed(): Boolean
 }
