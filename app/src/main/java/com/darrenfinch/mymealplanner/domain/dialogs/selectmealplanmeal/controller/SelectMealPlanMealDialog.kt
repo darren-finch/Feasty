@@ -8,16 +8,16 @@ import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.view.SelectMealPlanMealViewMvc
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
-class SelectMealPlanMealDialog : BaseDialog(), SelectMealPlanMealViewMvc.Listener {
+class SelectMealPlanMealDialog : BaseDialog() {
 
     companion object {
         const val TAG = "SelectMealPlanMealDialog"
 
-        const val MEAL_PLAN_ID = "MEAL_PLAN_ID"
+        // Dialog results
+        const val SELECTED_MEAL = "SELECTED_MEAL"
 
-        fun newInstance(mealPlanId: Int): SelectMealPlanMealDialog {
+        fun newInstance(): SelectMealPlanMealDialog {
             val bundle = Bundle()
-            bundle.putInt(MEAL_PLAN_ID, mealPlanId)
             val fragment = SelectMealPlanMealDialog()
             fragment.arguments = bundle
             return fragment
@@ -29,7 +29,7 @@ class SelectMealPlanMealDialog : BaseDialog(), SelectMealPlanMealViewMvc.Listene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        controller = fragmentCompositionRoot.getSelectMealPlanMealController()
+        controller = fragmentCompositionRoot.getSelectMealPlanMealController(onDialogEventListener)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -45,21 +45,15 @@ class SelectMealPlanMealDialog : BaseDialog(), SelectMealPlanMealViewMvc.Listene
     override fun onStart() {
         super.onStart()
         controller.onStart()
-        viewMvc.registerListener(this)
     }
 
     override fun onStop() {
         super.onStop()
         controller.onStop()
-        viewMvc.unregisterListener(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putAll(controller.getState())
-    }
-
-    override fun onMealSelected(meal: Meal) {
-        dismiss()
     }
 }

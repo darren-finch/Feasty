@@ -1,8 +1,10 @@
 package com.darrenfinch.mymealplanner.common.misc
 
 object Constants {
-    const val DEFAULT_INVALID_ID = -1
-    const val DEFAULT_VALID_ID = 0
+    const val INVALID_INDEX = -1
+
+    const val INVALID_ID = -1
+    const val VALID_ID = 0
 
     const val DEFAULT_MEAL_FOOD_DATA_TITLE = ""
     const val DEFAULT_FOOD_DATA_TITLE = ""

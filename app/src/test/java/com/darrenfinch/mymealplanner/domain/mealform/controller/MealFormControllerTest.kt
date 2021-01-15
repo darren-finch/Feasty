@@ -8,6 +8,7 @@ import com.darrenfinch.mymealplanner.TestData
 import com.darrenfinch.mymealplanner.TestData.DEFAULT_INVALID_MEAL_ID
 import com.darrenfinch.mymealplanner.TestData.DEFAULT_VALID_MEAL_ID
 import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.mealform.view.MealFormViewMvc
 import com.darrenfinch.mymealplanner.domain.viewmodels.ObservableMeal
 import com.darrenfinch.mymealplanner.domain.usecases.GetMealUseCase
@@ -35,7 +36,6 @@ internal class MealFormControllerTest {
     private val defaultMeal = TestData.defaultMeal
     private val defaultObservableMeal = ObservableMeal()
 
-    private val viewModel = mockk<MealFormViewModel>(relaxUnitFun = true)
     private val insertMealUseCase = mockk<InsertMealUseCase>(relaxUnitFun = true)
     private val updateMealUseCase = mockk<UpdateMealUseCase>(relaxUnitFun = true)
     private val getMealUseCase = mockk<GetMealUseCase>(relaxUnitFun = true)
@@ -50,14 +50,10 @@ internal class MealFormControllerTest {
     @BeforeEach
     fun setUp() {
         SUT = MealFormController(
-            viewModel,
             insertMealUseCase,
             updateMealUseCase,
             getMealUseCase,
             screensNavigator,
-            defaultMealFood,
-            defaultMeal,
-            DEFAULT_INVALID_MEAL_ID
         )
         SUT.bindView(viewMvc)
         every { viewModel.getObservableMeal() } returns defaultObservableMeal

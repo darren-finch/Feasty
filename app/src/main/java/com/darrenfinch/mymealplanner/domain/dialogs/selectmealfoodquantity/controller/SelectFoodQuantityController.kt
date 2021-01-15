@@ -5,26 +5,24 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectMealFoodQuantityDialog.Companion.FOOD_ID
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectMealFoodQuantityDialog.Companion.MEAL_ID
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectMealFoodQuantityViewMvc
-import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormFragment.Companion.NEW_MEAL_FOOD
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityDialog.Companion.FOOD_ID
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD_QUANTITY
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectFoodQuantityViewMvc
 import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.Food
-import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 import com.darrenfinch.mymealplanner.model.helpers.MacroCalculator
 
-class SelectMealFoodQuantityController(
+class SelectFoodQuantityController(
     private val getFoodUseCase: GetFoodUseCase,
     private val onDialogEventListener: BaseDialog.OnDialogEventListener
-) : BaseController, SelectMealFoodQuantityViewMvc.Listener {
+) : BaseController, SelectFoodQuantityViewMvc.Listener {
 
     private var foodId = -1
-    private var mealId = -1
-    private lateinit var viewMvc: SelectMealFoodQuantityViewMvc
+    private lateinit var viewMvc: SelectFoodQuantityViewMvc
 
-    fun bindView(viewMvc: SelectMealFoodQuantityViewMvc) {
+    fun bindView(viewMvc: SelectFoodQuantityViewMvc) {
         this.viewMvc = viewMvc
     }
 
@@ -43,31 +41,22 @@ class SelectMealFoodQuantityController(
     }
 
     override fun onFoodServingSizeChosen(foodBeforeUpdatingMacros: Food, selectedFoodQuantity: PhysicalQuantity) {
-        foodBeforeUpdatingMacros.let {
-            val updatedMealFood = MacroCalculator.updateMacrosForMealFoodWithNewServingSize(
-                MealFood(
-                    0,
-                    it.id,
-                    mealId,
-                    it.title,
-                    it.servingSize,
-                    it.macroNutrients
-                ),
-                selectedFoodQuantity
-            )
-            onDialogEventListener.onFinish(SelectMealFoodQuantityDialog.TAG, Bundle().apply { putSerializable(NEW_MEAL_FOOD, updatedMealFood) })
-        }
+        onDialogEventListener.onFinish(
+            SelectFoodQuantityDialog.TAG,
+            Bundle().apply {
+                putSerializable(SELECTED_FOOD, foodBeforeUpdatingMacros)
+                putSerializable(SELECTED_FOOD_QUANTITY, selectedFoodQuantity)
+            }
+        )
     }
 
     override fun setState(state: Bundle?) {
         foodId = state?.getInt(FOOD_ID) ?: -1
-        mealId = state?.getInt(MEAL_ID) ?: -1
     }
 
     override fun getState(): Bundle {
         return Bundle().apply {
             putInt(FOOD_ID, foodId)
-            putInt(MEAL_ID, mealId)
         }
     }
 }

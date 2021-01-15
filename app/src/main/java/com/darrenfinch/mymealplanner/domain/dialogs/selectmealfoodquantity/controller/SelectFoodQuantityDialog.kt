@@ -2,33 +2,33 @@ package com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.cont
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.navigation.fragment.navArgs
 
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
-import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealDialog
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectMealFoodQuantityViewMvc
-import com.darrenfinch.mymealplanner.model.data.entities.Meal
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectFoodQuantityViewMvc
 
-class SelectMealFoodQuantityDialog : BaseDialog() {
+class SelectFoodQuantityDialog : BaseDialog() {
 
     companion object {
         const val TAG = "SelectMealFoodQuantityDialog"
 
+        // Arguments
         const val FOOD_ID = "FOOD_ID"
-        const val MEAL_ID = "MEAL_ID"
 
-        fun newInstance(foodId: Int, mealId: Int): SelectMealFoodQuantityDialog {
+        // Dialog results
+        const val SELECTED_FOOD = "SELECTED_FOOD"
+        const val SELECTED_FOOD_QUANTITY = "SELECTED_FOOD_QUANTITY"
+
+        fun newInstance(foodId: Int): SelectFoodQuantityDialog {
             val bundle = Bundle()
             bundle.putInt(FOOD_ID, foodId)
-            bundle.putInt(MEAL_ID, mealId)
-            val fragment = SelectMealFoodQuantityDialog()
+            val fragment = SelectFoodQuantityDialog()
             fragment.arguments = bundle
             return fragment
         }
     }
 
-    private lateinit var controller: SelectMealFoodQuantityController
-    private lateinit var viewMvc: SelectMealFoodQuantityViewMvc
+    private lateinit var controller: SelectFoodQuantityController
+    private lateinit var viewMvc: SelectFoodQuantityViewMvc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

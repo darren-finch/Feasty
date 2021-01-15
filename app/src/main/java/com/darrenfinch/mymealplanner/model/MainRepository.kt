@@ -3,16 +3,16 @@ package com.darrenfinch.mymealplanner.model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.darrenfinch.mymealplanner.model.DataConverters.convertDatabaseFoodToFood
-import com.darrenfinch.mymealplanner.model.DataConverters.convertDatabaseMealFoodToMealFood
-import com.darrenfinch.mymealplanner.model.DataConverters.convertDatabaseMealPlanMealToMealPlanMeal
-import com.darrenfinch.mymealplanner.model.DataConverters.convertDatabaseMealPlanToMealPlan
-import com.darrenfinch.mymealplanner.model.DataConverters.convertDatabaseMealToMeal
-import com.darrenfinch.mymealplanner.model.DataConverters.convertFoodToDatabaseFood
-import com.darrenfinch.mymealplanner.model.DataConverters.convertMealFoodToDatabaseMealFood
-import com.darrenfinch.mymealplanner.model.DataConverters.convertMealPlanMealToDatabaseMealPlanMeal
-import com.darrenfinch.mymealplanner.model.DataConverters.convertMealPlanToDatabaseMealPlan
-import com.darrenfinch.mymealplanner.model.DataConverters.convertMealToDatabaseMeal
+import com.darrenfinch.mymealplanner.model.ModelConverters.convertDatabaseFoodToFood
+import com.darrenfinch.mymealplanner.model.ModelConverters.convertDatabaseMealFoodToMealFood
+import com.darrenfinch.mymealplanner.model.ModelConverters.convertDatabaseMealPlanMealToMealPlanMeal
+import com.darrenfinch.mymealplanner.model.ModelConverters.convertDatabaseMealPlanToMealPlan
+import com.darrenfinch.mymealplanner.model.ModelConverters.convertDatabaseMealToMeal
+import com.darrenfinch.mymealplanner.model.ModelConverters.convertFoodToDatabaseFood
+import com.darrenfinch.mymealplanner.model.ModelConverters.convertMealFoodToDatabaseMealFood
+import com.darrenfinch.mymealplanner.model.ModelConverters.convertMealPlanMealToDatabaseMealPlanMeal
+import com.darrenfinch.mymealplanner.model.ModelConverters.convertMealPlanToDatabaseMealPlan
+import com.darrenfinch.mymealplanner.model.ModelConverters.convertMealToDatabaseMeal
 import com.darrenfinch.mymealplanner.model.data.entities.*
 import com.darrenfinch.mymealplanner.model.room.MealPlannerDatabase
 import kotlinx.coroutines.*
@@ -195,9 +195,9 @@ class MainRepository constructor(database: MealPlannerDatabase) {
         }
     }
 
-    fun deleteMealPlan(mealPlan: MealPlan) {
+    fun deleteMealPlan(id: Int) {
         runBlocking(Dispatchers.IO) {
-            mealPlansDao.deleteMealPlan(convertMealPlanToDatabaseMealPlan(mealPlan))
+            mealPlansDao.deleteMealPlan(id)
         }
     }
 

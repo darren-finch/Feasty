@@ -12,6 +12,9 @@ class SelectFoodForMealDialog : BaseDialog() {
     companion object {
         const val TAG = "SelectFoodForMealDialog"
 
+        // Dialog results
+        const val FOOD_ID = "FOOD_ID"
+
         fun newInstance(): SelectFoodForMealDialog {
             val bundle = Bundle()
             val fragment = SelectFoodForMealDialog()

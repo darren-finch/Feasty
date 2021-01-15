@@ -14,23 +14,16 @@ import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 class MealFormFragment : BaseFragment() {
 
     companion object {
-        const val NEW_MEAL_FOOD = "MEAL_FOOD"
-        const val CURRENT_MEAL = "CURRENT_MEAL"
         const val MEAL_ID = "MEAL_ID"
+        const val CURRENT_MEAL = "CURRENT_MEAL"
 
-        fun newInstance(newMealFood: MealFood?, currentMeal: Meal?, mealId: Int): MealFormFragment {
+        fun newInstance(mealId: Int): MealFormFragment {
             val bundle = Bundle()
-            bundle.putSerializable(NEW_MEAL_FOOD, newMealFood)
-            bundle.putSerializable(CURRENT_MEAL, currentMeal)
-            bundle.putSerializable(MEAL_ID, mealId)
+            bundle.putInt(MEAL_ID, mealId)
             val fragment = MealFormFragment()
             fragment.arguments = bundle
             return fragment
         }
-    }
-
-    private val viewModel: MealFormViewModel by viewModels {
-        ViewModelProvider.NewInstanceFactory()
     }
 
     private lateinit var controller: MealFormController
@@ -38,7 +31,7 @@ class MealFormFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        controller = fragmentCompositionRoot.getMealFormController(viewModel)
+        controller = fragmentCompositionRoot.getMealFormController()
     }
 
     override fun onCreateView(

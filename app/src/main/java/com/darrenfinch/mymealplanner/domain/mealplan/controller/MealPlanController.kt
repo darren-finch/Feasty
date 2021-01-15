@@ -4,13 +4,13 @@ import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
+import com.darrenfinch.mymealplanner.common.misc.Constants
 import com.darrenfinch.mymealplanner.common.navigation.DialogsManager
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controller.SelectMealPlanMealDialog.Companion.SELECTED_MEAL
 import com.darrenfinch.mymealplanner.domain.mealplan.view.MealPlanViewMvc
-import com.darrenfinch.mymealplanner.domain.usecases.DeleteMealPlanMealUseCase
-import com.darrenfinch.mymealplanner.domain.usecases.DeleteMealPlanUseCase
-import com.darrenfinch.mymealplanner.domain.usecases.GetAllMealPlansUseCase
-import com.darrenfinch.mymealplanner.domain.usecases.GetMealsForMealPlanUseCase
+import com.darrenfinch.mymealplanner.domain.usecases.*
+import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import com.darrenfinch.mymealplanner.model.data.entities.MealPlan
 import com.darrenfinch.mymealplanner.model.data.entities.MealPlanMeal
 import com.darrenfinch.mymealplanner.model.data.structs.MealPlanMacros
@@ -19,15 +19,24 @@ import com.darrenfinch.mymealplanner.model.helpers.MacroCalculator
 class MealPlanController(
     private val getAllMealPlansUseCase: GetAllMealPlansUseCase,
     private val getMealsForMealPlanUseCase: GetMealsForMealPlanUseCase,
+    private val insertMealPlanMealUseCase: InsertMealPlanMealUseCase,
     private val deleteMealPlanUseCase: DeleteMealPlanUseCase,
     private val deleteMealPlanMealUseCase: DeleteMealPlanMealUseCase,
-    private val viewModel: MealPlanViewModel,
     private val screensNavigator: ScreensNavigator,
     private val dialogsManager: DialogsManager
-) : BaseController, MealPlanViewMvc.Listener {
+) : BaseController, MealPlanViewMvc.Listener, DialogsManager.OnDialogEventListener {
+
+    var selectedMealPlanIndex = Constants.INVALID_INDEX
+    var selectedMealPlanId = Constants.INVALID_ID
+    var numOfMealPlans = 0
+
+    val hasPrevMealPlanIndex: Boolean
+        get() = selectedMealPlanIndex - 1 > Constants.INVALID_INDEX
+
+    val hasNextMealPlanIndex: Boolean
+        get() = selectedMealPlanIndex + 1 < numOfMealPlans
 
     private lateinit var viewMvc: MealPlanViewMvc
-    private var viewLifecycleOwner: LifecycleOwner? = null
 
     fun bindView(viewMvc: MealPlanViewMvc) {
         this.viewMvc = viewMvc
@@ -35,51 +44,46 @@ class MealPlanController(
 
     fun onStart() {
         viewMvc.registerListener(this)
+        dialogsManager.registerListener(this)
     }
 
     fun onStop() {
         viewMvc.unregisterListener(this)
-        viewLifecycleOwner = null
+        dialogsManager.unregisterListener(this)
     }
 
     fun onViewCreated(viewLifecycleOwner: LifecycleOwner) {
-        this.viewLifecycleOwner = viewLifecycleOwner
-        fetchAllMealPlans()
+        fetchAllMealPlans(viewLifecycleOwner)
     }
 
-    private fun fetchAllMealPlans() {
-        if(viewLifecycleOwner != null) {
-            getAllMealPlansUseCase.getMealPlans().observe(viewLifecycleOwner!!, Observer { mealPlans ->
-                viewModel.allMealPlans = mealPlans
-                if (mealPlans.isEmpty()) {
-                    viewMvc.hideMealPlans()
-                } else {
-                    viewMvc.showMealPlans()
-                    //TODO: This should come from SharedPrefs or somewhere similar in the future.
-                    viewModel.selectedMealPlanIndex = 0
-                    viewModel.selectedMealPlan = mealPlans[0]
-                    viewMvc.setSelectedMealPlanIndex(viewModel.selectedMealPlanIndex)
-                    getMealsForSelectedMealPlan()
-                }
-                viewMvc.bindMealPlans(mealPlans)
+    private fun fetchAllMealPlans(viewLifecycleOwner: LifecycleOwner) {
+        getAllMealPlansUseCase.getMealPlans().observe(viewLifecycleOwner, Observer { mealPlans ->
+            if (mealPlans.isEmpty()) {
+                viewMvc.hideMealPlans()
+            } else {
+                viewMvc.showMealPlans()
+
+                // TODO: Default meal plan should come from SharedPreferences or somewhere similar in the future
+                if (selectedMealPlanIndex == Constants.INVALID_INDEX)
+                    selectedMealPlanIndex = 0
+                if (selectedMealPlanId == Constants.INVALID_ID)
+                    selectedMealPlanId = mealPlans[selectedMealPlanIndex].id
+
+                viewMvc.setSelectedMealPlanIndex(selectedMealPlanIndex)
+
+                // TODO: Fetch meals for selected meal plan
+            }
+            viewMvc.bindMealPlans(mealPlans)
+        })
+    }
+
+    private fun getMealsForSelectedMealPlan(viewLifecycleOwner: LifecycleOwner) {
+        //TODO: viewLifecycleOwner might potentially go out of scope, and it may cause a memory leak. Remove reference asap.
+        getMealsForMealPlanUseCase.getMealsForMealPlan(selectedMealPlanId)
+            .observe(viewLifecycleOwner, Observer { mealPlanMeals ->
+                viewMvc.bindMealPlanMeals(mealPlanMeals)
+                // TODO: Calculate macros for meal plan
             })
-        }
-    }
-
-    private fun getMealsForSelectedMealPlan() {
-        //TODO: Maybe make this code a little more thread-safe?
-        if(viewModel.selectedMealPlan != null && viewLifecycleOwner != null) {
-            getMealsForMealPlanUseCase.getMealsForMealPlan(viewModel.selectedMealPlan!!.id)
-                .observe(viewLifecycleOwner!!, Observer { mealPlanMeals ->
-                    viewMvc.bindMealPlanMeals(mealPlanMeals)
-                    viewMvc.bindMealPlanMacros(
-                        calculateMacroNutrientsForMealPlan(
-                            mealPlanMeals,
-                            viewModel.selectedMealPlan!!
-                        )
-                    )
-                })
-        }
     }
 
     private fun calculateMacroNutrientsForMealPlan(
@@ -105,9 +109,9 @@ class MealPlanController(
     }
 
     override fun onMealPlanSelected(index: Int) {
-        viewModel.selectedMealPlanIndex = index
-        viewModel.selectedMealPlan = viewModel.allMealPlans[index]
-        getMealsForSelectedMealPlan()
+        selectedMealPlanIndex = index
+
+        // TODO: Get meals for meal plan with selectedMealPlanId
     }
 
     override fun onAddNewMealPlanClicked() {
@@ -115,31 +119,44 @@ class MealPlanController(
     }
 
     override fun onDeleteMealPlanClicked() {
-        if(viewModel.selectedMealPlan != null) {
-            deleteMealPlanUseCase.deleteMealPlan(viewModel.selectedMealPlan!!)
-            if(viewModel.hasPrevMealPlanIndex()) {
-                viewModel.selectedMealPlan = viewModel.allMealPlans[viewModel.selectedMealPlanIndex - 1]
-                getMealsForSelectedMealPlan()
-            }
-            else if(viewModel.hasNextMealPlanIndex()) {
-                viewModel.selectedMealPlan = viewModel.allMealPlans[viewModel.selectedMealPlanIndex + 1]
-                getMealsForSelectedMealPlan()
+        if (selectedMealPlanId > Constants.INVALID_ID) {
+            deleteMealPlanUseCase.deleteMealPlan(selectedMealPlanId)
+            if (hasPrevMealPlanIndex) {
+                // TODO: Remove meal plan from viewMvc and refresh meals for newly selected meal plan
+            } else if (hasNextMealPlanIndex) {
+                // TODO: Remove meal plan from viewMvc and refresh meals for newly selected meal plan
             }
         }
     }
 
     override fun onAddNewMealPlanMealClicked() {
-        viewModel.selectedMealPlan?.let {
-            dialogsManager.showSelectMealPlanMealDialog(it.id)
-        }
+        dialogsManager.showSelectMealPlanMealDialog()
     }
 
     override fun onDeleteMealPlanMealClicked(mealPlanMeal: MealPlanMeal) {
         deleteMealPlanMealUseCase.deleteMealPlanMeal(mealPlanMeal)
     }
 
-    override fun setState(state: Bundle?) {}
+    override fun setState(state: Bundle?) {
+
+    }
+
     override fun getState(): Bundle {
         return Bundle()
+    }
+
+    override fun onDialogDismiss(dialogTag: String) {}
+    override fun onDialogFinish(dialogTag: String, results: Bundle) {
+        val selectedMeal = results.getSerializable(SELECTED_MEAL) as Meal
+        insertMealPlanMealUseCase.insertMealPlanMeal(
+            MealPlanMeal(
+                id = 0,
+                mealPlanId = selectedMealPlanId,
+                mealId = selectedMeal.id,
+                title = selectedMeal.title,
+                foods = selectedMeal.foods
+            )
+        )
+        // TODO: Refresh meal plan meals
     }
 }

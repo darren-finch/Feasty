@@ -18,8 +18,9 @@ import com.darrenfinch.mymealplanner.model.data.entities.MealPlan
 import com.darrenfinch.mymealplanner.model.data.entities.MealPlanMeal
 import com.darrenfinch.mymealplanner.model.data.structs.MealPlanMacros
 
-class MealPlanViewMvcImpl(inflater: LayoutInflater,
-                          parent: ViewGroup?
+class MealPlanViewMvcImpl(
+    inflater: LayoutInflater,
+    parent: ViewGroup?
 ) : BaseObservableViewMvc<MealPlanViewMvc.Listener>(), MealPlanViewMvc {
     private val binding: FragmentMealPlanBinding = DataBindingUtil.inflate(
         inflater,
@@ -46,8 +47,6 @@ class MealPlanViewMvcImpl(inflater: LayoutInflater,
             mealPlanMealsRecyclerView.adapter = adapter
             mealPlanMealsRecyclerView.layoutManager = LinearLayoutManager(getContext())
             mealPlanMealsRecyclerView.addItemDecoration(MarginItemDecoration(16))
-//            addNewMealPlan.setOnClickListener { onAddNewMealPlanClicked() }
-//            deleteMealPlan.setOnClickListener { onDeleteMealPlanClicked() }
             addNewMealPlanMealFAB.setOnClickListener { onAddNewMealPlanMealClicked() }
             toolbar.inflateMenu(R.menu.meal_plan_menu)
             toolbar.menu.findItem(R.id.addNewMealPlan).setOnMenuItemClickListener {
@@ -68,13 +67,13 @@ class MealPlanViewMvcImpl(inflater: LayoutInflater,
     }
 
     private fun onDeleteMealPlanClicked() {
-        for(listener in getListeners()) {
+        for (listener in getListeners()) {
             listener.onDeleteMealPlanClicked()
         }
     }
 
     private fun onAddNewMealPlanClicked() {
-        for(listener in getListeners()) {
+        for (listener in getListeners()) {
             listener.onAddNewMealPlanClicked()
         }
     }
@@ -106,12 +105,12 @@ class MealPlanViewMvcImpl(inflater: LayoutInflater,
                 onMealPlanSelected(position)
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) { }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
     private fun onMealPlanSelected(index: Int) {
-        for(listeners in getListeners()) {
+        for (listeners in getListeners()) {
             listeners.onMealPlanSelected(index)
         }
     }

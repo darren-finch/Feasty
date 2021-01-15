@@ -25,12 +25,12 @@ class FoodFormController(
 
     private var foodId = -1
     private var foodDetails: Food? = null
-    private var hasLoadedFoodDetails = false
+    private var hasLoadedFoodDetails = false // TODO: Remove when view models are added
 
     private val insertingFood: Boolean
         get() = foodId < 0
     private val canFetchFoodDetails: Boolean
-        get() = hasLoadedFoodDetails && !insertingFood
+        get() = !hasLoadedFoodDetails && !insertingFood
 
     fun bindView(viewMvc: FoodFormViewMvc) {
         this.viewMvc = viewMvc

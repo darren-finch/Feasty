@@ -6,7 +6,7 @@
     <data>
         <variable
             name="meal"
-            type="com.darrenfinch.mymealplanner.domain.viewmodels.ObservableMeal" />
+            type="com.darrenfinch.mymealplanner.model.data.entities.Meal" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/meal_name"
-                android:text="@={meal.title}" />
+                android:text="@{meal.title}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

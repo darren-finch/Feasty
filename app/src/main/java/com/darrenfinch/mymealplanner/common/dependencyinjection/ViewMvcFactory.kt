@@ -13,8 +13,8 @@ import com.darrenfinch.mymealplanner.domain.allmeals.view.AllMealsViewMvcImpl
 import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.view.SelectFoodForMealViewMvcImpl
 import com.darrenfinch.mymealplanner.domain.mealplan.view.MealPlanViewMvcImpl
 import com.darrenfinch.mymealplanner.domain.mealplanform.view.MealPlanFormViewMvcImpl
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectMealFoodQuantityViewMvc
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectMealFoodQuantityViewMvcImpl
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectFoodQuantityViewMvc
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectFoodQuantityViewMvcImpl
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.view.SelectMealPlanMealViewMvcImpl
 
 class ViewMvcFactory(private val inflater: LayoutInflater) {
@@ -22,7 +22,7 @@ class ViewMvcFactory(private val inflater: LayoutInflater) {
     fun getMealFormViewMvc(parent: ViewGroup?): MealFormViewMvc = MealFormViewMvcImpl(inflater, parent)
     fun getAllFoodsViewMvc(parent: ViewGroup?): AllFoodsViewMvc = AllFoodsViewMvcImpl(inflater, parent)
     fun getAllMealsViewMvc(parent: ViewGroup?): AllMealsViewMvc = AllMealsViewMvcImpl(inflater, parent)
-    fun getSelectMealFoodQuantityViewMvc(parent: ViewGroup?): SelectMealFoodQuantityViewMvc = SelectMealFoodQuantityViewMvcImpl(inflater, parent)
+    fun getSelectMealFoodQuantityViewMvc(parent: ViewGroup?): SelectFoodQuantityViewMvc = SelectFoodQuantityViewMvcImpl(inflater, parent)
     fun getMealPlanViewMvc(parent: ViewGroup?) = MealPlanViewMvcImpl(inflater, parent)
     fun getMealPlanFormViewMvc(parent: ViewGroup?) = MealPlanFormViewMvcImpl(inflater, parent)
     fun getSelectFoodForMealViewMvc(parent: ViewGroup?) = SelectFoodForMealViewMvcImpl(inflater, parent)

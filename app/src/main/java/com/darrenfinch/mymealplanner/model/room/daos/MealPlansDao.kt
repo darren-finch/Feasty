@@ -18,6 +18,6 @@ interface MealPlansDao {
     @Update
     suspend fun updateMealPlan(mealPlan: DatabaseMealPlan)
 
-    @Delete
-    suspend fun deleteMealPlan(mealPlan: DatabaseMealPlan)
+    @Query("DELETE FROM mealPlans WHERE id = :id")
+    suspend fun deleteMealPlan(id: Int)
 }

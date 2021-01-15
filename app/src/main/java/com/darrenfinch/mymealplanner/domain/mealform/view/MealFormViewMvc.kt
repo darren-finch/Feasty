@@ -2,6 +2,7 @@ package com.darrenfinch.mymealplanner.domain.mealform.view
 
 import com.darrenfinch.mymealplanner.common.views.ObservableViewMvc
 import com.darrenfinch.mymealplanner.domain.viewmodels.ObservableMeal
+import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 interface MealFormViewMvc : ObservableViewMvc<MealFormViewMvc.Listener> {
     interface Listener {
@@ -9,5 +10,5 @@ interface MealFormViewMvc : ObservableViewMvc<MealFormViewMvc.Listener> {
         fun doneButtonClicked()
     }
 
-    fun bindMealDetails(observableMeal: ObservableMeal)
+    fun bindMealDetails(mealDetails: Meal)
 }

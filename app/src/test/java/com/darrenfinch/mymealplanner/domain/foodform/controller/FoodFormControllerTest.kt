@@ -7,6 +7,7 @@ import com.darrenfinch.mymealplanner.InstantExecutorExtension
 import com.darrenfinch.mymealplanner.TestData
 import com.darrenfinch.mymealplanner.TestData.DEFAULT_VALID_FOOD_ID
 import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.foodform.view.FoodFormViewMvc
 import com.darrenfinch.mymealplanner.domain.viewmodels.ObservableFood
 import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
@@ -34,7 +35,6 @@ internal class FoodFormControllerTest {
     private val getSingleFoodUseCase = mockk<GetFoodUseCase>(relaxUnitFun = true)
     private val insertFoodUseCase = mockk<InsertFoodUseCase>(relaxUnitFun = true)
     private val updateFoodUseCase = mockk<UpdateFoodUseCase>(relaxUnitFun = true)
-    private val viewModel = mockk<FoodFormViewModel>(relaxUnitFun = true)
 
     private val viewMvc = mockk<FoodFormViewMvc>(relaxUnitFun = true)
 

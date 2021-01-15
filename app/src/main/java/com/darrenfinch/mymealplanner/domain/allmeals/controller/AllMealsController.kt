@@ -37,11 +37,11 @@ class AllMealsController(
     }
 
     override fun addNewMealClicked() {
-        screensNavigator.navigateToMealFormScreen(null, null, -1)
+        screensNavigator.navigateToMealFormScreen(-1)
     }
 
     override fun onMealEdit(mealId: Int) {
-        screensNavigator.navigateToMealFormScreen(null, null, mealId)
+        screensNavigator.navigateToMealFormScreen(mealId)
     }
 
     override fun onMealDelete(meal: Meal) {

@@ -15,16 +15,12 @@ class MealPlanFragment : BaseFragment() {
         fun newInstance() = MealPlanFragment()
     }
 
-    private val viewModel: MealPlanViewModel by viewModels {
-        ViewModelProvider.NewInstanceFactory()
-    }
-
     private lateinit var viewMvc: MealPlanViewMvc
     private lateinit var controller: MealPlanController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        controller = fragmentCompositionRoot.getMealPlanController(viewModel)
+        controller = fragmentCompositionRoot.getMealPlanController()
     }
 
     override fun onCreateView(

@@ -8,16 +8,16 @@ import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.utils.KeyboardUtils
-import com.darrenfinch.mymealplanner.common.utils.Defaults
+import com.darrenfinch.mymealplanner.common.utils.DefaultModels
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentSelectMealFoodQuantityBinding
 import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.model.data.entities.Food
 
-class SelectMealFoodQuantityViewMvcImpl(
+class SelectFoodQuantityViewMvcImpl(
     inflater: LayoutInflater,
     parent: ViewGroup?
-) : BaseObservableViewMvc<SelectMealFoodQuantityViewMvc.Listener>(), SelectMealFoodQuantityViewMvc {
+) : BaseObservableViewMvc<SelectFoodQuantityViewMvc.Listener>(), SelectFoodQuantityViewMvc {
     private val binding: FragmentSelectMealFoodQuantityBinding = DataBindingUtil.inflate(
         inflater,
         R.layout.fragment_select_meal_food_quantity,
@@ -32,7 +32,7 @@ class SelectMealFoodQuantityViewMvcImpl(
 
     private fun initUI() {
         binding.apply {
-            binding.food = Defaults.defaultFood
+            binding.food = DefaultModels.defaultFood
 
             binding.foodQuantityEditText.doOnTextChanged { _, _, _, _ ->
                 macroNutrientsTextView.text = getFoodData().macroNutrients.toString()
@@ -64,7 +64,7 @@ class SelectMealFoodQuantityViewMvcImpl(
     }
 
     private fun getFoodData(): Food {
-        return binding.food?.copy(servingSize = getFoodQuantity()) ?: Defaults.defaultFood
+        return binding.food?.copy(servingSize = getFoodQuantity()) ?: DefaultModels.defaultFood
     }
 
     private fun getFoodQuantity(): PhysicalQuantity {

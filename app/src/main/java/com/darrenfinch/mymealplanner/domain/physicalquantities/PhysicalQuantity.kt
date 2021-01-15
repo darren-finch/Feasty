@@ -1,8 +1,9 @@
 package com.darrenfinch.mymealplanner.domain.physicalquantities
 
 import com.darrenfinch.mymealplanner.domain.physicalquantities.units.MeasurementUnit
+import java.io.Serializable
 
-class PhysicalQuantity(val quantity: Double, val unit: MeasurementUnit) {
+class PhysicalQuantity(val quantity: Double, val unit: MeasurementUnit) : Serializable {
     companion object {
         val defaultPhysicalQuantity = PhysicalQuantity(0.0, MeasurementUnit.defaultUnit)
     }

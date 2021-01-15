@@ -2,10 +2,7 @@ package com.darrenfinch.mymealplanner
 
 import androidx.lifecycle.MutableLiveData
 import com.darrenfinch.mymealplanner.common.misc.Constants
-import com.darrenfinch.mymealplanner.common.utils.Defaults
-import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity.Companion.defaultPhysicalQuantity
-import com.darrenfinch.mymealplanner.model.data.entities.Food
-import com.darrenfinch.mymealplanner.model.data.entities.Meal
+import com.darrenfinch.mymealplanner.common.utils.DefaultModels
 
 object TestData {
     // I re-declared these constants because they are in use already by many different tests
@@ -29,11 +26,11 @@ object TestData {
 
 
     // DEFAULT MACROS
-    val defaultMacroNutrients = Defaults.defaultMacroNutrients
+    val defaultMacroNutrients = DefaultModels.defaultMacroNutrients
 
 
     // MEAL FOODS
-    val defaultMealFood = Defaults.defaultMealFood
+    val defaultMealFood = DefaultModels.defaultMealFood
     val defaultMealFood2 = defaultMealFood.copy(id = DEFAULT_VALID_MEAL_FOOD_ID + 1, foodId = DEFAULT_VALID_FOOD_ID + 1)
     val defaultMealFoodList = listOf(defaultMealFood, defaultMealFood2)
     val defaultMealFoodLiveData = MutableLiveData(defaultMealFood)
@@ -42,7 +39,7 @@ object TestData {
 
 
     // FOODS
-    val defaultFood = Defaults.defaultFood
+    val defaultFood = DefaultModels.defaultFood
     val defaultFood2 = defaultFood.copy(id = DEFAULT_VALID_FOOD_ID + 1)
     val defaultFoodDataList = listOf(defaultFood, defaultFood2)
     val defaultFoodLiveData = MutableLiveData(defaultFood)
@@ -51,7 +48,7 @@ object TestData {
 
 
     // MEALS
-    val defaultMeal = Defaults.defaultMeal
+    val defaultMeal = DefaultModels.defaultMeal
     val defaultMeal2 = defaultMeal.copy(id = DEFAULT_VALID_MEAL_ID + 1)
     val defaultMealWithMealFood = defaultMeal.copy(foods = listOf(defaultMealFood))
     val defaultMealListData = listOf(defaultMeal, defaultMeal2)

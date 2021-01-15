@@ -4,9 +4,6 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.darrenfinch.mymealplanner.domain.allfoods.controller.AllFoodsFragment
 import com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsFragment
-import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealDialog
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectMealFoodQuantityDialog
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controller.SelectMealPlanMealDialog
 import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormFragment
 import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormFragment
 import com.darrenfinch.mymealplanner.domain.mealplan.controller.MealPlanFragment
@@ -57,11 +54,9 @@ class ScreensNavigator(private val navController: FragNavController) {
     }
 
     fun navigateToMealFormScreen(
-        newMealFood: MealFood?,
-        currentMeal: Meal?,
         mealId: Int
     ) {
-        navController.pushFragment(MealFormFragment.newInstance(newMealFood, currentMeal, mealId))
+        navController.pushFragment(MealFormFragment.newInstance(mealId))
     }
 
     fun navigateToMealPlanFormScreen() {

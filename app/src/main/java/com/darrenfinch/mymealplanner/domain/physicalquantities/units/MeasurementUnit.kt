@@ -2,8 +2,9 @@ package com.darrenfinch.mymealplanner.domain.physicalquantities.units
 
 import com.darrenfinch.mymealplanner.domain.physicalquantities.MeasurementSystem
 import com.darrenfinch.mymealplanner.domain.physicalquantities.units.metric.Gram
+import java.io.Serializable
 
-abstract class MeasurementUnit {
+abstract class MeasurementUnit : Serializable {
     companion object {
         val defaultUnit = Gram()
     }

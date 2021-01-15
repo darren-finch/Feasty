@@ -8,14 +8,14 @@ import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_FOOD_DATA_TIT
 import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_MEAL_DATA_TITLE
 import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_MEAL_FOOD_DATA_TITLE
 import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_PROTEINS
-import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_VALID_ID
+import com.darrenfinch.mymealplanner.common.misc.Constants.VALID_ID
 import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.model.data.entities.Food
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
 
-object Defaults {
+object DefaultModels {
     val defaultMacroNutrients = MacroNutrients(
         calories = DEFAULT_CALORIES,
         carbs = DEFAULT_CARBS,
@@ -24,23 +24,23 @@ object Defaults {
     )
 
     val defaultMealFood =MealFood(
-        id = DEFAULT_VALID_ID,
-        foodId = Constants.DEFAULT_VALID_ID,
-        mealId = Constants.DEFAULT_VALID_ID,
+        id = VALID_ID,
+        foodId = Constants.VALID_ID,
+        mealId = Constants.VALID_ID,
         title = DEFAULT_MEAL_FOOD_DATA_TITLE,
         desiredServingSize = PhysicalQuantity.defaultPhysicalQuantity,
         macroNutrients = defaultMacroNutrients
     )
 
     val defaultFood = Food(
-        id = Constants.DEFAULT_VALID_ID,
+        id = Constants.VALID_ID,
         title = DEFAULT_FOOD_DATA_TITLE,
         servingSize = PhysicalQuantity.defaultPhysicalQuantity,
         macroNutrients = defaultMacroNutrients
     )
 
     val defaultMeal = Meal(
-        id = Constants.DEFAULT_VALID_ID,
+        id = Constants.VALID_ID,
         title = DEFAULT_MEAL_DATA_TITLE,
         foods = listOf()
     )

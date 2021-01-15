@@ -9,7 +9,7 @@ import com.darrenfinch.mymealplanner.common.lists.mealfoodsrecyclerviewadapter.M
 import com.darrenfinch.mymealplanner.common.lists.recyclerviewitemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentMealFormBinding
-import com.darrenfinch.mymealplanner.domain.viewmodels.ObservableMeal
+import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 class MealFormViewMvcImpl(
     inflater: LayoutInflater,
@@ -56,8 +56,8 @@ class MealFormViewMvcImpl(
         }
     }
 
-    override fun bindMealDetails(observableMeal: ObservableMeal) {
-        binding.meal = observableMeal
-        mealFoodsRecyclerViewAdapter.updateItems(observableMeal.foods)
+    override fun bindMealDetails(mealDetails: Meal) {
+        binding.meal = mealDetails
+        mealFoodsRecyclerViewAdapter.updateItems(mealDetails.foods)
     }
 }

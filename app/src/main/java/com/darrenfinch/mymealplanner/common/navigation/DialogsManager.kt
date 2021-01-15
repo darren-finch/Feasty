@@ -3,7 +3,7 @@ package com.darrenfinch.mymealplanner.common.navigation
 import android.os.Bundle
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
 import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealDialog
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectMealFoodQuantityDialog
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityDialog
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controller.SelectMealPlanMealDialog
 import com.ncapdevi.fragnav.FragNavController
 import java.util.concurrent.ConcurrentLinkedDeque
@@ -29,14 +29,14 @@ class DialogsManager(private val navController: FragNavController) {
         navController.showDialogFragment(dialog)
     }
 
-    fun showSelectMealFoodQuantityDialog(foodId: Int, mealId: Int) {
-        val dialog = SelectMealFoodQuantityDialog.newInstance(foodId, mealId)
+    fun showSelectFoodQuantityDialog(foodId: Int) {
+        val dialog = SelectFoodQuantityDialog.newInstance(foodId)
         setupDialogListeners(dialog)
         navController.showDialogFragment(dialog)
     }
 
-    fun showSelectMealPlanMealDialog(mealPlanId: Int) {
-        val dialog = SelectMealPlanMealDialog.newInstance(mealPlanId)
+    fun showSelectMealPlanMealDialog() {
+        val dialog = SelectMealPlanMealDialog.newInstance()
         setupDialogListeners(dialog)
         navController.showDialogFragment(dialog)
     }
