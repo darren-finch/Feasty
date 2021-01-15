@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentLinkedDeque
 
 class DialogsManager(private val navController: FragNavController) {
     interface OnDialogEventListener {
+        fun onDialogStart(dialogTag: String)
         fun onDialogDismiss(dialogTag: String)
         fun onDialogFinish(dialogTag: String, results: Bundle)
     }
@@ -25,24 +26,33 @@ class DialogsManager(private val navController: FragNavController) {
 
     fun showSelectFoodForMealScreenDialog() {
         val dialog = SelectFoodForMealDialog.newInstance()
+        notifyOnDialogStart(SelectFoodForMealDialog.TAG)
         setupDialogListeners(dialog)
         navController.showDialogFragment(dialog)
     }
 
     fun showSelectFoodQuantityDialog(foodId: Int) {
         val dialog = SelectFoodQuantityDialog.newInstance(foodId)
+        notifyOnDialogStart(SelectFoodQuantityDialog.TAG)
         setupDialogListeners(dialog)
         navController.showDialogFragment(dialog)
     }
 
     fun showSelectMealPlanMealDialog() {
         val dialog = SelectMealPlanMealDialog.newInstance()
+        notifyOnDialogStart(SelectMealPlanMealDialog.TAG)
         setupDialogListeners(dialog)
         navController.showDialogFragment(dialog)
     }
 
     fun clearDialog() {
         navController.clearDialogFragment()
+    }
+
+    private fun notifyOnDialogStart(dialogTag: String) {
+        for (listener in dialogEventListeners) {
+            listener.onDialogStart(dialogTag)
+        }
     }
 
     private fun setupDialogListeners(dialog: BaseDialog) {

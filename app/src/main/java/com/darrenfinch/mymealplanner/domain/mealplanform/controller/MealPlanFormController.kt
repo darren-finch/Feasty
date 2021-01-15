@@ -3,6 +3,7 @@ package com.darrenfinch.mymealplanner.domain.mealplanform.controller
 import android.os.Bundle
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
+import com.darrenfinch.mymealplanner.domain.mealplanform.controller.MealPlanFormFragment.Companion.MEAL_PLAN_DETAILS
 import com.darrenfinch.mymealplanner.domain.mealplanform.view.MealPlanFormViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.InsertMealPlanUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.MealPlan
@@ -11,10 +12,16 @@ class MealPlanFormController(
     private val insertMealPlanUseCase: InsertMealPlanUseCase,
     private val screensNavigator: ScreensNavigator
 ) : BaseController, MealPlanFormViewMvc.Listener {
+    private var mealPlanDetails: MealPlan? = null
+
     private lateinit var viewMvc: MealPlanFormViewMvc
 
     fun bindView(viewMvc: MealPlanFormViewMvc) {
         this.viewMvc = viewMvc
+
+        mealPlanDetails?.let {
+            viewMvc.bindMealPlanDetails(it)
+        }
     }
 
     fun onStart() {
@@ -25,13 +32,17 @@ class MealPlanFormController(
         viewMvc.unregisterListener(this)
     }
 
-    override fun onDoneClicked(finalMealPlan: MealPlan) {
-        insertMealPlanUseCase.insertMealPlan(finalMealPlan)
+    override fun onDoneButtonClicked(editedMealPlanDetails: MealPlan) {
+        insertMealPlanUseCase.insertMealPlan(editedMealPlanDetails)
         screensNavigator.goBack()
     }
 
-    override fun setState(state: Bundle?) {}
+    override fun setState(state: Bundle?) {
+        mealPlanDetails = state?.getSerializable(MEAL_PLAN_DETAILS) as MealPlan?
+    }
     override fun getState(): Bundle {
-        return Bundle()
+        return Bundle().apply {
+            putSerializable(MEAL_PLAN_DETAILS, viewMvc.getMealPlanDetails())
+        }
     }
 }

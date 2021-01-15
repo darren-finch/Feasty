@@ -25,22 +25,22 @@ object DefaultModels {
 
     val defaultMealFood =MealFood(
         id = VALID_ID,
-        foodId = Constants.VALID_ID,
-        mealId = Constants.VALID_ID,
+        foodId = VALID_ID,
+        mealId = VALID_ID,
         title = DEFAULT_MEAL_FOOD_DATA_TITLE,
         desiredServingSize = PhysicalQuantity.defaultPhysicalQuantity,
         macroNutrients = defaultMacroNutrients
     )
 
     val defaultFood = Food(
-        id = Constants.VALID_ID,
+        id = VALID_ID,
         title = DEFAULT_FOOD_DATA_TITLE,
         servingSize = PhysicalQuantity.defaultPhysicalQuantity,
         macroNutrients = defaultMacroNutrients
     )
 
     val defaultMeal = Meal(
-        id = Constants.VALID_ID,
+        id = VALID_ID,
         title = DEFAULT_MEAL_DATA_TITLE,
         foods = listOf()
     )

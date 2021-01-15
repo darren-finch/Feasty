@@ -12,7 +12,8 @@ import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.contr
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityDialog.Companion.FOOD_ID
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD_QUANTITY
-import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormFragment.Companion.CURRENT_MEAL
+import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormFragment.Companion.MEAL_DETAILS
+import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormFragment.Companion.HAS_LOADED_MEAL_DETAILS
 import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormFragment.Companion.MEAL_ID
 import com.darrenfinch.mymealplanner.domain.mealform.view.MealFormViewMvc
 import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
@@ -32,7 +33,8 @@ class MealFormController(
 ) : BaseController, MealFormViewMvc.Listener, DialogsManager.OnDialogEventListener {
 
     private var mealId = Constants.INVALID_ID
-    private lateinit var currentMeal: Meal
+    private var hasLoadedMealDetails = false
+    private var mealDetails: Meal? = null
 
     private lateinit var viewMvc: MealFormViewMvc
 
@@ -53,42 +55,49 @@ class MealFormController(
         dialogsManager.unregisterListener(this)
     }
 
-    fun onViewCreated(viewLifecycleOwner: LifecycleOwner) {
-        if (isEditingExistingMeal) { // TODO: Can't fetch meal if current meal is dirty (has been edited)
+    fun fetchMealDetailsIfPossibleRebindToViewMvcOtherwise(viewLifecycleOwner: LifecycleOwner) {
+        if (isEditingExistingMeal && !hasLoadedMealDetails) { // TODO: Can't fetch meal if current meal is dirty (has been edited)
             getMealUseCase.getMeal(mealId).observe(viewLifecycleOwner, Observer {
-                currentMeal = it
+                mealDetails = it
+                viewMvc.bindMealDetails(it)
             })
         } else {
-            currentMeal = DefaultModels.defaultMeal
-            viewMvc.bindMealDetails(currentMeal)
+            mealDetails = DefaultModels.defaultMeal
+            viewMvc.bindMealDetails(mealDetails!!)
         }
     }
 
-    override fun addNewFoodButtonClicked() {
+    override fun onAddNewFoodButtonClicked() {
         dialogsManager.showSelectFoodForMealScreenDialog()
     }
 
-    override fun doneButtonClicked() {
-        screensNavigator.goBack()
+    override fun onDoneButtonClicked(editedMealDetails: Meal) {
         if(isEditingExistingMeal) {
-            updateMealUseCase.updateMeal(currentMeal)
+            updateMealUseCase.updateMeal(editedMealDetails)
         }
         else {
-            insertMealUseCase.insertMeal(currentMeal)
+            insertMealUseCase.insertMeal(editedMealDetails)
         }
+        screensNavigator.goBack()
     }
 
     override fun setState(state: Bundle?) {
-        state?.getSerializable(CURRENT_MEAL)?.let { currentMeal = it as Meal }
         mealId = state?.getInt(MEAL_ID) ?: Constants.VALID_ID
+        hasLoadedMealDetails = state?.getBoolean(HAS_LOADED_MEAL_DETAILS) ?: false
+        mealDetails = state?.getSerializable(MEAL_DETAILS) as Meal?
     }
 
     override fun getState(): Bundle {
         return Bundle().apply {
-            putSerializable(CURRENT_MEAL, currentMeal)
+            putInt(MEAL_ID, mealId)
+            putBoolean(HAS_LOADED_MEAL_DETAILS, hasLoadedMealDetails)
+            putSerializable(MEAL_DETAILS, viewMvc.getMealDetails())
         }
     }
 
+    override fun onDialogStart(dialogTag: String) {
+        mealDetails = viewMvc.getMealDetails()
+    }
     override fun onDialogDismiss(dialogTag: String) {}
     override fun onDialogFinish(dialogTag: String, results: Bundle) {
         if (dialogTag != SelectFoodQuantityDialog.TAG) {
@@ -104,7 +113,8 @@ class MealFormController(
                 macroNutrients = selectedFood.macroNutrients,
                 desiredServingSize = selectedFoodQuantity
             )
-            currentMeal = currentMeal.copy(foods = currentMeal.foods + mealFoodFromSelectedFood)
+            mealDetails = mealDetails!!.copy(foods = mealDetails!!.foods + mealFoodFromSelectedFood)
+            viewMvc.bindMealDetails(mealDetails!!)
         }
     }
 }

@@ -145,6 +145,7 @@ class MealPlanController(
         return Bundle()
     }
 
+    override fun onDialogStart(dialogTag: String) {}
     override fun onDialogDismiss(dialogTag: String) {}
     override fun onDialogFinish(dialogTag: String, results: Bundle) {
         val selectedMeal = results.getSerializable(SELECTED_MEAL) as Meal

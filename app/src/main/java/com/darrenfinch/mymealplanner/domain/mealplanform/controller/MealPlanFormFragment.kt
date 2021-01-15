@@ -18,6 +18,8 @@ import com.darrenfinch.mymealplanner.model.data.entities.Meal
 class MealPlanFormFragment : BaseFragment() {
 
     companion object {
+        const val MEAL_PLAN_DETAILS = "MEAL_PLAN_DETAILS"
+
         fun newInstance(): SelectFoodForMealDialog {
             val bundle = Bundle()
             val fragment = SelectFoodForMealDialog()

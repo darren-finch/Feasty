@@ -51,7 +51,10 @@ class FoodFormController(
 
     fun fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner: LifecycleOwner) {
         if (canFetchFoodDetails) {
-            fetchFoodDetailsFromRepository(viewLifecycleOwner)
+            getFoodUseCase.fetchFood(foodId).observe(viewLifecycleOwner, Observer { food ->
+                hasLoadedFoodDetails = true
+                bindFoodDetailsToViewModelAndViewMvc(food)
+            })
         }
         else {
             foodDetails?.let {
@@ -60,27 +63,13 @@ class FoodFormController(
         }
     }
 
-    private fun fetchFoodDetailsFromRepository(viewLifecycleOwner: LifecycleOwner) {
-        getFoodUseCase.fetchFood(foodId).observe(viewLifecycleOwner, Observer { food ->
-            hasLoadedFoodDetails = true
-            bindFoodDetailsToViewModelAndViewMvc(food)
-        })
-    }
-
     override fun onDoneButtonClicked(editedFoodDetails: Food) {
-        saveFoodDetails(editedFoodDetails)
+        if (insertingFood)
+            insertFoodUseCase.insertFood(editedFoodDetails)
+        else
+            updateFoodUseCase.updateFood(editedFoodDetails)
         screensNavigator.goBack()
     }
-
-    private fun saveFoodDetails(editedFoodDetails: Food) {
-        if (insertingFood)
-            insertFood(editedFoodDetails)
-        else
-            updateFood(editedFoodDetails)
-    }
-
-    private fun insertFood(food: Food) = insertFoodUseCase.insertFood(food)
-    private fun updateFood(food: Food) = updateFoodUseCase.updateFood(food)
 
     override fun setState(state: Bundle?) {
         foodId = state?.getInt(FOOD_ID) ?: -1

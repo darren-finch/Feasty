@@ -7,7 +7,6 @@ import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.utils.KeyboardUtils
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentMealPlanFormBinding
-import com.darrenfinch.mymealplanner.domain.viewmodels.ObservableMealPlan
 import com.darrenfinch.mymealplanner.model.data.entities.MealPlan
 
 class MealPlanFormViewMvcImpl(
@@ -26,25 +25,11 @@ class MealPlanFormViewMvcImpl(
         setupUI()
     }
 
-    private fun setupUI() {
-        binding.apply {
-            doneButton.setOnClickListener { onDoneClicked() }
-        }
-    }
-
-    override fun bindMealPlan(mealPlan: ObservableMealPlan) {
+    override fun bindMealPlanDetails(mealPlan: MealPlan) {
         binding.mealPlan = mealPlan
     }
 
-    private fun onDoneClicked() {
-        KeyboardUtils.hideKeyboardFrom(getContext(), getRootView())
-
-        for (listener in getListeners()) {
-            listener.onDoneClicked(getFinalMealPlan())
-        }
-    }
-
-    private fun getFinalMealPlan(): MealPlan {
+    override fun getMealPlanDetails(): MealPlan {
         return MealPlan(
             id = binding.mealPlan?.id ?: 0,
             title = binding.mealPlanNameEditText.text.toString(),
@@ -53,5 +38,19 @@ class MealPlanFormViewMvcImpl(
             requiredFat = binding.requiredFatEditText.text.toString().toInt(),
             requiredCarbohydrates = binding.requiredCarbohydratesEditText.text.toString().toInt()
         )
+    }
+
+    private fun setupUI() {
+        binding.apply {
+            doneButton.setOnClickListener { onDoneClicked() }
+        }
+    }
+
+    private fun onDoneClicked() {
+        KeyboardUtils.hideKeyboardFrom(getContext(), getRootView())
+
+        for (listener in getListeners()) {
+            listener.onDoneButtonClicked(getMealPlanDetails())
+        }
     }
 }

@@ -4,18 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
 import com.darrenfinch.mymealplanner.domain.mealform.view.MealFormViewMvc
-import com.darrenfinch.mymealplanner.model.data.entities.Meal
-import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 
 class MealFormFragment : BaseFragment() {
 
     companion object {
+
+        // Arguments
         const val MEAL_ID = "MEAL_ID"
-        const val CURRENT_MEAL = "CURRENT_MEAL"
+
+        // State
+        const val HAS_LOADED_MEAL_DETAILS = "HAS_LOADED_MEAL_DETAILS"
+        const val MEAL_DETAILS = "MEAL_DETAILS"
 
         fun newInstance(mealId: Int): MealFormFragment {
             val bundle = Bundle()
@@ -44,18 +45,20 @@ class MealFormFragment : BaseFragment() {
 
         controller.setState(savedInstanceState ?: requireArguments())
         controller.bindView(viewMvc)
+        controller.fetchMealDetailsIfPossibleRebindToViewMvcOtherwise(viewLifecycleOwner)
 
         return viewMvc.getRootView()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        controller.onViewCreated(viewLifecycleOwner)
+        println("onViewCreated()")
     }
 
     override fun onStart() {
         super.onStart()
         controller.onStart()
+        println("onStart()")
     }
 
     override fun onStop() {

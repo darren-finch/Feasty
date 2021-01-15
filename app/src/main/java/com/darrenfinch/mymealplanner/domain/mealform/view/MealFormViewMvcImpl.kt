@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.lists.mealfoodsrecyclerviewadapter.MealFoodsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.common.lists.recyclerviewitemdecorations.MarginItemDecoration
+import com.darrenfinch.mymealplanner.common.misc.Constants
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentMealFormBinding
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
+import java.lang.IllegalStateException
 
 class MealFormViewMvcImpl(
     inflater: LayoutInflater,
@@ -46,13 +48,21 @@ class MealFormViewMvcImpl(
 
     private fun onDoneButtonClicked() {
         for (listener in getListeners()) {
-            listener.doneButtonClicked()
+            listener.onDoneButtonClicked(getMealDetails())
         }
+    }
+
+    override fun getMealDetails(): Meal {
+        return Meal(
+            id = binding.meal?.id ?: Constants.VALID_ID,
+            title = binding.mealNameEditText.text.toString(),
+            foods = binding.meal?.foods ?: listOf()
+        )
     }
 
     private fun addNewFoodClicked() {
         for (listener in getListeners()) {
-            listener.addNewFoodButtonClicked()
+            listener.onAddNewFoodButtonClicked()
         }
     }
 

@@ -5,12 +5,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.darrenfinch.mymealplanner.InstantExecutorExtension
 import com.darrenfinch.mymealplanner.TestData
-import com.darrenfinch.mymealplanner.TestData.DEFAULT_INVALID_MEAL_ID
 import com.darrenfinch.mymealplanner.TestData.DEFAULT_VALID_MEAL_ID
-import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.mealform.view.MealFormViewMvc
-import com.darrenfinch.mymealplanner.domain.viewmodels.ObservableMeal
 import com.darrenfinch.mymealplanner.domain.usecases.GetMealUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.InsertMealUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.UpdateMealUseCase
@@ -76,14 +73,14 @@ internal class MealFormControllerTest {
     @Test
     internal fun `onViewCreated() binds observable meal to view if not editing meal for the first time`() {
         // The controller is editing a meal for the first time if mealId == -1
-        SUT.onViewCreated(viewLifecycleOwner)
+        SUT.fetchMealDetailsIfPossibleRebindToViewMvcOtherwise(viewLifecycleOwner)
         verify { viewMvc.bindMealDetails(defaultObservableMeal) }
     }
 
     @Test
     internal fun `onViewCreated() adds new meal food to current meal if not editing meal for the first time`() {
         // The controller is editing a meal for the first time if mealId == -1
-        SUT.onViewCreated(viewLifecycleOwner)
+        SUT.fetchMealDetailsIfPossibleRebindToViewMvcOtherwise(viewLifecycleOwner)
         val newMeal = Meal(
             defaultMeal.id,
             defaultMeal.title,
@@ -95,19 +92,19 @@ internal class MealFormControllerTest {
 
     @Test
     internal fun `addNewFoodClicked() opens select food for meal screen`() {
-        SUT.addNewFoodButtonClicked()
+        SUT.onAddNewFoodButtonClicked()
         verify { screensNavigator.navigateToSelectFoodForMealScreen(defaultMeal) }
     }
 
     @Test
     internal fun `doneButtonClicked() navigates to all meals screen`() {
-        SUT.doneButtonClicked()
+        SUT.onDoneButtonClicked()
         verify { screensNavigator.navigateToAllMealsScreen() }
     }
 
     @Test
     internal fun `doneButtonClicked() inserts meal with use case`() {
-        SUT.doneButtonClicked()
+        SUT.onDoneButtonClicked()
         verify { insertMealUseCase.insertMeal(defaultMeal) }
     }
 
@@ -123,7 +120,7 @@ internal class MealFormControllerTest {
             defaultMeal,
             DEFAULT_VALID_MEAL_ID
         )
-        SUT.doneButtonClicked()
+        SUT.onDoneButtonClicked()
         verify { updateMealUseCase.updateMeal(defaultMeal) }
     }
 
