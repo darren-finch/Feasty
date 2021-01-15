@@ -11,7 +11,6 @@ import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controlle
 import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormController
 import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormController
 import com.darrenfinch.mymealplanner.domain.mealplan.controller.MealPlanController
-import com.darrenfinch.mymealplanner.domain.mealplan.controller.MealPlanViewModel
 import com.darrenfinch.mymealplanner.domain.mealplanform.controller.MealPlanFormController
 import com.darrenfinch.mymealplanner.domain.usecases.*
 
