@@ -64,6 +64,7 @@ class MealFormController(
         if (isEditingExistingMeal && !hasLoadedMealDetails) {
             getMealUseCase.getMeal(mealId).observe(viewLifecycleOwner, Observer {
                 mealDetails = it
+                hasLoadedMealDetails = true
                 viewMvc.bindMealDetails(it)
             })
         } else {
@@ -102,10 +103,13 @@ class MealFormController(
 
     override fun onDialogStart(dialogTag: String) {
         // You have to keep meal details current
-        mealDetails = viewMvc.getMealDetails()
+//        mealDetails = viewMvc.getMealDetails()
     }
     override fun onDialogDismiss(dialogTag: String) {}
     override fun onDialogFinish(dialogTag: String, results: Bundle) {
+        // Keep it current
+        mealDetails = viewMvc.getMealDetails()
+
         if (dialogTag != SelectFoodQuantityDialog.TAG) {
             dialogsManager.showSelectFoodQuantityDialog(results.getInt(FOOD_ID))
         } else {

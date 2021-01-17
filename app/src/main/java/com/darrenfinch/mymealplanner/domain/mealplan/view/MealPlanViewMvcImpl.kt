@@ -112,6 +112,7 @@ class MealPlanViewMvcImpl(
 
     }
 
+    // TODO: Find a better implementation
     private fun onMealPlanSelected(index: Int) {
         for (listeners in getListeners()) {
             listeners.onMealPlanSelected(index)

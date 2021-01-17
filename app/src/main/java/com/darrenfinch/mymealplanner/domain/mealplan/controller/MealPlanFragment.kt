@@ -12,6 +12,11 @@ import com.darrenfinch.mymealplanner.domain.mealplan.view.MealPlanViewMvc
 class MealPlanFragment : BaseFragment() {
 
     companion object {
+        // State
+        const val SELECTED_MEAL_PLAN_INDEX = "SELECTED_MEAL_PLAN_INDEX"
+        const val SELECTED_MEAL_PLAN_ID = "SELECTED_MEAL_PLAN_ID"
+        const val NUM_OF_MEAL_PLANS = "NUM_OF_MEAL_PLANS"
+
         fun newInstance() = MealPlanFragment()
     }
 

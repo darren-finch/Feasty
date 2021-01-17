@@ -8,6 +8,9 @@ import com.darrenfinch.mymealplanner.common.misc.Constants
 import com.darrenfinch.mymealplanner.common.navigation.DialogsManager
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controller.SelectMealPlanMealDialog.Companion.SELECTED_MEAL
+import com.darrenfinch.mymealplanner.domain.mealplan.controller.MealPlanFragment.Companion.NUM_OF_MEAL_PLANS
+import com.darrenfinch.mymealplanner.domain.mealplan.controller.MealPlanFragment.Companion.SELECTED_MEAL_PLAN_ID
+import com.darrenfinch.mymealplanner.domain.mealplan.controller.MealPlanFragment.Companion.SELECTED_MEAL_PLAN_INDEX
 import com.darrenfinch.mymealplanner.domain.mealplan.view.MealPlanViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.*
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
@@ -26,9 +29,9 @@ class MealPlanController(
     private val dialogsManager: DialogsManager
 ) : BaseController, MealPlanViewMvc.Listener, DialogsManager.OnDialogEventListener {
 
-    var selectedMealPlanIndex = Constants.INVALID_INDEX
-    var selectedMealPlanId = Constants.INVALID_ID
-    var numOfMealPlans = 0
+    private var selectedMealPlanIndex = Constants.INVALID_INDEX
+    private var selectedMealPlanId = Constants.INVALID_ID
+    private var numOfMealPlans = 0
 
     val hasPrevMealPlanIndex: Boolean
         get() = selectedMealPlanIndex - 1 > Constants.INVALID_INDEX
@@ -138,11 +141,16 @@ class MealPlanController(
     }
 
     override fun setState(state: Bundle?) {
-
+        selectedMealPlanIndex = state?.getInt(SELECTED_MEAL_PLAN_INDEX) ?: 0
+        selectedMealPlanId = state?.getInt(SELECTED_MEAL_PLAN_ID) ?: 0
+        numOfMealPlans = state?.getInt(NUM_OF_MEAL_PLANS) ?: 0
     }
-
     override fun getState(): Bundle {
-        return Bundle()
+        return Bundle().apply {
+            putInt(SELECTED_MEAL_PLAN_INDEX, selectedMealPlanIndex)
+            putInt(SELECTED_MEAL_PLAN_ID, selectedMealPlanId)
+            putInt(NUM_OF_MEAL_PLANS, numOfMealPlans)
+        }
     }
 
     override fun onDialogStart(dialogTag: String) {}
