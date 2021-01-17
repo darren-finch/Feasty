@@ -19,6 +19,7 @@
 
         <!-- Color customization -->
         <item name="android:colorBackground">@color/brand_white</item>
+        <item name="backgroundColor">@color/brand_off_white</item>
         <item name="colorOnBackground">@color/brand_dark_grey</item>
         <item name="colorPrimary">@color/brand_red</item>
         <item name="colorOnPrimary">@color/brand_white</item>

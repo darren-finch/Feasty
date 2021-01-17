@@ -7,7 +7,7 @@ import com.darrenfinch.mymealplanner.model.data.entities.Food
 
 interface SelectFoodQuantityViewMvc : ObservableViewMvc<SelectFoodQuantityViewMvc.Listener> {
     interface Listener {
-        fun onFoodServingSizeChosen(foodBeforeUpdatingMacros: Food, selectedFoodQuantity: PhysicalQuantity)
+        fun onFoodServingSizeChosen(selectedFood: Food, selectedFoodQuantity: PhysicalQuantity)
     }
 
     fun bindFood(food: Food)

@@ -12,7 +12,6 @@ import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.
 import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.Food
-import com.darrenfinch.mymealplanner.model.helpers.MacroCalculator
 
 class SelectFoodQuantityController(
     private val getFoodUseCase: GetFoodUseCase,
@@ -40,11 +39,11 @@ class SelectFoodQuantityController(
         })
     }
 
-    override fun onFoodServingSizeChosen(foodBeforeUpdatingMacros: Food, selectedFoodQuantity: PhysicalQuantity) {
+    override fun onFoodServingSizeChosen(selectedFood: Food, selectedFoodQuantity: PhysicalQuantity) {
         onDialogEventListener.onFinish(
             SelectFoodQuantityDialog.TAG,
             Bundle().apply {
-                putSerializable(SELECTED_FOOD, foodBeforeUpdatingMacros)
+                putSerializable(SELECTED_FOOD, selectedFood)
                 putSerializable(SELECTED_FOOD_QUANTITY, selectedFoodQuantity)
             }
         )

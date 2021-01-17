@@ -59,10 +59,10 @@ class MainRepository constructor(database: MealPlannerDatabase) {
         return allFoods
     }
 
-    fun getFood(foodId: Int): LiveData<Food> {
+    fun getFood(id: Int): LiveData<Food> {
         val currentFood = MutableLiveData<Food>()
         runBlocking(Dispatchers.IO) {
-            currentFood.postValue(convertDatabaseFoodToFood(foodsDao.getFood(foodId)))
+            currentFood.postValue(convertDatabaseFoodToFood(foodsDao.getFood(id)))
         }
         return currentFood
     }
@@ -79,9 +79,18 @@ class MainRepository constructor(database: MealPlannerDatabase) {
         }
     }
 
-    fun deleteFood(foodId: Int) {
-        runBlocking(Dispatchers.IO) {
-            foodsDao.deleteFood(foodId)
+    fun deleteFood(id: Int) {
+        runBlocking (Dispatchers.IO) {
+            val invalidMealFoods = mealFoodsDao.getMealFoodsFromFoodIdSuspended(id).parallelMap {
+                convertDatabaseMealFoodToMealFood(it, foodsDao)
+            }.filterNotNull()
+            for (invalidMealFood in invalidMealFoods) {
+                val mealToBeUpdated = convertDatabaseMealToMeal(mealsDao.getMealSuspended(id), mealFoodsDao, foodsDao)
+                val newMeal = mealToBeUpdated.copy(foods = mealToBeUpdated.foods - invalidMealFood)
+                updateMeal(newMeal)
+                deleteMealFood(invalidMealFood.id)
+            }
+            foodsDao.deleteFood(id)
         }
     }
 
@@ -97,11 +106,6 @@ class MainRepository constructor(database: MealPlannerDatabase) {
                 convertDatabaseMealPlanMealToMealPlanMeal(databaseMealPlanMeal, mealsDao, mealFoodsDao, foodsDao)
             }
         }
-    }
-
-    // TODO: REMOVE ASAP. This breaks abstraction for this repository, as all other methods return LiveData
-    suspend fun getMealSuspended(id: Int): Meal {
-        return convertDatabaseMealToMeal(mealsDao.getMealSuspended(id), mealFoodsDao, foodsDao)
     }
 
     fun getMeal(id: Int): LiveData<Meal> {
@@ -158,13 +162,6 @@ class MainRepository constructor(database: MealPlannerDatabase) {
     }
 
 
-
-    // TODO: REMOVE ASAP and convert to Kotlin Flow
-    suspend fun getMealFoodsFromFoodId(id: Int): List<MealFood> {
-        return mealFoodsDao.getMealFoodsFromFoodIdSuspended(id).parallelMap {
-            convertDatabaseMealFoodToMealFood(it, foodsDao)
-        }.filterNotNull()
-    }
 
     fun deleteMealFood(id: Int) {
         runBlocking (Dispatchers.IO) {
