@@ -7,12 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
-import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealDialog
 import com.darrenfinch.mymealplanner.domain.mealplanform.view.MealPlanFormViewMvc
-import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 
 class MealPlanFormFragment : BaseFragment() {

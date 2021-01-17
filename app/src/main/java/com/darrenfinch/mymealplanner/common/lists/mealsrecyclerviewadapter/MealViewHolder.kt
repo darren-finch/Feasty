@@ -1,21 +1,19 @@
 package com.darrenfinch.mymealplanner.common.lists.mealsrecyclerviewadapter
 
 import android.view.Gravity
-import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
-import androidx.databinding.ObservableBoolean
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.lists.BaseViewHolder
 import com.darrenfinch.mymealplanner.common.lists.mealfoodsrecyclerviewadapter.MealFoodsRecyclerViewAdapter
-import com.darrenfinch.mymealplanner.common.utils.AnimationUtils
 import com.darrenfinch.mymealplanner.databinding.MealItemBinding
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
+import net.cachapa.expandablelayout.ExpandableLayout
 
 class MealViewHolder(private val config: MealsRecyclerViewAdapter.Config, private val listener: Listener, itemView: View) :
-    BaseViewHolder<Meal>(itemView) {
+    BaseViewHolder<Meal>(itemView), ExpandableLayout.OnExpansionUpdateListener {
     interface Listener {
         fun onSelect(meal: Meal)
         fun onEdit(mealId: Int)
@@ -23,32 +21,42 @@ class MealViewHolder(private val config: MealsRecyclerViewAdapter.Config, privat
     }
 
     private var binding = MealItemBinding.bind(itemView)
-    var expanded = ObservableBoolean(false)
+
     override fun bind(item: Meal) {
-        binding.meal = item
-        binding.viewHolder = this
-        binding.cardTop.setOnClickListener {
-            listener.onSelect(item)
-        }
-        if(config.showViewMoreButton) {
-            binding.viewMoreButton.setOnClickListener {
-                PopupMenu(itemView.context, binding.dropdownImageButton, Gravity.BOTTOM).apply {
-                    inflate(R.menu.context_menu)
-                    setOnMenuItemClickListener { menuItem ->
-                        when (menuItem.itemId) {
-                            R.id.edit -> listener.onEdit(item.id)
-                            R.id.delete -> listener.onDelete(item)
-                        }
-                        true
-                    }
-                    show()
-                }
+        binding.apply {
+            meal = item
+            viewHolder = this@MealViewHolder
+            cardBottom.setOnExpansionUpdateListener(this@MealViewHolder)
+
+            cardTop.setOnClickListener {
+                listener.onSelect(item)
             }
+
+            dropdownImageButton.setOnClickListener {
+                cardBottom.toggle()
+            }
+
+            if (config.showViewMoreButton) {
+                viewMoreButton.setOnClickListener {
+                    PopupMenu(itemView.context, dropdownImageButton, Gravity.BOTTOM).apply {
+                        inflate(R.menu.context_menu)
+                        setOnMenuItemClickListener { menuItem ->
+                            when (menuItem.itemId) {
+                                R.id.edit -> listener.onEdit(item.id)
+                                R.id.delete -> listener.onDelete(item)
+                            }
+                            true
+                        }
+                        show()
+                    }
+                }
+            } else {
+                viewMoreButton.visibility = View.GONE
+            }
+
+            initAdapter(item)
         }
-        else {
-            binding.viewMoreButton.visibility = View.GONE
-        }
-        initAdapter(item)
+
     }
 
 //    private fun displayContextMenu() {
@@ -69,11 +77,8 @@ class MealViewHolder(private val config: MealsRecyclerViewAdapter.Config, privat
 //        return true
 //    }
 
-    fun inverseExpanded() {
-        if (expanded.get()) AnimationUtils.collapse(binding.cardBottom) else AnimationUtils.expand(
-            binding.cardBottom
-        )
-        expanded.set(!expanded.get())
+    override fun onExpansionUpdate(expansionFraction: Float, state: Int) {
+        binding.dropdownImageButton.rotation = expansionFraction * 180
     }
 
     private fun initAdapter(meal: Meal) {

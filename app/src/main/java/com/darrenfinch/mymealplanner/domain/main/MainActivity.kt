@@ -1,9 +1,6 @@
 package com.darrenfinch.mymealplanner.domain.main
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.replace
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.controllers.BaseActivity
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
