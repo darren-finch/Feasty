@@ -18,8 +18,8 @@ object ModelConverters {
             id = mealPlan.id,
             title = mealPlan.title,
             requiredCalories = mealPlan.requiredCalories,
-            requiredProtein = mealPlan.requiredProtein,
-            requiredFat = mealPlan.requiredFat,
+            requiredProtein = mealPlan.requiredProteins,
+            requiredFat = mealPlan.requiredFats,
             requiredCarbohydrates = mealPlan.requiredCarbohydrates
         )
     }
@@ -29,8 +29,8 @@ object ModelConverters {
             id = databaseMealPlan.id,
             title = databaseMealPlan.title,
             requiredCalories = databaseMealPlan.requiredCalories,
-            requiredProtein = databaseMealPlan.requiredProtein,
-            requiredFat = databaseMealPlan.requiredFat,
+            requiredProteins = databaseMealPlan.requiredProtein,
+            requiredFats = databaseMealPlan.requiredFat,
             requiredCarbohydrates = databaseMealPlan.requiredCarbohydrates
         )
     }

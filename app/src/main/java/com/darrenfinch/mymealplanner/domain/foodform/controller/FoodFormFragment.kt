@@ -4,20 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
-import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
 
 class FoodFormFragment : BaseFragment() {
 
     companion object {
-        const val FOOD_ID = "FOOD_ID"
-        const val FOOD_DETAILS = "FOOD_DETAILS"
-        const val HAS_LOADED_FOOD_DETAILS = "HAS_LOADED_FOOD_DETAILS"
+        const val FOOD_ID_ARG = "FOOD_ID_ARG"
+        const val CONTROLLER_SAVED_STATE = "CONTROLLER_SAVED_STATE"
 
         fun newInstance(foodId: Int): FoodFormFragment {
             val bundle = Bundle()
-            bundle.putInt(FOOD_ID, foodId)
+            bundle.putInt(FOOD_ID_ARG, foodId)
             val fragment = FoodFormFragment()
             fragment.arguments = bundle
             return fragment
@@ -39,10 +38,21 @@ class FoodFormFragment : BaseFragment() {
         val viewMvc = fragmentCompositionRoot.getViewMvcFactory().getFoodFormViewMvc(container)
 
         controller.bindView(viewMvc)
-        controller.setState(savedInstanceState ?: requireArguments())
+        setControllerArgs(requireArguments())
+        restoreControllerState(savedInstanceState)
         controller.fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner)
 
         return viewMvc.getRootView()
+    }
+
+    private fun setControllerArgs(arguments: Bundle) {
+        controller.setArgs(arguments.getInt(FOOD_ID_ARG))
+    }
+
+    private fun restoreControllerState(savedInstanceState: Bundle?) {
+        savedInstanceState?.let {
+            controller.restoreState(savedInstanceState.getSerializable(CONTROLLER_SAVED_STATE) as FoodFormController.SavedState)
+        }
     }
 
     override fun onStart() {
@@ -57,6 +67,6 @@ class FoodFormFragment : BaseFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putAll(controller.getState())
+        outState.putAll(bundleOf(CONTROLLER_SAVED_STATE to controller.getState()))
     }
 }

@@ -14,7 +14,7 @@ class SelectMealPlanMealDialog : BaseDialog(), SelectMealPlanMealViewMvc.Listene
         const val TAG = "SelectMealPlanMealDialog"
 
         // Dialog results
-        const val SELECTED_MEAL = "SELECTED_MEAL"
+        const val SELECTED_MEAL_RESULT = "SELECTED_MEAL_RESULT"
 
         fun newInstance(): SelectMealPlanMealDialog {
             val bundle = Bundle()
@@ -35,7 +35,6 @@ class SelectMealPlanMealDialog : BaseDialog(), SelectMealPlanMealViewMvc.Listene
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         viewMvc = controllerCompositionRoot.getViewMvcFactory().getSelectMealPlanMealViewMvc(null)
 
-        controller.setState(savedInstanceState ?: requireArguments())
         controller.bindView(viewMvc)
         controller.fetchMeals(this)
 
@@ -54,12 +53,7 @@ class SelectMealPlanMealDialog : BaseDialog(), SelectMealPlanMealViewMvc.Listene
         viewMvc.unregisterListener(this)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putAll(controller.getState())
-    }
-
     override fun onMealSelected(meal: Meal) {
-        setFragmentResult(TAG, bundleOf(SELECTED_MEAL to meal))
+        setFragmentResult(TAG, bundleOf(SELECTED_MEAL_RESULT to meal))
     }
 }

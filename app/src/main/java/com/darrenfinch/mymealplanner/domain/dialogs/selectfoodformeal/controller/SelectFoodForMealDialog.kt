@@ -2,7 +2,6 @@ package com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controlle
 
 import android.app.Dialog
 import android.os.Bundle
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
@@ -16,7 +15,7 @@ class SelectFoodForMealDialog : BaseDialog(), SelectFoodForMealViewMvc.Listener 
         const val TAG = "SelectFoodForMealDialog"
 
         // Dialog results
-        const val FOOD_ID = "FOOD_ID"
+        const val FOOD_ID_RESULT = "FOOD_ID_RESULT"
 
         fun newInstance(): SelectFoodForMealDialog {
             val bundle = Bundle()
@@ -37,7 +36,6 @@ class SelectFoodForMealDialog : BaseDialog(), SelectFoodForMealViewMvc.Listener 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         viewMvc = controllerCompositionRoot.getViewMvcFactory().getSelectFoodForMealViewMvc(null)
 
-        controller.setState(savedInstanceState ?: requireArguments())
         controller.bindView(viewMvc)
         controller.fetchAllFoods(this)
 
@@ -58,10 +56,9 @@ class SelectFoodForMealDialog : BaseDialog(), SelectFoodForMealViewMvc.Listener 
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putAll(controller.getState())
     }
 
     override fun onFoodChosen(food: Food) {
-        setFragmentResult(TAG, bundleOf(FOOD_ID to food.id))
+        setFragmentResult(TAG, bundleOf(FOOD_ID_RESULT to food.id))
     }
 }

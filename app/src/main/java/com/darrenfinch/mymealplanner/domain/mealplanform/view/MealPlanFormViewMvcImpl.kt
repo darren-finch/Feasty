@@ -34,8 +34,8 @@ class MealPlanFormViewMvcImpl(
             id = binding.mealPlan?.id ?: 0,
             title = binding.mealPlanNameEditText.text.toString(),
             requiredCalories = binding.requiredCaloriesEditText.text.toString().toInt(),
-            requiredProtein = binding.requiredProteinEditText.text.toString().toInt(),
-            requiredFat = binding.requiredFatEditText.text.toString().toInt(),
+            requiredProteins = binding.requiredProteinEditText.text.toString().toInt(),
+            requiredFats = binding.requiredFatEditText.text.toString().toInt(),
             requiredCarbohydrates = binding.requiredCarbohydratesEditText.text.toString().toInt()
         )
     }

@@ -2,10 +2,8 @@ package com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.cont
 
 import android.app.Dialog
 import android.os.Bundle
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectFoodQuantityViewMvc
@@ -18,15 +16,19 @@ class SelectFoodQuantityDialog : BaseDialog(), SelectFoodQuantityViewMvc.Listene
         const val TAG = "SelectMealFoodQuantityDialog"
 
         // Arguments
-        const val FOOD_ID = "FOOD_ID"
+        const val FOOD_ID_ARG = "FOOD_ID_ARG"
+
+        // State
+        const val CONTROLLER_SAVED_STATE = "CONTROLLER_SAVED_STATE"
 
         // Dialog results
-        const val SELECTED_FOOD = "SELECTED_FOOD"
-        const val SELECTED_FOOD_QUANTITY = "SELECTED_FOOD_QUANTITY"
+        const val FOOD_ID_RESULT = "FOOD_ID_RESULT"
+        const val SELECTED_FOOD_RESULT = "SELECTED_FOOD_RESULT"
+        const val SELECTED_FOOD_QUANTITY_RESULT = "SELECTED_FOOD_QUANTITY_RESULT"
 
         fun newInstance(foodId: Int): SelectFoodQuantityDialog {
             val bundle = Bundle()
-            bundle.putInt(FOOD_ID, foodId)
+            bundle.putInt(FOOD_ID_ARG, foodId)
             val fragment = SelectFoodQuantityDialog()
             fragment.arguments = bundle
             return fragment
@@ -44,11 +46,22 @@ class SelectFoodQuantityDialog : BaseDialog(), SelectFoodQuantityViewMvc.Listene
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         viewMvc = controllerCompositionRoot.getViewMvcFactory().getSelectMealFoodQuantityViewMvc(null)
 
-        controller.setState(savedInstanceState ?: requireArguments())
+        setControllerArgs(requireArguments())
+        restoreControllerState(savedInstanceState)
         controller.bindView(viewMvc)
         controller.fetchFood(this)
 
         return viewMvc.makeDialog()
+    }
+
+    private fun setControllerArgs(arguments: Bundle) {
+        controller.setArgs(arguments.getInt(FOOD_ID_ARG))
+    }
+
+    private fun restoreControllerState(savedInstanceState: Bundle?) {
+        savedInstanceState?.let {
+            controller.restoreState(it.getSerializable(CONTROLLER_SAVED_STATE) as SelectFoodQuantityController.SavedState)
+        }
     }
 
     override fun onStart() {
@@ -65,13 +78,13 @@ class SelectFoodQuantityDialog : BaseDialog(), SelectFoodQuantityViewMvc.Listene
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putAll(controller.getState())
+        outState.putAll(bundleOf(CONTROLLER_SAVED_STATE to controller.getState()))
     }
 
     override fun onFoodServingSizeChosen(selectedFood: Food, selectedFoodQuantity: PhysicalQuantity) {
         setFragmentResult(
             TAG,
-            bundleOf(SELECTED_FOOD to selectedFood, SELECTED_FOOD_QUANTITY to selectedFoodQuantity)
+            bundleOf(SELECTED_FOOD_RESULT to selectedFood, SELECTED_FOOD_QUANTITY_RESULT to selectedFoodQuantity)
         )
     }
 }

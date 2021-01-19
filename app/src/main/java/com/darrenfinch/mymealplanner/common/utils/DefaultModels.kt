@@ -1,6 +1,5 @@
 package com.darrenfinch.mymealplanner.common.utils
 
-import com.darrenfinch.mymealplanner.common.misc.Constants
 import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_CALORIES
 import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_CARBS
 import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_FATS
@@ -13,9 +12,19 @@ import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.model.data.entities.Food
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import com.darrenfinch.mymealplanner.model.data.entities.MealFood
+import com.darrenfinch.mymealplanner.model.data.entities.MealPlan
 import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
 
 object DefaultModels {
+    val defaultMealPlan = MealPlan(
+        id = VALID_ID,
+        title = "",
+        requiredCalories = 0,
+        requiredCarbohydrates = 0,
+        requiredFats = 0,
+        requiredProteins = 0
+    )
+
     val defaultMacroNutrients = MacroNutrients(
         calories = DEFAULT_CALORIES,
         carbs = DEFAULT_CARBS,

@@ -1,15 +1,13 @@
 package com.darrenfinch.mymealplanner.domain.foodform.controller
 
-import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
+import com.darrenfinch.mymealplanner.common.misc.Constants
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
-import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormFragment.Companion.FOOD_DETAILS
-import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormFragment.Companion.FOOD_ID
-import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormFragment.Companion.HAS_LOADED_FOOD_DETAILS
+import com.darrenfinch.mymealplanner.common.utils.DefaultModels
 import com.darrenfinch.mymealplanner.domain.foodform.view.FoodFormViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.domain.usecases.InsertFoodUseCase
@@ -24,16 +22,14 @@ class FoodFormController(
     private val backPressDispatcher: BackPressDispatcher
 ) : BaseController, FoodFormViewMvc.Listener, BackPressListener {
 
+    data class SavedState(val hasLoadedFoodDetails: Boolean, val foodDetails: Food) : BaseController.BaseSavedState
+
     private lateinit var viewMvc: FoodFormViewMvc
 
-    private var foodId = -1
-    private var foodDetails: Food? = null
-    private var hasLoadedFoodDetails = false // TODO: Remove when view models are added
+    private var foodIdArg = Constants.INVALID_ID
 
-    private val insertingFood: Boolean
-        get() = foodId < 0
-    private val canFetchFoodDetails: Boolean
-        get() = !hasLoadedFoodDetails && !insertingFood
+    private var foodDetailsState: Food = DefaultModels.defaultFood
+    private var hasLoadedFoodDetailsState = false
 
     fun bindView(viewMvc: FoodFormViewMvc) {
         this.viewMvc = viewMvc
@@ -49,44 +45,40 @@ class FoodFormController(
         backPressDispatcher.unregisterListener(this)
     }
 
-    private fun bindFoodDetailsToViewModelAndViewMvc(foodDetails: Food) {
-        this.foodDetails = foodDetails
-        viewMvc.bindFoodDetails(foodDetails)
-    }
-
     fun fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner: LifecycleOwner) {
-        if (canFetchFoodDetails) {
-            getFoodUseCase.fetchFood(foodId).observe(viewLifecycleOwner, Observer { food ->
-                hasLoadedFoodDetails = true
-                bindFoodDetailsToViewModelAndViewMvc(food)
+        val shouldFetchFoodDetails = foodIdArg != Constants.INVALID_ID && !hasLoadedFoodDetailsState
+        if (shouldFetchFoodDetails) {
+            getFoodUseCase.fetchFood(foodIdArg).observe(viewLifecycleOwner, Observer { food ->
+                foodDetailsState = food
+                hasLoadedFoodDetailsState = true
+                viewMvc.bindFoodDetails(food)
             })
-        }
-        else {
-            foodDetails?.let {
-                viewMvc.bindFoodDetails(it)
-            }
+        } else {
+            viewMvc.bindFoodDetails(foodDetailsState)
         }
     }
 
     override fun onDoneButtonClicked(editedFoodDetails: Food) {
-        if (insertingFood)
+        if (foodIdArg != Constants.INVALID_ID)
             insertFoodUseCase.insertFood(editedFoodDetails)
         else
             updateFoodUseCase.updateFood(editedFoodDetails)
         screensNavigator.goBack()
     }
 
-    override fun setState(state: Bundle?) {
-        foodId = state?.getInt(FOOD_ID) ?: -1
-        foodDetails = state?.getSerializable(FOOD_DETAILS) as Food?
-        hasLoadedFoodDetails = state?.getBoolean(HAS_LOADED_FOOD_DETAILS) ?: false
+    fun setArgs(foodId: Int) {
+        this.foodIdArg = foodId
     }
-    override fun getState(): Bundle {
-        return Bundle().apply {
-            putInt(FOOD_ID, foodId)
-            putSerializable(FOOD_DETAILS, viewMvc.getFoodDetails())
-            putBoolean(HAS_LOADED_FOOD_DETAILS, hasLoadedFoodDetails)
+
+    override fun restoreState(state: BaseController.BaseSavedState) {
+        (state as SavedState).let {
+            hasLoadedFoodDetailsState = it.hasLoadedFoodDetails
+            foodDetailsState = it.foodDetails
         }
+    }
+
+    override fun getState(): BaseController.BaseSavedState {
+        return SavedState(hasLoadedFoodDetailsState, foodDetailsState)
     }
 
     override fun onBackPressed(): Boolean {

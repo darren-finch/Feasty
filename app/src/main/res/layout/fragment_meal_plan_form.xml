@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/required_protein"
                 android:inputType="number"
-                android:text="@{String.valueOf(mealPlan.requiredProtein)}" />
+                android:text="@{String.valueOf(mealPlan.requiredProteins)}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/required_fat"
                 android:inputType="number"
-                android:text="@{String.valueOf(mealPlan.requiredFat)}" />
+                android:text="@{String.valueOf(mealPlan.requiredFats)}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

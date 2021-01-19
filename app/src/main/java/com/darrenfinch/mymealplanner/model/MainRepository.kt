@@ -17,7 +17,7 @@ import com.darrenfinch.mymealplanner.model.data.entities.*
 import com.darrenfinch.mymealplanner.model.room.MealPlannerDatabase
 import kotlinx.coroutines.*
 
-class MainRepository constructor(database: MealPlannerDatabase) {
+class MainRepository(database: MealPlannerDatabase) {
     private val mealsDao = database.mealsDao()
     private val foodsDao = database.foodsDao()
     private val mealFoodsDao = database.mealFoodsDao()

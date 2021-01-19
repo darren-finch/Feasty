@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
 import com.darrenfinch.mymealplanner.domain.mealplanform.view.MealPlanFormViewMvc
 
@@ -14,7 +15,7 @@ import com.darrenfinch.mymealplanner.domain.mealplanform.view.MealPlanFormViewMv
 class MealPlanFormFragment : BaseFragment() {
 
     companion object {
-        const val MEAL_PLAN_DETAILS = "MEAL_PLAN_DETAILS"
+        const val CONTROLLER_SAVED_STATE = "CONTROLLER_SAVED_STATE"
 
         fun newInstance(): MealPlanFormFragment {
             val bundle = Bundle()
@@ -39,10 +40,16 @@ class MealPlanFormFragment : BaseFragment() {
     ): View? {
         viewMvc = fragmentCompositionRoot.getViewMvcFactory().getMealPlanFormViewMvc(null)
 
-        controller.setState(savedInstanceState ?: arguments)
+        restoreControllerState(savedInstanceState)
         controller.bindView(viewMvc)
 
         return viewMvc.getRootView()
+    }
+
+    private fun restoreControllerState(savedInstanceState: Bundle?) {
+        savedInstanceState?.let {
+            controller.restoreState(savedInstanceState.getSerializable(CONTROLLER_SAVED_STATE) as MealPlanFormController.SavedState)
+        }
     }
 
     override fun onStart() {
@@ -58,7 +65,7 @@ class MealPlanFormFragment : BaseFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putAll(controller.getState())
+        outState.putAll(bundleOf(CONTROLLER_SAVED_STATE to controller.getState()))
     }
 
     fun hideKeyboardFrom(context: Context, view: View) {

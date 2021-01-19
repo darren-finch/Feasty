@@ -1,8 +1,10 @@
 package com.darrenfinch.mymealplanner.common.controllers
 
-import android.os.Bundle
+import java.io.Serializable
 
 interface BaseController {
-    fun setState(state: Bundle?)
-    fun getState(): Bundle
+    interface BaseSavedState : Serializable
+
+    fun restoreState(state: BaseSavedState)
+    fun getState(): BaseSavedState
 }

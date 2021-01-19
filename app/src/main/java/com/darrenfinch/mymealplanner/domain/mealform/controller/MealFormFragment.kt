@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentResultListener
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
 import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealDialog
@@ -15,11 +16,10 @@ class MealFormFragment : BaseFragment() {
     companion object {
 
         // Arguments
-        const val MEAL_ID_ARG = "MEAL_ID"
+        const val MEAL_ID_ARG = "MEAL_ID_ARG"
 
         // State
-        const val HAS_LOADED_MEAL_DETAILS_STATE = "HAS_LOADED_MEAL_DETAILS"
-        const val MEAL_DETAILS_STATE = "MEAL_DETAILS"
+        const val CONTROLLER_SAVED_STATE = "CONTROLLER_SAVED_STATE"
 
         fun newInstance(mealId: Int): MealFormFragment {
             val bundle = Bundle()
@@ -41,15 +41,21 @@ class MealFormFragment : BaseFragment() {
     }
 
     private fun listenForSelectFoodForMealDialogResults() {
-        childFragmentManager.setFragmentResultListener(SelectFoodForMealDialog.TAG, this, FragmentResultListener { requestKey, result ->
-            controller.setDialogResults(requestKey, result)
-        })
+        childFragmentManager.setFragmentResultListener(
+            SelectFoodForMealDialog.TAG,
+            this,
+            FragmentResultListener { requestKey, result ->
+                controller.setDialogResults(requestKey, result)
+            })
     }
 
     private fun listenForSelectFoodQuantityDialogResults() {
-        childFragmentManager.setFragmentResultListener(SelectFoodQuantityDialog.TAG, this, FragmentResultListener { requestKey, result ->
-            controller.setDialogResults(requestKey, result)
-        })
+        childFragmentManager.setFragmentResultListener(
+            SelectFoodQuantityDialog.TAG,
+            this,
+            FragmentResultListener { requestKey, result ->
+                controller.setDialogResults(requestKey, result)
+            })
     }
 
     override fun onCreateView(
@@ -60,11 +66,22 @@ class MealFormFragment : BaseFragment() {
         // Inflate the layout for this fragment
         viewMvc = fragmentCompositionRoot.getViewMvcFactory().getMealFormViewMvc(container)
 
-        controller.setState(savedInstanceState ?: requireArguments())
         controller.bindView(viewMvc)
+        setControllerArgs(requireArguments())
+        restoreControllerState(savedInstanceState)
         controller.fetchMealDetailsIfPossibleRebindToViewMvcOtherwise(viewLifecycleOwner)
 
         return viewMvc.getRootView()
+    }
+
+    private fun setControllerArgs(arguments: Bundle) {
+        controller.setArgs(arguments.getInt(MEAL_ID_ARG))
+    }
+
+    private fun restoreControllerState(savedInstanceState: Bundle?) {
+        savedInstanceState?.let {
+            controller.restoreState(savedInstanceState.getSerializable(CONTROLLER_SAVED_STATE) as MealFormController.SavedState)
+        }
     }
 
     override fun onStart() {
@@ -79,6 +96,6 @@ class MealFormFragment : BaseFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putAll(controller.getState())
+        outState.putAll(bundleOf(CONTROLLER_SAVED_STATE to controller.getState()))
     }
 }

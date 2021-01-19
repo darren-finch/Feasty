@@ -1,6 +1,5 @@
 package com.darrenfinch.mymealplanner.domain.allmeals.controller
 
-import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
@@ -15,6 +14,8 @@ class AllMealsController(
     private val getAllMealsUseCase: GetAllMealsUseCase,
     private val deleteMealUseCase: DeleteMealUseCase
 ) : BaseController, AllMealsViewMvc.Listener {
+
+    class SavedState : BaseController.BaseSavedState
 
     private lateinit var viewMvc: AllMealsViewMvc
 
@@ -48,8 +49,8 @@ class AllMealsController(
         deleteMealUseCase.deleteMeal(meal.id)
     }
 
-    override fun setState(state: Bundle?) { }
-    override fun getState(): Bundle {
-        return Bundle()
+    override fun restoreState(state: BaseController.BaseSavedState) { }
+    override fun getState(): BaseController.BaseSavedState {
+        return SavedState()
     }
 }

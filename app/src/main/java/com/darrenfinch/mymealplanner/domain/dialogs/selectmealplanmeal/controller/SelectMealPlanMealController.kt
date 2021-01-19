@@ -1,12 +1,9 @@
 package com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controller
 
-import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
-import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
 import com.darrenfinch.mymealplanner.common.navigation.DialogsManager
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controller.SelectMealPlanMealDialog.Companion.SELECTED_MEAL
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.view.SelectMealPlanMealViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetAllMealsUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
@@ -15,6 +12,8 @@ class SelectMealPlanMealController(
     private val getAllMealsUseCase: GetAllMealsUseCase,
     private val dialogsManager: DialogsManager
 ) : BaseController, SelectMealPlanMealViewMvc.Listener {
+
+    class SavedState : BaseController.BaseSavedState
 
     private lateinit var viewMvc: SelectMealPlanMealViewMvc
 
@@ -40,8 +39,8 @@ class SelectMealPlanMealController(
         dialogsManager.clearDialog()
     }
 
-    override fun setState(state: Bundle?) {}
-    override fun getState(): Bundle {
-        return Bundle()
+    override fun restoreState(state: BaseController.BaseSavedState) {}
+    override fun getState(): BaseController.BaseSavedState {
+        return SavedState()
     }
 }

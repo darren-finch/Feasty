@@ -1,11 +1,10 @@
 package com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller
 
-import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.navigation.DialogsManager
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityDialog.Companion.FOOD_ID
+import com.darrenfinch.mymealplanner.common.utils.DefaultModels
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectFoodQuantityViewMvc
 import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
@@ -16,7 +15,12 @@ class SelectFoodQuantityController(
     private val dialogsManager: DialogsManager
 ) : BaseController, SelectFoodQuantityViewMvc.Listener {
 
-    private var foodId = -1
+    data class SavedState(val food: Food) : BaseController.BaseSavedState
+
+    private var foodIdArg = -1
+
+    private var foodState = DefaultModels.defaultFood
+
     private lateinit var viewMvc: SelectFoodQuantityViewMvc
 
     fun bindView(viewMvc: SelectFoodQuantityViewMvc) {
@@ -32,19 +36,28 @@ class SelectFoodQuantityController(
     }
 
     fun fetchFood(viewLifecycleOwner: LifecycleOwner) {
-        getFoodUseCase.fetchFood(foodId).observe(viewLifecycleOwner, Observer {
-            viewMvc.bindFood(it)
-        })
-    }
+        viewMvc.bindFood(foodState)
 
-    override fun setState(state: Bundle?) {
-        foodId = state?.getInt(FOOD_ID) ?: -1
-    }
-
-    override fun getState(): Bundle {
-        return Bundle().apply {
-            putInt(FOOD_ID, foodId)
+        if(foodState == DefaultModels.defaultFood) {
+            getFoodUseCase.fetchFood(foodIdArg).observe(viewLifecycleOwner, Observer {
+                foodState = it
+                viewMvc.bindFood(it)
+            })
         }
+    }
+
+    fun setArgs(foodId: Int) {
+        this.foodIdArg = foodId
+    }
+
+    override fun restoreState(state: BaseController.BaseSavedState) {
+        (state as SavedState).let {
+            foodState = state.food
+        }
+    }
+
+    override fun getState(): BaseController.BaseSavedState {
+        return SavedState(foodState)
     }
 
     override fun onFoodServingSizeChosen(selectedFood: Food, selectedFoodQuantity: PhysicalQuantity) {
