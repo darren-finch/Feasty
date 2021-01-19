@@ -15,9 +15,9 @@ import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.contr
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityDialog.Companion.FOOD_ID
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD_QUANTITY
-import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormFragment.Companion.MEAL_DETAILS
-import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormFragment.Companion.HAS_LOADED_MEAL_DETAILS
-import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormFragment.Companion.MEAL_ID
+import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormFragment.Companion.MEAL_DETAILS_STATE
+import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormFragment.Companion.HAS_LOADED_MEAL_DETAILS_STATE
+import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormFragment.Companion.MEAL_ID_ARG
 import com.darrenfinch.mymealplanner.domain.mealform.view.MealFormViewMvc
 import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.domain.usecases.GetMealUseCase
@@ -27,6 +27,9 @@ import com.darrenfinch.mymealplanner.model.data.entities.Food
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 
+// TODO: Think about whether it would be a good idea to make these conventions project-wide:
+// For navigation arguments (whether they are saved on config changes or not), name them in the form of xArg
+// For saved state variables, name them in the form of yState
 class MealFormController(
     private val insertMealUseCase: InsertMealUseCase,
     private val updateMealUseCase: UpdateMealUseCase,
@@ -36,14 +39,14 @@ class MealFormController(
     private val backPressDispatcher: BackPressDispatcher
 ) : BaseController, MealFormViewMvc.Listener, BackPressListener {
 
-    private var mealId = Constants.INVALID_ID
-    private var hasLoadedMealDetails = false
-    private var mealDetails: Meal? = null
+    private var mealIdArg = Constants.INVALID_ID
+    private var hasLoadedMealDetailsState = false
+    private var mealDetailsState: Meal = DefaultModels.defaultMeal
 
     private lateinit var viewMvc: MealFormViewMvc
 
     private val isEditingExistingMeal: Boolean
-        get() = mealId != Constants.INVALID_ID
+        get() = mealIdArg != Constants.INVALID_ID
 
     fun bindView(viewMvc: MealFormViewMvc) {
         this.viewMvc = viewMvc
@@ -59,13 +62,13 @@ class MealFormController(
             val mealFoodFromSelectedFood = MealFood(
                 id = Constants.VALID_ID,
                 foodId = selectedFood.id,
-                mealId = mealId,
+                mealId = mealDetailsState.id,
                 title = selectedFood.title,
                 macroNutrients = selectedFood.macroNutrients,
                 desiredServingSize = selectedFoodQuantity
             )
-            mealDetails = mealDetails!!.copy(foods = mealDetails!!.foods + mealFoodFromSelectedFood)
-            viewMvc.bindMealDetails(mealDetails!!)
+            mealDetailsState = mealDetailsState.copy(foods = mealDetailsState.foods + mealFoodFromSelectedFood)
+            viewMvc.bindMealDetails(mealDetailsState)
         }
     }
 
@@ -80,15 +83,14 @@ class MealFormController(
     }
 
     fun fetchMealDetailsIfPossibleRebindToViewMvcOtherwise(viewLifecycleOwner: LifecycleOwner) {
-        if (isEditingExistingMeal && !hasLoadedMealDetails) {
-            getMealUseCase.getMeal(mealId).observe(viewLifecycleOwner, Observer {
-                mealDetails = it
-                hasLoadedMealDetails = true
+        if (isEditingExistingMeal && !hasLoadedMealDetailsState) {
+            getMealUseCase.getMeal(mealIdArg).observe(viewLifecycleOwner, Observer {
+                mealDetailsState = it
+                hasLoadedMealDetailsState = true
                 viewMvc.bindMealDetails(it)
             })
         } else {
-            mealDetails = DefaultModels.defaultMeal
-            viewMvc.bindMealDetails(mealDetails!!)
+            viewMvc.bindMealDetails(mealDetailsState)
         }
     }
 
@@ -107,16 +109,16 @@ class MealFormController(
     }
 
     override fun setState(state: Bundle?) {
-        mealId = state?.getInt(MEAL_ID) ?: Constants.VALID_ID
-        hasLoadedMealDetails = state?.getBoolean(HAS_LOADED_MEAL_DETAILS) ?: false
-        mealDetails = state?.getSerializable(MEAL_DETAILS) as Meal?
+        mealIdArg = state?.getInt(MEAL_ID_ARG) ?: Constants.INVALID_ID
+        hasLoadedMealDetailsState = state?.getBoolean(HAS_LOADED_MEAL_DETAILS_STATE) ?: false
+        state?.getSerializable(MEAL_DETAILS_STATE)?.let { mealDetailsState = it as Meal }
     }
 
     override fun getState(): Bundle {
         return Bundle().apply {
-            putInt(MEAL_ID, mealId)
-            putBoolean(HAS_LOADED_MEAL_DETAILS, hasLoadedMealDetails)
-            putSerializable(MEAL_DETAILS, viewMvc.getMealDetails())
+            putInt(MEAL_ID_ARG, mealIdArg)
+            putBoolean(HAS_LOADED_MEAL_DETAILS_STATE, hasLoadedMealDetailsState)
+            putSerializable(MEAL_DETAILS_STATE, viewMvc.getMealDetails())
         }
     }
 

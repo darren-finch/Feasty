@@ -15,15 +15,15 @@ class MealFormFragment : BaseFragment() {
     companion object {
 
         // Arguments
-        const val MEAL_ID = "MEAL_ID"
+        const val MEAL_ID_ARG = "MEAL_ID"
 
         // State
-        const val HAS_LOADED_MEAL_DETAILS = "HAS_LOADED_MEAL_DETAILS"
-        const val MEAL_DETAILS = "MEAL_DETAILS"
+        const val HAS_LOADED_MEAL_DETAILS_STATE = "HAS_LOADED_MEAL_DETAILS"
+        const val MEAL_DETAILS_STATE = "MEAL_DETAILS"
 
         fun newInstance(mealId: Int): MealFormFragment {
             val bundle = Bundle()
-            bundle.putInt(MEAL_ID, mealId)
+            bundle.putInt(MEAL_ID_ARG, mealId)
             val fragment = MealFormFragment()
             fragment.arguments = bundle
             return fragment
