@@ -3,7 +3,8 @@ package com.darrenfinch.mymealplanner.common.dependencyinjection
 import android.app.Application
 import androidx.fragment.app.FragmentActivity
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.common.navigation.DialogsManager
+import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
+import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.model.MainRepository
 import com.ncapdevi.fragnav.FragNavController
@@ -26,11 +27,15 @@ class ActivityCompositionRoot(private val compositionRoot: CompositionRoot, priv
         return compositionRoot.getMainRepository()
     }
 
+    fun getDialogsEventBus(): DialogsEventBus {
+        return compositionRoot.getDialogsEventBus()
+    }
+
     fun getScreensNavigator(): ScreensNavigator {
         return screensNavigator
     }
 
-    fun getsDialogManager(): DialogsManager {
+    fun getDialogsManager(): DialogsManager {
         return dialogsManager
     }
 }

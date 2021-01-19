@@ -13,8 +13,8 @@ import com.darrenfinch.mymealplanner.domain.allmeals.view.AllMealsViewMvcImpl
 import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.view.SelectFoodForMealViewMvcImpl
 import com.darrenfinch.mymealplanner.domain.mealplan.view.MealPlanViewMvcImpl
 import com.darrenfinch.mymealplanner.domain.mealplanform.view.MealPlanFormViewMvcImpl
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectFoodQuantityViewMvc
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectFoodQuantityViewMvcImpl
+import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodquantity.view.SelectFoodQuantityViewMvc
+import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodquantity.view.SelectFoodQuantityViewMvcImpl
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.view.SelectMealPlanMealViewMvcImpl
 
 class ViewMvcFactory(private val inflater: LayoutInflater) {

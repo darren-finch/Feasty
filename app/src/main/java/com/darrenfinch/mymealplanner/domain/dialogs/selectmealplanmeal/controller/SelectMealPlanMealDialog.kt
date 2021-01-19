@@ -8,7 +8,7 @@ import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.view.SelectMealPlanMealViewMvc
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
-class SelectMealPlanMealDialog : BaseDialog(), SelectMealPlanMealViewMvc.Listener {
+class SelectMealPlanMealDialog : BaseDialog() {
 
     companion object {
         const val TAG = "SelectMealPlanMealDialog"
@@ -44,16 +44,10 @@ class SelectMealPlanMealDialog : BaseDialog(), SelectMealPlanMealViewMvc.Listene
     override fun onStart() {
         super.onStart()
         controller.onStart()
-        viewMvc.registerListener(this)
     }
 
     override fun onStop() {
         super.onStop()
         controller.onStop()
-        viewMvc.unregisterListener(this)
-    }
-
-    override fun onMealSelected(meal: Meal) {
-        setFragmentResult(TAG, bundleOf(SELECTED_MEAL_RESULT to meal))
     }
 }

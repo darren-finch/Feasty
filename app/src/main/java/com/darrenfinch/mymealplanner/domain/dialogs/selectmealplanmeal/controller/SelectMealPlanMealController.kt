@@ -1,16 +1,22 @@
 package com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controller
 
+import androidx.core.os.bundleOf
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
-import com.darrenfinch.mymealplanner.common.navigation.DialogsManager
+import com.darrenfinch.mymealplanner.common.dialogs.DialogResult
+import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
+import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.SelectMealPlanMealDialogEvent
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controller.SelectMealPlanMealDialog.Companion.SELECTED_MEAL_RESULT
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.view.SelectMealPlanMealViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetAllMealsUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 class SelectMealPlanMealController(
     private val getAllMealsUseCase: GetAllMealsUseCase,
-    private val dialogsManager: DialogsManager
+    private val dialogsManager: DialogsManager,
+    private val dialogsEventBus: DialogsEventBus
 ) : BaseController, SelectMealPlanMealViewMvc.Listener {
 
     class SavedState : BaseController.BaseSavedState
@@ -35,8 +41,9 @@ class SelectMealPlanMealController(
         })
     }
 
-    override fun onMealSelected(meal: Meal) {
+    override fun onMealSelected(selectedMeal: Meal) {
         dialogsManager.clearDialog()
+        dialogsEventBus.postEvent(SelectMealPlanMealDialogEvent.ON_MEAL_SELECTED, DialogResult(bundleOf(SELECTED_MEAL_RESULT to selectedMeal)))
     }
 
     override fun restoreState(state: BaseController.BaseSavedState) {}

@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view
+package com.darrenfinch.mymealplanner.domain.dialogs.selectfoodquantity.view
 
 import android.app.Dialog
 import com.darrenfinch.mymealplanner.common.views.ObservableViewMvc

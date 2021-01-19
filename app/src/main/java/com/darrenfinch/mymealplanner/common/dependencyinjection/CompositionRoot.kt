@@ -2,6 +2,7 @@ package com.darrenfinch.mymealplanner.common.dependencyinjection
 
 import android.app.Application
 import androidx.room.Room
+import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.model.MainRepository
 import com.darrenfinch.mymealplanner.model.room.MealPlannerDatabase
 
@@ -11,8 +12,8 @@ class CompositionRoot(private val application: Application) {
         Room.databaseBuilder(application.applicationContext, MealPlannerDatabase::class.java, "MealPlannerDatabase")
             .fallbackToDestructiveMigration()
             .build()
-
     private val mainRepository = MainRepository(getDatabase())
+    private val dialogsEventBus = DialogsEventBus()
 
     fun getApplication(): Application {
         return application
@@ -24,5 +25,9 @@ class CompositionRoot(private val application: Application) {
 
     fun getMainRepository(): MainRepository {
         return mainRepository
+    }
+
+    fun getDialogsEventBus(): DialogsEventBus {
+        return dialogsEventBus
     }
 }

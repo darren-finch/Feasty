@@ -2,12 +2,11 @@ package com.darrenfinch.mymealplanner.common.dependencyinjection
 
 import android.app.Application
 import android.view.LayoutInflater
-import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.domain.allfoods.controller.AllFoodsController
 import com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsController
 import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealController
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityController
+import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodquantity.controller.SelectFoodQuantityController
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controller.SelectMealPlanMealController
 import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormController
 import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormController
@@ -19,15 +18,16 @@ import com.darrenfinch.mymealplanner.domain.usecases.*
 class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCompositionRoot) {
 
     // Object dependencies
+    fun getDialogsEventBus() = activityCompositionRoot.getDialogsEventBus()
+    fun getDialogsManager() = activityCompositionRoot.getDialogsManager()
+    fun getViewMvcFactory(): ViewMvcFactory = ViewMvcFactory(getLayoutInflater())
+    fun getBackPressDispatcher() = getActivity() as BackPressDispatcher
     private fun getActivity() = activityCompositionRoot.getActivity()
     private fun getContext() = getActivity()
     private fun getLayoutInflater(): LayoutInflater = LayoutInflater.from(getContext())
     fun getApplication(): Application = activityCompositionRoot.getApplication()
-    fun getViewMvcFactory(): ViewMvcFactory = ViewMvcFactory(getLayoutInflater())
     private fun getMainRepository() = activityCompositionRoot.getMainRepository()
     private fun getScreensNavigator() = activityCompositionRoot.getScreensNavigator()
-    private fun getDialogsManager() = activityCompositionRoot.getsDialogManager()
-    fun getBackPressDispatcher() = getActivity() as BackPressDispatcher
 
 
     // Use cases
@@ -58,19 +58,22 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     fun getSelectMealFoodQuantityController(
     ) = SelectFoodQuantityController(
         getGetFoodUseCase(),
-        getDialogsManager()
+        getDialogsManager(),
+        getDialogsEventBus()
     )
 
     fun getSelectFoodForMealController(
     ) = SelectFoodForMealController(
         getGetAllFoodsUseCase(),
-        getDialogsManager()
+        getDialogsManager(),
+        getDialogsEventBus()
     )
 
     fun getSelectMealPlanMealController(
     ) = SelectMealPlanMealController(
         getGetAllMealsUseCase(),
-        getDialogsManager()
+        getDialogsManager(),
+        getDialogsEventBus()
     )
 
     // Normal screen controllers
@@ -94,6 +97,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
         getGetMealUseCase(),
         getScreensNavigator(),
         getDialogsManager(),
+        getDialogsEventBus(),
         getBackPressDispatcher()
     )
 

@@ -1,16 +1,13 @@
-package com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller
+package com.darrenfinch.mymealplanner.domain.dialogs.selectfoodquantity.controller
 
 import android.app.Dialog
 import android.os.Bundle
 import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
 
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectFoodQuantityViewMvc
-import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
-import com.darrenfinch.mymealplanner.model.data.entities.Food
+import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodquantity.view.SelectFoodQuantityViewMvc
 
-class SelectFoodQuantityDialog : BaseDialog(), SelectFoodQuantityViewMvc.Listener {
+class SelectFoodQuantityDialog : BaseDialog() {
 
     companion object {
         const val TAG = "SelectMealFoodQuantityDialog"
@@ -67,24 +64,15 @@ class SelectFoodQuantityDialog : BaseDialog(), SelectFoodQuantityViewMvc.Listene
     override fun onStart() {
         super.onStart()
         controller.onStart()
-        viewMvc.registerListener(this)
     }
 
     override fun onStop() {
         super.onStop()
         controller.onStop()
-        viewMvc.unregisterListener(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putAll(bundleOf(CONTROLLER_SAVED_STATE to controller.getState()))
-    }
-
-    override fun onFoodServingSizeChosen(selectedFood: Food, selectedFoodQuantity: PhysicalQuantity) {
-        setFragmentResult(
-            TAG,
-            bundleOf(SELECTED_FOOD_RESULT to selectedFood, SELECTED_FOOD_QUANTITY_RESULT to selectedFoodQuantity)
-        )
     }
 }

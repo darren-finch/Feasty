@@ -1,7 +1,7 @@
-package com.darrenfinch.mymealplanner.common.navigation
+package com.darrenfinch.mymealplanner.common.dialogs
 
 import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealDialog
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityDialog
+import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controller.SelectMealPlanMealDialog
 import com.ncapdevi.fragnav.FragNavController
 

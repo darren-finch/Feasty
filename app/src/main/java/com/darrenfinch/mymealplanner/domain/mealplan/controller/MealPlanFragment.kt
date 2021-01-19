@@ -24,13 +24,6 @@ class MealPlanFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         controller = fragmentCompositionRoot.getMealPlanController()
-        listenForSelectMealPlanMealDialogResults()
-    }
-
-    private fun listenForSelectMealPlanMealDialogResults() {
-        childFragmentManager.setFragmentResultListener(SelectMealPlanMealDialog.TAG, this, FragmentResultListener { requestKey, result ->
-            controller.setDialogResults(requestKey, result)
-        })
     }
 
     override fun onCreateView(

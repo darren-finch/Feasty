@@ -1,10 +1,9 @@
-package com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view
+package com.darrenfinch.mymealplanner.domain.dialogs.selectfoodquantity.view
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.utils.KeyboardUtils

@@ -3,7 +3,7 @@ package com.darrenfinch.mymealplanner.domain.mealplan.controller
 import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
-import com.darrenfinch.mymealplanner.common.navigation.DialogsManager
+import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.domain.mealplan.view.MealPlanViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.*
@@ -63,7 +63,5 @@ class MealPlanController(
         return SavedState()
     }
 
-    fun setDialogResults(requestKey: String, result: Bundle) {
-        // TODO: Insert new meal plan meal if it came from SelectMealPlanMealDialog
-    }
+    // TODO: Get result from select meal plan meal dialog
 }
