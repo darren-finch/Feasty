@@ -2,6 +2,7 @@ package com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.cont
 
 import android.app.Dialog
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
@@ -53,11 +54,13 @@ class SelectFoodQuantityDialog : BaseDialog(), SelectFoodQuantityViewMvc.Listene
     override fun onStart() {
         super.onStart()
         controller.onStart()
+        viewMvc.registerListener(this)
     }
 
     override fun onStop() {
         super.onStop()
         controller.onStop()
+        viewMvc.unregisterListener(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

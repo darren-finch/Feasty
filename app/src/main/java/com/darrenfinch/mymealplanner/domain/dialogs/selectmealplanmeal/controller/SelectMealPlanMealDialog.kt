@@ -45,11 +45,13 @@ class SelectMealPlanMealDialog : BaseDialog(), SelectMealPlanMealViewMvc.Listene
     override fun onStart() {
         super.onStart()
         controller.onStart()
+        viewMvc.registerListener(this)
     }
 
     override fun onStop() {
         super.onStop()
         controller.onStop()
+        viewMvc.unregisterListener(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

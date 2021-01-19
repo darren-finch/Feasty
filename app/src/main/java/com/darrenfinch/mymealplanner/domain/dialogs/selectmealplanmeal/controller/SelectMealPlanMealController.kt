@@ -5,13 +5,15 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
+import com.darrenfinch.mymealplanner.common.navigation.DialogsManager
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controller.SelectMealPlanMealDialog.Companion.SELECTED_MEAL
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.view.SelectMealPlanMealViewMvc
 import com.darrenfinch.mymealplanner.domain.usecases.GetAllMealsUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 class SelectMealPlanMealController(
-    private val getAllMealsUseCase: GetAllMealsUseCase
+    private val getAllMealsUseCase: GetAllMealsUseCase,
+    private val dialogsManager: DialogsManager
 ) : BaseController, SelectMealPlanMealViewMvc.Listener {
 
     private lateinit var viewMvc: SelectMealPlanMealViewMvc
@@ -35,7 +37,7 @@ class SelectMealPlanMealController(
     }
 
     override fun onMealSelected(meal: Meal) {
-
+        dialogsManager.clearDialog()
     }
 
     override fun setState(state: Bundle?) {}

@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.FragmentResultListener
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
 import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealDialog
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityDialog
 import com.darrenfinch.mymealplanner.domain.mealform.view.MealFormViewMvc
 
 class MealFormFragment : BaseFragment() {
@@ -35,10 +35,21 @@ class MealFormFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setFragmentResultListener(SelectFoodForMealDialog.TAG) { tag, results ->
-            controller.setDialogResults(tag, results)
-        }
         controller = fragmentCompositionRoot.getMealFormController()
+        listenForSelectFoodForMealDialogResults()
+        listenForSelectFoodQuantityDialogResults()
+    }
+
+    private fun listenForSelectFoodForMealDialogResults() {
+        childFragmentManager.setFragmentResultListener(SelectFoodForMealDialog.TAG, this, FragmentResultListener { requestKey, result ->
+            controller.setDialogResults(requestKey, result)
+        })
+    }
+
+    private fun listenForSelectFoodQuantityDialogResults() {
+        childFragmentManager.setFragmentResultListener(SelectFoodQuantityDialog.TAG, this, FragmentResultListener { requestKey, result ->
+            controller.setDialogResults(requestKey, result)
+        })
     }
 
     override fun onCreateView(
@@ -56,15 +67,9 @@ class MealFormFragment : BaseFragment() {
         return viewMvc.getRootView()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        println("onViewCreated()")
-    }
-
     override fun onStart() {
         super.onStart()
         controller.onStart()
-        println("onStart()")
     }
 
     override fun onStop() {

@@ -2,6 +2,7 @@ package com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controlle
 
 import android.app.Dialog
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
@@ -46,11 +47,13 @@ class SelectFoodForMealDialog : BaseDialog(), SelectFoodForMealViewMvc.Listener 
     override fun onStart() {
         super.onStart()
         controller.onStart()
+        viewMvc.registerListener(this)
     }
 
     override fun onStop() {
         super.onStop()
         controller.onStop()
+        viewMvc.unregisterListener(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -58,7 +61,6 @@ class SelectFoodForMealDialog : BaseDialog(), SelectFoodForMealViewMvc.Listener 
         outState.putAll(controller.getState())
     }
 
-    // TODO: Find a way to refactor from this fragment to the controller
     override fun onFoodChosen(food: Food) {
         setFragmentResult(TAG, bundleOf(FOOD_ID to food.id))
     }

@@ -57,17 +57,20 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     // Dialog controllers
     fun getSelectMealFoodQuantityController(
     ) = SelectFoodQuantityController(
-        getGetFoodUseCase()
+        getGetFoodUseCase(),
+        getDialogsManager()
     )
 
     fun getSelectFoodForMealController(
     ) = SelectFoodForMealController(
-        getGetAllFoodsUseCase()
+        getGetAllFoodsUseCase(),
+        getDialogsManager()
     )
 
     fun getSelectMealPlanMealController(
     ) = SelectMealPlanMealController(
-        getGetAllMealsUseCase()
+        getGetAllMealsUseCase(),
+        getDialogsManager()
     )
 
     // Normal screen controllers

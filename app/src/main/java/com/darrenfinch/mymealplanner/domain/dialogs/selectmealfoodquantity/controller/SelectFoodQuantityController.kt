@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
+import com.darrenfinch.mymealplanner.common.navigation.DialogsManager
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityDialog.Companion.FOOD_ID
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectFoodQuantityViewMvc
 import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
@@ -11,7 +12,8 @@ import com.darrenfinch.mymealplanner.domain.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.Food
 
 class SelectFoodQuantityController(
-    private val getFoodUseCase: GetFoodUseCase
+    private val getFoodUseCase: GetFoodUseCase,
+    private val dialogsManager: DialogsManager
 ) : BaseController, SelectFoodQuantityViewMvc.Listener {
 
     private var foodId = -1
@@ -46,6 +48,6 @@ class SelectFoodQuantityController(
     }
 
     override fun onFoodServingSizeChosen(selectedFood: Food, selectedFoodQuantity: PhysicalQuantity) {
-
+        dialogsManager.clearDialog()
     }
 }

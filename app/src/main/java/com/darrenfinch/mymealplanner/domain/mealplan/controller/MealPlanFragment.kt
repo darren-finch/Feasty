@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentResultListener
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
+import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controller.SelectMealPlanMealDialog
 import com.darrenfinch.mymealplanner.domain.mealplan.view.MealPlanViewMvc
 
 class MealPlanFragment : BaseFragment() {
@@ -24,13 +26,20 @@ class MealPlanFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         controller = fragmentCompositionRoot.getMealPlanController()
+        listenForSelectMealPlanMealDialogResults()
+    }
+
+    private fun listenForSelectMealPlanMealDialogResults() {
+        childFragmentManager.setFragmentResultListener(SelectMealPlanMealDialog.TAG, this, FragmentResultListener { requestKey, result ->
+            controller.setDialogResults(requestKey, result)
+        })
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         viewMvc = fragmentCompositionRoot.getViewMvcFactory().getMealPlanViewMvc(null)
 

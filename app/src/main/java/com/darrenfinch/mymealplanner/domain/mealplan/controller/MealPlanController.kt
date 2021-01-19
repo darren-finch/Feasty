@@ -150,4 +150,8 @@ class MealPlanController(
             putInt(NUM_OF_MEAL_PLANS, numOfMealPlans)
         }
     }
+
+    fun setDialogResults(requestKey: String, result: Bundle) {
+
+    }
 }
