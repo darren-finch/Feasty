@@ -2,11 +2,17 @@ package com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.cont
 
 import android.app.Dialog
 import android.os.Bundle
+import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.view.SelectFoodQuantityViewMvc
+import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
+import com.darrenfinch.mymealplanner.model.data.entities.Food
 
-class SelectFoodQuantityDialog : BaseDialog() {
+class SelectFoodQuantityDialog : BaseDialog(), SelectFoodQuantityViewMvc.Listener {
 
     companion object {
         const val TAG = "SelectMealFoodQuantityDialog"
@@ -32,7 +38,7 @@ class SelectFoodQuantityDialog : BaseDialog() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        controller = controllerCompositionRoot.getSelectMealFoodQuantityController(onDialogEventListener)
+        controller = controllerCompositionRoot.getSelectMealFoodQuantityController()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -48,15 +54,24 @@ class SelectFoodQuantityDialog : BaseDialog() {
     override fun onStart() {
         super.onStart()
         controller.onStart()
+        viewMvc.registerListener(this)
     }
 
     override fun onStop() {
         super.onStop()
         controller.onStop()
+        viewMvc.unregisterListener(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putAll(controller.getState())
+    }
+
+    override fun onFoodServingSizeChosen(selectedFood: Food, selectedFoodQuantity: PhysicalQuantity) {
+        setFragmentResult(
+            TAG,
+            bundleOf(SELECTED_FOOD to selectedFood, SELECTED_FOOD_QUANTITY to selectedFoodQuantity)
+        )
     }
 }

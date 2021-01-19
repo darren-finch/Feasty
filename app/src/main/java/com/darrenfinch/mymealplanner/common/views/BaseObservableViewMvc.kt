@@ -1,7 +1,7 @@
 package com.darrenfinch.mymealplanner.common.views
 
 open class BaseObservableViewMvc<ListenerType> : BaseViewMvc(), ObservableViewMvc<ListenerType> {
-    private val listeners = hashSetOf<ListenerType>()
+    private val listeners = mutableListOf<ListenerType>()
 
     override fun registerListener(listener: ListenerType) {
         listeners.add(listener)
