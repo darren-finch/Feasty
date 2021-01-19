@@ -2,11 +2,14 @@ package com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controlle
 
 import android.app.Dialog
 import android.os.Bundle
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
 import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.view.SelectFoodForMealViewMvc
+import com.darrenfinch.mymealplanner.model.data.entities.Food
 
 //TODO: Convert into generic item selection dialog
-class SelectFoodForMealDialog : BaseDialog() {
+class SelectFoodForMealDialog : BaseDialog(), SelectFoodForMealViewMvc.Listener {
 
     companion object {
         const val TAG = "SelectFoodForMealDialog"
@@ -27,7 +30,7 @@ class SelectFoodForMealDialog : BaseDialog() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        controller = controllerCompositionRoot.getSelectFoodForMealController(onDialogEventListener)
+        controller = controllerCompositionRoot.getSelectFoodForMealController()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -53,5 +56,10 @@ class SelectFoodForMealDialog : BaseDialog() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putAll(controller.getState())
+    }
+
+    // TODO: Find a way to refactor from this fragment to the controller
+    override fun onFoodChosen(food: Food) {
+        setFragmentResult(TAG, bundleOf(FOOD_ID to food.id))
     }
 }

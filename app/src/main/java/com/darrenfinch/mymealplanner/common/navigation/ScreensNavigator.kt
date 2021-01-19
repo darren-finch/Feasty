@@ -8,8 +8,6 @@ import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormFragment
 import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormFragment
 import com.darrenfinch.mymealplanner.domain.mealplan.controller.MealPlanFragment
 import com.darrenfinch.mymealplanner.domain.mealplanform.controller.MealPlanFormFragment
-import com.darrenfinch.mymealplanner.model.data.entities.Meal
-import com.darrenfinch.mymealplanner.model.data.entities.MealFood
 import com.ncapdevi.fragnav.FragNavController
 
 class ScreensNavigator(private val navController: FragNavController) {

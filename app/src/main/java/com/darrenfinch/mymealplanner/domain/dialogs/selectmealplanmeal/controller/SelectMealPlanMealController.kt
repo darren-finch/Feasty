@@ -11,8 +11,7 @@ import com.darrenfinch.mymealplanner.domain.usecases.GetAllMealsUseCase
 import com.darrenfinch.mymealplanner.model.data.entities.Meal
 
 class SelectMealPlanMealController(
-    private val getAllMealsUseCase: GetAllMealsUseCase,
-    private val onDialogEventListener: BaseDialog.OnDialogEventListener
+    private val getAllMealsUseCase: GetAllMealsUseCase
 ) : BaseController, SelectMealPlanMealViewMvc.Listener {
 
     private lateinit var viewMvc: SelectMealPlanMealViewMvc
@@ -36,12 +35,7 @@ class SelectMealPlanMealController(
     }
 
     override fun onMealSelected(meal: Meal) {
-        onDialogEventListener.onFinish(
-            SelectMealPlanMealDialog.TAG,
-            Bundle().apply {
-                putSerializable(SELECTED_MEAL, meal)
-            }
-        )
+
     }
 
     override fun setState(state: Bundle?) {}

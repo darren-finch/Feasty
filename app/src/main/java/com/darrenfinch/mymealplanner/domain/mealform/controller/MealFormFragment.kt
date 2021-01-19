@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
+import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealDialog
 import com.darrenfinch.mymealplanner.domain.mealform.view.MealFormViewMvc
 
 class MealFormFragment : BaseFragment() {
@@ -32,6 +35,9 @@ class MealFormFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setFragmentResultListener(SelectFoodForMealDialog.TAG) { tag, results ->
+            controller.setDialogResults(tag, results)
+        }
         controller = fragmentCompositionRoot.getMealFormController()
     }
 

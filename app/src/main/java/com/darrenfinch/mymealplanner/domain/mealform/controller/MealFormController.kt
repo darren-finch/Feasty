@@ -10,6 +10,7 @@ import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
 import com.darrenfinch.mymealplanner.common.navigation.DialogsManager
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.common.utils.DefaultModels
+import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealDialog
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityDialog
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityDialog.Companion.FOOD_ID
 import com.darrenfinch.mymealplanner.domain.dialogs.selectmealfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD
@@ -33,7 +34,7 @@ class MealFormController(
     private val screensNavigator: ScreensNavigator,
     private val dialogsManager: DialogsManager,
     private val backPressDispatcher: BackPressDispatcher
-) : BaseController, MealFormViewMvc.Listener, DialogsManager.OnDialogEventListener, BackPressListener {
+) : BaseController, MealFormViewMvc.Listener, BackPressListener {
 
     private var mealId = Constants.INVALID_ID
     private var hasLoadedMealDetails = false
@@ -48,15 +49,33 @@ class MealFormController(
         this.viewMvc = viewMvc
     }
 
+    fun setDialogResults(tag: String, results: Bundle) {
+        if(tag == SelectFoodForMealDialog.TAG) {
+            dialogsManager.showSelectFoodQuantityDialog(results.getInt(FOOD_ID))
+        }
+        else if (tag == SelectFoodQuantityDialog.TAG) {
+            val selectedFood = results.getSerializable(SELECTED_FOOD) as Food
+            val selectedFoodQuantity = results.getSerializable(SELECTED_FOOD_QUANTITY) as PhysicalQuantity
+            val mealFoodFromSelectedFood = MealFood(
+                id = Constants.VALID_ID,
+                foodId = selectedFood.id,
+                mealId = mealId,
+                title = selectedFood.title,
+                macroNutrients = selectedFood.macroNutrients,
+                desiredServingSize = selectedFoodQuantity
+            )
+            mealDetails = mealDetails!!.copy(foods = mealDetails!!.foods + mealFoodFromSelectedFood)
+            viewMvc.bindMealDetails(mealDetails!!)
+        }
+    }
+
     fun onStart() {
         viewMvc.registerListener(this)
-        dialogsManager.registerListener(this)
         backPressDispatcher.registerListener(this)
     }
 
     fun onStop() {
         viewMvc.unregisterListener(this)
-        dialogsManager.unregisterListener(this)
         backPressDispatcher.unregisterListener(this)
     }
 
@@ -98,33 +117,6 @@ class MealFormController(
             putInt(MEAL_ID, mealId)
             putBoolean(HAS_LOADED_MEAL_DETAILS, hasLoadedMealDetails)
             putSerializable(MEAL_DETAILS, viewMvc.getMealDetails())
-        }
-    }
-
-    override fun onDialogStart(dialogTag: String) {
-        // You have to keep meal details current
-//        mealDetails = viewMvc.getMealDetails()
-    }
-    override fun onDialogDismiss(dialogTag: String) {}
-    override fun onDialogFinish(dialogTag: String, results: Bundle) {
-        // Keep it current
-        mealDetails = viewMvc.getMealDetails()
-
-        if (dialogTag != SelectFoodQuantityDialog.TAG) {
-            dialogsManager.showSelectFoodQuantityDialog(results.getInt(FOOD_ID))
-        } else {
-            val selectedFood = results.getSerializable(SELECTED_FOOD) as Food
-            val selectedFoodQuantity = results.getSerializable(SELECTED_FOOD_QUANTITY) as PhysicalQuantity
-            val mealFoodFromSelectedFood = MealFood(
-                id = Constants.VALID_ID,
-                foodId = selectedFood.id,
-                mealId = mealId,
-                title = selectedFood.title,
-                macroNutrients = selectedFood.macroNutrients,
-                desiredServingSize = selectedFoodQuantity
-            )
-            mealDetails = mealDetails!!.copy(foods = mealDetails!!.foods + mealFoodFromSelectedFood)
-            viewMvc.bindMealDetails(mealDetails!!)
         }
     }
 

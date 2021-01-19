@@ -27,7 +27,7 @@ class MealPlanController(
     private val deleteMealPlanMealUseCase: DeleteMealPlanMealUseCase,
     private val screensNavigator: ScreensNavigator,
     private val dialogsManager: DialogsManager
-) : BaseController, MealPlanViewMvc.Listener, DialogsManager.OnDialogEventListener {
+) : BaseController, MealPlanViewMvc.Listener {
 
     private var selectedMealPlanIndex = Constants.INVALID_INDEX
     private var selectedMealPlanId = Constants.INVALID_ID
@@ -47,12 +47,10 @@ class MealPlanController(
 
     fun onStart() {
         viewMvc.registerListener(this)
-        dialogsManager.registerListener(this)
     }
 
     fun onStop() {
         viewMvc.unregisterListener(this)
-        dialogsManager.unregisterListener(this)
     }
 
     fun onViewCreated(viewLifecycleOwner: LifecycleOwner) {
@@ -151,21 +149,5 @@ class MealPlanController(
             putInt(SELECTED_MEAL_PLAN_ID, selectedMealPlanId)
             putInt(NUM_OF_MEAL_PLANS, numOfMealPlans)
         }
-    }
-
-    override fun onDialogStart(dialogTag: String) {}
-    override fun onDialogDismiss(dialogTag: String) {}
-    override fun onDialogFinish(dialogTag: String, results: Bundle) {
-        val selectedMeal = results.getSerializable(SELECTED_MEAL) as Meal
-        insertMealPlanMealUseCase.insertMealPlanMeal(
-            MealPlanMeal(
-                id = 0,
-                mealPlanId = selectedMealPlanId,
-                mealId = selectedMeal.id,
-                title = selectedMeal.title,
-                foods = selectedMeal.foods
-            )
-        )
-        // TODO: Refresh meal plan meals
     }
 }
