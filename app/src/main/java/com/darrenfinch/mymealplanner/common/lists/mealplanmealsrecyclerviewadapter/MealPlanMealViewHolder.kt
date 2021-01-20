@@ -6,13 +6,12 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.databinding.ObservableBoolean
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.lists.BaseViewHolder
 import com.darrenfinch.mymealplanner.common.lists.mealfoodsrecyclerviewadapter.MealFoodsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.common.utils.AnimationUtils
 import com.darrenfinch.mymealplanner.databinding.MealPlanMealItemBinding
-import com.darrenfinch.mymealplanner.model.data.entities.MealPlanMeal
+import com.darrenfinch.mymealplanner.mealplans.models.MealPlanMeal
 
 class MealPlanMealViewHolder(private val listener: Listener, itemView: View) : BaseViewHolder<MealPlanMeal>(itemView) {
     interface Listener {

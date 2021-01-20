@@ -5,19 +5,19 @@
 
     <data>
 
-        <import type="com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroType" />
+        <import type="com.darrenfinch.mymealplanner.screens.mealplan.MacroType" />
 
         <import type="com.darrenfinch.mymealplanner.common.utils.StringUtils" />
 
         <variable
             name="mealPlanMacros"
-            type="com.darrenfinch.mymealplanner.model.data.structs.MealPlanMacros" />
+            type="com.darrenfinch.mymealplanner.screens.mealplan.MealPlanMacros" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".domain.mealplan.controller.MealPlanFragment">
+        tools:context=".screens.mealplan.controller.MealPlanFragment">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"

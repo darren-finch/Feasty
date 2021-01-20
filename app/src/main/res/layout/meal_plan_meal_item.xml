@@ -4,10 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="com.darrenfinch.mymealplanner.common.utils.StringUtils"/>
-        <import type="com.darrenfinch.mymealplanner.model.helpers.MacroCalculator"/>
+        <import type="com.darrenfinch.mymealplanner.foods.models.MacroCalculator"/>
         <variable
             name="mealPlanMeal"
-            type="com.darrenfinch.mymealplanner.model.data.entities.MealPlanMeal" />
+            type="com.darrenfinch.mymealplanner.mealplans.models.MealPlanMeal" />
         <variable
             name="viewHolder"
             type="com.darrenfinch.mymealplanner.common.lists.mealplanmealsrecyclerviewadapter.MealPlanMealViewHolder" />

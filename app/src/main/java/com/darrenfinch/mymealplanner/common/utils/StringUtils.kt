@@ -1,6 +1,6 @@
 package com.darrenfinch.mymealplanner.common.utils
 
-import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroType
+import com.darrenfinch.mymealplanner.screens.mealplan.MacroType
 
 object StringUtils {
     fun getMealTitleTemp(title: String) = if (title.isNotEmpty()) title else "(enter name)"

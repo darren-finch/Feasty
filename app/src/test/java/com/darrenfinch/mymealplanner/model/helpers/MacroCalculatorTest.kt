@@ -1,10 +1,11 @@
 package com.darrenfinch.mymealplanner.model.helpers
 
-import com.darrenfinch.mymealplanner.model.data.entities.Food
-import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
-import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
-import com.darrenfinch.mymealplanner.domain.physicalquantities.units.metric.Gram
-import com.darrenfinch.mymealplanner.domain.physicalquantities.units.metric.Kilo
+import com.darrenfinch.mymealplanner.foods.models.Food
+import com.darrenfinch.mymealplanner.foods.models.MacroCalculator
+import com.darrenfinch.mymealplanner.foods.models.MacroNutrients
+import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
+import com.darrenfinch.mymealplanner.physicalquantities.units.metric.Gram
+import com.darrenfinch.mymealplanner.physicalquantities.units.metric.Kilo
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*

@@ -8,12 +8,12 @@ import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_MEAL_DATA_TIT
 import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_MEAL_FOOD_DATA_TITLE
 import com.darrenfinch.mymealplanner.common.misc.Constants.DEFAULT_PROTEINS
 import com.darrenfinch.mymealplanner.common.misc.Constants.VALID_ID
-import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
-import com.darrenfinch.mymealplanner.model.data.entities.Food
-import com.darrenfinch.mymealplanner.model.data.entities.Meal
-import com.darrenfinch.mymealplanner.model.data.entities.MealFood
-import com.darrenfinch.mymealplanner.model.data.entities.MealPlan
-import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
+import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
+import com.darrenfinch.mymealplanner.foods.models.Food
+import com.darrenfinch.mymealplanner.meals.models.Meal
+import com.darrenfinch.mymealplanner.meals.models.MealFood
+import com.darrenfinch.mymealplanner.mealplans.models.MealPlan
+import com.darrenfinch.mymealplanner.foods.models.MacroNutrients
 
 object DefaultModels {
     val defaultMealPlan = MealPlan(
@@ -32,7 +32,7 @@ object DefaultModels {
         proteins = DEFAULT_PROTEINS
     )
 
-    val defaultMealFood =MealFood(
+    val defaultMealFood = MealFood(
         id = VALID_ID,
         foodId = VALID_ID,
         mealId = VALID_ID,

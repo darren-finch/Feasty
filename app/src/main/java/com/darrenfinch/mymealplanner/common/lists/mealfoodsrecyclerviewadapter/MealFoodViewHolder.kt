@@ -2,10 +2,9 @@ package com.darrenfinch.mymealplanner.common.lists.mealfoodsrecyclerviewadapter
 
 import android.annotation.SuppressLint
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
 import com.darrenfinch.mymealplanner.common.lists.BaseViewHolder
 import com.darrenfinch.mymealplanner.databinding.MealFoodItemBinding
-import com.darrenfinch.mymealplanner.model.data.entities.MealFood
+import com.darrenfinch.mymealplanner.meals.models.MealFood
 
 class MealFoodViewHolder(itemView: View) : BaseViewHolder<MealFood>(itemView)
 {

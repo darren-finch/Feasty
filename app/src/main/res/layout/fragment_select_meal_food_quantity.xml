@@ -6,14 +6,14 @@
     <data>
         <variable
             name="food"
-            type="com.darrenfinch.mymealplanner.model.data.entities.Food" />
+            type="com.darrenfinch.mymealplanner.foods.models.Food" />
         <import type="com.darrenfinch.mymealplanner.common.utils.StringUtils"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".domain.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog">
+        tools:context="com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog">
 
         <TextView
             android:id="@+id/foodNameTextView"

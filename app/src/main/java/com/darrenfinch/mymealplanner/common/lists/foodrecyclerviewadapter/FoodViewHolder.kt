@@ -6,7 +6,7 @@ import android.widget.PopupMenu
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.lists.BaseViewHolder
 import com.darrenfinch.mymealplanner.databinding.FoodItemBinding
-import com.darrenfinch.mymealplanner.model.data.entities.Food
+import com.darrenfinch.mymealplanner.foods.models.Food
 
 class FoodViewHolder(private val config: FoodsRecyclerViewAdapter.Config, private val eventListener: EventListener, itemView: View) :
     BaseViewHolder<Food>(itemView) {

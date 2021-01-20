@@ -6,13 +6,13 @@
     <data>
         <variable
             name="food"
-            type="com.darrenfinch.mymealplanner.model.data.entities.Food" />
+            type="com.darrenfinch.mymealplanner.foods.models.Food" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".domain.foodform.controller.FoodFormFragment">
+        tools:context=".screens.foodform.controller.FoodFormFragment">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"

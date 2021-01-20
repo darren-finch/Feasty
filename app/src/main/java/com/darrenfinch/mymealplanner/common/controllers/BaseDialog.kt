@@ -1,9 +1,8 @@
 package com.darrenfinch.mymealplanner.common.controllers
 
-import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.darrenfinch.mymealplanner.common.dependencyinjection.ControllerCompositionRoot
-import com.darrenfinch.mymealplanner.domain.main.MainActivity
+import com.darrenfinch.mymealplanner.common.MainActivity
 
 abstract class BaseDialog : DialogFragment() {
 

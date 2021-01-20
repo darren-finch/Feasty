@@ -3,16 +3,18 @@ package com.darrenfinch.mymealplanner.common.dependencyinjection
 import android.app.Application
 import android.view.LayoutInflater
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
-import com.darrenfinch.mymealplanner.domain.allfoods.controller.AllFoodsController
-import com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsController
-import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodformeal.controller.SelectFoodForMealController
-import com.darrenfinch.mymealplanner.domain.dialogs.selectfoodquantity.controller.SelectFoodQuantityController
-import com.darrenfinch.mymealplanner.domain.dialogs.selectmealplanmeal.controller.SelectMealPlanMealController
-import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormController
-import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormController
-import com.darrenfinch.mymealplanner.domain.mealplan.controller.MealPlanController
-import com.darrenfinch.mymealplanner.domain.mealplanform.controller.MealPlanFormController
-import com.darrenfinch.mymealplanner.domain.usecases.*
+import com.darrenfinch.mymealplanner.screens.allfoods.controller.AllFoodsController
+import com.darrenfinch.mymealplanner.screens.allmeals.controller.AllMealsController
+import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.controller.SelectFoodForMealController
+import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityController
+import com.darrenfinch.mymealplanner.common.dialogs.selectmealplanmeal.controller.SelectMealPlanMealController
+import com.darrenfinch.mymealplanner.foods.usecases.*
+import com.darrenfinch.mymealplanner.mealplans.usecases.*
+import com.darrenfinch.mymealplanner.meals.usecases.*
+import com.darrenfinch.mymealplanner.screens.foodform.controller.FoodFormController
+import com.darrenfinch.mymealplanner.screens.mealform.controller.MealFormController
+import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanController
+import com.darrenfinch.mymealplanner.screens.mealplanform.controller.MealPlanFormController
 
 //This composition root is scoped to a fragment, which is a controller
 class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCompositionRoot) {

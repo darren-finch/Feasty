@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.lists.BaseRecyclerViewAdapter
-import com.darrenfinch.mymealplanner.model.data.entities.Food
+import com.darrenfinch.mymealplanner.foods.models.Food
 
 class FoodsRecyclerViewAdapter(private val config: Config, private val itemEventListener: ItemEventListener) :
     BaseRecyclerViewAdapter<Food, FoodViewHolder>(mutableListOf()), FoodViewHolder.EventListener {

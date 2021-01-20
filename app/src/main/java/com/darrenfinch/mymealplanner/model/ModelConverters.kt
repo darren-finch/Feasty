@@ -1,8 +1,12 @@
 package com.darrenfinch.mymealplanner.model
 
-import com.darrenfinch.mymealplanner.model.data.entities.*
-import com.darrenfinch.mymealplanner.model.data.entitysubdata.MacroNutrients
-import com.darrenfinch.mymealplanner.model.helpers.MacroCalculator
+import com.darrenfinch.mymealplanner.foods.models.Food
+import com.darrenfinch.mymealplanner.mealplans.models.MealPlan
+import com.darrenfinch.mymealplanner.mealplans.models.MealPlanMeal
+import com.darrenfinch.mymealplanner.meals.models.Meal
+import com.darrenfinch.mymealplanner.meals.models.MealFood
+import com.darrenfinch.mymealplanner.foods.models.MacroNutrients
+import com.darrenfinch.mymealplanner.foods.models.MacroCalculator
 import com.darrenfinch.mymealplanner.model.room.daos.FoodsDao
 import com.darrenfinch.mymealplanner.model.room.daos.MealFoodsDao
 import com.darrenfinch.mymealplanner.model.room.daos.MealsDao

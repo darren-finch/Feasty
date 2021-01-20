@@ -3,13 +3,12 @@ package com.darrenfinch.mymealplanner.common.lists.mealsrecyclerviewadapter
 import android.view.Gravity
 import android.view.View
 import android.widget.PopupMenu
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.lists.BaseViewHolder
 import com.darrenfinch.mymealplanner.common.lists.mealfoodsrecyclerviewadapter.MealFoodsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.databinding.MealItemBinding
-import com.darrenfinch.mymealplanner.model.data.entities.Meal
+import com.darrenfinch.mymealplanner.meals.models.Meal
 import net.cachapa.expandablelayout.ExpandableLayout
 
 class MealViewHolder(private val config: MealsRecyclerViewAdapter.Config, private val listener: Listener, itemView: View) :

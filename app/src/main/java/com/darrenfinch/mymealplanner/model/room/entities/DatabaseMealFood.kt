@@ -2,7 +2,7 @@ package com.darrenfinch.mymealplanner.model.room.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
+import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 
 //This class is here to store any meal specific properties for a given food type, such as desired quantity of the food.
 @Entity(tableName = "mealFoods")

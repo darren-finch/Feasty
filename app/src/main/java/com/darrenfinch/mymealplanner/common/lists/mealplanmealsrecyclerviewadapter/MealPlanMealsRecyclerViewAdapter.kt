@@ -2,10 +2,9 @@ package com.darrenfinch.mymealplanner.common.lists.mealplanmealsrecyclerviewadap
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.lists.BaseRecyclerViewAdapter
-import com.darrenfinch.mymealplanner.model.data.entities.MealPlanMeal
+import com.darrenfinch.mymealplanner.mealplans.models.MealPlanMeal
 
 class MealPlanMealsRecyclerViewAdapter(private val listener: ItemEventListener) :
     BaseRecyclerViewAdapter<MealPlanMeal, MealPlanMealViewHolder>(mutableListOf()),

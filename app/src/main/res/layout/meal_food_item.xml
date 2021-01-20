@@ -3,7 +3,7 @@
     <data>
         <variable
             name="mealFood"
-            type="com.darrenfinch.mymealplanner.model.data.entities.MealFood" />
+            type="com.darrenfinch.mymealplanner.meals.models.MealFood" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -2,12 +2,12 @@ package com.darrenfinch.mymealplanner.common.navigation
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.darrenfinch.mymealplanner.domain.allfoods.controller.AllFoodsFragment
-import com.darrenfinch.mymealplanner.domain.allmeals.controller.AllMealsFragment
-import com.darrenfinch.mymealplanner.domain.foodform.controller.FoodFormFragment
-import com.darrenfinch.mymealplanner.domain.mealform.controller.MealFormFragment
-import com.darrenfinch.mymealplanner.domain.mealplan.controller.MealPlanFragment
-import com.darrenfinch.mymealplanner.domain.mealplanform.controller.MealPlanFormFragment
+import com.darrenfinch.mymealplanner.screens.allfoods.controller.AllFoodsFragment
+import com.darrenfinch.mymealplanner.screens.allmeals.controller.AllMealsFragment
+import com.darrenfinch.mymealplanner.screens.foodform.controller.FoodFormFragment
+import com.darrenfinch.mymealplanner.screens.mealform.controller.MealFormFragment
+import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanFragment
+import com.darrenfinch.mymealplanner.screens.mealplanform.controller.MealPlanFormFragment
 import com.ncapdevi.fragnav.FragNavController
 
 class ScreensNavigator(private val navController: FragNavController) {
