@@ -12,4 +12,7 @@ interface SelectFoodQuantityViewMvc : ObservableViewMvc<SelectFoodQuantityViewMv
 
     fun bindFood(food: Food)
     fun makeDialog() : Dialog
+
+    // TODO: Remove when view models are introduced
+    fun getFoodData(): Food
 }

@@ -45,7 +45,8 @@ class SelectFoodQuantityController(
     fun fetchFood(viewLifecycleOwner: LifecycleOwner) {
         viewMvc.bindFood(foodState)
 
-        if (foodState == DefaultModels.defaultFood) {
+        val hasLoadedFoodDetails = foodState != DefaultModels.defaultFood
+        if (!hasLoadedFoodDetails) {
             getFoodUseCase.fetchFood(foodIdArg).observe(viewLifecycleOwner, Observer {
                 foodState = it
                 viewMvc.bindFood(it)
@@ -64,7 +65,7 @@ class SelectFoodQuantityController(
     }
 
     override fun getState(): BaseController.BaseSavedState {
-        return SavedState(foodState)
+        return SavedState(viewMvc.getFoodData())
     }
 
     override fun onFoodServingSizeChosen(

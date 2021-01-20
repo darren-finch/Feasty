@@ -4,10 +4,11 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.common.utils.KeyboardUtils
 import com.darrenfinch.mymealplanner.common.utils.DefaultModels
+import com.darrenfinch.mymealplanner.common.utils.KeyboardUtils
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentSelectMealFoodQuantityBinding
 import com.darrenfinch.mymealplanner.domain.physicalquantities.PhysicalQuantity
@@ -62,7 +63,7 @@ class SelectFoodQuantityViewMvcImpl(
         }
     }
 
-    private fun getFoodData(): Food {
+    override fun getFoodData(): Food {
         return binding.food?.copy(servingSize = getFoodQuantity()) ?: DefaultModels.defaultFood
     }
 
