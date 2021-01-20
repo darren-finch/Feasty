@@ -10,7 +10,7 @@ import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.SelectFoodForMealDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.view.SelectFoodForMealViewMvc
 import com.darrenfinch.mymealplanner.foods.usecases.GetAllFoodsUseCase
-import com.darrenfinch.mymealplanner.foods.models.Food
+import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 
 class SelectFoodForMealController(
     private val getAllFoodsUseCase: GetAllFoodsUseCase,
@@ -45,7 +45,7 @@ class SelectFoodForMealController(
         return SavedState()
     }
 
-    override fun onFoodChosen(food: Food) {
+    override fun onFoodChosen(food: UiFood) {
         dialogsManager.clearDialog()
         dialogsEventBus.postEvent(
             SelectFoodForMealDialogEvent.ON_FOOD_CHOSEN, DialogResult(

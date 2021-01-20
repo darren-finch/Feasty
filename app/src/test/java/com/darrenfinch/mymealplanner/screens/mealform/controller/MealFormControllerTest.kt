@@ -11,7 +11,7 @@ import com.darrenfinch.mymealplanner.screens.mealform.view.MealFormViewMvc
 import com.darrenfinch.mymealplanner.meals.usecases.GetMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.InsertMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.UpdateMealUseCase
-import com.darrenfinch.mymealplanner.meals.models.Meal
+import com.darrenfinch.mymealplanner.meals.models.domain.Meal
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

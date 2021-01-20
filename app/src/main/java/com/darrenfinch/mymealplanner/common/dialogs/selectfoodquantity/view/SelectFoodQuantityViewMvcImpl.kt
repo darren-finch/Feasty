@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.utils.DefaultModels
@@ -11,7 +12,7 @@ import com.darrenfinch.mymealplanner.common.utils.KeyboardUtils
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentSelectMealFoodQuantityBinding
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
-import com.darrenfinch.mymealplanner.foods.models.Food
+import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 
 class SelectFoodQuantityViewMvcImpl(
     inflater: LayoutInflater,
@@ -31,15 +32,13 @@ class SelectFoodQuantityViewMvcImpl(
 
     private fun initUI() {
         binding.apply {
-            binding.food = DefaultModels.defaultFood
-
             binding.foodQuantityEditText.doOnTextChanged { _, _, _, _ ->
                 macroNutrientsTextView.text = getFoodData().macroNutrients.toString()
             }
         }
     }
 
-    override fun bindFood(food: Food) {
+    override fun bindFood(food: UiFood) {
         binding.food = food
     }
 
@@ -62,8 +61,8 @@ class SelectFoodQuantityViewMvcImpl(
         }
     }
 
-    override fun getFoodData(): Food {
-        return binding.food?.copy(servingSize = getFoodQuantity()) ?: DefaultModels.defaultFood
+    override fun getFoodData(): UiFood {
+        return binding.food?.copy(servingSize = getFoodQuantity()) ?: DefaultModels.defaultUiFood
     }
 
     private fun getFoodQuantity(): PhysicalQuantity {

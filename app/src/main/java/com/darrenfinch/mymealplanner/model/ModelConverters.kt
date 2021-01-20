@@ -1,16 +1,16 @@
 package com.darrenfinch.mymealplanner.model
 
-import com.darrenfinch.mymealplanner.foods.models.Food
-import com.darrenfinch.mymealplanner.mealplans.models.MealPlan
-import com.darrenfinch.mymealplanner.mealplans.models.MealPlanMeal
-import com.darrenfinch.mymealplanner.meals.models.Meal
-import com.darrenfinch.mymealplanner.meals.models.MealFood
-import com.darrenfinch.mymealplanner.foods.models.MacroNutrients
-import com.darrenfinch.mymealplanner.foods.models.MacroCalculator
+import com.darrenfinch.mymealplanner.foods.models.domain.Food
+import com.darrenfinch.mymealplanner.mealplans.models.domain.MealPlan
+import com.darrenfinch.mymealplanner.mealplans.models.domain.MealPlanMeal
+import com.darrenfinch.mymealplanner.meals.models.domain.Meal
+import com.darrenfinch.mymealplanner.meals.models.domain.MealFood
+import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
+import com.darrenfinch.mymealplanner.foods.models.domain.MacroCalculator
 import com.darrenfinch.mymealplanner.model.room.daos.FoodsDao
 import com.darrenfinch.mymealplanner.model.room.daos.MealFoodsDao
 import com.darrenfinch.mymealplanner.model.room.daos.MealsDao
-import com.darrenfinch.mymealplanner.model.room.entities.*
+import com.darrenfinch.mymealplanner.model.room.models.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

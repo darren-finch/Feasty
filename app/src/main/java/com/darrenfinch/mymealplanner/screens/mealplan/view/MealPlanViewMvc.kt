@@ -1,9 +1,9 @@
 package com.darrenfinch.mymealplanner.screens.mealplan.view
 
 import com.darrenfinch.mymealplanner.common.views.ObservableViewMvc
-import com.darrenfinch.mymealplanner.mealplans.models.MealPlan
 import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanMacros
-import com.darrenfinch.mymealplanner.mealplans.models.MealPlanMeal
+import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
+import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
 
 interface MealPlanViewMvc : ObservableViewMvc<MealPlanViewMvc.Listener> {
     interface Listener {
@@ -11,12 +11,12 @@ interface MealPlanViewMvc : ObservableViewMvc<MealPlanViewMvc.Listener> {
         fun onAddNewMealPlanClicked()
         fun onDeleteMealPlanClicked()
         fun onAddNewMealPlanMealClicked()
-        fun onDeleteMealPlanMealClicked(mealPlanMeal: MealPlanMeal)
+        fun onDeleteMealPlanMealClicked(mealPlanMeal: UiMealPlanMeal)
     }
 
-    fun bindMealPlanMeals(meals: List<MealPlanMeal>)
+    fun bindMealPlanMeals(meals: List<UiMealPlanMeal>)
     fun bindMealPlanMacros(mealPlanMacros: MealPlanMacros)
-    fun bindMealPlans(mealPlans: List<MealPlan>)
+    fun bindMealPlans(mealPlans: List<UiMealPlan>)
     fun setSelectedMealPlanIndex(index: Int)
     fun hideMealPlans()
     fun showMealPlans()

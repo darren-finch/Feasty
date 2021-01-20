@@ -7,7 +7,7 @@ import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.common.utils.DefaultModels
 import com.darrenfinch.mymealplanner.screens.mealplanform.view.MealPlanFormViewMvc
 import com.darrenfinch.mymealplanner.mealplans.usecases.InsertMealPlanUseCase
-import com.darrenfinch.mymealplanner.mealplans.models.MealPlan
+import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
 
 class MealPlanFormController(
     private val insertMealPlanUseCase: InsertMealPlanUseCase,
@@ -15,9 +15,9 @@ class MealPlanFormController(
     private val backPressDispatcher: BackPressDispatcher
 ) : BaseController, MealPlanFormViewMvc.Listener, BackPressListener {
 
-    data class SavedState(val mealPlanDetails: MealPlan) : BaseController.BaseSavedState
+    data class SavedState(val mealPlanDetails: UiMealPlan) : BaseController.BaseSavedState
 
-    private var mealPlanDetailsState = DefaultModels.defaultMealPlan
+    private var mealPlanDetailsState = DefaultModels.defaultUiMealPlan
 
     private lateinit var viewMvc: MealPlanFormViewMvc
 
@@ -36,7 +36,7 @@ class MealPlanFormController(
         backPressDispatcher.unregisterListener(this)
     }
 
-    override fun onDoneButtonClicked(editedMealPlanDetails: MealPlan) {
+    override fun onDoneButtonClicked(editedMealPlanDetails: UiMealPlan) {
         insertMealPlanUseCase.insertMealPlan(editedMealPlanDetails)
         screensNavigator.goBack()
     }

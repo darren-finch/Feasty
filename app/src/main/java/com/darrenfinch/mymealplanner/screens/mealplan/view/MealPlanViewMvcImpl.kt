@@ -8,12 +8,12 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.common.lists.mealplanmealsrecyclerviewadapter.MealPlanMealsRecyclerViewAdapter
-import com.darrenfinch.mymealplanner.common.lists.recyclerviewitemdecorations.MarginItemDecoration
+import com.darrenfinch.mymealplanner.common.lists.mealplanmealslist.MealPlanMealsRecyclerViewAdapter
+import com.darrenfinch.mymealplanner.common.lists.itemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentMealPlanBinding
-import com.darrenfinch.mymealplanner.mealplans.models.MealPlan
-import com.darrenfinch.mymealplanner.mealplans.models.MealPlanMeal
+import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
+import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
 import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanMacros
 
 class MealPlanViewMvcImpl(
@@ -28,7 +28,7 @@ class MealPlanViewMvcImpl(
     )
 
     private val listener = object : MealPlanMealsRecyclerViewAdapter.ItemEventListener {
-        override fun onDelete(mealPlanMeal: MealPlanMeal) {
+        override fun onDelete(mealPlanMeal: UiMealPlanMeal) {
             onDeleteMealPlanMealClicked(mealPlanMeal)
         }
     }
@@ -78,13 +78,13 @@ class MealPlanViewMvcImpl(
         }
     }
 
-    private fun onDeleteMealPlanMealClicked(mealPlanMeal: MealPlanMeal) {
+    private fun onDeleteMealPlanMealClicked(mealPlanMeal: UiMealPlanMeal) {
         for (listener in getListeners()) {
             listener.onDeleteMealPlanMealClicked(mealPlanMeal)
         }
     }
 
-    private fun setupSelectMealPlanSpinner(mealPlans: List<MealPlan>) {
+    private fun setupSelectMealPlanSpinner(mealPlans: List<UiMealPlan>) {
         //TODO: This will come from the database in the future.
         val spinnerAdapter = ArrayAdapter(
             getContext(),
@@ -117,7 +117,7 @@ class MealPlanViewMvcImpl(
         }
     }
 
-    override fun bindMealPlanMeals(meals: List<MealPlanMeal>) {
+    override fun bindMealPlanMeals(meals: List<UiMealPlanMeal>) {
         binding.noMealPlanMeals.visibility = if (meals.isEmpty()) View.VISIBLE else View.GONE
         adapter.updateItems(meals)
     }
@@ -126,7 +126,7 @@ class MealPlanViewMvcImpl(
         binding.mealPlanMacros = mealPlanMacros
     }
 
-    override fun bindMealPlans(mealPlans: List<MealPlan>) {
+    override fun bindMealPlans(mealPlans: List<UiMealPlan>) {
         setupSelectMealPlanSpinner(mealPlans)
     }
 

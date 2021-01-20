@@ -1,8 +1,8 @@
 package com.darrenfinch.mymealplanner.model.helpers
 
-import com.darrenfinch.mymealplanner.foods.models.Food
-import com.darrenfinch.mymealplanner.foods.models.MacroCalculator
-import com.darrenfinch.mymealplanner.foods.models.MacroNutrients
+import com.darrenfinch.mymealplanner.foods.models.domain.Food
+import com.darrenfinch.mymealplanner.foods.models.domain.MacroCalculator
+import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.physicalquantities.units.metric.Gram
 import com.darrenfinch.mymealplanner.physicalquantities.units.metric.Kilo

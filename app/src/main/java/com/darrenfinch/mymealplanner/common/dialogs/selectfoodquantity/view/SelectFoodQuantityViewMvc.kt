@@ -3,16 +3,14 @@ package com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.view
 import android.app.Dialog
 import com.darrenfinch.mymealplanner.common.views.ObservableViewMvc
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
-import com.darrenfinch.mymealplanner.foods.models.Food
+import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 
 interface SelectFoodQuantityViewMvc : ObservableViewMvc<SelectFoodQuantityViewMvc.Listener> {
     interface Listener {
-        fun onFoodServingSizeChosen(selectedFood: Food, selectedFoodQuantity: PhysicalQuantity)
+        fun onFoodServingSizeChosen(selectedFood: UiFood, selectedFoodQuantity: PhysicalQuantity)
     }
 
-    fun bindFood(food: Food)
+    fun bindFood(food: UiFood)
     fun makeDialog() : Dialog
-
-    // TODO: Remove when view models are introduced
-    fun getFoodData(): Food
+    fun getFoodData(): UiFood
 }

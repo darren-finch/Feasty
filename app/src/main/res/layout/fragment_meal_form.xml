@@ -6,7 +6,7 @@
     <data>
         <variable
             name="meal"
-            type="com.darrenfinch.mymealplanner.meals.models.Meal" />
+            type="com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

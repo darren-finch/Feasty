@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.common.lists.foodrecyclerviewadapter.FoodsRecyclerViewAdapter
-import com.darrenfinch.mymealplanner.common.lists.recyclerviewitemdecorations.MarginItemDecoration
+import com.darrenfinch.mymealplanner.common.lists.foodslist.FoodsRecyclerViewAdapter
+import com.darrenfinch.mymealplanner.common.lists.itemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentSelectItemBinding
-import com.darrenfinch.mymealplanner.foods.models.Food
+import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 
 class SelectFoodForMealViewMvcImpl(
     inflater: LayoutInflater,
@@ -23,7 +23,7 @@ class SelectFoodForMealViewMvcImpl(
 
     private val foodsListItemEventListener = object : FoodsRecyclerViewAdapter.ItemEventListener {
         override fun onItemClick(foodId: Int) {}
-        override fun onItemClick(food: Food) {
+        override fun onItemClick(food: UiFood) {
             for (listener in getListeners()) {
                 listener.onFoodChosen(food)
             }
@@ -51,7 +51,7 @@ class SelectFoodForMealViewMvcImpl(
         }
     }
 
-    override fun bindFoods(foods: List<Food>) {
+    override fun bindFoods(foods: List<UiFood>) {
         adapter.updateItems(foods)
     }
 

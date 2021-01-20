@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.darrenfinch.mymealplanner.model.room.daos.*
-import com.darrenfinch.mymealplanner.model.room.entities.*
+import com.darrenfinch.mymealplanner.model.room.models.*
 
 @Database(
     entities = [DatabaseMeal::class, DatabaseFood::class, DatabaseMealFood::class, DatabaseMealPlan::class, DatabaseMealPlanMeal::class],

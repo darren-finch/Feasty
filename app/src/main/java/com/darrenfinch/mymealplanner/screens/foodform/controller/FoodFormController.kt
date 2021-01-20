@@ -12,7 +12,7 @@ import com.darrenfinch.mymealplanner.screens.foodform.view.FoodFormViewMvc
 import com.darrenfinch.mymealplanner.foods.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.foods.usecases.InsertFoodUseCase
 import com.darrenfinch.mymealplanner.foods.usecases.UpdateFoodUseCase
-import com.darrenfinch.mymealplanner.foods.models.Food
+import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 
 class FoodFormController(
     private val screensNavigator: ScreensNavigator,
@@ -22,13 +22,13 @@ class FoodFormController(
     private val backPressDispatcher: BackPressDispatcher
 ) : BaseController, FoodFormViewMvc.Listener, BackPressListener {
 
-    data class SavedState(val hasLoadedFoodDetails: Boolean, val foodDetails: Food) : BaseController.BaseSavedState
+    data class SavedState(val hasLoadedFoodDetails: Boolean, val foodDetails: UiFood) : BaseController.BaseSavedState
 
     private lateinit var viewMvc: FoodFormViewMvc
 
     private var foodIdArg = Constants.INVALID_ID
 
-    private var foodDetailsState: Food = DefaultModels.defaultFood
+    private var foodDetailsState: UiFood = DefaultModels.defaultUiFood
     private var hasLoadedFoodDetailsState = false
 
     fun bindView(viewMvc: FoodFormViewMvc) {
@@ -58,7 +58,7 @@ class FoodFormController(
         }
     }
 
-    override fun onDoneButtonClicked(editedFoodDetails: Food) {
+    override fun onDoneButtonClicked(editedFoodDetails: UiFood) {
         if (foodIdArg != Constants.INVALID_ID)
             insertFoodUseCase.insertFood(editedFoodDetails)
         else

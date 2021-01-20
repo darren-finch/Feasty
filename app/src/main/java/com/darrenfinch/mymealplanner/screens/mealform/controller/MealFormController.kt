@@ -21,9 +21,10 @@ import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.meals.usecases.GetMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.InsertMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.UpdateMealUseCase
-import com.darrenfinch.mymealplanner.foods.models.Food
-import com.darrenfinch.mymealplanner.meals.models.Meal
-import com.darrenfinch.mymealplanner.meals.models.MealFood
+import com.darrenfinch.mymealplanner.foods.models.domain.Food
+import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
+import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
+import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
 
 class MealFormController(
     private val insertMealUseCase: InsertMealUseCase,
@@ -35,13 +36,13 @@ class MealFormController(
     private val backPressDispatcher: BackPressDispatcher
 ) : BaseController, MealFormViewMvc.Listener, BackPressListener, DialogsEventBus.Listener {
 
-    data class SavedState(val hasLoadedMealDetails: Boolean, val mealDetails: Meal) :
+    data class SavedState(val hasLoadedMealDetails: Boolean, val mealDetails: UiMeal) :
         BaseController.BaseSavedState
 
     private var mealIdArg = Constants.INVALID_ID
 
     private var hasLoadedMealDetailsState = false
-    private var mealDetailsState: Meal = DefaultModels.defaultMeal
+    private var mealDetailsState: UiMeal = DefaultModels.defaultUiMeal
 
     private lateinit var viewMvc: MealFormViewMvc
 
@@ -81,7 +82,7 @@ class MealFormController(
         dialogsManager.showSelectFoodForMealScreenDialog()
     }
 
-    override fun onDoneButtonClicked(editedMealDetails: Meal) {
+    override fun onDoneButtonClicked(editedMealDetails: UiMeal) {
         if (updatingMeal) {
             updateMealUseCase.updateMeal(editedMealDetails)
         } else {
@@ -116,10 +117,10 @@ class MealFormController(
                 dialogsManager.showSelectFoodQuantityDialog(result.data.getInt(FOOD_ID_RESULT))
             }
             else if (event == SelectFoodQuantityDialogEvent.ON_FOOD_QUANTITY_CHOSEN) {
-                val selectedFood = result.data.getSerializable(SELECTED_FOOD_RESULT) as Food
+                val selectedFood = result.data.getSerializable(SELECTED_FOOD_RESULT) as UiFood
                 val selectedFoodQuantity =
                     result.data.getSerializable(SELECTED_FOOD_QUANTITY_RESULT) as PhysicalQuantity
-                val mealFoodFromSelectedFood = MealFood(
+                val mealFoodFromSelectedFood = UiMealFood(
                     id = Constants.VALID_ID,
                     foodId = selectedFood.id,
                     mealId = mealDetailsState.id,

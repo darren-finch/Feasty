@@ -3,7 +3,7 @@
     package="com.darrenfinch.mymealplanner">
 
     <application
-        android:name=".Feasty"
+        android:name=".common.Feasty"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

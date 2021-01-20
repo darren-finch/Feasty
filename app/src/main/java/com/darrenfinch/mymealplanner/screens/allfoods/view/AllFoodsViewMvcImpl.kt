@@ -5,17 +5,16 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.common.lists.foodrecyclerviewadapter.FoodsRecyclerViewAdapter
-import com.darrenfinch.mymealplanner.common.lists.recyclerviewitemdecorations.MarginItemDecoration
+import com.darrenfinch.mymealplanner.common.lists.foodslist.FoodsRecyclerViewAdapter
+import com.darrenfinch.mymealplanner.common.lists.itemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentAllFoodsBinding
-import com.darrenfinch.mymealplanner.foods.models.Food
+import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 
 class AllFoodsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseObservableViewMvc<AllFoodsViewMvc.Listener>(), AllFoodsViewMvc {
 
     private val foodsListItemEventListener: FoodsRecyclerViewAdapter.ItemEventListener = object : FoodsRecyclerViewAdapter.ItemEventListener {
         override fun onItemClick(foodId: Int) { }
-        override fun onItemClick(food: Food) { }
         override fun onItemEdit(foodId: Int) {
             notifyListenersOfItemEdit(foodId)
         }
@@ -59,7 +58,7 @@ class AllFoodsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
         }
     }
 
-    override fun bindFoods(newFoods: List<Food>) {
+    override fun bindFoods(newFoods: List<UiFood>) {
         foodsListAdapter.updateItems(newFoods)
     }
 }

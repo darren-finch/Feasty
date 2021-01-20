@@ -7,7 +7,7 @@ import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.screens.allmeals.view.AllMealsViewMvc
 import com.darrenfinch.mymealplanner.meals.usecases.DeleteMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.GetAllMealsUseCase
-import com.darrenfinch.mymealplanner.meals.models.Meal
+import com.darrenfinch.mymealplanner.meals.models.domain.Meal
 
 class AllMealsController(
     private val screensNavigator: ScreensNavigator,

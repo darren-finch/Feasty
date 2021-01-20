@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.common.lists.mealsrecyclerviewadapter.MealsRecyclerViewAdapter
-import com.darrenfinch.mymealplanner.common.lists.recyclerviewitemdecorations.MarginItemDecoration
+import com.darrenfinch.mymealplanner.common.lists.mealslist.MealsRecyclerViewAdapter
+import com.darrenfinch.mymealplanner.common.lists.itemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentSelectItemBinding
-import com.darrenfinch.mymealplanner.meals.models.Meal
+import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 
 class SelectMealPlanMealViewMvcImpl(
     inflater: LayoutInflater,
@@ -20,15 +20,15 @@ class SelectMealPlanMealViewMvcImpl(
     private val binding: FragmentSelectItemBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_select_item, parent, false)
 
     private val mealsListItemEventListener = object : MealsRecyclerViewAdapter.ItemEventListener {
-        override fun onSelect(meal: Meal) {
+        override fun onSelect(meal: UiMeal) {
             onMealSelected(meal)
         }
 
         override fun onEdit(mealId: Int) { }
-        override fun onDelete(meal: Meal) { }
+        override fun onDelete(meal: UiMeal) { }
     }
 
-    private fun onMealSelected(meal: Meal) {
+    private fun onMealSelected(meal: UiMeal) {
         for (listener in getListeners()) {
             listener.onMealSelected(meal)
         }
@@ -49,7 +49,7 @@ class SelectMealPlanMealViewMvcImpl(
         }
     }
 
-    override fun bindMeals(meals: List<Meal>) {
+    override fun bindMeals(meals: List<UiMeal>) {
         adapter.updateItems(meals)
     }
 

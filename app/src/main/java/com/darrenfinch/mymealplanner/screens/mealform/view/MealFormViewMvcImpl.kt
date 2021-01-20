@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.common.lists.mealfoodsrecyclerviewadapter.MealFoodsRecyclerViewAdapter
-import com.darrenfinch.mymealplanner.common.lists.recyclerviewitemdecorations.MarginItemDecoration
+import com.darrenfinch.mymealplanner.common.lists.mealfoodslist.MealFoodsRecyclerViewAdapter
+import com.darrenfinch.mymealplanner.common.lists.itemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.misc.Constants
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentMealFormBinding
-import com.darrenfinch.mymealplanner.meals.models.Meal
+import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 
 class MealFormViewMvcImpl(
     inflater: LayoutInflater,
@@ -51,8 +51,8 @@ class MealFormViewMvcImpl(
         }
     }
 
-    override fun getMealDetails(): Meal {
-        return Meal(
+    override fun getMealDetails(): UiMeal {
+        return UiMeal(
             id = binding.meal?.id ?: Constants.VALID_ID,
             title = binding.mealNameEditText.text.toString(),
             foods = binding.meal?.foods ?: listOf()
@@ -65,7 +65,7 @@ class MealFormViewMvcImpl(
         }
     }
 
-    override fun bindMealDetails(mealDetails: Meal) {
+    override fun bindMealDetails(mealDetails: UiMeal) {
         binding.meal = mealDetails
         mealFoodsRecyclerViewAdapter.updateItems(mealDetails.foods)
     }

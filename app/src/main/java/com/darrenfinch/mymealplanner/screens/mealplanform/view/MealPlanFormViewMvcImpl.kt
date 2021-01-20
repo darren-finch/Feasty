@@ -7,7 +7,7 @@ import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.utils.KeyboardUtils
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentMealPlanFormBinding
-import com.darrenfinch.mymealplanner.mealplans.models.MealPlan
+import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
 
 class MealPlanFormViewMvcImpl(
     inflater: LayoutInflater,
@@ -25,12 +25,12 @@ class MealPlanFormViewMvcImpl(
         setupUI()
     }
 
-    override fun bindMealPlanDetails(mealPlan: MealPlan) {
+    override fun bindMealPlanDetails(mealPlan: UiMealPlan) {
         binding.mealPlan = mealPlan
     }
 
-    override fun getMealPlanDetails(): MealPlan {
-        return MealPlan(
+    override fun getMealPlanDetails(): UiMealPlan {
+        return UiMealPlan(
             id = binding.mealPlan?.id ?: 0,
             title = binding.mealPlanNameEditText.text.toString(),
             requiredCalories = binding.requiredCaloriesEditText.text.toString().toInt(),

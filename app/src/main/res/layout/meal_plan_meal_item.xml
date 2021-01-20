@@ -4,13 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="com.darrenfinch.mymealplanner.common.utils.StringUtils"/>
-        <import type="com.darrenfinch.mymealplanner.foods.models.MacroCalculator"/>
+        <import type="com.darrenfinch.mymealplanner.foods.models.domain.MacroCalculator"/>
         <variable
             name="mealPlanMeal"
-            type="com.darrenfinch.mymealplanner.mealplans.models.MealPlanMeal" />
+            type="com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal" />
         <variable
             name="viewHolder"
-            type="com.darrenfinch.mymealplanner.common.lists.mealplanmealsrecyclerviewadapter.MealPlanMealViewHolder" />
+            type="com.darrenfinch.mymealplanner.common.lists.mealplanmealslist.MealPlanMealViewHolder" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

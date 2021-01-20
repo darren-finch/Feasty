@@ -11,7 +11,7 @@ import com.darrenfinch.mymealplanner.common.dialogs.selectmealplanmeal.SelectMea
 import com.darrenfinch.mymealplanner.common.dialogs.selectmealplanmeal.controller.SelectMealPlanMealDialog.Companion.SELECTED_MEAL_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectmealplanmeal.view.SelectMealPlanMealViewMvc
 import com.darrenfinch.mymealplanner.meals.usecases.GetAllMealsUseCase
-import com.darrenfinch.mymealplanner.meals.models.Meal
+import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 
 class SelectMealPlanMealController(
     private val getAllMealsUseCase: GetAllMealsUseCase,
@@ -41,7 +41,7 @@ class SelectMealPlanMealController(
         })
     }
 
-    override fun onMealSelected(selectedMeal: Meal) {
+    override fun onMealSelected(selectedMeal: UiMeal) {
         dialogsManager.clearDialog()
         dialogsEventBus.postEvent(SelectMealPlanMealDialogEvent.ON_MEAL_SELECTED, DialogResult(bundleOf(SELECTED_MEAL_RESULT to selectedMeal)))
     }

@@ -7,14 +7,14 @@ import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.dialogs.DialogResult
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
-import com.darrenfinch.mymealplanner.common.utils.DefaultModels
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD_QUANTITY_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.view.SelectFoodQuantityViewMvc
-import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
+import com.darrenfinch.mymealplanner.common.utils.DefaultModels
+import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 import com.darrenfinch.mymealplanner.foods.usecases.GetFoodUseCase
-import com.darrenfinch.mymealplanner.foods.models.Food
+import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 
 class SelectFoodQuantityController(
     private val getFoodUseCase: GetFoodUseCase,
@@ -22,11 +22,11 @@ class SelectFoodQuantityController(
     private val dialogsEventBus: DialogsEventBus
 ) : BaseController, SelectFoodQuantityViewMvc.Listener {
 
-    data class SavedState(val food: Food) : BaseController.BaseSavedState
+    data class SavedState(val food: UiFood) : BaseController.BaseSavedState
 
     private var foodIdArg = -1
 
-    private var foodState = DefaultModels.defaultFood
+    private var foodState = DefaultModels.defaultUiFood
 
     private lateinit var viewMvc: SelectFoodQuantityViewMvc
 
@@ -45,7 +45,7 @@ class SelectFoodQuantityController(
     fun fetchFood(viewLifecycleOwner: LifecycleOwner) {
         viewMvc.bindFood(foodState)
 
-        val hasLoadedFoodDetails = foodState != DefaultModels.defaultFood
+        val hasLoadedFoodDetails = foodState != DefaultModels.defaultUiFood
         if (!hasLoadedFoodDetails) {
             getFoodUseCase.fetchFood(foodIdArg).observe(viewLifecycleOwner, Observer {
                 foodState = it
@@ -69,7 +69,7 @@ class SelectFoodQuantityController(
     }
 
     override fun onFoodServingSizeChosen(
-        selectedFood: Food,
+        selectedFood: UiFood,
         selectedFoodQuantity: PhysicalQuantity
     ) {
         dialogsManager.clearDialog()

@@ -3,10 +3,10 @@ package com.darrenfinch.mymealplanner.model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.darrenfinch.mymealplanner.foods.models.Food
-import com.darrenfinch.mymealplanner.mealplans.models.MealPlan
-import com.darrenfinch.mymealplanner.mealplans.models.MealPlanMeal
-import com.darrenfinch.mymealplanner.meals.models.Meal
+import com.darrenfinch.mymealplanner.foods.models.domain.Food
+import com.darrenfinch.mymealplanner.mealplans.models.domain.MealPlan
+import com.darrenfinch.mymealplanner.mealplans.models.domain.MealPlanMeal
+import com.darrenfinch.mymealplanner.meals.models.domain.Meal
 import com.darrenfinch.mymealplanner.model.ModelConverters.convertDatabaseFoodToFood
 import com.darrenfinch.mymealplanner.model.ModelConverters.convertDatabaseMealFoodToMealFood
 import com.darrenfinch.mymealplanner.model.ModelConverters.convertDatabaseMealPlanMealToMealPlanMeal

@@ -13,8 +13,9 @@ import com.darrenfinch.mymealplanner.databinding.FragmentFoodFormBinding
 import com.darrenfinch.mymealplanner.physicalquantities.*
 import com.darrenfinch.mymealplanner.physicalquantities.units.MeasurementType
 import com.darrenfinch.mymealplanner.physicalquantities.units.MeasurementUnit
-import com.darrenfinch.mymealplanner.foods.models.Food
-import com.darrenfinch.mymealplanner.foods.models.MacroNutrients
+import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
+import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
+import com.darrenfinch.mymealplanner.foods.models.presentation.UiMacroNutrients
 
 class FoodFormViewMvcImpl(
     inflater: LayoutInflater,
@@ -35,10 +36,10 @@ class FoodFormViewMvcImpl(
         setupUI()
     }
 
-    override fun bindFoodDetails(foodDetails: Food?) {
+    override fun bindFoodDetails(foodDetails: UiFood) {
         binding.food = foodDetails
-        setSelectedMeasurementType(foodDetails?.servingSize?.unit?.getMeasurementType() ?: selectedMeasurementType)
-        setSelectedMeasurementUnit(foodDetails?.servingSize?.unit ?: selectedMeasurementUnit)
+        setSelectedMeasurementType(foodDetails.servingSize.unit.getMeasurementType())
+        setSelectedMeasurementUnit(foodDetails.servingSize.unit)
     }
 
     private fun setupUI() {
@@ -167,10 +168,10 @@ class FoodFormViewMvcImpl(
         }
     }
 
-    override fun getFoodDetails() = Food(
+    override fun getFoodDetails() = UiFood(
         id = getFoodId(),
         title = getFoodName(),
-        macroNutrients = MacroNutrients(
+        macroNutrients = UiMacroNutrients(
             calories = getCalories(),
             carbs = getCarbohydrates(),
             fats = getFat(),

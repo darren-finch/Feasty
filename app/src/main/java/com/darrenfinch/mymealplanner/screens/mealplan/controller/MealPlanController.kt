@@ -5,7 +5,7 @@ import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.screens.mealplan.view.MealPlanViewMvc
-import com.darrenfinch.mymealplanner.mealplans.models.MealPlanMeal
+import com.darrenfinch.mymealplanner.mealplans.models.domain.MealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.usecases.*
 
 // TODO: Reimplement this controller
