@@ -4,9 +4,48 @@ import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.meals.models.domain.Meal
 import com.darrenfinch.mymealplanner.meals.models.domain.MealFood
 import com.darrenfinch.mymealplanner.mealplans.models.domain.MealPlanMeal
+import com.darrenfinch.mymealplanner.mealplans.models.mappers.uiMealPlanMealToMealPlanMeal
+import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
+import com.darrenfinch.mymealplanner.meals.models.mappers.uiMealToMeal
+import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 
 object MacroCalculator {
-    fun updateMacrosForFoodWithNewServingSize(food: Food, newServingSize: PhysicalQuantity): Food {
+
+    /**
+     * Takes some macro nutrients that are based on oldServingSize
+     * and returns what the macro nutrients would be if they were based on newServingSize
+     */
+    fun baseMacrosOnNewServingSize(
+        oldMacros: MacroNutrients,
+        oldServingSize: PhysicalQuantity,
+        newServingSize: PhysicalQuantity
+    ): MacroNutrients {
+        val initialCalories = oldMacros.calories
+        val initialProtein = oldMacros.proteins
+        val initialCarbs = oldMacros.carbs
+        val initialFat = oldMacros.fats
+
+        val caloriesPerUnit = oldServingSize.quantity / initialCalories
+        val finalCalories = newServingSize.quantity / caloriesPerUnit
+
+        val proteinPerUnit = oldServingSize.quantity / initialProtein
+        val finalProtein = newServingSize.quantity / proteinPerUnit
+
+        val carbsPerUnit = oldServingSize.quantity / initialCarbs
+        val finalCarbs = newServingSize.quantity / carbsPerUnit
+
+        val fatPerUnit = oldServingSize.quantity / initialFat
+        val finalFat = newServingSize.quantity / fatPerUnit
+
+        return MacroNutrients(
+            calories = finalCalories.toInt(),
+            proteins = finalProtein.toInt(),
+            carbs = finalCarbs.toInt(),
+            fats = finalFat.toInt()
+        )
+    }
+
+    fun getMacrosForFoodWithNewServingSize(food: Food, newServingSize: PhysicalQuantity): Food {
         val macros = food.macroNutrients
         val initialCalories = macros.calories
         val initialProtein = macros.proteins
@@ -27,13 +66,18 @@ object MacroCalculator {
 
         return Food(
             food.id, food.title, newServingSize, MacroNutrients(
-                calories = finalCalories.toInt(), proteins = finalProtein.toInt(), carbs = finalCarbs.toInt(),
+                calories = finalCalories.toInt(),
+                proteins = finalProtein.toInt(),
+                carbs = finalCarbs.toInt(),
                 fats = finalFat.toInt()
             )
         )
     }
 
-    fun updateMacrosForMealFoodWithNewServingSize(mealFood: MealFood, newServingSize: PhysicalQuantity): MealFood {
+    fun getMacrosForMealFoodWithNewServingSize(
+        mealFood: MealFood,
+        newServingSize: PhysicalQuantity
+    ): MealFood {
         val macros = mealFood.macroNutrients
         val initialCalories = macros.calories
         val initialProtein = macros.proteins
@@ -63,9 +107,16 @@ object MacroCalculator {
     }
 
     fun calculateTotalCalories(meal: MealPlanMeal) = meal.foods.sumBy { it.macroNutrients.calories }
-    fun calculateTotalCarbohydrates(meal: MealPlanMeal) = meal.foods.sumBy { it.macroNutrients.carbs }
+    fun calculateTotalCarbohydrates(meal: MealPlanMeal) =
+        meal.foods.sumBy { it.macroNutrients.carbs }
+
     fun calculateTotalFats(meal: MealPlanMeal) = meal.foods.sumBy { it.macroNutrients.fats }
     fun calculateTotalProteins(meal: MealPlanMeal) = meal.foods.sumBy { it.macroNutrients.proteins }
+
+    fun calculateMealMacroNutrients(meal: UiMeal): String {
+        return calculateMealMacroNutrients(uiMealToMeal(meal))
+    }
+
     fun calculateMealMacroNutrients(meal: Meal): String {
         var totalCalories = 0
         var totalProteins = 0
@@ -77,7 +128,16 @@ object MacroCalculator {
         meal.foods.forEach { food -> totalCarbohydrates += food.macroNutrients.carbs }
         meal.foods.forEach { food -> totalFats += food.macroNutrients.fats }
 
-        return MacroNutrients(totalCalories, totalCarbohydrates, totalProteins, totalFats).toString()
+        return MacroNutrients(
+            totalCalories,
+            totalCarbohydrates,
+            totalProteins,
+            totalFats
+        ).toString()
+    }
+
+    fun calculateMealMacroNutrients(mealPlanMeal: UiMealPlanMeal): String {
+        return calculateMealMacroNutrients(uiMealPlanMealToMealPlanMeal(mealPlanMeal))
     }
 
     fun calculateMealMacroNutrients(mealPlanMeal: MealPlanMeal): String {
@@ -91,6 +151,11 @@ object MacroCalculator {
         mealPlanMeal.foods.forEach { food -> totalCarbohydrates += food.macroNutrients.carbs }
         mealPlanMeal.foods.forEach { food -> totalFats += food.macroNutrients.fats }
 
-        return MacroNutrients(totalCalories, totalCarbohydrates, totalProteins, totalFats).toString()
+        return MacroNutrients(
+            totalCalories,
+            totalCarbohydrates,
+            totalProteins,
+            totalFats
+        ).toString()
     }
 }

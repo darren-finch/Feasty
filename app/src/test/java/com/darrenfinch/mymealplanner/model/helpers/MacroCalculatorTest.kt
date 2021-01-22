@@ -24,7 +24,7 @@ internal class MacroCalculatorTest {
     @Test
     fun test_updateMacrosForFoodWithNewServingSize() {
         val rice = Food(0, "Rice", PhysicalQuantity(200.0, Gram()), MacroNutrients(170, 37, 4, 2))
-        val moreRice = MacroCalculator.updateMacrosForFoodWithNewServingSize(rice, PhysicalQuantity(0.5, Gram(
+        val moreRice = MacroCalculator.getMacrosForFoodWithNewServingSize(rice, PhysicalQuantity(0.5, Gram(
             Kilo()
         )
         ))

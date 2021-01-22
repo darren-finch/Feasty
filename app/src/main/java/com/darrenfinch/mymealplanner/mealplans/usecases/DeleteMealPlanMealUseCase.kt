@@ -4,7 +4,7 @@ import com.darrenfinch.mymealplanner.mealplans.models.domain.MealPlanMeal
 import com.darrenfinch.mymealplanner.model.MainRepository
 
 class DeleteMealPlanMealUseCase(private val repository: MainRepository) {
-    fun deleteMealPlanMeal(mealPlanMeal: MealPlanMeal) {
-        repository.deleteMealPlanMeal(mealPlanMeal)
+    suspend fun deleteMealPlanMeal(id: Int) {
+        repository.deleteMealPlanMeal(id)
     }
 }

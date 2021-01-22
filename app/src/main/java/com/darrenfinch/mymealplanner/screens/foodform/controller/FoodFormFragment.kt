@@ -27,7 +27,7 @@ class FoodFormFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        controller = fragmentCompositionRoot.getFoodFormController()
+        controller = controllerCompositionRoot.getFoodFormController()
     }
 
     override fun onCreateView(
@@ -35,12 +35,12 @@ class FoodFormFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val viewMvc = fragmentCompositionRoot.getViewMvcFactory().getFoodFormViewMvc(container)
+        val viewMvc = controllerCompositionRoot.getViewMvcFactory().getFoodFormViewMvc(container)
 
         controller.bindView(viewMvc)
         setControllerArgs(requireArguments())
         restoreControllerState(savedInstanceState)
-        controller.fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner)
+        controller.getFoodDetailsIfPossibleAndBindToView()
 
         return viewMvc.getRootView()
     }

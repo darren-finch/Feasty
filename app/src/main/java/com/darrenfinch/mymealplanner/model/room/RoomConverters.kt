@@ -4,7 +4,9 @@ import androidx.room.TypeConverter
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.physicalquantities.stringsToUnits
 import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
-import com.darrenfinch.mymealplanner.model.room.models.DatabaseMealFood
+import com.darrenfinch.mymealplanner.foods.models.presentation.UiMacroNutrients
+import com.darrenfinch.mymealplanner.model.room.models.foods.DatabaseMacroNutrients
+import com.darrenfinch.mymealplanner.model.room.models.meals.DatabaseMealFood
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -21,13 +23,13 @@ class RoomConverters {
     }
 
     @TypeConverter
-    fun convertMacroNutrientsToJsonString(value: MacroNutrients): String {
+    fun convertMacroNutrientsToJsonString(value: DatabaseMacroNutrients): String {
         return Gson().toJson(value)
     }
 
     @TypeConverter
-    fun convertJsonStringToMacroNutrients(value: String): MacroNutrients {
-        return Gson().fromJson(value, MacroNutrients::class.java)
+    fun convertJsonStringToMacroNutrients(value: String): DatabaseMacroNutrients {
+        return Gson().fromJson(value, DatabaseMacroNutrients::class.java)
     }
 
     @TypeConverter

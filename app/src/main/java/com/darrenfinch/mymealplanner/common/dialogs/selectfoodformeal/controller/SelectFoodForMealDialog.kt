@@ -33,7 +33,7 @@ class SelectFoodForMealDialog : BaseDialog() {
         viewMvc = controllerCompositionRoot.getViewMvcFactory().getSelectFoodForMealViewMvc(null)
 
         controller.bindView(viewMvc)
-        controller.fetchAllFoods(this)
+        controller.getAllFoodsAndBindToView()
 
         return viewMvc.makeDialog()
     }

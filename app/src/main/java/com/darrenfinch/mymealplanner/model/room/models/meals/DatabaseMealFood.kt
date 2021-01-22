@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.model.room.models
+package com.darrenfinch.mymealplanner.model.room.models.meals
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

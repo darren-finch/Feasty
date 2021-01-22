@@ -3,6 +3,8 @@ package com.darrenfinch.mymealplanner.physicalquantities
 import com.darrenfinch.mymealplanner.physicalquantities.units.MeasurementUnit
 import java.io.Serializable
 
+// TODO: Consider splitting into data, domain, and presentation models.
+// Since this is not an anemic model, maybe also consider moving some other operations to their respective models, for consistency
 class PhysicalQuantity(val quantity: Double, val unit: MeasurementUnit) : Serializable {
     companion object {
         val defaultPhysicalQuantity = PhysicalQuantity(0.0, MeasurementUnit.defaultUnit)
@@ -19,18 +21,20 @@ class PhysicalQuantity(val quantity: Double, val unit: MeasurementUnit) : Serial
      */
     fun convert(newUnit: MeasurementUnit): PhysicalQuantity {
         var mutableQuantity = quantity
-        if(unit.getMeasurementType().isCompatibleForConversionTo(newUnit.getMeasurementType())) {
-            if(unit.getMeasurementSystem() != newUnit.getMeasurementSystem()) {
+        if (unit.getMeasurementType().isCompatibleForConversionTo(newUnit.getMeasurementType())) {
+            if (unit.getMeasurementSystem() != newUnit.getMeasurementSystem()) {
                 mutableQuantity *= unit.getBaseUnitRatio()
-                mutableQuantity *= ratiosBetweenBaseUnitsOfDifferentMeasurementSystems[unit.getMeasurementSystem().getBaseUnitFor(unit.getMeasurementSystem(), unit.getMeasurementType())]!![newUnit.getMeasurementSystem()]!!
+                mutableQuantity *= ratiosBetweenBaseUnitsOfDifferentMeasurementSystems[unit.getMeasurementSystem()
+                    .getBaseUnitFor(
+                        unit.getMeasurementSystem(),
+                        unit.getMeasurementType()
+                    )]!![newUnit.getMeasurementSystem()]!!
+                mutableQuantity /= newUnit.getBaseUnitRatio()
+            } else {
+                mutableQuantity *= unit.getBaseUnitRatio()
                 mutableQuantity /= newUnit.getBaseUnitRatio()
             }
-            else {
-                mutableQuantity *= unit.getBaseUnitRatio()
-                mutableQuantity /= newUnit.getBaseUnitRatio()
-            }
-        }
-        else throw IllegalArgumentException("$this and $newUnit do not belong to the same measurement type. Conversion is impossible.")
+        } else throw IllegalArgumentException("$this and $newUnit do not belong to the same measurement type. Conversion is impossible.")
         return PhysicalQuantity(mutableQuantity, newUnit)
     }
 
@@ -39,17 +43,17 @@ class PhysicalQuantity(val quantity: Double, val unit: MeasurementUnit) : Serial
      * Physical quantities are printed like you might expect - "243 grams", "1 foot", "19 kilograms", "5 inches", etc
      */
     @Suppress("MemberVisibilityCanBePrivate")
-    fun getAsString(abbreviateUnit: Boolean): String = "$quantity ${unit.getUnitAsString(plural = quantity > 1, abbreviated = abbreviateUnit)}"
+    fun getAsString(abbreviateUnit: Boolean): String =
+        "$quantity ${unit.getUnitAsString(plural = quantity > 1, abbreviated = abbreviateUnit)}"
 
     override fun toString(): String {
         return getAsString(false)
     }
 
     override fun equals(other: Any?): Boolean {
-        return if(other !is PhysicalQuantity) {
+        return if (other !is PhysicalQuantity) {
             false
-        }
-        else {
+        } else {
             quantity == other.quantity &&
                     unit == other.unit
         }

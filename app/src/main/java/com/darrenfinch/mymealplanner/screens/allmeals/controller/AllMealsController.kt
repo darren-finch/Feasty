@@ -1,32 +1,39 @@
 package com.darrenfinch.mymealplanner.screens.allmeals.controller
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
-import com.darrenfinch.mymealplanner.screens.allmeals.view.AllMealsViewMvc
+import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 import com.darrenfinch.mymealplanner.meals.usecases.DeleteMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.GetAllMealsUseCase
-import com.darrenfinch.mymealplanner.meals.models.domain.Meal
+import com.darrenfinch.mymealplanner.screens.allmeals.view.AllMealsViewMvc
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 class AllMealsController(
     private val screensNavigator: ScreensNavigator,
     private val getAllMealsUseCase: GetAllMealsUseCase,
-    private val deleteMealUseCase: DeleteMealUseCase
+    private val deleteMealUseCase: DeleteMealUseCase,
+    private val backgroundContext: CoroutineContext,
+    private val uiContext: CoroutineContext
 ) : BaseController, AllMealsViewMvc.Listener {
 
     class SavedState : BaseController.BaseSavedState
 
     private lateinit var viewMvc: AllMealsViewMvc
 
+    private var getAllMealsJob: Job? = null
+
     fun bindView(viewMvc: AllMealsViewMvc) {
         this.viewMvc = viewMvc
     }
 
-    fun fetchMeals(viewLifecycleOwner: LifecycleOwner) {
-        getAllMealsUseCase.fetchAllMeals().observe(viewLifecycleOwner, Observer { newMeals ->
-            viewMvc.bindMeals(newMeals)
-        })
+    fun getAllMealsAndBindToView() {
+        getAllMealsJob = CoroutineScope(backgroundContext).launch {
+            val allMeals = getAllMealsUseCase.getAllMeals()
+            withContext(uiContext) {
+                viewMvc.bindMeals(allMeals)
+            }
+        }
     }
 
     fun onStart() {
@@ -35,6 +42,7 @@ class AllMealsController(
 
     fun onStop() {
         viewMvc.unregisterListener(this)
+        getAllMealsJob?.cancel()
     }
 
     override fun addNewMealClicked() {
@@ -45,8 +53,11 @@ class AllMealsController(
         screensNavigator.navigateToMealFormScreen(mealId)
     }
 
-    override fun onMealDelete(meal: Meal) {
-        deleteMealUseCase.deleteMeal(meal.id)
+    override fun onMealDelete(meal: UiMeal) {
+        runBlocking(backgroundContext) {
+            deleteMealUseCase.deleteMeal(meal.id)
+        }
+        getAllMealsAndBindToView()
     }
 
     override fun restoreState(state: BaseController.BaseSavedState) { }

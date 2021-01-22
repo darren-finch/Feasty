@@ -1,9 +1,37 @@
 package com.darrenfinch.mymealplanner.foods.usecases
 
+import com.darrenfinch.mymealplanner.common.extensions.parallelMap
+import com.darrenfinch.mymealplanner.meals.models.domain.Meal
+import com.darrenfinch.mymealplanner.meals.models.domain.MealFood
+import com.darrenfinch.mymealplanner.meals.models.mappers.dbMealFoodToMealFood
+import com.darrenfinch.mymealplanner.meals.models.mappers.dbMealToMeal
+import com.darrenfinch.mymealplanner.meals.models.mappers.mealToDbMeal
 import com.darrenfinch.mymealplanner.model.MainRepository
+import kotlin.coroutines.coroutineContext
 
 class DeleteFoodUseCase(private val repository: MainRepository) {
-    fun deleteFood(id: Int) {
+    suspend fun deleteFood(id: Int) {
+        val invalidMealFoods = getInvalidMealFoods(id)
+        for (invalidMealFood in invalidMealFoods) {
+            val mealToBeUpdated = getMeal(invalidMealFood.mealId)
+            val newMeal = mealToBeUpdated.copy(foods = mealToBeUpdated.foods - invalidMealFood)
+            repository.updateMeal(mealToDbMeal(newMeal))
+            repository.deleteMealFood(invalidMealFood.id)
+        }
         repository.deleteFood(id)
+    }
+
+    private suspend fun getInvalidMealFoods(foodId: Int): List<MealFood> {
+        return repository.getMealFoodsForFood(foodId).parallelMap(coroutineContext) {
+            dbMealFoodToMealFood(it, repository.getFood(it.foodId))
+        }
+    }
+
+    private suspend fun getMeal(id: Int): Meal {
+        val dbMeal = repository.getMeal(id)
+        val dbMealFoods = repository.getMealFoodsForMeal(id)
+        val dbFoodReferences =
+            dbMealFoods.map { dbMealFood -> repository.getFood(dbMealFood.foodId) }
+        return dbMealToMeal(dbMeal, dbMealFoods, dbFoodReferences)
     }
 }

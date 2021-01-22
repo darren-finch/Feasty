@@ -6,6 +6,7 @@ import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.screens.mealplan.view.MealPlanViewMvc
 import com.darrenfinch.mymealplanner.mealplans.models.domain.MealPlanMeal
+import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.usecases.*
 
 // TODO: Reimplement this controller
@@ -53,7 +54,7 @@ class MealPlanController(
     override fun onAddNewMealPlanMealClicked() {
         dialogsManager.showSelectMealPlanMealDialog()
     }
-    override fun onDeleteMealPlanMealClicked(mealPlanMeal: MealPlanMeal) {
+    override fun onDeleteMealPlanMealClicked(mealPlanMeal: UiMealPlanMeal) {
         // TODO: Delete meal and update list of meals
     }
 

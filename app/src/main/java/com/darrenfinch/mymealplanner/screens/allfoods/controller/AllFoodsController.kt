@@ -1,23 +1,27 @@
 package com.darrenfinch.mymealplanner.screens.allfoods.controller
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
+import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
-import com.darrenfinch.mymealplanner.common.misc.Constants
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
-import com.darrenfinch.mymealplanner.screens.allfoods.view.AllFoodsViewMvc
 import com.darrenfinch.mymealplanner.foods.usecases.DeleteFoodUseCase
 import com.darrenfinch.mymealplanner.foods.usecases.GetAllFoodsUseCase
+import com.darrenfinch.mymealplanner.screens.allfoods.view.AllFoodsViewMvc
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 class AllFoodsController(
     private val screensNavigator: ScreensNavigator,
     private val getAllFoodsUseCase: GetAllFoodsUseCase,
-    private val deleteFoodUseCase: DeleteFoodUseCase
+    private val deleteFoodUseCase: DeleteFoodUseCase,
+    private val backgroundContext: CoroutineContext,
+    private val uiContext: CoroutineContext
 ) : BaseController, AllFoodsViewMvc.Listener {
 
     class SavedState : BaseController.BaseSavedState
 
     private lateinit var viewMvc: AllFoodsViewMvc
+
+    private var getAllFoodsJob: Job? = null
 
     fun bindView(viewMvc: AllFoodsViewMvc) {
         this.viewMvc = viewMvc
@@ -29,12 +33,16 @@ class AllFoodsController(
 
     fun onStop() {
         viewMvc.unregisterListener(this)
+        getAllFoodsJob?.cancel()
     }
 
-    fun fetchAllFoods(viewLifecycleOwner: LifecycleOwner) {
-        getAllFoodsUseCase.fetchAllFoods().observe(viewLifecycleOwner, Observer { newFoods ->
-            viewMvc.bindFoods(newFoods)
-        })
+    fun getAllFoodsAndBindToView() {
+        getAllFoodsJob = CoroutineScope(backgroundContext).launch {
+            val allFoods = getAllFoodsUseCase.getAllFoods()
+            withContext(uiContext) {
+                viewMvc.bindFoods(allFoods)
+            }
+        }
     }
 
     override fun addNewFoodClicked() {
@@ -46,7 +54,10 @@ class AllFoodsController(
     }
 
     override fun onItemDelete(foodId: Int) {
-        deleteFoodUseCase.deleteFood(foodId)
+        runBlocking(backgroundContext) {
+            deleteFoodUseCase.deleteFood(foodId)
+        }
+        getAllFoodsAndBindToView()
     }
 
     override fun restoreState(state: BaseController.BaseSavedState) { }

@@ -5,8 +5,7 @@ import com.darrenfinch.mymealplanner.common.dependencyinjection.ControllerCompos
 import com.darrenfinch.mymealplanner.common.MainActivity
 
 abstract class BaseDialog : DialogFragment() {
-
-    val controllerCompositionRoot: ControllerCompositionRoot by lazy {
+    protected val controllerCompositionRoot: ControllerCompositionRoot by lazy {
         ControllerCompositionRoot(
             (requireActivity() as MainActivity).activityCompositionRoot
         )

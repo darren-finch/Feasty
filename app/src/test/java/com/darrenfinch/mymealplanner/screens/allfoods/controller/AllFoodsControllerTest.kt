@@ -56,10 +56,10 @@ internal class AllFoodsControllerTest {
 
     @Test
     internal fun `fetchFoods() binds foods to viewMvc from use case`() {
-        every { getAllFoodsUseCase.fetchAllFoods() } returns defaultFoodListLiveData
-        SUT.fetchAllFoods(viewLifecycleOwner)
+        every { getAllFoodsUseCase.getAllFoods() } returns defaultFoodListLiveData
+        SUT.getAllFoodsAndBindToView(viewLifecycleOwner)
         verify { viewMvc.bindFoods(defaultFoodDataList) }
-        verify { getAllFoodsUseCase.fetchAllFoods() }
+        verify { getAllFoodsUseCase.getAllFoods() }
     }
 
     @Test

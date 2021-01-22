@@ -53,10 +53,10 @@ internal class AllMealsControllerTest {
 
     @Test
     internal fun `fetchFoods() binds foods to viewMvc from use case`() {
-        every { getAllMealsUseCase.fetchAllMeals() } returns defaultMealListLiveData
-        SUT.fetchMeals(viewLifecycleOwner)
+        every { getAllMealsUseCase.fetchAllMealsAndNotify() } returns defaultMealListLiveData
+        SUT.getAllMealsAndBindToView(viewLifecycleOwner)
         verify { viewMvc.bindMeals(defaultMealListData) }
-        verify { getAllMealsUseCase.fetchAllMeals() }
+        verify { getAllMealsUseCase.fetchAllMealsAndNotify() }
     }
 
     private fun setupInstantLifecycleEventComponents() {

@@ -1,8 +1,8 @@
 package com.darrenfinch.mymealplanner
 
 import androidx.lifecycle.MutableLiveData
-import com.darrenfinch.mymealplanner.common.misc.Constants
-import com.darrenfinch.mymealplanner.common.utils.DefaultModels
+import com.darrenfinch.mymealplanner.common.constants.Constants
+import com.darrenfinch.mymealplanner.common.constants.DefaultModels
 
 object TestData {
     // I re-declared these constants because they are in use already by many different tests

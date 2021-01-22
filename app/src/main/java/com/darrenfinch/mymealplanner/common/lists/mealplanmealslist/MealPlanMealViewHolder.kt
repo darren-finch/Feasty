@@ -42,7 +42,7 @@ class MealPlanMealViewHolder(private val listener: Listener, itemView: View) : B
 
     private fun handleMenuItemClicked(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.delete -> listener.onDelete(binding.mealPlanMeal)
+            R.id.delete -> listener.onDelete(binding.mealPlanMeal!!)
         }
         return true
     }

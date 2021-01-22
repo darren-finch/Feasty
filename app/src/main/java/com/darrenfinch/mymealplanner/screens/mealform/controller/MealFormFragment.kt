@@ -32,7 +32,7 @@ class MealFormFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        controller = fragmentCompositionRoot.getMealFormController()
+        controller = controllerCompositionRoot.getMealFormController()
     }
 
     override fun onCreateView(
@@ -41,12 +41,12 @@ class MealFormFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        viewMvc = fragmentCompositionRoot.getViewMvcFactory().getMealFormViewMvc(container)
+        viewMvc = controllerCompositionRoot.getViewMvcFactory().getMealFormViewMvc(container)
 
         controller.bindView(viewMvc)
         setControllerArgs(requireArguments())
         restoreControllerState(savedInstanceState)
-        controller.fetchMealDetailsIfPossibleRebindToViewMvcOtherwise(viewLifecycleOwner)
+        controller.fetchMealDetailsIfPossibleRebindToViewMvcOtherwise()
 
         return viewMvc.getRootView()
     }

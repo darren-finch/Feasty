@@ -30,7 +30,7 @@ class MealPlanFormFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        controller = fragmentCompositionRoot.getMealPlanFormController()
+        controller = controllerCompositionRoot.getMealPlanFormController()
     }
 
     override fun onCreateView(
@@ -38,7 +38,7 @@ class MealPlanFormFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewMvc = fragmentCompositionRoot.getViewMvcFactory().getMealPlanFormViewMvc(null)
+        viewMvc = controllerCompositionRoot.getViewMvcFactory().getMealPlanFormViewMvc(null)
 
         restoreControllerState(savedInstanceState)
         controller.bindView(viewMvc)

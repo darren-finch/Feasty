@@ -1,34 +1,20 @@
 package com.darrenfinch.mymealplanner.meals.usecases
 
-import androidx.lifecycle.Observer
-import com.darrenfinch.mymealplanner.common.misc.BaseObservable
-import com.darrenfinch.mymealplanner.meals.models.domain.Meal
+import com.darrenfinch.mymealplanner.common.extensions.parallelMap
+import com.darrenfinch.mymealplanner.meals.models.mappers.dbMealToMeal
+import com.darrenfinch.mymealplanner.meals.models.mappers.mealToUiMeal
+import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 import com.darrenfinch.mymealplanner.model.MainRepository
-import com.darrenfinch.mymealplanner.model.room.models.meals.DatabaseMeal
+import kotlin.coroutines.coroutineContext
 
-class ObserveAllMealsUseCase(private val repository: MainRepository) : BaseObservable<ObserveAllMealsUseCase.Listener>() {
+class GetAllMealsUseCase(private val repository: MainRepository) {
 
-    private val observer = Observer<List<DatabaseMeal>> {
-        notifyFetch(it)
-    }
-
-    interface Listener {
-        fun onFetch(meals: List<Meal>)
-    }
-
-    override fun registerListener(listener: Listener) {
-        super.registerListener(listener)
-        repository.allMeals.observeForever(observer)
-    }
-
-    override fun unregisterListener(listener: Listener) {
-        super.unregisterListener(listener)
-        repository.allMeals.removeObserver(observer)
-    }
-
-    fun notifyFetch(dbMeals: List<DatabaseMeal>) {
-        for(listener in getListeners()) {
-            listener.onFetch()
+    suspend fun getAllMeals(): List<UiMeal> {
+        return repository.getAllMeals().parallelMap(coroutineContext) { dbMeal ->
+            val dbMealFoods = repository.getMealFoodsForMeal(dbMeal.id)
+            val dbFoodReferences = dbMealFoods.map { dbMealFood -> repository.getFood(dbMealFood.foodId) }
+            mealToUiMeal(dbMealToMeal(dbMeal, dbMealFoods, dbFoodReferences))
         }
     }
+
 }

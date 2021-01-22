@@ -21,7 +21,7 @@ class MealPlanFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        controller = fragmentCompositionRoot.getMealPlanController()
+        controller = controllerCompositionRoot.getMealPlanController()
     }
 
     override fun onCreateView(
@@ -30,7 +30,7 @@ class MealPlanFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        viewMvc = fragmentCompositionRoot.getViewMvcFactory().getMealPlanViewMvc(null)
+        viewMvc = controllerCompositionRoot.getViewMvcFactory().getMealPlanViewMvc(null)
 
         restoreControllerState(savedInstanceState)
         controller.bindView(viewMvc)

@@ -1,30 +1,29 @@
 package com.darrenfinch.mymealplanner.screens.mealform.controller
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
+import com.darrenfinch.mymealplanner.common.constants.Constants
+import com.darrenfinch.mymealplanner.common.constants.DefaultModels
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.dialogs.DialogResult
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
-import com.darrenfinch.mymealplanner.common.misc.Constants
-import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
-import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
-import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
-import com.darrenfinch.mymealplanner.common.utils.DefaultModels
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.SelectFoodForMealDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.FOOD_ID_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD_QUANTITY_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD_RESULT
-import com.darrenfinch.mymealplanner.screens.mealform.view.MealFormViewMvc
-import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
-import com.darrenfinch.mymealplanner.meals.usecases.GetMealUseCase
-import com.darrenfinch.mymealplanner.meals.usecases.InsertMealUseCase
-import com.darrenfinch.mymealplanner.meals.usecases.UpdateMealUseCase
-import com.darrenfinch.mymealplanner.foods.models.domain.Food
+import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
+import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
+import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
+import com.darrenfinch.mymealplanner.meals.usecases.GetMealUseCase
+import com.darrenfinch.mymealplanner.meals.usecases.InsertMealUseCase
+import com.darrenfinch.mymealplanner.meals.usecases.UpdateMealUseCase
+import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
+import com.darrenfinch.mymealplanner.screens.mealform.view.MealFormViewMvc
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 class MealFormController(
     private val insertMealUseCase: InsertMealUseCase,
@@ -33,7 +32,9 @@ class MealFormController(
     private val screensNavigator: ScreensNavigator,
     private val dialogsManager: DialogsManager,
     private val dialogsEventBus: DialogsEventBus,
-    private val backPressDispatcher: BackPressDispatcher
+    private val backPressDispatcher: BackPressDispatcher,
+    private val backgroundContext: CoroutineContext,
+    private val uiContext: CoroutineContext
 ) : BaseController, MealFormViewMvc.Listener, BackPressListener, DialogsEventBus.Listener {
 
     data class SavedState(val hasLoadedMealDetails: Boolean, val mealDetails: UiMeal) :
@@ -46,8 +47,7 @@ class MealFormController(
 
     private lateinit var viewMvc: MealFormViewMvc
 
-    private val updatingMeal: Boolean
-        get() = mealIdArg != Constants.INVALID_ID
+    private var getMealJob: Job? = null
 
     fun bindView(viewMvc: MealFormViewMvc) {
         this.viewMvc = viewMvc
@@ -63,16 +63,19 @@ class MealFormController(
         viewMvc.unregisterListener(this)
         dialogsEventBus.unregisterListener(this)
         backPressDispatcher.unregisterListener(this)
+        getMealJob?.cancel()
     }
 
-    fun fetchMealDetailsIfPossibleRebindToViewMvcOtherwise(viewLifecycleOwner: LifecycleOwner) {
-        val shouldFetchMealDetails = updatingMeal && !hasLoadedMealDetailsState
+    fun fetchMealDetailsIfPossibleRebindToViewMvcOtherwise() {
+        val shouldFetchMealDetails = mealIdArg != Constants.INVALID_ID && !hasLoadedMealDetailsState
         if (shouldFetchMealDetails) {
-            getMealUseCase.getMeal(mealIdArg).observe(viewLifecycleOwner, Observer {
-                mealDetailsState = it
+            getMealJob = CoroutineScope(backgroundContext).launch {
+                mealDetailsState = getMealUseCase.getMeal(mealIdArg)
                 hasLoadedMealDetailsState = true
-                viewMvc.bindMealDetails(it)
-            })
+                withContext(uiContext) {
+                    viewMvc.bindMealDetails(mealDetailsState)
+                }
+            }
         } else {
             viewMvc.bindMealDetails(mealDetailsState)
         }
@@ -83,10 +86,11 @@ class MealFormController(
     }
 
     override fun onDoneButtonClicked(editedMealDetails: UiMeal) {
-        if (updatingMeal) {
-            updateMealUseCase.updateMeal(editedMealDetails)
-        } else {
-            insertMealUseCase.insertMeal(editedMealDetails)
+        runBlocking(backgroundContext) {
+            if (mealIdArg == Constants.INVALID_ID)
+                insertMealUseCase.insertMeal(editedMealDetails)
+            else
+                updateMealUseCase.updateMeal(editedMealDetails)
         }
         screensNavigator.goBack()
     }
@@ -103,7 +107,7 @@ class MealFormController(
     }
 
     override fun getState(): BaseController.BaseSavedState {
-        return SavedState(hasLoadedMealDetailsState, mealDetailsState)
+        return SavedState(hasLoadedMealDetailsState, viewMvc.getMealDetails())
     }
 
     override fun onBackPressed(): Boolean {
@@ -112,6 +116,7 @@ class MealFormController(
     }
 
     override fun onDialogEvent(event: Any, result: DialogResult?) {
+        mealDetailsState = viewMvc.getMealDetails()
         result?.let {
             if (event == SelectFoodForMealDialogEvent.ON_FOOD_CHOSEN) {
                 dialogsManager.showSelectFoodQuantityDialog(result.data.getInt(FOOD_ID_RESULT))
@@ -121,7 +126,7 @@ class MealFormController(
                 val selectedFoodQuantity =
                     result.data.getSerializable(SELECTED_FOOD_QUANTITY_RESULT) as PhysicalQuantity
                 val mealFoodFromSelectedFood = UiMealFood(
-                    id = Constants.VALID_ID,
+                    id = Constants.INVALID_ID,
                     foodId = selectedFood.id,
                     mealId = mealDetailsState.id,
                     title = selectedFood.title,

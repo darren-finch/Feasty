@@ -1,13 +1,15 @@
 package com.darrenfinch.mymealplanner.model.room.daos
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
-import com.darrenfinch.mymealplanner.model.room.models.DatabaseMealPlan
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
+import com.darrenfinch.mymealplanner.model.room.models.mealplans.DatabaseMealPlan
 
 @Dao
 interface MealPlansDao {
     @Query("SELECT * FROM mealPlans")
-    fun getMealPlans(): LiveData<List<DatabaseMealPlan>>
+    suspend fun getAllMealPlans(): List<DatabaseMealPlan>
 
     @Query("SELECT * FROM mealPlans WHERE :id = id")
     suspend fun getMealPlan(id: Int): DatabaseMealPlan

@@ -46,7 +46,7 @@ class SelectFoodQuantityDialog : BaseDialog() {
         setControllerArgs(requireArguments())
         restoreControllerState(savedInstanceState)
         controller.bindView(viewMvc)
-        controller.fetchFood(this)
+        controller.getFoodAndBindToView()
 
         return viewMvc.makeDialog()
     }

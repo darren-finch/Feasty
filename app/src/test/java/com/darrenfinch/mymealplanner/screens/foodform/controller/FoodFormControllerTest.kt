@@ -70,24 +70,24 @@ internal class FoodFormControllerTest {
     internal fun `fetchFoodDetailsIfPossibleRebindToViewMvcOtherwise() binds data to viewMvc and doesn't try to fetch data if viewModel is dirty`() {
         makeViewModelDirty()
         every { viewModel.insertingFood } returns false
-        SUT.fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner)
+        SUT.getFoodDetailsIfPossibleAndBindToView(viewLifecycleOwner)
         verify { viewMvc.bindFoodDetails(observableFood) }
-        verify { getSingleFoodUseCase.fetchFood(DEFAULT_VALID_FOOD_ID) wasNot called }
+        verify { getSingleFoodUseCase.getFood(DEFAULT_VALID_FOOD_ID) wasNot called }
     }
 
     @Test
     internal fun `fetchFoodDetailsIfPossibleRebindToViewMvcOtherwise() fetches data from use case if viewModel is not dirty`() {
         makeViewModelDirty()
         every { viewModel.insertingFood } returns false
-        SUT.fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner)
-        verify { getSingleFoodUseCase.fetchFood(DEFAULT_VALID_FOOD_ID) }
+        SUT.getFoodDetailsIfPossibleAndBindToView(viewLifecycleOwner)
+        verify { getSingleFoodUseCase.getFood(DEFAULT_VALID_FOOD_ID) }
     }
 
     @Test
     internal fun `fetchFoodDetailsIfPossibleRebindToViewMvcOtherwise() updates viewModel data and binds data to viewMvc from use case if viewModel is not dirty`() {
         makeViewModelDirty()
         every { viewModel.insertingFood } returns false
-        SUT.fetchFoodDetailsIfPossibleRebindToViewOtherwise(viewLifecycleOwner)
+        SUT.getFoodDetailsIfPossibleAndBindToView(viewLifecycleOwner)
         verify { viewModel.setObservableFoodData(defaultFoodData) }
         verify { viewMvc.bindFoodDetails(observableFood) }
     }
@@ -116,7 +116,7 @@ internal class FoodFormControllerTest {
     }
 
     private fun makeSingleFoodUseCaseReturnDefaultData() {
-        every { getSingleFoodUseCase.fetchFood(DEFAULT_VALID_FOOD_ID) } returns defaultFoodLiveData
+        every { getSingleFoodUseCase.getFood(DEFAULT_VALID_FOOD_ID) } returns defaultFoodLiveData
     }
 
     private fun setupViewModelDefaults() {

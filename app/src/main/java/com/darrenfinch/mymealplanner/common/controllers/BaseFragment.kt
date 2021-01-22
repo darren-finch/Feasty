@@ -5,7 +5,7 @@ import com.darrenfinch.mymealplanner.common.dependencyinjection.ControllerCompos
 import com.darrenfinch.mymealplanner.common.MainActivity
 
 abstract class BaseFragment : Fragment() {
-    protected val fragmentCompositionRoot by lazy {
+    protected val controllerCompositionRoot by lazy {
         ControllerCompositionRoot(
             (requireActivity() as MainActivity).activityCompositionRoot
         )

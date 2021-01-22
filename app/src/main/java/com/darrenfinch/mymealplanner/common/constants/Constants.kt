@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.common.misc
+package com.darrenfinch.mymealplanner.common.constants
 
 object Constants {
     const val INVALID_INDEX = -1

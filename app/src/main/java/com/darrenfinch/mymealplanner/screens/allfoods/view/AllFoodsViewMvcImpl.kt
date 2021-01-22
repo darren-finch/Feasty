@@ -15,6 +15,8 @@ class AllFoodsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
 
     private val foodsListItemEventListener: FoodsRecyclerViewAdapter.ItemEventListener = object : FoodsRecyclerViewAdapter.ItemEventListener {
         override fun onItemClick(foodId: Int) { }
+        override fun onItemClick(food: UiFood) { }
+
         override fun onItemEdit(foodId: Int) {
             notifyListenersOfItemEdit(foodId)
         }

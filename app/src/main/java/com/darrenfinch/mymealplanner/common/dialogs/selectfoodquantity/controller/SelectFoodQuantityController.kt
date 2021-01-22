@@ -11,15 +11,22 @@ import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoo
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD_QUANTITY_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.view.SelectFoodQuantityViewMvc
-import com.darrenfinch.mymealplanner.common.utils.DefaultModels
+import com.darrenfinch.mymealplanner.common.constants.DefaultModels
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 import com.darrenfinch.mymealplanner.foods.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 class SelectFoodQuantityController(
     private val getFoodUseCase: GetFoodUseCase,
     private val dialogsManager: DialogsManager,
-    private val dialogsEventBus: DialogsEventBus
+    private val dialogsEventBus: DialogsEventBus,
+    private val backgroundContext: CoroutineContext,
+    private val uiContext: CoroutineContext
 ) : BaseController, SelectFoodQuantityViewMvc.Listener {
 
     data class SavedState(val food: UiFood) : BaseController.BaseSavedState
@@ -29,6 +36,8 @@ class SelectFoodQuantityController(
     private var foodState = DefaultModels.defaultUiFood
 
     private lateinit var viewMvc: SelectFoodQuantityViewMvc
+
+    private var getFoodJob: Job? = null
 
     fun bindView(viewMvc: SelectFoodQuantityViewMvc) {
         this.viewMvc = viewMvc
@@ -40,17 +49,20 @@ class SelectFoodQuantityController(
 
     fun onStop() {
         viewMvc.unregisterListener(this)
+        getFoodJob?.cancel()
     }
 
-    fun fetchFood(viewLifecycleOwner: LifecycleOwner) {
+    fun getFoodAndBindToView() {
         viewMvc.bindFood(foodState)
 
         val hasLoadedFoodDetails = foodState != DefaultModels.defaultUiFood
         if (!hasLoadedFoodDetails) {
-            getFoodUseCase.fetchFood(foodIdArg).observe(viewLifecycleOwner, Observer {
-                foodState = it
-                viewMvc.bindFood(it)
-            })
+            getFoodJob = CoroutineScope(backgroundContext).launch {
+                foodState = getFoodUseCase.getFood(foodIdArg)
+                withContext(uiContext) {
+                    viewMvc.bindFood(foodState)
+                }
+            }
         }
     }
 

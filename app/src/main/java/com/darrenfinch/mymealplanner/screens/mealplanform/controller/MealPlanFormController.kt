@@ -4,15 +4,19 @@ import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
-import com.darrenfinch.mymealplanner.common.utils.DefaultModels
+import com.darrenfinch.mymealplanner.common.constants.DefaultModels
 import com.darrenfinch.mymealplanner.screens.mealplanform.view.MealPlanFormViewMvc
 import com.darrenfinch.mymealplanner.mealplans.usecases.InsertMealPlanUseCase
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 class MealPlanFormController(
     private val insertMealPlanUseCase: InsertMealPlanUseCase,
     private val screensNavigator: ScreensNavigator,
-    private val backPressDispatcher: BackPressDispatcher
+    private val backPressDispatcher: BackPressDispatcher,
+    private val backgroundContext: CoroutineContext
 ) : BaseController, MealPlanFormViewMvc.Listener, BackPressListener {
 
     data class SavedState(val mealPlanDetails: UiMealPlan) : BaseController.BaseSavedState
@@ -37,7 +41,9 @@ class MealPlanFormController(
     }
 
     override fun onDoneButtonClicked(editedMealPlanDetails: UiMealPlan) {
-        insertMealPlanUseCase.insertMealPlan(editedMealPlanDetails)
+        runBlocking(backgroundContext) {
+            insertMealPlanUseCase.insertMealPlan(editedMealPlanDetails)
+        }
         screensNavigator.goBack()
     }
 
@@ -46,8 +52,9 @@ class MealPlanFormController(
             mealPlanDetailsState = state.mealPlanDetails
         }
     }
+
     override fun getState(): BaseController.BaseSavedState {
-        return SavedState(mealPlanDetailsState)
+        return SavedState(viewMvc.getMealPlanDetails())
     }
 
     override fun onBackPressed(): Boolean {

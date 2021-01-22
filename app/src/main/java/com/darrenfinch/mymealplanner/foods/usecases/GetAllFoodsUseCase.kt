@@ -1,11 +1,15 @@
 package com.darrenfinch.mymealplanner.foods.usecases
 
-import androidx.lifecycle.LiveData
-import com.darrenfinch.mymealplanner.model.MainRepository
 import com.darrenfinch.mymealplanner.foods.models.domain.Food
+import com.darrenfinch.mymealplanner.foods.models.mappers.dbFoodToFood
+import com.darrenfinch.mymealplanner.foods.models.mappers.foodToUiFood
+import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
+import com.darrenfinch.mymealplanner.model.MainRepository
 
 class GetAllFoodsUseCase(private val repository: MainRepository) {
-    fun fetchAllFoods(): LiveData<List<Food>> {
-        return repository.getFoods()
+    suspend fun getAllFoods(): List<UiFood> {
+        return repository.getAllFoods().map {
+            foodToUiFood(dbFoodToFood(it))
+        }
     }
 }
