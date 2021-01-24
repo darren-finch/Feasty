@@ -45,6 +45,9 @@ class FoodFormViewMvcImpl(
     private fun setupUI() {
         binding.apply {
             doneButton.setOnClickListener { onDoneSelected() }
+            toolbar.setNavigationOnClickListener {
+                onNavigateUp()
+            }
         }
         setupMeasurementTypeSpinner()
         setupMeasurementUnitSpinner()
@@ -165,6 +168,12 @@ class FoodFormViewMvcImpl(
 
         for (listener in getListeners()) {
             listener.onDoneButtonClicked(getFoodDetails())
+        }
+    }
+
+    private fun onNavigateUp() {
+        for (listener in getListeners()) {
+            listener.onNavigateUp()
         }
     }
 

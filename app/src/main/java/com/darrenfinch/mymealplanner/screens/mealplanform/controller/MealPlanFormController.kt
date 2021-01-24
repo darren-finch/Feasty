@@ -49,6 +49,10 @@ class MealPlanFormController(
         screensNavigator.goBack()
     }
 
+    override fun onNavigateUp() {
+        screensNavigator.goBack()
+    }
+
     override fun restoreState(state: BaseController.BaseSavedState) {
         (state as SavedState).let {
             mealPlanDetailsState = state.mealPlanDetails

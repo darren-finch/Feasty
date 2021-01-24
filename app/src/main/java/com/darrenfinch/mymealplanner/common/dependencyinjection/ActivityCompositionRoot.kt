@@ -12,7 +12,9 @@ import com.ncapdevi.fragnav.FragNavController
 
 //This composition root is scoped to a particular activity
 class ActivityCompositionRoot(private val compositionRoot: CompositionRoot, private val activity: FragmentActivity) {
-    private val fragNavController = FragNavController(activity.supportFragmentManager, R.id.container)
+    private val fragNavController = FragNavController(activity.supportFragmentManager, R.id.container).apply {
+        fragmentHideStrategy = FragNavController.REMOVE
+    }
     private val screensNavigator = ScreensNavigator(fragNavController)
     private val dialogsManager = DialogsManager(fragNavController)
     private val toastsHelper = ToastsHelper(activity)

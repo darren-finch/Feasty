@@ -98,6 +98,10 @@ class MealFormController(
         screensNavigator.goBack()
     }
 
+    override fun onNavigateUp() {
+        screensNavigator.goBack()
+    }
+
     fun setArgs(mealId: Int) {
         this.mealIdArg = mealId
     }

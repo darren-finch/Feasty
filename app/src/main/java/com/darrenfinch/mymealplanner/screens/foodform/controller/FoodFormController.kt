@@ -80,6 +80,10 @@ class FoodFormController(
         screensNavigator.goBack()
     }
 
+    override fun onNavigateUp() {
+        screensNavigator.goBack()
+    }
+
     fun setArgs(foodId: Int) {
         this.foodIdArg = foodId
     }

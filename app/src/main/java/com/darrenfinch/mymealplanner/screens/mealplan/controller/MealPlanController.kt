@@ -5,7 +5,6 @@ import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.screens.mealplan.view.MealPlanViewMvc
-import com.darrenfinch.mymealplanner.mealplans.models.domain.MealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.usecases.*
 
@@ -45,7 +44,7 @@ class MealPlanController(
     }
 
     override fun onAddNewMealPlanClicked() {
-        screensNavigator.navigateToMealPlanFormScreen()
+        screensNavigator.toMealPlanFormScreen()
     }
     override fun onDeleteMealPlanClicked() {
         // TODO: Update meal plan selection spinner and list of meal plan meals

@@ -8,6 +8,7 @@ interface MealFormViewMvc : ObservableViewMvc<MealFormViewMvc.Listener>, Progres
     interface Listener {
         fun onAddNewFoodButtonClicked()
         fun onDoneButtonClicked(editedMealDetails: UiMeal)
+        fun onNavigateUp()
     }
 
     fun bindMealDetails(mealDetails: UiMeal)

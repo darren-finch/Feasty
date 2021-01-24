@@ -26,8 +26,31 @@ class MealPlanFormViewMvcImpl(
         setupUI()
     }
 
+    private fun setupUI() {
+        binding.apply {
+            doneButton.setOnClickListener { onDoneClicked() }
+            toolbar.setNavigationOnClickListener {
+                onNavigateUp()
+            }
+        }
+    }
+
     override fun bindMealPlanDetails(mealPlan: UiMealPlan) {
         binding.mealPlan = mealPlan
+    }
+
+    private fun onDoneClicked() {
+        KeyboardUtils.hideKeyboardFrom(getContext(), getRootView())
+
+        for (listener in getListeners()) {
+            listener.onDoneButtonClicked(getMealPlanDetails())
+        }
+    }
+
+    private fun onNavigateUp() {
+        for (listener in getListeners()) {
+            listener.onNavigateUp()
+        }
     }
 
     override fun getMealPlanDetails(): UiMealPlan {
@@ -49,19 +72,5 @@ class MealPlanFormViewMvcImpl(
     override fun hideProgressIndication() {
         binding.formInputsGroup.visibility = View.VISIBLE
         binding.progressBar.visibility = View.GONE
-    }
-
-    private fun setupUI() {
-        binding.apply {
-            doneButton.setOnClickListener { onDoneClicked() }
-        }
-    }
-
-    private fun onDoneClicked() {
-        KeyboardUtils.hideKeyboardFrom(getContext(), getRootView())
-
-        for (listener in getListeners()) {
-            listener.onDoneButtonClicked(getMealPlanDetails())
-        }
     }
 }

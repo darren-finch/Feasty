@@ -48,11 +48,11 @@ class AllMealsController(
     }
 
     override fun addNewMealClicked() {
-        screensNavigator.navigateToMealFormScreen(-1)
+        screensNavigator.toMealFormScreen(-1)
     }
 
     override fun onMealEdit(mealId: Int) {
-        screensNavigator.navigateToMealFormScreen(mealId)
+        screensNavigator.toMealFormScreen(mealId)
     }
 
     override fun onMealDelete(meal: UiMeal) {

@@ -9,6 +9,7 @@ import com.darrenfinch.mymealplanner.screens.mealform.controller.MealFormFragmen
 import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanFragment
 import com.darrenfinch.mymealplanner.screens.mealplanform.controller.MealPlanFormFragment
 import com.ncapdevi.fragnav.FragNavController
+import com.ncapdevi.fragnav.FragNavTransactionOptions
 
 class ScreensNavigator(private val navController: FragNavController) {
 
@@ -38,7 +39,11 @@ class ScreensNavigator(private val navController: FragNavController) {
         return if (navController.isRootFragment) {
             false
         } else {
-            navController.popFragment()
+            navController.popFragment(
+                FragNavTransactionOptions.newBuilder()
+                    .customAnimations(android.R.anim.slide_out_right, android.R.anim.slide_in_left)
+                    .build()
+            )
             true
         }
     }
@@ -47,17 +52,32 @@ class ScreensNavigator(private val navController: FragNavController) {
         navController.switchTab(index)
     }
 
-    fun navigateToFoodFormScreen(foodId: Int) {
-        navController.pushFragment(FoodFormFragment.newInstance(foodId))
+    fun toFoodFormScreen(foodId: Int) {
+        navController.pushFragment(
+            FoodFormFragment.newInstance(foodId),
+            FragNavTransactionOptions.newBuilder()
+                .customAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                .build()
+        )
     }
 
-    fun navigateToMealFormScreen(
+    fun toMealFormScreen(
         mealId: Int
     ) {
-        navController.pushFragment(MealFormFragment.newInstance(mealId))
+        navController.pushFragment(
+            MealFormFragment.newInstance(mealId),
+            FragNavTransactionOptions.newBuilder()
+                .customAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                .build()
+        )
     }
 
-    fun navigateToMealPlanFormScreen() {
-        navController.pushFragment(MealPlanFormFragment.newInstance())
+    fun toMealPlanFormScreen() {
+        navController.pushFragment(
+            MealPlanFormFragment.newInstance(),
+            FragNavTransactionOptions.newBuilder()
+                .customAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                .build()
+        )
     }
 }

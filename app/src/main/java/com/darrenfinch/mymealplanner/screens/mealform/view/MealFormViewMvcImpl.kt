@@ -35,14 +35,16 @@ class MealFormViewMvcImpl(
     private fun setupUI() {
         binding.apply {
             addNewFood.setOnClickListener {
-                addNewFoodClicked()
+                onAddNewFoodButtonClicked()
             }
+            toolbar.setNavigationOnClickListener {
+                onNavigateUp()
+            }
+            doneButton.setOnClickListener { onDoneButtonClicked() }
 
             mealFoodsRecyclerView.adapter = mealFoodsRecyclerViewAdapter
             mealFoodsRecyclerView.layoutManager = LinearLayoutManager(getContext())
             mealFoodsRecyclerView.addItemDecoration(MarginItemDecoration(16))
-
-            doneButton.setOnClickListener { onDoneButtonClicked() }
         }
     }
 
@@ -52,9 +54,15 @@ class MealFormViewMvcImpl(
         }
     }
 
-    private fun addNewFoodClicked() {
+    private fun onAddNewFoodButtonClicked() {
         for (listener in getListeners()) {
             listener.onAddNewFoodButtonClicked()
+        }
+    }
+
+    private fun onNavigateUp() {
+        for (listener in getListeners()) {
+            listener.onNavigateUp()
         }
     }
 
