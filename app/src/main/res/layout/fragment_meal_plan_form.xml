@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="mealPlan"
             type="com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan" />
@@ -10,6 +12,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/formInputsGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="
+                mealPlanNameEditTextLayout,
+                requiredCaloriesEditTextLayout,
+                requiredProteinEditTextLayout,
+                requiredFatEditTextLayout,
+                requiredCarbohydratesEditTextLayout,
+                doneButton" />
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -21,7 +35,7 @@
             app:title="@string/new_meal_plan" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textLayout1"
+            android:id="@+id/mealPlanNameEditTextLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/standard_margin"
@@ -34,18 +48,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/meal_plan_name"
-                android:text="@{mealPlan.title}"/>
+                android:text="@{mealPlan.title}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textLayout2"
+            android:id="@+id/requiredCaloriesEditTextLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/standard_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textLayout1">
+            app:layout_constraintTop_toBottomOf="@+id/mealPlanNameEditTextLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/requiredCaloriesEditText"
@@ -58,13 +72,13 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textLayout3"
+            android:id="@+id/requiredProteinEditTextLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/standard_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textLayout2">
+            app:layout_constraintTop_toBottomOf="@+id/requiredCaloriesEditTextLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/requiredProteinEditText"
@@ -77,13 +91,13 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textLayout4"
+            android:id="@+id/requiredFatEditTextLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/standard_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textLayout3">
+            app:layout_constraintTop_toBottomOf="@+id/requiredProteinEditTextLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/requiredFatEditText"
@@ -96,13 +110,13 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textLayout5"
+            android:id="@+id/requiredCarbohydratesEditTextLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/standard_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textLayout4">
+            app:layout_constraintTop_toBottomOf="@+id/requiredFatEditTextLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/requiredCarbohydratesEditText"
@@ -121,7 +135,16 @@
             android:layout_margin="@dimen/standard_margin"
             android:text="@string/done"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textLayout5" />
+            app:layout_constraintTop_toBottomOf="@+id/requiredCarbohydratesEditTextLayout" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

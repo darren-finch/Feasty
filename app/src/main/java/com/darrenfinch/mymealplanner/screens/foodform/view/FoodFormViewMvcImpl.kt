@@ -185,6 +185,16 @@ class FoodFormViewMvcImpl(
     private fun getCalories() = binding.caloriesEditText.text.toString().toInt()
     private fun getCarbohydrates() = binding.carbohydratesEditText.text.toString().toInt()
     private fun getFat() = binding.fatsEditText.text.toString().toInt()
-    private fun getProtein() = binding.proteinEditText.text.toString().toInt()
+    private fun getProtein() = binding.proteinsEditText.text.toString().toInt()
     private fun getServingSize() = PhysicalQuantity(binding.foodQuantityEditText.text.toString().toDouble(), selectedMeasurementUnit)
+
+    override fun showProgressIndication() {
+        binding.formInputsGroup.visibility = View.GONE
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgressIndication() {
+        binding.formInputsGroup.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
+    }
 }

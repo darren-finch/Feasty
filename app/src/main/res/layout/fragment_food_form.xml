@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="food"
             type="com.darrenfinch.mymealplanner.foods.models.presentation.UiFood" />
@@ -13,6 +14,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".screens.foodform.controller.FoodFormFragment">
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/formInputsGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="
+                foodNameEditTextLayout,
+                caloriesEditTextLayout,
+                carbohydratesEditTextLayout,
+                fatsEditTextLayout,
+                proteinsEditTextLayout,
+                foodQuantityEditTextLayout,
+                measurementUnitSpinner,
+                measurementTypeSpinner,
+                doneButton" />
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -45,8 +61,8 @@
             android:id="@+id/caloriesEditTextLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/standard_margin"
             android:layout_marginHorizontal="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/foodNameEditTextLayout">
@@ -55,9 +71,9 @@
                 android:id="@+id/caloriesEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/calories"
                 android:inputType="number"
-                android:text="@{String.valueOf(food.macroNutrients.calories)}"
-                android:hint="@string/calories" />
+                android:text="@{String.valueOf(food.macroNutrients.calories)}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,8 +81,8 @@
             android:id="@+id/carbohydratesEditTextLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/standard_margin"
             android:layout_marginHorizontal="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/caloriesEditTextLayout">
@@ -75,9 +91,9 @@
                 android:id="@+id/carbohydratesEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/carbohydrates"
                 android:inputType="number"
-                android:text="@{String.valueOf(food.macroNutrients.carbs)}"
-                android:hint="@string/carbohydrates" />
+                android:text="@{String.valueOf(food.macroNutrients.carbs)}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,8 +101,8 @@
             android:id="@+id/fatsEditTextLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/standard_margin"
             android:layout_marginHorizontal="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/carbohydratesEditTextLayout">
@@ -95,29 +111,29 @@
                 android:id="@+id/fatsEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/fats"
                 android:inputType="number"
-                android:text="@{String.valueOf(food.macroNutrients.fats)}"
-                android:hint="@string/fats" />
+                android:text="@{String.valueOf(food.macroNutrients.fats)}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/proteinEditTextLayout"
+            android:id="@+id/proteinsEditTextLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/standard_margin"
             android:layout_marginHorizontal="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fatsEditTextLayout">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/proteinEditText"
+                android:id="@+id/proteinsEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/protein"
                 android:inputType="number"
-                android:text="@{String.valueOf(food.macroNutrients.proteins)}"
-                android:hint="@string/protein" />
+                android:text="@{String.valueOf(food.macroNutrients.proteins)}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,7 +145,7 @@
             android:layout_marginTop="@dimen/standard_margin"
             app:layout_constraintEnd_toStartOf="@+id/measurementUnitSpinner"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/proteinEditTextLayout">
+            app:layout_constraintTop_toBottomOf="@+id/proteinsEditTextLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/foodQuantityEditText"
@@ -172,11 +188,21 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/doneButton"
-            android:layout_margin="@dimen/standard_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_margin"
             android:text="@string/done"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/measurementTypeSpinner" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

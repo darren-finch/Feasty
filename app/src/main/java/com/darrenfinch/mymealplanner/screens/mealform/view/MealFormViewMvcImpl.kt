@@ -1,6 +1,7 @@
 package com.darrenfinch.mymealplanner.screens.mealform.view
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,6 +52,12 @@ class MealFormViewMvcImpl(
         }
     }
 
+    private fun addNewFoodClicked() {
+        for (listener in getListeners()) {
+            listener.onAddNewFoodButtonClicked()
+        }
+    }
+
     override fun getMealDetails(): UiMeal {
         return UiMeal(
             id = binding.meal?.id ?: Constants.VALID_ID,
@@ -59,14 +66,18 @@ class MealFormViewMvcImpl(
         )
     }
 
-    private fun addNewFoodClicked() {
-        for (listener in getListeners()) {
-            listener.onAddNewFoodButtonClicked()
-        }
-    }
-
     override fun bindMealDetails(mealDetails: UiMeal) {
         binding.meal = mealDetails
         mealFoodsRecyclerViewAdapter.updateItems(mealDetails.foods)
+    }
+
+    override fun showProgressIndication() {
+        binding.formInputsGroup.visibility = View.GONE
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgressIndication() {
+        binding.formInputsGroup.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
     }
 }

@@ -1,6 +1,7 @@
 package com.darrenfinch.mymealplanner.screens.allfoods.view
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -62,5 +63,15 @@ class AllFoodsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
 
     override fun bindFoods(newFoods: List<UiFood>) {
         foodsListAdapter.updateItems(newFoods)
+    }
+
+    override fun showProgressIndication() {
+        binding.foodsRecyclerView.visibility = View.GONE
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgressIndication() {
+        binding.foodsRecyclerView.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
     }
 }

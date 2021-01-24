@@ -69,14 +69,17 @@ class MealFormController(
     fun fetchMealDetailsIfPossibleRebindToViewMvcOtherwise() {
         val shouldFetchMealDetails = mealIdArg != Constants.INVALID_ID && !hasLoadedMealDetailsState
         if (shouldFetchMealDetails) {
+            viewMvc.showProgressIndication()
             getMealJob = CoroutineScope(backgroundContext).launch {
                 mealDetailsState = getMealUseCase.getMeal(mealIdArg)
                 hasLoadedMealDetailsState = true
                 withContext(uiContext) {
+                    viewMvc.hideProgressIndication()
                     viewMvc.bindMealDetails(mealDetailsState)
                 }
             }
         } else {
+            viewMvc.hideProgressIndication()
             viewMvc.bindMealDetails(mealDetailsState)
         }
     }

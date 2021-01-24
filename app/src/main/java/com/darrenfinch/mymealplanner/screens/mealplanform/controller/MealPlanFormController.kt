@@ -33,6 +33,8 @@ class MealPlanFormController(
     fun onStart() {
         viewMvc.registerListener(this)
         backPressDispatcher.registerListener(this)
+
+        viewMvc.hideProgressIndication()
     }
 
     fun onStop() {

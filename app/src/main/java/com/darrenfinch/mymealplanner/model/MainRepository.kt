@@ -13,11 +13,11 @@ import com.darrenfinch.mymealplanner.model.room.models.meals.DatabaseMealFood
  * Uses cases also perform all business logic.
  */
 class MainRepository(database: FeastyDatabase) {
-    private val mealsDao = database.mealsDao()
-    private val foodsDao = database.foodsDao()
-    private val mealFoodsDao = database.mealFoodsDao()
     private val mealPlansDao = database.mealPlansDao()
     private val mealPlanMealsDao = database.mealPlanMealsDao()
+    private val mealsDao = database.mealsDao()
+    private val mealFoodsDao = database.mealFoodsDao()
+    private val foodsDao = database.foodsDao()
 
     // Meal Plans
 

@@ -1,6 +1,7 @@
 package com.darrenfinch.mymealplanner.screens.mealplanform.view
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
@@ -38,6 +39,16 @@ class MealPlanFormViewMvcImpl(
             requiredFats = binding.requiredFatEditText.text.toString().toInt(),
             requiredCarbohydrates = binding.requiredCarbohydratesEditText.text.toString().toInt()
         )
+    }
+
+    override fun showProgressIndication() {
+        binding.formInputsGroup.visibility = View.GONE
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgressIndication() {
+        binding.formInputsGroup.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun setupUI() {

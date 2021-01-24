@@ -96,7 +96,6 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
         getGetFoodUseCase(),
         getInsertFoodUseCase(),
         getUpdateFoodUseCase(),
-        getToastsHelper(),
         getBackPressDispatcher(),
         backgroundContext,
         uiContext

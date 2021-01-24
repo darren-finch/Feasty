@@ -28,9 +28,11 @@ class AllMealsController(
     }
 
     fun getAllMealsAndBindToView() {
+        viewMvc.showProgressIndication()
         getAllMealsJob = CoroutineScope(backgroundContext).launch {
             val allMeals = getAllMealsUseCase.getAllMeals()
             withContext(uiContext) {
+                viewMvc.hideProgressIndication()
                 viewMvc.bindMeals(allMeals)
             }
         }

@@ -1,5 +1,6 @@
 package com.darrenfinch.mymealplanner.screens.allfoods.controller
 
+import android.util.Log
 import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
@@ -37,9 +38,11 @@ class AllFoodsController(
     }
 
     fun getAllFoodsAndBindToView() {
+        viewMvc.showProgressIndication()
         getAllFoodsJob = CoroutineScope(backgroundContext).launch {
             val allFoods = getAllFoodsUseCase.getAllFoods()
             withContext(uiContext) {
+                viewMvc.hideProgressIndication()
                 viewMvc.bindFoods(allFoods)
             }
         }
@@ -60,7 +63,9 @@ class AllFoodsController(
         getAllFoodsAndBindToView()
     }
 
-    override fun restoreState(state: BaseController.BaseSavedState) { }
+    override fun restoreState(state: BaseController.BaseSavedState) {
+        Log.d("AllFoodsController", "restoreState()")
+    }
     override fun getState(): BaseController.BaseSavedState {
         return SavedState()
     }

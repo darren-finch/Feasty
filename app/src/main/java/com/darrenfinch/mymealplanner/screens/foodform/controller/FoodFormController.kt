@@ -1,5 +1,6 @@
 package com.darrenfinch.mymealplanner.screens.foodform.controller
 
+import android.util.Log
 import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.constants.DefaultModels
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
@@ -20,7 +21,6 @@ class FoodFormController(
     private val getFoodUseCase: GetFoodUseCase,
     private val insertFoodUseCase: InsertFoodUseCase,
     private val updateFoodUseCase: UpdateFoodUseCase,
-    private val toastsHelper: ToastsHelper,
     private val backPressDispatcher: BackPressDispatcher,
     private val backgroundContext: CoroutineContext,
     private val uiContext: CoroutineContext
@@ -54,16 +54,18 @@ class FoodFormController(
 
     fun getFoodDetailsIfPossibleAndBindToView() {
         val shouldFetchFoodDetails = foodIdArg != Constants.INVALID_ID && !hasLoadedFoodDetailsState
-        toastsHelper.showShortMsg("shouldFetchFoodDetails = $shouldFetchFoodDetails")
         if (shouldFetchFoodDetails) {
+            viewMvc.showProgressIndication()
             getFoodJob = CoroutineScope(backgroundContext).launch {
                 foodDetailsState = getFoodUseCase.getFood(foodIdArg)
                 hasLoadedFoodDetailsState = true
                 withContext(uiContext) {
+                    viewMvc.hideProgressIndication()
                     viewMvc.bindFoodDetails(foodDetailsState)
                 }
             }
         } else {
+            viewMvc.hideProgressIndication()
             viewMvc.bindFoodDetails(foodDetailsState)
         }
     }
@@ -83,6 +85,7 @@ class FoodFormController(
     }
 
     override fun restoreState(state: BaseController.BaseSavedState) {
+        Log.d("AllFoodsController", "restoreState()")
         (state as SavedState).let {
             hasLoadedFoodDetailsState = it.hasLoadedFoodDetails
             foodDetailsState = it.foodDetails
