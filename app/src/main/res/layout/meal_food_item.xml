@@ -18,7 +18,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="@{mealFood.title}"
             android:textAppearance="?attr/textAppearanceSubtitle2"
             tools:text="Toast"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -26,11 +25,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/macroNutrientsTextView"
+            android:id="@+id/mealFoodInfoTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="@{mealFood.macroNutrients.toString()}"
             tools:text="120 calories | 8P | 23C | 2P"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

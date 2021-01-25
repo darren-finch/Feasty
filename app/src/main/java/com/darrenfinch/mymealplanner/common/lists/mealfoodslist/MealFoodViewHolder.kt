@@ -13,5 +13,7 @@ class MealFoodViewHolder(itemView: View) : BaseViewHolder<UiMealFood>(itemView)
     @SuppressLint("SetTextI18n")
     override fun bind(item: UiMealFood) {
         binding.mealFood = item
+        binding.foodTitleTextView.text = item.title
+        binding.mealFoodInfoTextView.text = "${item.desiredServingSize} | ${item.macroNutrients}"
     }
 }

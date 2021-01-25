@@ -63,9 +63,7 @@ class AllFoodsController(
         getAllFoodsAndBindToView()
     }
 
-    override fun restoreState(state: BaseController.BaseSavedState) {
-        Log.d("AllFoodsController", "restoreState()")
-    }
+    override fun restoreState(state: BaseController.BaseSavedState) { }
     override fun getState(): BaseController.BaseSavedState {
         return SavedState()
     }

@@ -89,7 +89,6 @@ class FoodFormController(
     }
 
     override fun restoreState(state: BaseController.BaseSavedState) {
-        Log.d("AllFoodsController", "restoreState()")
         (state as SavedState).let {
             hasLoadedFoodDetailsState = it.hasLoadedFoodDetails
             foodDetailsState = it.foodDetails

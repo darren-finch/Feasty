@@ -1,8 +1,6 @@
 package com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller
 
 import androidx.core.os.bundleOf
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.dialogs.DialogResult
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
@@ -12,6 +10,9 @@ import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controlle
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.view.SelectFoodQuantityViewMvc
 import com.darrenfinch.mymealplanner.common.constants.DefaultModels
+import com.darrenfinch.mymealplanner.foods.models.domain.MacroCalculator
+import com.darrenfinch.mymealplanner.foods.models.mappers.macroNutrientsToUiMacroNutrients
+import com.darrenfinch.mymealplanner.foods.models.mappers.uiMacroNutrientsToMacroNutrients
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 import com.darrenfinch.mymealplanner.foods.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
@@ -94,5 +95,19 @@ class SelectFoodQuantityController(
                 )
             )
         )
+    }
+
+    override fun onServingSizeChange(newServingSize: PhysicalQuantity) {
+        val updatedFood = foodState.copy(
+            servingSize = newServingSize,
+            macroNutrients = macroNutrientsToUiMacroNutrients(
+                MacroCalculator.baseMacrosOnNewServingSize(
+                    uiMacroNutrientsToMacroNutrients(foodState.macroNutrients),
+                    foodState.servingSize,
+                    newServingSize
+                )
+            )
+        )
+        viewMvc.bindFood(updatedFood)
     }
 }

@@ -2,7 +2,6 @@ package com.darrenfinch.mymealplanner.foods.models.domain
 
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.meals.models.domain.Meal
-import com.darrenfinch.mymealplanner.meals.models.domain.MealFood
 import com.darrenfinch.mymealplanner.mealplans.models.domain.MealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.models.mappers.uiMealPlanMealToMealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
@@ -21,21 +20,21 @@ object MacroCalculator {
         newServingSize: PhysicalQuantity
     ): MacroNutrients {
         val initialCalories = oldMacros.calories
-        val initialProtein = oldMacros.proteins
+        val initialProteins = oldMacros.proteins
         val initialCarbs = oldMacros.carbs
-        val initialFat = oldMacros.fats
+        val initialFats = oldMacros.fats
 
         val caloriesPerUnit = oldServingSize.quantity / initialCalories
         val finalCalories = newServingSize.quantity / caloriesPerUnit
 
-        val proteinPerUnit = oldServingSize.quantity / initialProtein
-        val finalProtein = newServingSize.quantity / proteinPerUnit
+        val proteinsPerUnit = oldServingSize.quantity / initialProteins
+        val finalProtein = newServingSize.quantity / proteinsPerUnit
 
         val carbsPerUnit = oldServingSize.quantity / initialCarbs
         val finalCarbs = newServingSize.quantity / carbsPerUnit
 
-        val fatPerUnit = oldServingSize.quantity / initialFat
-        val finalFat = newServingSize.quantity / fatPerUnit
+        val fatsPerUnit = oldServingSize.quantity / initialFats
+        val finalFat = newServingSize.quantity / fatsPerUnit
 
         return MacroNutrients(
             calories = finalCalories.toInt(),
@@ -44,74 +43,6 @@ object MacroCalculator {
             fats = finalFat.toInt()
         )
     }
-
-    fun getMacrosForFoodWithNewServingSize(food: Food, newServingSize: PhysicalQuantity): Food {
-        val macros = food.macroNutrients
-        val initialCalories = macros.calories
-        val initialProtein = macros.proteins
-        val initialCarbs = macros.carbs
-        val initialFat = macros.fats
-
-        val caloriesPerUnit = food.servingSize.quantity / initialCalories
-        val finalCalories = newServingSize.quantity / caloriesPerUnit
-
-        val proteinPerUnit = food.servingSize.quantity / initialProtein
-        val finalProtein = newServingSize.quantity / proteinPerUnit
-
-        val carbsPerUnit = food.servingSize.quantity / initialCarbs
-        val finalCarbs = newServingSize.quantity / carbsPerUnit
-
-        val fatPerUnit = food.servingSize.quantity / initialFat
-        val finalFat = newServingSize.quantity / fatPerUnit
-
-        return Food(
-            food.id, food.title, newServingSize, MacroNutrients(
-                calories = finalCalories.toInt(),
-                proteins = finalProtein.toInt(),
-                carbs = finalCarbs.toInt(),
-                fats = finalFat.toInt()
-            )
-        )
-    }
-
-    fun getMacrosForMealFoodWithNewServingSize(
-        mealFood: MealFood,
-        newServingSize: PhysicalQuantity
-    ): MealFood {
-        val macros = mealFood.macroNutrients
-        val initialCalories = macros.calories
-        val initialProtein = macros.proteins
-        val initialCarbs = macros.carbs
-        val initialFat = macros.fats
-
-        val caloriesPerUnit = mealFood.desiredServingSize.quantity / initialCalories
-        val finalCalories = newServingSize.quantity / caloriesPerUnit
-
-        val proteinPerUnit = mealFood.desiredServingSize.quantity / initialProtein
-        val finalProtein = newServingSize.quantity / proteinPerUnit
-
-        val carbsPerUnit = mealFood.desiredServingSize.quantity / initialCarbs
-        val finalCarbs = newServingSize.quantity / carbsPerUnit
-
-        val fatPerUnit = mealFood.desiredServingSize.quantity / initialFat
-        val finalFat = newServingSize.quantity / fatPerUnit
-
-        return mealFood.copy(
-            macroNutrients = MacroNutrients(
-                calories = finalCalories.toInt(),
-                proteins = finalProtein.toInt(),
-                carbs = finalCarbs.toInt(),
-                fats = finalFat.toInt()
-            )
-        )
-    }
-
-    fun calculateTotalCalories(meal: MealPlanMeal) = meal.foods.sumBy { it.macroNutrients.calories }
-    fun calculateTotalCarbohydrates(meal: MealPlanMeal) =
-        meal.foods.sumBy { it.macroNutrients.carbs }
-
-    fun calculateTotalFats(meal: MealPlanMeal) = meal.foods.sumBy { it.macroNutrients.fats }
-    fun calculateTotalProteins(meal: MealPlanMeal) = meal.foods.sumBy { it.macroNutrients.proteins }
 
     fun calculateMealMacroNutrients(meal: UiMeal): String {
         return calculateMealMacroNutrients(uiMealToMeal(meal))

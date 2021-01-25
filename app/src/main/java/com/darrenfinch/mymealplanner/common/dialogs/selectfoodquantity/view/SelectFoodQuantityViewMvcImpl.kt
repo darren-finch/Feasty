@@ -33,8 +33,14 @@ class SelectFoodQuantityViewMvcImpl(
     private fun initUI() {
         binding.apply {
             binding.foodQuantityEditText.doOnTextChanged { _, _, _, _ ->
-                macroNutrientsTextView.text = getFoodData().macroNutrients.toString()
+                onServingSizeChange()
             }
+        }
+    }
+
+    private fun onServingSizeChange() {
+        for (listener in getListeners()) {
+            listener.onServingSizeChange(PhysicalQuantity(binding.foodQuantityEditText.text.toString().toDouble(), binding.food!!.servingSize.unit))
         }
     }
 
@@ -62,7 +68,7 @@ class SelectFoodQuantityViewMvcImpl(
     }
 
     override fun getFoodData(): UiFood {
-        return binding.food?.copy(servingSize = getFoodQuantity()) ?: DefaultModels.defaultUiFood
+        return binding.food ?: DefaultModels.defaultUiFood
     }
 
     private fun getFoodQuantity(): PhysicalQuantity {

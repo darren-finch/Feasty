@@ -30,14 +30,14 @@
                 android:text="@{food.title}"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/macroNutrientsTextView"
+                app:layout_constraintEnd_toStartOf="@+id/mealFoodInfoTextView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
                 tools:text="Toast" />
 
             <TextView
-                android:id="@+id/macroNutrientsTextView"
+                android:id="@+id/mealFoodInfoTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/standard_margin_half"
@@ -84,9 +84,9 @@
                 android:layout_marginHorizontal="@dimen/standard_margin_half"
                 android:background="#00FFFFFF"
                 android:src="@drawable/ic_more"
-                app:layout_constraintBottom_toBottomOf="@+id/macroNutrientsTextView"
+                app:layout_constraintBottom_toBottomOf="@+id/mealFoodInfoTextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/macroNutrientsTextView"
+                app:layout_constraintTop_toTopOf="@+id/mealFoodInfoTextView"
                 android:contentDescription="@string/view_more" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

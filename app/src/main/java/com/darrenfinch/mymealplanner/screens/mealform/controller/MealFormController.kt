@@ -14,9 +14,18 @@ import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controlle
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
+import com.darrenfinch.mymealplanner.foods.models.domain.Food
+import com.darrenfinch.mymealplanner.foods.models.domain.MacroCalculator
+import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
+import com.darrenfinch.mymealplanner.foods.models.mappers.macroNutrientsToUiMacroNutrients
+import com.darrenfinch.mymealplanner.foods.models.mappers.uiFoodToFood
+import com.darrenfinch.mymealplanner.foods.models.mappers.uiMacroNutrientsToMacroNutrients
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
+import com.darrenfinch.mymealplanner.meals.models.domain.MealFood
+import com.darrenfinch.mymealplanner.meals.models.mappers.mealFoodToUiMealFood
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
+import com.darrenfinch.mymealplanner.meals.usecases.AddMealFoodToMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.GetMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.InsertMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.UpdateMealUseCase
@@ -29,6 +38,7 @@ class MealFormController(
     private val insertMealUseCase: InsertMealUseCase,
     private val updateMealUseCase: UpdateMealUseCase,
     private val getMealUseCase: GetMealUseCase,
+    private val addMealFoodToMealUseCase: AddMealFoodToMealUseCase,
     private val screensNavigator: ScreensNavigator,
     private val dialogsManager: DialogsManager,
     private val dialogsEventBus: DialogsEventBus,
@@ -127,21 +137,11 @@ class MealFormController(
         result?.let {
             if (event == SelectFoodForMealDialogEvent.ON_FOOD_CHOSEN) {
                 dialogsManager.showSelectFoodQuantityDialog(result.data.getInt(FOOD_ID_RESULT))
-            }
-            else if (event == SelectFoodQuantityDialogEvent.ON_FOOD_QUANTITY_CHOSEN) {
+            } else if (event == SelectFoodQuantityDialogEvent.ON_FOOD_QUANTITY_CHOSEN) {
                 val selectedFood = result.data.getSerializable(SELECTED_FOOD_RESULT) as UiFood
                 val selectedFoodQuantity =
                     result.data.getSerializable(SELECTED_FOOD_QUANTITY_RESULT) as PhysicalQuantity
-                val mealFoodFromSelectedFood = UiMealFood(
-                    id = Constants.INVALID_ID,
-                    foodId = selectedFood.id,
-                    mealId = mealDetailsState.id,
-                    title = selectedFood.title,
-                    macroNutrients = selectedFood.macroNutrients,
-                    desiredServingSize = selectedFoodQuantity
-                )
-                mealDetailsState =
-                    mealDetailsState.copy(foods = mealDetailsState.foods + mealFoodFromSelectedFood)
+                mealDetailsState = addMealFoodToMealUseCase.addMealFoodToMeal(mealDetailsState, selectedFood, selectedFoodQuantity)
                 viewMvc.bindMealDetails(mealDetailsState)
             }
         }
