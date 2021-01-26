@@ -8,7 +8,7 @@ import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.SelectFoodForMealDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.FOOD_ID_RESULT
-import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_SERVING_SIZE_RESULT
+import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.DESIRED_SERVING_SIZE_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD_RESULT
 import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
@@ -125,10 +125,10 @@ class MealFormController(
         result?.let {
             if (event == SelectFoodForMealDialogEvent.ON_FOOD_CHOSEN) {
                 dialogsManager.showSelectFoodQuantityDialog(result.data.getInt(FOOD_ID_RESULT))
-            } else if (event == SelectFoodQuantityDialogEvent.POSITIVE) {
+            } else if (event == SelectFoodQuantityDialogEvent.ON_DESIRED_FOOD_SERVING_SIZE_CHOSEN) {
                 val selectedFood = result.data.getSerializable(SELECTED_FOOD_RESULT) as UiFood
                 val selectedFoodQuantity =
-                    result.data.getSerializable(SELECTED_SERVING_SIZE_RESULT) as PhysicalQuantity
+                    result.data.getSerializable(DESIRED_SERVING_SIZE_RESULT) as PhysicalQuantity
                 viewModel.addMealFood(selectedFood, selectedFoodQuantity)
                 viewMvc.bindMealDetails(viewModel.getState())
             }

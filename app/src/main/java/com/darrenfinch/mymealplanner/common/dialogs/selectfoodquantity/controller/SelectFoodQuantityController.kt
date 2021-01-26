@@ -7,7 +7,7 @@ import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityVm
-import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_SERVING_SIZE_RESULT
+import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.DESIRED_SERVING_SIZE_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.view.SelectFoodQuantityViewMvc
 import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
@@ -50,16 +50,16 @@ class SelectFoodQuantityController(
     }
 
     fun getFoodAndBindToView() {
-        viewMvc.bindFood(viewModel.getSelectedFood())
-
         if (!viewModel.isDirty) {
             getFoodJob = CoroutineScope(backgroundContext).launch {
                 val food = getFoodUseCase.getFood(foodIdArg)
                 withContext(uiContext) {
                     viewModel.setSelectedFood(food)
-                    viewMvc.bindFood(food)
+                    viewMvc.bindProperties(viewModel.getFoodTitle(), viewModel.getUpdatedMacros(), viewModel.getOriginalServingSize())
                 }
             }
+        } else {
+            viewMvc.bindProperties(viewModel.getFoodTitle(), viewModel.getUpdatedMacros(), viewModel.getDesiredServingSize())
         }
     }
 
@@ -80,18 +80,18 @@ class SelectFoodQuantityController(
     override fun onPositiveButtonClicked() {
         dialogsManager.clearDialog()
         dialogsEventBus.postEvent(
-            SelectFoodQuantityDialogEvent.POSITIVE,
+            SelectFoodQuantityDialogEvent.ON_DESIRED_FOOD_SERVING_SIZE_CHOSEN,
             DialogResult(
                 bundleOf(
                     SELECTED_FOOD_RESULT to viewModel.getSelectedFood(),
-                    SELECTED_SERVING_SIZE_RESULT to viewModel.getSelectedServingSize(),
+                    DESIRED_SERVING_SIZE_RESULT to viewModel.getDesiredServingSize(),
                 )
             )
         )
     }
 
-    override fun onFoodQuantityChange(newQuantity: Double) {
-        viewModel.setSelectedFoodQuantity(newQuantity)
-        viewMvc.bindFood(viewModel.getSelectedFood())
+    override fun onServingSizeQuantityChange(newQuantity: Double) {
+        viewModel.setDesiredServingSizeQuantity(newQuantity)
+        viewMvc.bindMacros(viewModel.getUpdatedMacros())
     }
 }

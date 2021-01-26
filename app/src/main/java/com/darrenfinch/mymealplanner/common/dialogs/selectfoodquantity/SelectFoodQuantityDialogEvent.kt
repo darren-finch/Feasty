@@ -1,5 +1,5 @@
 package com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity
 
 enum class SelectFoodQuantityDialogEvent {
-    POSITIVE
+    ON_DESIRED_FOOD_SERVING_SIZE_CHOSEN
 }

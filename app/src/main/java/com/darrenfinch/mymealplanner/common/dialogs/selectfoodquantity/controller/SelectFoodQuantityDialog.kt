@@ -21,7 +21,7 @@ class SelectFoodQuantityDialog : BaseDialog() {
         // Dialog results
         const val FOOD_ID_RESULT = "FOOD_ID_RESULT"
         const val SELECTED_FOOD_RESULT = "SELECTED_FOOD_RESULT"
-        const val SELECTED_SERVING_SIZE_RESULT = "SELECTED_SERVING_SIZE_RESULT"
+        const val DESIRED_SERVING_SIZE_RESULT = "DESIRED_SERVING_SIZE_RESULT"
 
         fun newInstance(foodId: Int): SelectFoodQuantityDialog {
             val bundle = Bundle()

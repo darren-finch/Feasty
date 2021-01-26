@@ -11,6 +11,8 @@ import com.darrenfinch.mymealplanner.common.utils.KeyboardUtils
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentSelectMealFoodQuantityBinding
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
+import com.darrenfinch.mymealplanner.foods.models.presentation.UiMacroNutrients
+import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 
 class SelectFoodQuantityViewMvcImpl(
     inflater: LayoutInflater,
@@ -39,12 +41,27 @@ class SelectFoodQuantityViewMvcImpl(
 
     private fun onServingSizeChange() {
         for (listener in getListeners()) {
-            listener.onFoodQuantityChange(binding.foodQuantityEditText.text.toString().toDouble())
+            listener.onServingSizeQuantityChange(binding.foodQuantityEditText.text.toString().toDoubleOrNull() ?: 0.0)
         }
     }
 
-    override fun bindFood(food: UiFood) {
-        binding.food = food
+    override fun bindProperties(title: String, macroNutrients: UiMacroNutrients, selectedQuantity: PhysicalQuantity) {
+        bindServingSize(selectedQuantity)
+        bindFoodTitle(title)
+        bindMacros(macroNutrients)
+    }
+
+    override fun bindServingSize(servingSize: PhysicalQuantity) {
+        binding.foodQuantityEditText.setText(servingSize.quantity.toString())
+        binding.measurementUnitTextView.text = servingSize.unit.toString()
+    }
+
+    override fun bindFoodTitle(title: String) {
+        binding.foodNameTextView.text = title
+    }
+
+    override fun bindMacros(macroNutrients: UiMacroNutrients) {
+        binding.mealFoodInfoTextView.text = macroNutrients.toString()
     }
 
     override fun makeDialog(): Dialog {

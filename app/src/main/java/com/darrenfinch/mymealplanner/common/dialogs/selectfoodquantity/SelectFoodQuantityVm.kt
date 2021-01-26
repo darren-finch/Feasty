@@ -16,35 +16,38 @@ class SelectFoodQuantityVm : StatefulVm() {
     private var id = Constants.VALID_ID
     private var title = ""
     private var originalServingSizeQuantity = 0.0
-    private var desiredServingSizeQuantity = StatefulVmProperty(0.0, this)
+    private var originalMacroNutrients = DefaultModels.defaultUiMacroNutrients
     private var servingSizeUnit: MeasurementUnit = MeasurementUnit.defaultUnit
     private var macroNutrients = DefaultModels.defaultUiMacroNutrients
+
+    private var desiredServingSizeQuantity = StatefulVmProperty(0.0, this)
 
     fun setSelectedFood(food: UiFood) {
         id = food.id
         title = food.title
         originalServingSizeQuantity = food.servingSize.quantity
         servingSizeUnit = food.servingSize.unit
-        macroNutrients = food.macroNutrients
+        originalMacroNutrients = food.macroNutrients
     }
-
     fun getSelectedFood() = UiFood(
         id = id,
         title = title,
         servingSize = PhysicalQuantity(originalServingSizeQuantity, servingSizeUnit),
-        macroNutrients = macroNutrients
+        macroNutrients = originalMacroNutrients
     )
 
-    fun setSelectedFoodQuantity(quantity: Double) {
+    fun setDesiredServingSizeQuantity(quantity: Double) {
         desiredServingSizeQuantity.set(quantity)
         macroNutrients = macroNutrientsToUiMacroNutrients(
             MacroCalculator.baseMacrosOnNewServingSize(
-                uiMacroNutrientsToMacroNutrients(macroNutrients),
+                uiMacroNutrientsToMacroNutrients(originalMacroNutrients),
                 PhysicalQuantity(originalServingSizeQuantity, servingSizeUnit),
-                getSelectedServingSize()
+                getDesiredServingSize()
             )
         )
     }
-
-    fun getSelectedServingSize() = PhysicalQuantity(desiredServingSizeQuantity.get(), servingSizeUnit)
+    fun getDesiredServingSize() = PhysicalQuantity(desiredServingSizeQuantity.get(), servingSizeUnit)
+    fun getOriginalServingSize() = PhysicalQuantity(originalServingSizeQuantity, servingSizeUnit)
+    fun getUpdatedMacros() = macroNutrients
+    fun getFoodTitle() = title
 }
