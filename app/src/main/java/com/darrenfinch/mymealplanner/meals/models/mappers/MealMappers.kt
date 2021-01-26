@@ -9,7 +9,7 @@ import com.darrenfinch.mymealplanner.model.room.models.meals.DatabaseMealFood
 fun dbMealToMeal(
     dbMeal: DatabaseMeal,
     dbMealFoods: List<DatabaseMealFood>,
-    dbFoodReferences: List<DatabaseFood>
+    dbFoodReferences: List<DatabaseFood?>
 ) = Meal(
     id = dbMeal.id,
     title = dbMeal.title,

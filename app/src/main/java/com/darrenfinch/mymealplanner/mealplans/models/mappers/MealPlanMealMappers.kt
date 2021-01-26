@@ -16,7 +16,7 @@ fun dbMealPlanMealToMealPlanMeal(
     dbMeal: DatabaseMeal,
     dbMealPlan: DatabaseMealPlan,
     dbMealFoods: List<DatabaseMealFood>,
-    dbFoodReferences: List<DatabaseFood>
+    dbFoodReferences: List<DatabaseFood?>
 ) = MealPlanMeal(
     id = dbMealPlanMeal.id,
     title = dbMeal.title,

@@ -9,7 +9,7 @@ interface MealsDao {
     suspend fun getAllMeals(): List<DatabaseMeal>
 
     @Query("SELECT * FROM meals WHERE id = :id")
-    suspend fun getMeal(id: Int): DatabaseMeal
+    suspend fun getMeal(id: Int): DatabaseMeal?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMeal(meal: DatabaseMeal): Long

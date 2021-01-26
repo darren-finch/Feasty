@@ -21,7 +21,7 @@ class SelectFoodQuantityVm : StatefulVm() {
     private var macroNutrients = DefaultModels.defaultUiMacroNutrients
 
     fun setSelectedFood(food: UiFood) {
-        id = 0
+        id = food.id
         title = food.title
         originalServingSizeQuantity = food.servingSize.quantity
         servingSizeUnit = food.servingSize.unit

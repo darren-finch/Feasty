@@ -10,7 +10,7 @@ interface FoodsDao {
     suspend fun getAllFoods(): List<DatabaseFood>
 
     @Query("SELECT * FROM foods WHERE id = :id")
-    suspend fun getFood(id: Int): DatabaseFood
+    suspend fun getFood(id: Int): DatabaseFood?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFood(food: DatabaseFood)

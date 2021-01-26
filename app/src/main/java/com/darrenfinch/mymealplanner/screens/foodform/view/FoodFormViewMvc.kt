@@ -21,5 +21,4 @@ interface FoodFormViewMvc : ObservableViewMvc<FoodFormViewMvc.Listener>, Progres
     }
 
     fun bindFoodDetails(foodDetails: UiFood)
-    fun getFoodDetails(): UiFood
 }

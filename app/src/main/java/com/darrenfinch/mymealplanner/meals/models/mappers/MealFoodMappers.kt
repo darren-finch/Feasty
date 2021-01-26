@@ -51,18 +51,20 @@ fun mealFoodToDbMealFood(mealFood: MealFood) = DatabaseMealFood(
 // TODO: Consider a cleaner approach. Maybe simplify mappings?
 fun dbMealFoodsToMealFoods(
     dbMealFoods: List<DatabaseMealFood>,
-    dbFoodReferences: List<DatabaseFood>
+    dbFoodReferences: List<DatabaseFood?>
 ): List<MealFood> {
-    if (dbMealFoods.size != dbFoodReferences.size) throw IllegalArgumentException("dbMealFoodsToMealFoods(): dbMealFoods and dbFoodReferences are different lengths!")
-
     val mealFoods = mutableListOf<MealFood>()
     for (i in 0..dbMealFoods.lastIndex) {
-        mealFoods.add(
-            dbMealFoodToMealFood(
-                dbMealFoods[i],
-                dbFoodReferences[i]
-            )
-        )
+        if(i < dbFoodReferences.size) {
+            if(dbFoodReferences[i] != null) {
+                mealFoods.add(
+                    dbMealFoodToMealFood(
+                        dbMealFoods[i],
+                        dbFoodReferences[i]!!
+                    )
+                )
+            }
+        }
     }
 
     return mealFoods

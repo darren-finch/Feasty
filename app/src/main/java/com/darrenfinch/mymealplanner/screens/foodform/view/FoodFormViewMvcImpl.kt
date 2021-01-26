@@ -218,29 +218,9 @@ class FoodFormViewMvcImpl(
         }
     }
 
-    override fun getFoodDetails() = UiFood(
-        id = getFoodId(),
-        title = getFoodName(),
-        macroNutrients = UiMacroNutrients(
-            calories = getCalories(),
-            carbs = getCarbohydrates(),
-            fats = getFat(),
-            proteins = getProtein()
-        ),
-        servingSize = getServingSize()
-    )
-
     override fun releaseViewRefs() {
         _binding = null
     }
-
-    private fun getFoodId() = binding.food?.id ?: 0
-    private fun getFoodName() = binding.foodNameEditText.text.toString()
-    private fun getCalories() = binding.caloriesEditText.text.toString().toInt()
-    private fun getCarbohydrates() = binding.carbohydratesEditText.text.toString().toInt()
-    private fun getFat() = binding.fatsEditText.text.toString().toInt()
-    private fun getProtein() = binding.proteinsEditText.text.toString().toInt()
-    private fun getServingSize() = PhysicalQuantity(binding.foodQuantityEditText.text.toString().toDouble(), selectedMeasurementUnit)
 
     override fun showProgressIndication() {
         binding.formInputsGroup.visibility = View.GONE

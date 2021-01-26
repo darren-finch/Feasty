@@ -12,7 +12,7 @@ interface MealPlansDao {
     suspend fun getAllMealPlans(): List<DatabaseMealPlan>
 
     @Query("SELECT * FROM mealPlans WHERE :id = id")
-    suspend fun getMealPlan(id: Int): DatabaseMealPlan
+    suspend fun getMealPlan(id: Int): DatabaseMealPlan?
 
     @Insert
     suspend fun insertMealPlan(mealPlan: DatabaseMealPlan)
