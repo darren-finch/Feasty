@@ -4,8 +4,10 @@ import com.darrenfinch.mymealplanner.model.MainRepository
 
 class DeleteMealUseCase(private val repository: MainRepository) {
     suspend fun deleteMeal(id: Int) {
+        val mealFoods = repository.getMealFoodsForMeal(id)
+        mealFoods.forEach {
+            repository.deleteMealFood(it.id)
+        }
         repository.deleteMeal(id)
-
-        // TODO: REMOVE MEAL FOODS
     }
 }
