@@ -3,6 +3,7 @@ package com.darrenfinch.mymealplanner.screens.mealform.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
@@ -18,12 +19,13 @@ class MealFormViewMvcImpl(
     parent: ViewGroup?
 ) : BaseObservableViewMvc<MealFormViewMvc.Listener>(), MealFormViewMvc {
 
-    private val binding: FragmentMealFormBinding = DataBindingUtil.inflate(
+    private var _binding: FragmentMealFormBinding? = DataBindingUtil.inflate(
         inflater,
         R.layout.fragment_meal_form,
         parent,
         false
     )
+    private val binding = _binding!!
 
     private val mealFoodsRecyclerViewAdapter = MealFoodsRecyclerViewAdapter()
 
@@ -40,7 +42,15 @@ class MealFormViewMvcImpl(
             toolbar.setNavigationOnClickListener {
                 onNavigateUp()
             }
-            doneButton.setOnClickListener { onDoneButtonClicked() }
+            doneButton.setOnClickListener {
+                onDoneButtonClicked()
+            }
+
+            mealNameEditText.doOnTextChanged { text, _, _, _ ->
+                for (listener in getListeners()) {
+                    listener.onTitleChange(text.toString())
+                }
+            }
 
             mealFoodsRecyclerView.adapter = mealFoodsRecyclerViewAdapter
             mealFoodsRecyclerView.layoutManager = LinearLayoutManager(getContext())
@@ -50,7 +60,7 @@ class MealFormViewMvcImpl(
 
     private fun onDoneButtonClicked() {
         for (listener in getListeners()) {
-            listener.onDoneButtonClicked(getMealDetails())
+            listener.onDoneButtonClicked()
         }
     }
 
@@ -66,12 +76,8 @@ class MealFormViewMvcImpl(
         }
     }
 
-    override fun getMealDetails(): UiMeal {
-        return UiMeal(
-            id = binding.meal?.id ?: Constants.VALID_ID,
-            title = binding.mealNameEditText.text.toString(),
-            foods = binding.meal?.foods ?: listOf()
-        )
+    override fun releaseViewRefs() {
+        _binding = null
     }
 
     override fun bindMealDetails(mealDetails: UiMeal) {

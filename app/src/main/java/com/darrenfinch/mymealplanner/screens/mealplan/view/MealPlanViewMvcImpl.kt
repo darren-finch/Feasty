@@ -20,12 +20,13 @@ class MealPlanViewMvcImpl(
     inflater: LayoutInflater,
     parent: ViewGroup?
 ) : BaseObservableViewMvc<MealPlanViewMvc.Listener>(), MealPlanViewMvc {
-    private val binding: FragmentMealPlanBinding = DataBindingUtil.inflate(
+    private var _binding: FragmentMealPlanBinding? = DataBindingUtil.inflate(
         inflater,
         R.layout.fragment_meal_plan,
         parent,
         false
     )
+    private val binding = _binding!!
 
     private val listener = object : MealPlanMealsRecyclerViewAdapter.ItemEventListener {
         override fun onDelete(mealPlanMeal: UiMealPlanMeal) {
@@ -140,5 +141,9 @@ class MealPlanViewMvcImpl(
 
     override fun showMealPlans() {
         binding.selectMealPlanSpinner.visibility = View.VISIBLE
+    }
+
+    override fun releaseViewRefs() {
+        _binding = null
     }
 }

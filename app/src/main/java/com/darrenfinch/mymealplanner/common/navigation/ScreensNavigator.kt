@@ -26,6 +26,9 @@ class ScreensNavigator(private val navController: FragNavController) {
         }
     }
 
+    private val enterAnim = android.R.anim.fade_in
+    private val exitAnim = android.R.anim.fade_out
+
     fun init(savedInstanceState: Bundle?) {
         navController.rootFragmentListener = rootFragmentListener
         navController.initialize(FragNavController.TAB1, savedInstanceState)
@@ -41,7 +44,7 @@ class ScreensNavigator(private val navController: FragNavController) {
         } else {
             navController.popFragment(
                 FragNavTransactionOptions.newBuilder()
-                    .customAnimations(android.R.anim.slide_out_right, android.R.anim.slide_in_left)
+                    .customAnimations(enterAnim, exitAnim, enterAnim, exitAnim)
                     .build()
             )
             true
@@ -49,14 +52,20 @@ class ScreensNavigator(private val navController: FragNavController) {
     }
 
     fun switchTab(index: Int) {
-        navController.switchTab(index)
+        val enterAnimation = if(navController.currentStackIndex < index) android.R.anim.slide_out_right else android.R.anim.slide_in_left
+        val exitAnimation = if(navController.currentStackIndex < index) android.R.anim.slide_in_left else android.R.anim.slide_out_right
+        navController.switchTab(index,
+            FragNavTransactionOptions.newBuilder()
+            .customAnimations(enterAnim, exitAnim, enterAnim, exitAnim)
+            .build()
+        )
     }
 
     fun toFoodFormScreen(foodId: Int) {
         navController.pushFragment(
             FoodFormFragment.newInstance(foodId),
             FragNavTransactionOptions.newBuilder()
-                .customAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                .customAnimations(enterAnim, exitAnim)
                 .build()
         )
     }
@@ -67,7 +76,7 @@ class ScreensNavigator(private val navController: FragNavController) {
         navController.pushFragment(
             MealFormFragment.newInstance(mealId),
             FragNavTransactionOptions.newBuilder()
-                .customAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                .customAnimations(enterAnim, exitAnim)
                 .build()
         )
     }
@@ -76,7 +85,7 @@ class ScreensNavigator(private val navController: FragNavController) {
         navController.pushFragment(
             MealPlanFormFragment.newInstance(),
             FragNavTransactionOptions.newBuilder()
-                .customAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                .customAnimations(enterAnim, exitAnim)
                 .build()
         )
     }

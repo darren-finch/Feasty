@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.utils.KeyboardUtils
@@ -24,12 +25,13 @@ class FoodFormViewMvcImpl(
 
     private var selectedMeasurementUnit: MeasurementUnit = MeasurementUnit.defaultUnit
     private var selectedMeasurementType: MeasurementType = MeasurementType.defaultType
-    private val binding: FragmentFoodFormBinding = DataBindingUtil.inflate(
+    private var _binding: FragmentFoodFormBinding? = DataBindingUtil.inflate(
         inflater,
         R.layout.fragment_food_form,
         parent,
         false
     )
+    private val binding = _binding!!
 
     init {
         setRootView(binding.root)
@@ -47,6 +49,42 @@ class FoodFormViewMvcImpl(
             doneButton.setOnClickListener { onDoneSelected() }
             toolbar.setNavigationOnClickListener {
                 onNavigateUp()
+            }
+
+            foodNameEditText.doOnTextChanged { text, _, _, _ ->
+                for (listener in getListeners()) {
+                    listener.onTitleChange(text.toString())
+                }
+            }
+
+            foodQuantityEditText.doOnTextChanged { text, _, _, _ ->
+                for (listener in getListeners()) {
+                    listener.onServingSizeQuantityChange(text.toString().toDoubleOrNull() ?: 0.0)
+                }
+            }
+
+            caloriesEditText.doOnTextChanged { text, _, _, _ ->
+                for (listener in getListeners()) {
+                    listener.onCaloriesChange(text.toString().toIntOrNull() ?: 0)
+                }
+            }
+
+            carbohydratesEditText.doOnTextChanged { text, _, _, _ ->
+                for (listener in getListeners()) {
+                    listener.onCarbsChange(text.toString().toIntOrNull() ?: 0)
+                }
+            }
+
+            fatsEditText.doOnTextChanged { text, _, _, _ ->
+                for (listener in getListeners()) {
+                    listener.onFatsChange(text.toString().toIntOrNull() ?: 0)
+                }
+            }
+
+            proteinsEditText.doOnTextChanged { text, _, _, _ ->
+                for (listener in getListeners()) {
+                    listener.onProteinsChange(text.toString().toIntOrNull() ?: 0)
+                }
             }
         }
         setupMeasurementTypeSpinner()
@@ -142,6 +180,9 @@ class FoodFormViewMvcImpl(
                             stringsToVolumeUnits[getValidMeasurementUnitsAsStrings()[position]]!!
                         else
                             stringsToMassUnits[getValidMeasurementUnitsAsStrings()[position]]!!
+                    for (listener in getListeners()) {
+                        listener.onServingSizeUnitChange(selectedMeasurementUnit)
+                    }
                 }
             }
     }
@@ -167,7 +208,7 @@ class FoodFormViewMvcImpl(
         KeyboardUtils.hideKeyboardFrom(getContext(), getRootView())
 
         for (listener in getListeners()) {
-            listener.onDoneButtonClicked(getFoodDetails())
+            listener.onDoneButtonClicked()
         }
     }
 
@@ -188,6 +229,10 @@ class FoodFormViewMvcImpl(
         ),
         servingSize = getServingSize()
     )
+
+    override fun releaseViewRefs() {
+        _binding = null
+    }
 
     private fun getFoodId() = binding.food?.id ?: 0
     private fun getFoodName() = binding.foodNameEditText.text.toString()

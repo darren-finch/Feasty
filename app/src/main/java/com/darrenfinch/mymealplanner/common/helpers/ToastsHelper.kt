@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.common.messages
+package com.darrenfinch.mymealplanner.common.helpers
 
 import android.content.Context
 import android.widget.Toast

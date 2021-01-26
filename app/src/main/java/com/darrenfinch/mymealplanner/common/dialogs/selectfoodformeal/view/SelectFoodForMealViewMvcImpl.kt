@@ -18,8 +18,9 @@ class SelectFoodForMealViewMvcImpl(
     parent: ViewGroup?
 ) : BaseObservableViewMvc<SelectFoodForMealViewMvc.Listener>(), SelectFoodForMealViewMvc {
 
-    private val binding: FragmentSelectItemBinding =
+    private var _binding: FragmentSelectItemBinding? =
         DataBindingUtil.inflate(inflater, R.layout.fragment_select_item, parent, false)
+    private val binding = _binding!!
 
     private val foodsListItemEventListener = object : FoodsRecyclerViewAdapter.ItemEventListener {
         override fun onItemClick(foodId: Int) {}
@@ -61,5 +62,9 @@ class SelectFoodForMealViewMvcImpl(
             .setTitle(getString(R.string.select_food))
             .setNegativeButton(android.R.string.cancel) { _, _ -> }
             .show()
+    }
+
+    override fun releaseViewRefs() {
+
     }
 }

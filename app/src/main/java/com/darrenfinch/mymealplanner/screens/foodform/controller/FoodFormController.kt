@@ -1,10 +1,8 @@
 package com.darrenfinch.mymealplanner.screens.foodform.controller
 
-import android.util.Log
 import com.darrenfinch.mymealplanner.common.constants.Constants
-import com.darrenfinch.mymealplanner.common.constants.DefaultModels
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
-import com.darrenfinch.mymealplanner.common.messages.ToastsHelper
+import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
@@ -12,11 +10,14 @@ import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 import com.darrenfinch.mymealplanner.foods.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.foods.usecases.InsertFoodUseCase
 import com.darrenfinch.mymealplanner.foods.usecases.UpdateFoodUseCase
+import com.darrenfinch.mymealplanner.physicalquantities.units.MeasurementUnit
+import com.darrenfinch.mymealplanner.screens.foodform.FoodFormVm
 import com.darrenfinch.mymealplanner.screens.foodform.view.FoodFormViewMvc
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 class FoodFormController(
+    private var viewModel: FoodFormVm,
     private val screensNavigator: ScreensNavigator,
     private val getFoodUseCase: GetFoodUseCase,
     private val insertFoodUseCase: InsertFoodUseCase,
@@ -26,14 +27,12 @@ class FoodFormController(
     private val uiContext: CoroutineContext
 ) : BaseController, FoodFormViewMvc.Listener, BackPressListener {
 
-    data class SavedState(val hasLoadedFoodDetails: Boolean, val foodDetails: UiFood) : BaseController.BaseSavedState
+    data class SavedState(val viewModel: FoodFormVm) :
+        ControllerSavedState
 
     private lateinit var viewMvc: FoodFormViewMvc
 
     private var foodIdArg = Constants.INVALID_ID
-
-    private var foodDetailsState: UiFood = DefaultModels.defaultUiFood
-    private var hasLoadedFoodDetailsState = false
 
     private var getFoodJob: Job? = null
 
@@ -53,29 +52,28 @@ class FoodFormController(
     }
 
     fun getFoodDetailsIfPossibleAndBindToView() {
-        val shouldFetchFoodDetails = foodIdArg != Constants.INVALID_ID && !hasLoadedFoodDetailsState
-        if (shouldFetchFoodDetails) {
+        if (!viewModel.isDirty && foodIdArg != Constants.INVALID_ID) {
             viewMvc.showProgressIndication()
             getFoodJob = CoroutineScope(backgroundContext).launch {
-                foodDetailsState = getFoodUseCase.getFood(foodIdArg)
-                hasLoadedFoodDetailsState = true
+                val foodDetails = getFoodUseCase.getFood(foodIdArg)
                 withContext(uiContext) {
                     viewMvc.hideProgressIndication()
-                    viewMvc.bindFoodDetails(foodDetailsState)
+                    viewMvc.bindFoodDetails(foodDetails)
+                    viewModel.setDefaultState(foodDetails)
                 }
             }
         } else {
             viewMvc.hideProgressIndication()
-            viewMvc.bindFoodDetails(foodDetailsState)
+            viewMvc.bindFoodDetails(viewModel.getState())
         }
     }
 
-    override fun onDoneButtonClicked(editedFoodDetails: UiFood) {
+    override fun onDoneButtonClicked() {
         runBlocking(backgroundContext) {
             if (foodIdArg == Constants.INVALID_ID)
-                insertFoodUseCase.insertFood(editedFoodDetails)
+                insertFoodUseCase.insertFood(viewModel.getState())
             else
-                updateFoodUseCase.updateFood(editedFoodDetails)
+                updateFoodUseCase.updateFood(viewModel.getState())
         }
         screensNavigator.goBack()
     }
@@ -84,19 +82,46 @@ class FoodFormController(
         screensNavigator.goBack()
     }
 
+    override fun onTitleChange(newTitle: String) {
+        viewModel.setTitle(newTitle)
+    }
+
+    override fun onServingSizeQuantityChange(newServingSizeQuantity: Double) {
+        viewModel.setServingSizeQuantity(newServingSizeQuantity)
+    }
+
+    override fun onServingSizeUnitChange(newServingSizeUnit: MeasurementUnit) {
+        viewModel.setServingSizeUnit(newServingSizeUnit)
+    }
+
+    override fun onCaloriesChange(newCalories: Int) {
+        viewModel.setCalories(newCalories)
+    }
+
+    override fun onCarbsChange(newCarbs: Int) {
+        viewModel.setCarbs(newCarbs)
+    }
+
+    override fun onFatsChange(newFats: Int) {
+        viewModel.setFats(newFats)
+    }
+
+    override fun onProteinsChange(newProteins: Int) {
+        viewModel.setProteins(newProteins)
+    }
+
     fun setArgs(foodId: Int) {
         this.foodIdArg = foodId
     }
 
-    override fun restoreState(state: BaseController.BaseSavedState) {
+    override fun restoreState(state: ControllerSavedState) {
         (state as SavedState).let {
-            hasLoadedFoodDetailsState = it.hasLoadedFoodDetails
-            foodDetailsState = it.foodDetails
+            viewModel = it.viewModel
         }
     }
 
-    override fun getState(): BaseController.BaseSavedState {
-        return SavedState(hasLoadedFoodDetailsState, viewMvc.getFoodDetails())
+    override fun getState(): ControllerSavedState {
+        return SavedState(viewModel)
     }
 
     override fun onBackPressed(): Boolean {

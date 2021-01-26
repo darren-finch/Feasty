@@ -3,6 +3,7 @@ package com.darrenfinch.mymealplanner.screens.mealplan.controller
 import androidx.lifecycle.LifecycleOwner
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
+import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.screens.mealplan.view.MealPlanViewMvc
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
@@ -19,7 +20,7 @@ class MealPlanController(
     private val dialogsManager: DialogsManager
 ) : BaseController, MealPlanViewMvc.Listener {
 
-    class SavedState : BaseController.BaseSavedState
+    class SavedState : ControllerSavedState
 
     private lateinit var viewMvc: MealPlanViewMvc
 
@@ -57,8 +58,8 @@ class MealPlanController(
         // TODO: Delete meal and update list of meals
     }
 
-    override fun restoreState(state: BaseController.BaseSavedState) {}
-    override fun getState(): BaseController.BaseSavedState {
+    override fun restoreState(state: ControllerSavedState) {}
+    override fun getState(): ControllerSavedState {
         return SavedState()
     }
 

@@ -59,4 +59,9 @@ class MealPlanFragment : BaseFragment() {
         super.onSaveInstanceState(outState)
         outState.putAll(bundleOf(CONTROLLER_SAVED_STATE to controller.getState()))
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewMvc.releaseViewRefs()
+    }
 }

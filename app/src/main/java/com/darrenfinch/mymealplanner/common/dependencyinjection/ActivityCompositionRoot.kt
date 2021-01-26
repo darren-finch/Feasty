@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
-import com.darrenfinch.mymealplanner.common.messages.ToastsHelper
+import com.darrenfinch.mymealplanner.common.helpers.ToastsHelper
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.model.MainRepository
 import com.ncapdevi.fragnav.FragNavController
@@ -16,9 +16,7 @@ class ActivityCompositionRoot(
     private val activity: FragmentActivity
 ) {
     private val fragNavController =
-        FragNavController(activity.supportFragmentManager, R.id.container).apply {
-            fragmentHideStrategy = FragNavController.DETACH_ON_NAVIGATE_HIDE_ON_SWITCH
-        }
+        FragNavController(activity.supportFragmentManager, R.id.container)
     private val screensNavigator = ScreensNavigator(fragNavController)
     private val dialogsManager = DialogsManager(fragNavController)
     private val toastsHelper = ToastsHelper(activity)

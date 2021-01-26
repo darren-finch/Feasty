@@ -47,4 +47,9 @@ class SelectFoodForMealDialog : BaseDialog() {
         super.onStop()
         controller.onStop()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewMvc.releaseViewRefs()
+    }
 }

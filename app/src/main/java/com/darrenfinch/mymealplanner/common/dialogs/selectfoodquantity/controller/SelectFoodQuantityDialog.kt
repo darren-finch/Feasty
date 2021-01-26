@@ -21,7 +21,7 @@ class SelectFoodQuantityDialog : BaseDialog() {
         // Dialog results
         const val FOOD_ID_RESULT = "FOOD_ID_RESULT"
         const val SELECTED_FOOD_RESULT = "SELECTED_FOOD_RESULT"
-        const val SELECTED_FOOD_QUANTITY_RESULT = "SELECTED_FOOD_QUANTITY_RESULT"
+        const val SELECTED_SERVING_SIZE_RESULT = "SELECTED_SERVING_SIZE_RESULT"
 
         fun newInstance(foodId: Int): SelectFoodQuantityDialog {
             val bundle = Bundle()
@@ -41,7 +41,8 @@ class SelectFoodQuantityDialog : BaseDialog() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        viewMvc = controllerCompositionRoot.getViewMvcFactory().getSelectMealFoodQuantityViewMvc(null)
+        viewMvc =
+            controllerCompositionRoot.getViewMvcFactory().getSelectMealFoodQuantityViewMvc(null)
 
         setControllerArgs(requireArguments())
         restoreControllerState(savedInstanceState)
@@ -74,5 +75,10 @@ class SelectFoodQuantityDialog : BaseDialog() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putAll(bundleOf(CONTROLLER_SAVED_STATE to controller.getState()))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewMvc.releaseViewRefs()
     }
 }

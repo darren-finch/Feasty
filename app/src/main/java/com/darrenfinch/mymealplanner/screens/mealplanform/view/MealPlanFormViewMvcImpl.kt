@@ -3,6 +3,7 @@ package com.darrenfinch.mymealplanner.screens.mealplanform.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.utils.KeyboardUtils
@@ -14,12 +15,13 @@ class MealPlanFormViewMvcImpl(
     inflater: LayoutInflater,
     parent: ViewGroup?
 ) : BaseObservableViewMvc<MealPlanFormViewMvc.Listener>(), MealPlanFormViewMvc {
-    private val binding: FragmentMealPlanFormBinding = DataBindingUtil.inflate(
+    private var _binding: FragmentMealPlanFormBinding? = DataBindingUtil.inflate(
         inflater,
         R.layout.fragment_meal_plan_form,
         parent,
         false
     )
+    private val binding = _binding!!
 
     init {
         setRootView(binding.root)
@@ -32,6 +34,36 @@ class MealPlanFormViewMvcImpl(
             toolbar.setNavigationOnClickListener {
                 onNavigateUp()
             }
+
+            mealPlanNameEditText.doOnTextChanged { text, _, _, _ ->
+                for (listener in getListeners()) {
+                    listener.onTitleChange(text.toString())
+                }
+            }
+
+            requiredCaloriesEditText.doOnTextChanged { text, _, _, _ ->
+                for (listener in getListeners()) {
+                    listener.onRequiredCaloriesChange(text.toString().toIntOrNull() ?: 0)
+                }
+            }
+
+            requiredCarbohydratesEditText.doOnTextChanged { text, _, _, _ ->
+                for (listener in getListeners()) {
+                    listener.onRequiredCarbohydratesChange(text.toString().toIntOrNull() ?: 0)
+                }
+            }
+
+            requiredFatEditText.doOnTextChanged { text, _, _, _ ->
+                for (listener in getListeners()) {
+                    listener.onRequiredFatsChange(text.toString().toIntOrNull() ?: 0)
+                }
+            }
+
+            requiredProteinEditText.doOnTextChanged { text, _, _, _ ->
+                for (listener in getListeners()) {
+                    listener.onRequiredProteinsChange(text.toString().toIntOrNull() ?: 0)
+                }
+            }
         }
     }
 
@@ -43,7 +75,7 @@ class MealPlanFormViewMvcImpl(
         KeyboardUtils.hideKeyboardFrom(getContext(), getRootView())
 
         for (listener in getListeners()) {
-            listener.onDoneButtonClicked(getMealPlanDetails())
+            listener.onDoneButtonClicked()
         }
     }
 
@@ -53,15 +85,8 @@ class MealPlanFormViewMvcImpl(
         }
     }
 
-    override fun getMealPlanDetails(): UiMealPlan {
-        return UiMealPlan(
-            id = binding.mealPlan?.id ?: 0,
-            title = binding.mealPlanNameEditText.text.toString(),
-            requiredCalories = binding.requiredCaloriesEditText.text.toString().toInt(),
-            requiredProteins = binding.requiredProteinEditText.text.toString().toInt(),
-            requiredFats = binding.requiredFatEditText.text.toString().toInt(),
-            requiredCarbohydrates = binding.requiredCarbohydratesEditText.text.toString().toInt()
-        )
+    override fun releaseViewRefs() {
+        _binding = null
     }
 
     override fun showProgressIndication() {

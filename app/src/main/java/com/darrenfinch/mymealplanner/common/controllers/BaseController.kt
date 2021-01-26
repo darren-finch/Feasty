@@ -1,10 +1,8 @@
 package com.darrenfinch.mymealplanner.common.controllers
 
-import java.io.Serializable
+import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
 
 interface BaseController {
-    interface BaseSavedState : Serializable
-
-    fun restoreState(state: BaseSavedState)
-    fun getState(): BaseSavedState
+    fun restoreState(state: ControllerSavedState)
+    fun getState(): ControllerSavedState
 }

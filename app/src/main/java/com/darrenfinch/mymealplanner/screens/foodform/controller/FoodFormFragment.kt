@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
+import com.darrenfinch.mymealplanner.screens.foodform.view.FoodFormViewMvc
 
 class FoodFormFragment : BaseFragment() {
 
@@ -24,10 +25,14 @@ class FoodFormFragment : BaseFragment() {
     }
 
     private lateinit var controller: FoodFormController
+    private lateinit var viewMvc: FoodFormViewMvc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         controller = controllerCompositionRoot.getFoodFormController()
+
+        // We need to restore state in onCreate because the controller will lose its state if it's in the back stack.
+        restoreControllerState(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -35,7 +40,7 @@ class FoodFormFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val viewMvc = controllerCompositionRoot.getViewMvcFactory().getFoodFormViewMvc(container)
+        viewMvc = controllerCompositionRoot.getViewMvcFactory().getFoodFormViewMvc(container)
 
         controller.bindView(viewMvc)
         setControllerArgs(requireArguments())
@@ -68,5 +73,10 @@ class FoodFormFragment : BaseFragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putAll(bundleOf(CONTROLLER_SAVED_STATE to controller.getState()))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewMvc.releaseViewRefs()
     }
 }

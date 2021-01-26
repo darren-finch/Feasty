@@ -7,6 +7,7 @@ import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.SelectFoodForMealDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.view.SelectFoodForMealViewMvc
+import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
 import com.darrenfinch.mymealplanner.foods.usecases.GetAllFoodsUseCase
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 import kotlinx.coroutines.CoroutineScope
@@ -23,7 +24,7 @@ class SelectFoodForMealController(
     private val uiContext: CoroutineContext
 ) : BaseController, SelectFoodForMealViewMvc.Listener {
 
-    class SavedState : BaseController.BaseSavedState
+    class SavedState : ControllerSavedState
 
     private lateinit var viewMvc: SelectFoodForMealViewMvc
 
@@ -51,8 +52,8 @@ class SelectFoodForMealController(
         }
     }
 
-    override fun restoreState(state: BaseController.BaseSavedState) {}
-    override fun getState(): BaseController.BaseSavedState {
+    override fun restoreState(state: ControllerSavedState) {}
+    override fun getState(): ControllerSavedState {
         return SavedState()
     }
 

@@ -1,14 +1,12 @@
 package com.darrenfinch.mymealplanner.screens.mealplanform.controller
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
+import com.darrenfinch.mymealplanner.common.utils.KeyboardUtils
 import com.darrenfinch.mymealplanner.screens.mealplanform.view.MealPlanFormViewMvc
 
 
@@ -31,17 +29,21 @@ class MealPlanFormFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         controller = controllerCompositionRoot.getMealPlanFormController()
+
+        // We need to restore state in onCreate because the controller will lose its state if it's in the back stack.
+        restoreControllerState(savedInstanceState)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         viewMvc = controllerCompositionRoot.getViewMvcFactory().getMealPlanFormViewMvc(null)
 
         restoreControllerState(savedInstanceState)
         controller.bindView(viewMvc)
+        controller.bindMealDetailsToView()
 
         return viewMvc.getRootView()
     }
@@ -60,7 +62,7 @@ class MealPlanFormFragment : BaseFragment() {
     override fun onStop() {
         super.onStop()
         controller.onStop()
-        hideKeyboardFrom(requireContext(), requireView())
+        KeyboardUtils.hideKeyboardFrom(requireContext(), requireView())
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -68,9 +70,8 @@ class MealPlanFormFragment : BaseFragment() {
         outState.putAll(bundleOf(CONTROLLER_SAVED_STATE to controller.getState()))
     }
 
-    fun hideKeyboardFrom(context: Context, view: View) {
-        val imm: InputMethodManager =
-            context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewMvc.releaseViewRefs()
     }
 }

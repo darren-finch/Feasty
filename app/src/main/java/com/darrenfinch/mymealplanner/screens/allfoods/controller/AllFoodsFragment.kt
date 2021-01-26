@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
+import com.darrenfinch.mymealplanner.screens.allfoods.view.AllFoodsViewMvc
 
 class AllFoodsFragment : BaseFragment() {
 
@@ -13,9 +14,10 @@ class AllFoodsFragment : BaseFragment() {
     }
 
     private lateinit var controller: AllFoodsController
+    private lateinit var viewMvc: AllFoodsViewMvc
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val viewMvc = controllerCompositionRoot.getViewMvcFactory().getAllFoodsViewMvc(container)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        viewMvc = controllerCompositionRoot.getViewMvcFactory().getAllFoodsViewMvc(container)
         controller = controllerCompositionRoot.getAllFoodsController()
         controller.bindView(viewMvc)
         controller.getAllFoodsAndBindToView()
@@ -30,5 +32,10 @@ class AllFoodsFragment : BaseFragment() {
     override fun onStop() {
         super.onStop()
         controller.onStop()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewMvc.releaseViewRefs()
     }
 }

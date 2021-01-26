@@ -33,6 +33,9 @@ class MealFormFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         controller = controllerCompositionRoot.getMealFormController()
+
+        // We need to restore state in onCreate because the controller will lose its state if it's in the back stack.
+        restoreControllerState(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -74,5 +77,10 @@ class MealFormFragment : BaseFragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putAll(bundleOf(CONTROLLER_SAVED_STATE to controller.getState()))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewMvc.releaseViewRefs()
     }
 }

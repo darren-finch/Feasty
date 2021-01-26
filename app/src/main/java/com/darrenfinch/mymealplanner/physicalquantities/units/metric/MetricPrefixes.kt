@@ -1,6 +1,8 @@
 package com.darrenfinch.mymealplanner.physicalquantities.units.metric
 
-abstract class MetricPrefix {
+import java.io.Serializable
+
+abstract class MetricPrefix : Serializable {
     abstract fun getMultiplier(): Double
     abstract override fun toString(): String
     abstract fun getAsString(abbreviated: Boolean = false): String

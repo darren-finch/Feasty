@@ -1,6 +1,7 @@
 package com.darrenfinch.mymealplanner.screens.allmeals.controller
 
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
+import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 import com.darrenfinch.mymealplanner.meals.usecases.DeleteMealUseCase
@@ -17,7 +18,7 @@ class AllMealsController(
     private val uiContext: CoroutineContext
 ) : BaseController, AllMealsViewMvc.Listener {
 
-    class SavedState : BaseController.BaseSavedState
+    class SavedState : ControllerSavedState
 
     private lateinit var viewMvc: AllMealsViewMvc
 
@@ -62,8 +63,8 @@ class AllMealsController(
         getAllMealsAndBindToView()
     }
 
-    override fun restoreState(state: BaseController.BaseSavedState) { }
-    override fun getState(): BaseController.BaseSavedState {
+    override fun restoreState(state: ControllerSavedState) { }
+    override fun getState(): ControllerSavedState {
         return SavedState()
     }
 }

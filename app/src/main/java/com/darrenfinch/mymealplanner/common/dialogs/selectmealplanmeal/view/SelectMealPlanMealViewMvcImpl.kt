@@ -17,7 +17,8 @@ class SelectMealPlanMealViewMvcImpl(
     inflater: LayoutInflater,
     parent: ViewGroup?
 ) : BaseObservableViewMvc<SelectMealPlanMealViewMvc.Listener>(), SelectMealPlanMealViewMvc {
-    private val binding: FragmentSelectItemBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_select_item, parent, false)
+    private var _binding: FragmentSelectItemBinding? = DataBindingUtil.inflate(inflater, R.layout.fragment_select_item, parent, false)
+    private val binding = _binding!!
 
     private val mealsListItemEventListener = object : MealsRecyclerViewAdapter.ItemEventListener {
         override fun onSelect(meal: UiMeal) {
@@ -60,5 +61,9 @@ class SelectMealPlanMealViewMvcImpl(
             .setPositiveButton(android.R.string.ok) { _, _ -> }
             .setNegativeButton(android.R.string.cancel) { _, _ -> }
             .show()
+    }
+
+    override fun releaseViewRefs() {
+        _binding = null
     }
 }

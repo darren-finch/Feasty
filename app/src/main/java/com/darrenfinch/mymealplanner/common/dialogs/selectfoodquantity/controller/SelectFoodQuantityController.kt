@@ -6,16 +6,12 @@ import com.darrenfinch.mymealplanner.common.dialogs.DialogResult
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityDialogEvent
-import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD_QUANTITY_RESULT
+import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityVm
+import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_SERVING_SIZE_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.view.SelectFoodQuantityViewMvc
-import com.darrenfinch.mymealplanner.common.constants.DefaultModels
-import com.darrenfinch.mymealplanner.foods.models.domain.MacroCalculator
-import com.darrenfinch.mymealplanner.foods.models.mappers.macroNutrientsToUiMacroNutrients
-import com.darrenfinch.mymealplanner.foods.models.mappers.uiMacroNutrientsToMacroNutrients
-import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
+import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
 import com.darrenfinch.mymealplanner.foods.usecases.GetFoodUseCase
-import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -23,6 +19,7 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
 class SelectFoodQuantityController(
+    private var viewModel: SelectFoodQuantityVm,
     private val getFoodUseCase: GetFoodUseCase,
     private val dialogsManager: DialogsManager,
     private val dialogsEventBus: DialogsEventBus,
@@ -30,11 +27,10 @@ class SelectFoodQuantityController(
     private val uiContext: CoroutineContext
 ) : BaseController, SelectFoodQuantityViewMvc.Listener {
 
-    data class SavedState(val food: UiFood) : BaseController.BaseSavedState
+    data class SavedState(val viewModel: SelectFoodQuantityVm) :
+        ControllerSavedState
 
     private var foodIdArg = -1
-
-    private var foodState = DefaultModels.defaultUiFood
 
     private lateinit var viewMvc: SelectFoodQuantityViewMvc
 
@@ -54,14 +50,14 @@ class SelectFoodQuantityController(
     }
 
     fun getFoodAndBindToView() {
-        viewMvc.bindFood(foodState)
+        viewMvc.bindFood(viewModel.getSelectedFood())
 
-        val hasLoadedFoodDetails = foodState != DefaultModels.defaultUiFood
-        if (!hasLoadedFoodDetails) {
+        if (!viewModel.isDirty) {
             getFoodJob = CoroutineScope(backgroundContext).launch {
-                foodState = getFoodUseCase.getFood(foodIdArg)
+                val food = getFoodUseCase.getFood(foodIdArg)
                 withContext(uiContext) {
-                    viewMvc.bindFood(foodState)
+                    viewModel.setSelectedFood(food)
+                    viewMvc.bindFood(food)
                 }
             }
         }
@@ -71,43 +67,31 @@ class SelectFoodQuantityController(
         this.foodIdArg = foodId
     }
 
-    override fun restoreState(state: BaseController.BaseSavedState) {
+    override fun restoreState(state: ControllerSavedState) {
         (state as SavedState).let {
-            foodState = state.food
+            viewModel = it.viewModel
         }
     }
 
-    override fun getState(): BaseController.BaseSavedState {
-        return SavedState(viewMvc.getFoodData())
+    override fun getState(): ControllerSavedState {
+        return SavedState(viewModel)
     }
 
-    override fun onFoodServingSizeChosen(
-        selectedFood: UiFood,
-        selectedFoodQuantity: PhysicalQuantity
-    ) {
+    override fun onPositiveButtonClicked() {
         dialogsManager.clearDialog()
         dialogsEventBus.postEvent(
-            SelectFoodQuantityDialogEvent.ON_FOOD_QUANTITY_CHOSEN,
+            SelectFoodQuantityDialogEvent.POSITIVE,
             DialogResult(
                 bundleOf(
-                    SELECTED_FOOD_RESULT to selectedFood,
-                    SELECTED_FOOD_QUANTITY_RESULT to selectedFoodQuantity
+                    SELECTED_FOOD_RESULT to viewModel.getSelectedFood(),
+                    SELECTED_SERVING_SIZE_RESULT to viewModel.getSelectedServingSize(),
                 )
             )
         )
     }
 
-    override fun onServingSizeChange(newServingSize: PhysicalQuantity) {
-        val updatedFood = foodState.copy(
-            servingSize = newServingSize,
-            macroNutrients = macroNutrientsToUiMacroNutrients(
-                MacroCalculator.baseMacrosOnNewServingSize(
-                    uiMacroNutrientsToMacroNutrients(foodState.macroNutrients),
-                    foodState.servingSize,
-                    newServingSize
-                )
-            )
-        )
-        viewMvc.bindFood(updatedFood)
+    override fun onFoodQuantityChange(newQuantity: Double) {
+        viewModel.setSelectedFoodQuantity(newQuantity)
+        viewMvc.bindFood(viewModel.getSelectedFood())
     }
 }

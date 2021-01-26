@@ -5,8 +5,8 @@ import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.controllers.BaseActivity
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ncapdevi.fragnav.FragNavController
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), BackPressDispatcher {
 
@@ -19,7 +19,7 @@ class MainActivity : BaseActivity(), BackPressDispatcher {
         val screensNavigator = activityCompositionRoot.getScreensNavigator()
         screensNavigator.init(savedInstanceState)
 
-        bottomNavigationView.setOnNavigationItemSelectedListener {
+        findViewById<BottomNavigationView>(R.id.bottomNavigationView).setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.tab1 -> {
                     screensNavigator.switchTab(FragNavController.TAB1)

@@ -6,10 +6,15 @@ import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
 
 interface MealPlanFormViewMvc : ObservableViewMvc<MealPlanFormViewMvc.Listener>, ProgressIndicatorViewMvc {
     interface Listener {
-        fun onDoneButtonClicked(editedMealPlanDetails: UiMealPlan)
+        fun onDoneButtonClicked()
         fun onNavigateUp()
+
+        fun onTitleChange(newTitle: String)
+        fun onRequiredCaloriesChange(newRequiredCalories: Int)
+        fun onRequiredCarbohydratesChange(newRequiredCarbohydrates: Int)
+        fun onRequiredFatsChange(newRequiredFats: Int)
+        fun onRequiredProteinsChange(newRequiredProteins: Int)
     }
 
     fun bindMealPlanDetails(mealPlan: UiMealPlan)
-    fun getMealPlanDetails(): UiMealPlan
 }

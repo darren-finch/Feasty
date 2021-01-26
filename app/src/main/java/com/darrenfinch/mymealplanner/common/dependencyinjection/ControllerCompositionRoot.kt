@@ -2,18 +2,24 @@ package com.darrenfinch.mymealplanner.common.dependencyinjection
 
 import android.app.Application
 import android.view.LayoutInflater
+import android.view.View
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.controller.SelectFoodForMealController
+import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityVm
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityController
 import com.darrenfinch.mymealplanner.common.dialogs.selectmealplanmeal.controller.SelectMealPlanMealController
+import com.darrenfinch.mymealplanner.common.helpers.KeyboardHelper
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.foods.usecases.*
 import com.darrenfinch.mymealplanner.mealplans.usecases.*
 import com.darrenfinch.mymealplanner.meals.usecases.*
 import com.darrenfinch.mymealplanner.screens.allfoods.controller.AllFoodsController
 import com.darrenfinch.mymealplanner.screens.allmeals.controller.AllMealsController
+import com.darrenfinch.mymealplanner.screens.foodform.FoodFormVm
 import com.darrenfinch.mymealplanner.screens.foodform.controller.FoodFormController
+import com.darrenfinch.mymealplanner.screens.mealform.MealFormVm
 import com.darrenfinch.mymealplanner.screens.mealform.controller.MealFormController
 import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanController
+import com.darrenfinch.mymealplanner.screens.mealplanform.MealPlanFormVm
 import com.darrenfinch.mymealplanner.screens.mealplanform.controller.MealPlanFormController
 import kotlinx.coroutines.Dispatchers
 
@@ -36,6 +42,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     private fun getMainRepository() = activityCompositionRoot.getMainRepository()
     private fun getScreensNavigator() = activityCompositionRoot.getScreensNavigator()
     private fun getToastsHelper() = activityCompositionRoot.getToastsHelper()
+    private fun getKeyboardHelper(view: View) = KeyboardHelper(getContext(), view)
 
 
     // Use cases
@@ -55,7 +62,6 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     private fun getInsertMealPlanUseCase() = InsertMealPlanUseCase(getMainRepository())
     private fun getUpdateMealPlanUseCase() = UpdateMealPlanUseCase(getMainRepository())
     private fun getDeleteMealPlanUseCase() = DeleteMealPlanUseCase(getMainRepository())
-    private fun getAddMealFoodToMealUseCase() = AddMealFoodToMealUseCase()
 
     private fun getGetMealsForMealPlanUseCase() = GetMealsForMealPlanUseCase(getMainRepository())
     private fun getInsertMealPlanMealUseCase() = InsertMealPlanMealUseCase(getMainRepository())
@@ -66,6 +72,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     // Dialog controllers
     fun getSelectMealFoodQuantityController(
     ) = SelectFoodQuantityController(
+        getSelectFoodQuantityVm(),
         getGetFoodUseCase(),
         getDialogsManager(),
         getDialogsEventBus(),
@@ -93,6 +100,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
 
     // Normal screen controllers
     fun getFoodFormController() = FoodFormController(
+        getFoodFormVm(),
         getScreensNavigator(),
         getGetFoodUseCase(),
         getInsertFoodUseCase(),
@@ -121,10 +129,10 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
         )
 
     fun getMealFormController() = MealFormController(
+        getMealFormVm(),
         getInsertMealUseCase(),
         getUpdateMealUseCase(),
         getGetMealUseCase(),
-        getAddMealFoodToMealUseCase(),
         getScreensNavigator(),
         getDialogsManager(),
         getDialogsEventBus(),
@@ -144,9 +152,17 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     )
 
     fun getMealPlanFormController() = MealPlanFormController(
+        getMealPlanFormVm(),
         getInsertMealPlanUseCase(),
         getScreensNavigator(),
         getBackPressDispatcher(),
         backgroundContext
     )
+
+
+    // View models
+    fun getSelectFoodQuantityVm() = SelectFoodQuantityVm()
+    fun getFoodFormVm() = FoodFormVm()
+    fun getMealFormVm() = MealFormVm()
+    fun getMealPlanFormVm() = MealPlanFormVm()
 }

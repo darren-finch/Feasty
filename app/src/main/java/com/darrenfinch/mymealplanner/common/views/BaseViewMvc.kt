@@ -3,7 +3,7 @@ package com.darrenfinch.mymealplanner.common.views
 import android.content.Context
 import android.view.View
 
-open class BaseViewMvc : ViewMvc {
+abstract class BaseViewMvc : ViewMvc {
     private lateinit var view: View
 
     override fun getRootView(): View {

@@ -34,12 +34,13 @@ class AllMealsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
     private val mealsRecyclerViewAdapter =
         MealsRecyclerViewAdapter(MealsRecyclerViewAdapter.Config(), mealItemEventListener)
 
-    private val binding: FragmentAllMealsBinding = DataBindingUtil.inflate(
+    private var _binding: FragmentAllMealsBinding? = DataBindingUtil.inflate(
         inflater,
         R.layout.fragment_all_meals,
         parent,
         false
     )
+    private val binding = _binding!!
 
     init {
         setRootView(binding.root)
@@ -67,6 +68,10 @@ class AllMealsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
 
     override fun bindMeals(newMeals: List<UiMeal>) {
         mealsRecyclerViewAdapter.updateItems(newMeals)
+    }
+
+    override fun releaseViewRefs() {
+        _binding = null
     }
 
     override fun showProgressIndication() {
