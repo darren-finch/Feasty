@@ -107,13 +107,13 @@
             app:layout_constraintTop_toBottomOf="@+id/totalCaloriesLayout">
 
             <ProgressBar
-                android:id="@+id/progressBar"
+                android:id="@+id/carbsProgressBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="fill"
-                android:max="@{mealPlanMacros.requiredCarbohydrates}"
-                android:progress="@{mealPlanMacros.totalCarbohydrates}" />
+                android:max="@{mealPlanMacros.requiredCarbs}"
+                android:progress="@{mealPlanMacros.totalCarbs}" />
 
             <TextView
                 android:id="@+id/carbsLabel"
@@ -121,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:foregroundGravity="center_vertical"
-                android:text="@{StringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalCarbohydrates, mealPlanMacros.requiredCarbohydrates, MacroType.CARBOHYDRATE, true)}"
+                android:text="@{StringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalCarbs, mealPlanMacros.requiredCarbs, MacroType.CARBOHYDRATE, true)}"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
                 tools:text="154/300 Carbs" />
         </LinearLayout>
@@ -139,13 +139,13 @@
             app:layout_constraintTop_toBottomOf="@+id/totalCaloriesLayout">
 
             <ProgressBar
-                android:id="@+id/progressBar2"
+                android:id="@+id/fatsProgressBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="fill"
-                android:max="@{mealPlanMacros.requiredFat}"
-                android:progress="@{mealPlanMacros.totalFat}" />
+                android:max="@{mealPlanMacros.requiredFats}"
+                android:progress="@{mealPlanMacros.totalFats}" />
 
             <TextView
                 android:id="@+id/fatsLabel"
@@ -153,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:foregroundGravity="center_vertical"
-                android:text="@{StringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalFat, mealPlanMacros.requiredFat, MacroType.FAT, true)}"
+                android:text="@{StringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalFats, mealPlanMacros.requiredFats, MacroType.FAT, true)}"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
                 tools:text="33/60 Fat" />
         </LinearLayout>
@@ -171,13 +171,13 @@
             app:layout_constraintTop_toBottomOf="@+id/totalCaloriesLayout">
 
             <ProgressBar
-                android:id="@+id/progressBar1"
+                android:id="@+id/proteinsProgressBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="fill"
-                android:max="@{mealPlanMacros.requiredProtein}"
-                android:progress="@{mealPlanMacros.totalProtein}" />
+                android:max="@{mealPlanMacros.requiredProteins}"
+                android:progress="@{mealPlanMacros.totalProteins}" />
 
             <TextView
                 android:id="@+id/proteinsLabel"
@@ -185,7 +185,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:foregroundGravity="center_vertical"
-                android:text="@{StringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalProtein, mealPlanMacros.requiredProtein, MacroType.PROTEIN, true)}"
+                android:text="@{StringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalProteins, mealPlanMacros.requiredProteins, MacroType.PROTEIN, true)}"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
                 tools:text="145/200 Carbs" />
         </LinearLayout>
@@ -220,6 +220,15 @@
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

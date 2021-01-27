@@ -28,8 +28,8 @@ fun dbMealPlanMealToMealPlanMeal(
 fun mealPlanMealToUiMealPlanMeal(mealPlanMeal: MealPlanMeal) = UiMealPlanMeal(
     id = mealPlanMeal.id,
     title = mealPlanMeal.title,
-    mealId = mealPlanMeal.id,
-    mealPlanId = mealPlanMeal.id,
+    mealId = mealPlanMeal.mealId,
+    mealPlanId = mealPlanMeal.mealPlanId,
     foods = mealPlanMeal.foods.map {
         mealFoodToUiMealFood(it)
     }
@@ -38,8 +38,8 @@ fun mealPlanMealToUiMealPlanMeal(mealPlanMeal: MealPlanMeal) = UiMealPlanMeal(
 fun uiMealPlanMealToMealPlanMeal(uiMealPlanMeal: UiMealPlanMeal) = MealPlanMeal(
     id = uiMealPlanMeal.id,
     title = uiMealPlanMeal.title,
-    mealId = uiMealPlanMeal.id,
-    mealPlanId = uiMealPlanMeal.id,
+    mealId = uiMealPlanMeal.mealId,
+    mealPlanId = uiMealPlanMeal.mealPlanId,
     foods = uiMealPlanMeal.foods.map {
         uiMealFoodToMealFood(it)
     }
@@ -47,7 +47,7 @@ fun uiMealPlanMealToMealPlanMeal(uiMealPlanMeal: UiMealPlanMeal) = MealPlanMeal(
 
 fun mealPlanMealToDbMealPlanMeal(mealPlanMeal: MealPlanMeal) = DatabaseMealPlanMeal(
     id = mealPlanMeal.id,
-    mealId = mealPlanMeal.id,
-    mealPlanId = mealPlanMeal.id,
+    mealId = mealPlanMeal.mealId,
+    mealPlanId = mealPlanMeal.mealPlanId,
 )
 

@@ -125,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/required_carbohydrates"
                 android:inputType="number"
-                android:text="@{String.valueOf(mealPlan.requiredCarbohydrates)}" />
+                android:text="@{String.valueOf(mealPlan.requiredCarbs)}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

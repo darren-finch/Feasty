@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
+import com.darrenfinch.mymealplanner.common.helpers.SharedPreferencesHelper
 import com.darrenfinch.mymealplanner.common.helpers.ToastsHelper
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.model.MainRepository
@@ -20,6 +21,7 @@ class ActivityCompositionRoot(
     private val screensNavigator = ScreensNavigator(fragNavController)
     private val dialogsManager = DialogsManager(fragNavController)
     private val toastsHelper = ToastsHelper(activity)
+    private val sharedPreferencesHelper = SharedPreferencesHelper(activity)
 
     fun getActivity(): FragmentActivity {
         return activity
@@ -47,5 +49,9 @@ class ActivityCompositionRoot(
 
     fun getToastsHelper(): ToastsHelper {
         return toastsHelper
+    }
+
+    fun getSharedPreferencesHelper(): SharedPreferencesHelper {
+        return sharedPreferencesHelper
     }
 }

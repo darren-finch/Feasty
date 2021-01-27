@@ -13,6 +13,8 @@ class MealPlanFragment : BaseFragment() {
     companion object {
         const val CONTROLLER_SAVED_STATE = "CONTROLLER_SAVED_STATE"
 
+        const val SELECTED_MEAL_PLAN_INDEX = "SELECTED_MEAL_PLAN_INDEX"
+
         fun newInstance() = MealPlanFragment()
     }
 
@@ -34,7 +36,7 @@ class MealPlanFragment : BaseFragment() {
 
         restoreControllerState(savedInstanceState)
         controller.bindView(viewMvc)
-        controller.fetchAllMealPlans(viewLifecycleOwner)
+        controller.getAllMealPlans()
 
         return viewMvc.getRootView()
     }

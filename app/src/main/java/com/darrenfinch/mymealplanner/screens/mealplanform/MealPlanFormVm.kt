@@ -17,7 +17,7 @@ class MealPlanFormVm : StatefulVm() {
         id = mealPlan.id
         title.setWithoutNotifying(mealPlan.title)
         requiredCalories.setWithoutNotifying(mealPlan.requiredCalories)
-        requiredCarbohydrates.setWithoutNotifying(mealPlan.requiredCarbohydrates)
+        requiredCarbohydrates.setWithoutNotifying(mealPlan.requiredCarbs)
         requiredFats.setWithoutNotifying(mealPlan.requiredFats)
         requiredProteins.setWithoutNotifying(mealPlan.requiredProteins)
     }
@@ -26,7 +26,7 @@ class MealPlanFormVm : StatefulVm() {
         id = id,
         title = title.get(),
         requiredCalories = requiredCalories.get(),
-        requiredCarbohydrates = requiredCarbohydrates.get(),
+        requiredCarbs = requiredCarbohydrates.get(),
         requiredFats = requiredFats.get(),
         requiredProteins = requiredProteins.get()
     )

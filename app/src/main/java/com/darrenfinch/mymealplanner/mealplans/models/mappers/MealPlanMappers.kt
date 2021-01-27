@@ -17,7 +17,7 @@ fun mealPlanToUiMealPlan(mealPlan: MealPlan) = UiMealPlan(
     id = mealPlan.id,
     title = mealPlan.title,
     requiredCalories = mealPlan.requiredCalories,
-    requiredCarbohydrates = mealPlan.requiredCarbohydrates,
+    requiredCarbs = mealPlan.requiredCarbohydrates,
     requiredFats = mealPlan.requiredFats,
     requiredProteins = mealPlan.requiredProteins
 )
@@ -26,7 +26,7 @@ fun uiMealPlanToMealPlan(uiMealPlan: UiMealPlan) = MealPlan(
     id = uiMealPlan.id,
     title = uiMealPlan.title,
     requiredCalories = uiMealPlan.requiredCalories,
-    requiredCarbohydrates = uiMealPlan.requiredCarbohydrates,
+    requiredCarbohydrates = uiMealPlan.requiredCarbs,
     requiredFats = uiMealPlan.requiredFats,
     requiredProteins = uiMealPlan.requiredProteins
 )

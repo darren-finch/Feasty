@@ -8,5 +8,5 @@ data class UiMealPlan(
     val requiredCalories: Int,
     val requiredProteins: Int,
     val requiredFats: Int,
-    val requiredCarbohydrates: Int
+    val requiredCarbs: Int
 ) : Serializable

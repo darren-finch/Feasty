@@ -93,7 +93,7 @@ object DefaultModels {
         id = VALID_ID,
         title = "",
         requiredCalories = 0,
-        requiredCarbohydrates = 0,
+        requiredCarbs = 0,
         requiredFats = 0,
         requiredProteins = 0
     )

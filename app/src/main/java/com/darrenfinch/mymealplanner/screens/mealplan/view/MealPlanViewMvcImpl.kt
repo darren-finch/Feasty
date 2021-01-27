@@ -28,6 +28,8 @@ class MealPlanViewMvcImpl(
     )
     private val binding = _binding!!
 
+    private var notifyWhenMealPlanSelected = true
+
     private val listener = object : MealPlanMealsRecyclerViewAdapter.ItemEventListener {
         override fun onDelete(mealPlanMeal: UiMealPlanMeal) {
             onDeleteMealPlanMealClicked(mealPlanMeal)
@@ -86,32 +88,35 @@ class MealPlanViewMvcImpl(
     }
 
     private fun setupSelectMealPlanSpinner(mealPlans: List<UiMealPlan>) {
-        //TODO: This will come from the database in the future.
         val spinnerAdapter = ArrayAdapter(
             getContext(),
             android.R.layout.simple_spinner_item,
             mealPlans.map { it.title }
         )
         spinnerAdapter.setDropDownViewResource(R.layout.toolbar_spinner_item)
-        binding.selectMealPlanSpinner.apply {
-            adapter = spinnerAdapter
-            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    onMealPlanSelected(position)
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
-        }
-
+        binding.selectMealPlanSpinner.adapter = spinnerAdapter
+        setSelectMealPlanSpinnerItemSelectListener()
     }
 
-    // TODO: Find a better implementation
+    private fun setSelectMealPlanSpinnerItemSelectListener() {
+        binding.selectMealPlanSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if(notifyWhenMealPlanSelected) {
+                    onMealPlanSelected(position)
+                } else {
+                    notifyWhenMealPlanSelected = true
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) { }
+        }
+    }
+
     private fun onMealPlanSelected(index: Int) {
         for (listeners in getListeners()) {
             listeners.onMealPlanSelected(index)
@@ -132,6 +137,12 @@ class MealPlanViewMvcImpl(
     }
 
     override fun setSelectedMealPlanIndex(index: Int) {
+        notifyWhenMealPlanSelected = true
+        binding.selectMealPlanSpinner.setSelection(index)
+    }
+
+    override fun setSelectedMealPlanIndexWithoutNotifying(index: Int) {
+        notifyWhenMealPlanSelected = false
         binding.selectMealPlanSpinner.setSelection(index)
     }
 
@@ -145,5 +156,25 @@ class MealPlanViewMvcImpl(
 
     override fun releaseViewRefs() {
         _binding = null
+    }
+
+    override fun showProgressIndication() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.mealPlanMealsRecyclerView.visibility = View.GONE
+    }
+
+    override fun hideProgressIndication() {
+        binding.progressBar.visibility = View.GONE
+        binding.mealPlanMealsRecyclerView.visibility = View.VISIBLE
+    }
+
+    override fun showEmptyListIndication() {
+        binding.noMealPlanMeals.visibility = View.VISIBLE
+        binding.mealPlanMealsRecyclerView.visibility = View.GONE
+    }
+
+    override fun hideEmptyListIndication() {
+        binding.noMealPlanMeals.visibility = View.GONE
+        binding.mealPlanMealsRecyclerView.visibility = View.VISIBLE
     }
 }

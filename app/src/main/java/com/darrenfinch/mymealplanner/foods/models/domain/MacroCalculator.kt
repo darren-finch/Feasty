@@ -4,9 +4,11 @@ import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.meals.models.domain.Meal
 import com.darrenfinch.mymealplanner.mealplans.models.domain.MealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.models.mappers.uiMealPlanMealToMealPlanMeal
+import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
 import com.darrenfinch.mymealplanner.meals.models.mappers.uiMealToMeal
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
+import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanMacros
 
 object MacroCalculator {
 
@@ -44,11 +46,11 @@ object MacroCalculator {
         )
     }
 
-    fun calculateMealMacroNutrients(meal: UiMeal): String {
-        return calculateMealMacroNutrients(uiMealToMeal(meal))
+    fun calculateMealMacros(meal: UiMeal): String {
+        return calculateMealMacros(uiMealToMeal(meal))
     }
 
-    fun calculateMealMacroNutrients(meal: Meal): String {
+    fun calculateMealMacros(meal: Meal): String {
         var totalCalories = 0
         var totalProteins = 0
         var totalCarbohydrates = 0
@@ -67,11 +69,11 @@ object MacroCalculator {
         ).toString()
     }
 
-    fun calculateMealMacroNutrients(mealPlanMeal: UiMealPlanMeal): String {
-        return calculateMealMacroNutrients(uiMealPlanMealToMealPlanMeal(mealPlanMeal))
+    fun calculateMealMacros(mealPlanMeal: UiMealPlanMeal): String {
+        return calculateMealMacros(uiMealPlanMealToMealPlanMeal(mealPlanMeal))
     }
 
-    fun calculateMealMacroNutrients(mealPlanMeal: MealPlanMeal): String {
+    fun calculateMealMacros(mealPlanMeal: MealPlanMeal): String {
         var totalCalories = 0
         var totalProteins = 0
         var totalCarbohydrates = 0
@@ -88,5 +90,31 @@ object MacroCalculator {
             totalProteins,
             totalFats
         ).toString()
+    }
+
+    fun calculateMealPlanMacros(mealPlan: UiMealPlan, mealPlanMeals: List<UiMealPlanMeal>): MealPlanMacros {
+        val totalCalories = mealPlanMeals.sumBy { mealPlanMeal ->
+            mealPlanMeal.foods.sumBy { food -> food.macroNutrients.calories }
+        }
+        val totalCarbs = mealPlanMeals.sumBy { mealPlanMeal ->
+            mealPlanMeal.foods.sumBy { food -> food.macroNutrients.carbs }
+        }
+        val totalFats = mealPlanMeals.sumBy { mealPlanMeal ->
+            mealPlanMeal.foods.sumBy { food -> food.macroNutrients.fats }
+        }
+        val totalProteins = mealPlanMeals.sumBy { mealPlanMeal ->
+            mealPlanMeal.foods.sumBy { food -> food.macroNutrients.proteins }
+        }
+
+        return MealPlanMacros(
+            totalCalories = totalCalories,
+            totalCarbs = totalCarbs,
+            totalFats = totalFats,
+            totalProteins = totalProteins,
+            requiredCalories = mealPlan.requiredCalories,
+            requiredCarbs = mealPlan.requiredCarbs,
+            requiredFats = mealPlan.requiredFats,
+            requiredProteins = mealPlan.requiredProteins
+        )
     }
 }
