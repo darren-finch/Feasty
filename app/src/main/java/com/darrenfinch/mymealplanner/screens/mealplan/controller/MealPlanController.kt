@@ -1,5 +1,6 @@
 package com.darrenfinch.mymealplanner.screens.mealplan.controller
 
+import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.dialogs.DialogResult
@@ -8,6 +9,7 @@ import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.selectmealplanmeal.SelectMealPlanMealDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.selectmealplanmeal.controller.SelectMealPlanMealDialog
 import com.darrenfinch.mymealplanner.common.helpers.SharedPreferencesHelper
+import com.darrenfinch.mymealplanner.common.helpers.ToastsHelper
 import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.foods.models.domain.MacroCalculator
@@ -34,6 +36,7 @@ class MealPlanController(
     private val deleteMealPlanUseCase: DeleteMealPlanUseCase,
     private val deleteMealPlanMealUseCase: DeleteMealPlanMealUseCase,
     private val screensNavigator: ScreensNavigator,
+    private val toastsHelper: ToastsHelper,
     private val dialogsManager: DialogsManager,
     private val dialogsEventBus: DialogsEventBus,
     private val sharedPreferencesHelper: SharedPreferencesHelper,
@@ -159,7 +162,11 @@ class MealPlanController(
             getMealsForMealPlanJob?.isActive ?: false))
 
     override fun onAddNewMealPlanMealClicked() {
-        dialogsManager.showSelectMealPlanMealDialog()
+        if(viewModel.getSelectedMealPlanId() == Constants.INVALID_ID) {
+            toastsHelper.showShortMsg(R.string.no_meal_plan_selected_cant_add_meal)
+        } else {
+            dialogsManager.showSelectMealPlanMealDialog()
+        }
     }
 
     override fun onDeleteMealPlanMealClicked(mealPlanMeal: UiMealPlanMeal) {

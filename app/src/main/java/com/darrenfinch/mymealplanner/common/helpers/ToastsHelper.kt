@@ -1,23 +1,23 @@
 package com.darrenfinch.mymealplanner.common.helpers
 
-import android.content.Context
 import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
 import com.darrenfinch.mymealplanner.R
 
-class ToastsHelper(private val context: Context) {
+class ToastsHelper(private val activity: FragmentActivity) {
     fun showNetworkError() {
-        Toast.makeText(context, context.getString(R.string.network_error), Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, activity.getString(R.string.network_error), Toast.LENGTH_SHORT).show()
     }
     fun showDatabaseError() {
-        Toast.makeText(context, context.getString(R.string.database_error), Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, activity.getString(R.string.database_error), Toast.LENGTH_SHORT).show()
     }
     fun showUnknownError() {
-        Toast.makeText(context, context.getString(R.string.unknown_error), Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, activity.getString(R.string.unknown_error), Toast.LENGTH_SHORT).show()
     }
-    fun showLongMsg(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    fun showLongMsg(resId: Int) {
+        Toast.makeText(activity, activity.getString(resId), Toast.LENGTH_SHORT).show()
     }
-    fun showShortMsg(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+    fun showShortMsg(resId: Int) {
+        Toast.makeText(activity, activity.getString(resId), Toast.LENGTH_LONG).show()
     }
 }

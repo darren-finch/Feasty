@@ -153,6 +153,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
         getDeleteMealPlanUseCase(),
         getDeleteMealPlanMealUseCase(),
         getScreensNavigator(),
+        getToastsHelper(),
         getDialogsManager(),
         getDialogsEventBus(),
         getSharedPreferencesHelper(),
