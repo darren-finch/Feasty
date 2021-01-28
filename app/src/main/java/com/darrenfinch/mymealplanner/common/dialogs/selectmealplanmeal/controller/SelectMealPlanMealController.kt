@@ -55,7 +55,12 @@ class SelectMealPlanMealController(
 
     override fun onMealSelected(selectedMeal: UiMeal) {
         dialogsManager.clearDialog()
-        dialogsEventBus.postEvent(SelectMealPlanMealDialogEvent.ON_MEAL_SELECTED, DialogResult(bundleOf(SELECTED_MEAL_RESULT to selectedMeal)))
+        dialogsEventBus.postEvent(
+            SelectMealPlanMealDialogEvent.ON_MEAL_SELECTED,
+            DialogResult().apply {
+                putSerializable(SELECTED_MEAL_RESULT, selectedMeal)
+            }
+        )
     }
 
     override fun restoreState(state: ControllerSavedState) {}

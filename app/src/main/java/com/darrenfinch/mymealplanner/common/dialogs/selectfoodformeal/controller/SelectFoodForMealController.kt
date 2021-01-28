@@ -1,11 +1,11 @@
 package com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.controller
 
-import androidx.core.os.bundleOf
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.dialogs.DialogResult
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.SelectFoodForMealDialogEvent
+import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.controller.SelectFoodForMealDialog.Companion.FOOD_ID_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.view.SelectFoodForMealViewMvc
 import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
 import com.darrenfinch.mymealplanner.foods.usecases.GetAllFoodsUseCase
@@ -57,13 +57,12 @@ class SelectFoodForMealController(
         return SavedState()
     }
 
-    override fun onFoodChosen(food: UiFood) {
+    override fun onFoodChosen(foodId: Int) {
         dialogsManager.clearDialog()
         dialogsEventBus.postEvent(
-            SelectFoodForMealDialogEvent.ON_FOOD_CHOSEN, DialogResult(
-                bundleOf(
-                    SelectFoodForMealDialog.FOOD_ID_RESULT to food.id)
-            )
+            SelectFoodForMealDialogEvent.ON_FOOD_CHOSEN, DialogResult().apply {
+                putInt(FOOD_ID_RESULT, foodId)
+            }
         )
     }
 }

@@ -81,12 +81,10 @@ class SelectFoodQuantityController(
         dialogsManager.clearDialog()
         dialogsEventBus.postEvent(
             SelectFoodQuantityDialogEvent.ON_DESIRED_FOOD_SERVING_SIZE_CHOSEN,
-            DialogResult(
-                bundleOf(
-                    SELECTED_FOOD_RESULT to viewModel.getSelectedFood(),
-                    DESIRED_SERVING_SIZE_RESULT to viewModel.getDesiredServingSize(),
-                )
-            )
+            DialogResult().apply {
+                putSerializable(SELECTED_FOOD_RESULT, viewModel.getSelectedFood())
+                putSerializable(DESIRED_SERVING_SIZE_RESULT, viewModel.getDesiredServingSize())
+            }
         )
     }
 

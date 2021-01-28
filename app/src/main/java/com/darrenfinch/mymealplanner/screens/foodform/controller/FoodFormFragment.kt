@@ -56,7 +56,7 @@ class FoodFormFragment : BaseFragment() {
 
     private fun restoreControllerState(savedInstanceState: Bundle?) {
         savedInstanceState?.let {
-            controller.restoreState(savedInstanceState.getSerializable(CONTROLLER_SAVED_STATE) as FoodFormController.SavedState)
+            controller.restoreState(savedInstanceState.getSerializable(CONTROLLER_SAVED_STATE) as FoodFormControllerImpl.SavedState)
         }
     }
 

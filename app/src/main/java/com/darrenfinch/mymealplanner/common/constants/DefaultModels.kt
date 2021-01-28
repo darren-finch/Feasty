@@ -21,10 +21,9 @@ import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 
 object DefaultModels {
-
-
-
     // Domain models
+
+    val defaultPhysicalQuantity = PhysicalQuantity.defaultPhysicalQuantity
 
     val defaultMealPlan = MealPlan(
         id = VALID_ID,

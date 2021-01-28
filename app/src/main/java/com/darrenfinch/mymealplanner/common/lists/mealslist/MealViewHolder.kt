@@ -16,7 +16,7 @@ class MealViewHolder(private val config: MealsRecyclerViewAdapter.Config, privat
     interface Listener {
         fun onSelect(meal: UiMeal)
         fun onEdit(mealId: Int)
-        fun onDelete(meal: UiMeal)
+        fun onDelete(mealId: Int)
     }
 
     private var binding = MealItemBinding.bind(itemView)
@@ -42,7 +42,7 @@ class MealViewHolder(private val config: MealsRecyclerViewAdapter.Config, privat
                         setOnMenuItemClickListener { menuItem ->
                             when (menuItem.itemId) {
                                 R.id.edit -> listener.onEdit(item.id)
-                                R.id.delete -> listener.onDelete(item)
+                                R.id.delete -> listener.onDelete(item.id)
                             }
                             true
                         }

@@ -26,7 +26,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
-// TODO: Reimplement this controller
 class MealPlanController(
     private var viewModel: MealPlanVm,
     private val getMealPlanUseCase: GetMealPlanUseCase,
@@ -189,7 +188,7 @@ class MealPlanController(
     override fun onDialogEvent(event: Any, result: DialogResult?) {
         if (event == SelectMealPlanMealDialogEvent.ON_MEAL_SELECTED && result != null) {
             val selectedMeal =
-                result.data.getSerializable(SelectMealPlanMealDialog.SELECTED_MEAL_RESULT) as UiMeal
+                result.getSerializable(SelectMealPlanMealDialog.SELECTED_MEAL_RESULT) as UiMeal
             val newMealPlanMeal = UiMealPlanMeal(
                 Constants.VALID_ID,
                 viewModel.getSelectedMealPlanId(),

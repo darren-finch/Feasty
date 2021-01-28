@@ -6,10 +6,10 @@ import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 
 interface AllFoodsViewMvc : ObservableViewMvc<AllFoodsViewMvc.Listener>, ProgressIndicatorViewMvc {
     interface Listener {
-        fun addNewFoodClicked()
+        fun onAddNewFoodClicked()
 
-        fun onItemEdit(foodId: Int)
-        fun onItemDelete(foodId: Int)
+        fun onFoodEdit(foodId: Int)
+        fun onFoodDelete(foodId: Int)
     }
 
     fun bindFoods(newFoods: List<UiFood>)

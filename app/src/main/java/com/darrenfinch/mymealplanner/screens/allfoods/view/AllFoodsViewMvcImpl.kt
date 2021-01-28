@@ -28,12 +28,12 @@ class AllFoodsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
 
     private fun notifyListenersOfItemDelete(foodId: Int) {
         for(listener in getListeners())
-            listener.onItemDelete(foodId)
+            listener.onFoodDelete(foodId)
     }
 
     private fun notifyListenersOfItemEdit(foodId: Int) {
         for(listener in getListeners()) {
-            listener.onItemEdit(foodId)
+            listener.onFoodEdit(foodId)
         }
     }
 
@@ -58,7 +58,7 @@ class AllFoodsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
 
     private fun onAddNewFoodClicked() {
         for(listener in getListeners()) {
-            listener.addNewFoodClicked()
+            listener.onAddNewFoodClicked()
         }
     }
 

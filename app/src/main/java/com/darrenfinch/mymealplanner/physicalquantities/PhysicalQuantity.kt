@@ -34,7 +34,9 @@ class PhysicalQuantity(val quantity: Double, val unit: MeasurementUnit) : Serial
                 mutableQuantity *= unit.getBaseUnitRatio()
                 mutableQuantity /= newUnit.getBaseUnitRatio()
             }
-        } else throw IllegalArgumentException("$this and $newUnit do not belong to the same measurement type. Conversion is impossible.")
+        } else {
+            throw IllegalArgumentException("$this and $newUnit do not belong to the same measurement type. Conversion is impossible.")
+        }
         return PhysicalQuantity(mutableQuantity, newUnit)
     }
 

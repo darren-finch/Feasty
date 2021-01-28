@@ -15,9 +15,9 @@ import com.darrenfinch.mymealplanner.meals.usecases.*
 import com.darrenfinch.mymealplanner.screens.allfoods.controller.AllFoodsController
 import com.darrenfinch.mymealplanner.screens.allmeals.controller.AllMealsController
 import com.darrenfinch.mymealplanner.screens.foodform.FoodFormVm
-import com.darrenfinch.mymealplanner.screens.foodform.controller.FoodFormController
+import com.darrenfinch.mymealplanner.screens.foodform.controller.FoodFormControllerImpl
 import com.darrenfinch.mymealplanner.screens.mealform.MealFormVm
-import com.darrenfinch.mymealplanner.screens.mealform.controller.MealFormController
+import com.darrenfinch.mymealplanner.screens.mealform.controller.MealFormControllerImpl
 import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanVm
 import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanController
 import com.darrenfinch.mymealplanner.screens.mealplanform.MealPlanFormVm
@@ -102,7 +102,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     )
 
     // Normal screen controllers
-    fun getFoodFormController() = FoodFormController(
+    fun getFoodFormController() = FoodFormControllerImpl(
         getFoodFormVm(),
         getScreensNavigator(),
         getGetFoodUseCase(),
@@ -131,7 +131,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
             uiContext
         )
 
-    fun getMealFormController() = MealFormController(
+    fun getMealFormController() = MealFormControllerImpl(
         getMealFormVm(),
         getInsertMealUseCase(),
         getUpdateMealUseCase(),

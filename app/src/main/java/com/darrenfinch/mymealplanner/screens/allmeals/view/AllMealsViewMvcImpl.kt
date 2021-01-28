@@ -10,7 +10,6 @@ import com.darrenfinch.mymealplanner.common.lists.mealslist.MealsRecyclerViewAda
 import com.darrenfinch.mymealplanner.common.lists.itemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentAllMealsBinding
-import com.darrenfinch.mymealplanner.meals.models.domain.Meal
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 
 class AllMealsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseObservableViewMvc<AllMealsViewMvc.Listener>(), AllMealsViewMvc {
@@ -23,9 +22,9 @@ class AllMealsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
             }
         }
 
-        override fun onDelete(meal: UiMeal) {
+        override fun onDelete(mealId: Int) {
             for (listener in getListeners()) {
-                listener.onMealDelete(meal)
+                listener.onMealDelete(mealId)
             }
         }
 
@@ -62,7 +61,7 @@ class AllMealsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
 
     private fun onAddNewMealClicked() {
         for(listener in getListeners()) {
-            listener.addNewMealClicked()
+            listener.onAddNewMealClicked()
         }
     }
 

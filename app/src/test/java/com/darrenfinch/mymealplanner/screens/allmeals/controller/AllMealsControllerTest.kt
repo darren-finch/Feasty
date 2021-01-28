@@ -1,27 +1,24 @@
 package com.darrenfinch.mymealplanner.screens.allmeals.controller
 
-import androidx.lifecycle.*
-import com.darrenfinch.mymealplanner.InstantExecutorExtension
-import com.darrenfinch.mymealplanner.TestData
-import com.darrenfinch.mymealplanner.common.misc.ScreensNavigator
-import com.darrenfinch.mymealplanner.screens.allmeals.view.AllMealsViewMvc
+import com.darrenfinch.mymealplanner.TestConstants
+import com.darrenfinch.mymealplanner.TestDefaultModels
+import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.meals.usecases.DeleteMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.GetAllMealsUseCase
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import com.darrenfinch.mymealplanner.screens.allmeals.view.AllMealsViewMvc
+import com.darrenfinch.mymealplanner.testrules.CoroutinesTestExtension
+import io.mockk.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.extension.RegisterExtension
 
-@ExtendWith(InstantExecutorExtension::class)
+@ExperimentalCoroutinesApi
 internal class AllMealsControllerTest {
-
-    private val defaultMealListLiveData = TestData.defaultMealListLiveData
-    private val defaultMealListData = TestData.defaultMealListData
-
-    private val viewLifecycleOwner = mockk<LifecycleOwner>()
-    private val lifecycle = LifecycleRegistry(viewLifecycleOwner)
+    @JvmField
+    @RegisterExtension
+    val coroutinesTestExtension = CoroutinesTestExtension()
 
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
     private val getAllMealsUseCase = mockk<GetAllMealsUseCase>(relaxUnitFun = true)
@@ -32,35 +29,69 @@ internal class AllMealsControllerTest {
     private lateinit var SUT: AllMealsController
 
     @BeforeEach
-    internal fun setUp() {
-        SUT = AllMealsController(screensNavigator, getAllMealsUseCase, deleteMealUseCase)
+    fun setUp() {
+        SUT = AllMealsController(
+            screensNavigator,
+            getAllMealsUseCase,
+            deleteMealUseCase,
+            coroutinesTestExtension.testDispatcher,
+            coroutinesTestExtension.testDispatcher
+        )
         SUT.bindView(viewMvc)
-
-        setupInstantLifecycleEventComponents()
     }
 
     @Test
-    internal fun `onStart() subscribes to viewMvc`() {
-        SUT.onStart()
-        verify { viewMvc.registerListener(SUT) }
+    fun `getAllMealsAndBindToView() gets all meals using use case and binds them to view`() = runBlockingTest {
+        val useCaseResult = listOf(TestDefaultModels.defUiMeal)
+        coEvery { getAllMealsUseCase.getAllMeals() } returns useCaseResult
+
+        SUT.getAllMealsAndBindToView()
+
+        coVerify { getAllMealsUseCase.getAllMeals() }
+        coVerify { viewMvc.bindMeals(useCaseResult) }
     }
 
     @Test
-    internal fun `onStop() un-subscribes to viewMvc`() {
-        SUT.onStop()
-        verify { viewMvc.unregisterListener(SUT) }
+    fun `getAllMealsAndBindToView() shows progress indication then hides it`() = runBlockingTest {
+        setupGetAllMealsUseCase()
+        excludeRecords { viewMvc.bindMeals(any()) }
+
+        SUT.getAllMealsAndBindToView()
+
+        verifySequence {
+            viewMvc.showProgressIndication()
+            viewMvc.hideProgressIndication()
+        }
     }
 
     @Test
-    internal fun `fetchFoods() binds foods to viewMvc from use case`() {
-        every { getAllMealsUseCase.fetchAllMealsAndNotify() } returns defaultMealListLiveData
-        SUT.getAllMealsAndBindToView(viewLifecycleOwner)
-        verify { viewMvc.bindMeals(defaultMealListData) }
-        verify { getAllMealsUseCase.fetchAllMealsAndNotify() }
+    fun `onAddNewMealClicked() goes to meal form screen with invalid id`() {
+        SUT.onAddNewMealClicked()
+
+        verify { screensNavigator.toMealFormScreen(TestConstants.INVALID_ID) }
     }
 
-    private fun setupInstantLifecycleEventComponents() {
-        lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-        every { viewLifecycleOwner.lifecycle } returns lifecycle
+    @Test
+    fun `onMealDelete() deletes meal with use case`() = runBlockingTest {
+        val mealId = TestConstants.VALID_ID
+        setupGetAllMealsUseCase()
+
+        SUT.onMealDelete(mealId)
+
+        coVerify { deleteMealUseCase.deleteMeal(mealId) }
+    }
+
+    @Test
+    fun `onFoodEdit() opens meal form screen with given id`() {
+        val mealId = TestConstants.VALID_ID
+
+        SUT.onMealEdit(mealId)
+
+        verify { screensNavigator.toMealFormScreen(mealId) }
+    }
+
+    fun setupGetAllMealsUseCase() {
+        val useCaseResult = listOf(TestDefaultModels.defUiMeal)
+        coEvery { getAllMealsUseCase.getAllMeals() } returns useCaseResult
     }
 }

@@ -48,15 +48,15 @@ class AllFoodsController(
         }
     }
 
-    override fun addNewFoodClicked() {
+    override fun onAddNewFoodClicked() {
         screensNavigator.toFoodFormScreen(Constants.INVALID_ID)
     }
 
-    override fun onItemEdit(foodId: Int) {
+    override fun onFoodEdit(foodId: Int) {
         screensNavigator.toFoodFormScreen(foodId)
     }
 
-    override fun onItemDelete(foodId: Int) {
+    override fun onFoodDelete(foodId: Int) {
         runBlocking(backgroundContext) {
             deleteFoodUseCase.deleteFood(foodId)
         }

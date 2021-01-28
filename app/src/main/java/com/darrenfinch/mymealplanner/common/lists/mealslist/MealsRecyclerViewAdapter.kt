@@ -15,7 +15,7 @@ class MealsRecyclerViewAdapter(
     interface ItemEventListener {
         fun onSelect(meal: UiMeal)
         fun onEdit(mealId: Int)
-        fun onDelete(meal: UiMeal)
+        fun onDelete(mealId: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealViewHolder {
@@ -34,7 +34,7 @@ class MealsRecyclerViewAdapter(
         itemEventListener.onEdit(mealId)
     }
 
-    override fun onDelete(meal: UiMeal) {
-        itemEventListener.onDelete(meal)
+    override fun onDelete(mealId: Int) {
+        itemEventListener.onDelete(mealId)
     }
 }

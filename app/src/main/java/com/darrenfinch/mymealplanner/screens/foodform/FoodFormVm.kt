@@ -18,7 +18,7 @@ class FoodFormVm : StatefulVm() {
     private var fats = StatefulVmProperty(0, this)
     private var proteins = StatefulVmProperty(0, this)
 
-    fun setDefaultState(food: UiFood) {
+    fun bindInitialFoodDetails(food: UiFood) {
         id = food.id
         title.set(food.title)
         servingSizeQuantity.set(food.servingSize.quantity)
@@ -29,7 +29,7 @@ class FoodFormVm : StatefulVm() {
         proteins.set(food.macroNutrients.proteins)
     }
 
-    fun getState() = UiFood(
+    fun getFoodDetails() = UiFood(
         id = id,
         title = title.get(),
         servingSize = PhysicalQuantity(servingSizeQuantity.get(), servingSizeUnit.get()),

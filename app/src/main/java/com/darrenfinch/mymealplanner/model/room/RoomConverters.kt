@@ -12,17 +12,6 @@ import com.google.gson.reflect.TypeToken
 
 class RoomConverters {
     @TypeConverter
-    fun convertListOfMealFoodsToJsonString(value: List<DatabaseMealFood>): String {
-        return Gson().toJson(value)
-    }
-
-    @TypeConverter
-    fun convertJsonStringToListOfMealFoods(value: String): List<DatabaseMealFood> {
-        val databaseMealFoodListType = object : TypeToken<List<DatabaseMealFood>>() {}.type
-        return Gson().fromJson(value, databaseMealFoodListType)
-    }
-
-    @TypeConverter
     fun convertMacroNutrientsToJsonString(value: DatabaseMacroNutrients): String {
         return Gson().toJson(value)
     }

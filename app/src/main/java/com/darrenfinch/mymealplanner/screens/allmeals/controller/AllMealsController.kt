@@ -48,7 +48,7 @@ class AllMealsController(
         getAllMealsJob?.cancel()
     }
 
-    override fun addNewMealClicked() {
+    override fun onAddNewMealClicked() {
         screensNavigator.toMealFormScreen(-1)
     }
 
@@ -56,9 +56,9 @@ class AllMealsController(
         screensNavigator.toMealFormScreen(mealId)
     }
 
-    override fun onMealDelete(meal: UiMeal) {
+    override fun onMealDelete(mealId: Int) {
         runBlocking(backgroundContext) {
-            deleteMealUseCase.deleteMeal(meal.id)
+            deleteMealUseCase.deleteMeal(mealId)
         }
         getAllMealsAndBindToView()
     }

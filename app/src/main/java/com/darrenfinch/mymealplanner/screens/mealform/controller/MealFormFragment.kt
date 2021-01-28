@@ -49,7 +49,7 @@ class MealFormFragment : BaseFragment() {
         controller.bindView(viewMvc)
         setControllerArgs(requireArguments())
         restoreControllerState(savedInstanceState)
-        controller.fetchMealDetailsIfPossibleRebindToViewMvcOtherwise()
+        controller.getMealDetailsIfPossibleAndBindToView()
 
         return viewMvc.getRootView()
     }
@@ -60,7 +60,7 @@ class MealFormFragment : BaseFragment() {
 
     private fun restoreControllerState(savedInstanceState: Bundle?) {
         savedInstanceState?.let {
-            controller.restoreState(savedInstanceState.getSerializable(CONTROLLER_SAVED_STATE) as MealFormController.SavedState)
+            controller.restoreState(savedInstanceState.getSerializable(CONTROLLER_SAVED_STATE) as MealFormControllerImpl.SavedState)
         }
     }
 
