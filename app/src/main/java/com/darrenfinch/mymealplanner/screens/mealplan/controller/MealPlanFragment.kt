@@ -36,7 +36,7 @@ class MealPlanFragment : BaseFragment() {
 
         restoreControllerState(savedInstanceState)
         controller.bindView(viewMvc)
-        controller.getAllMealPlans()
+        controller.refresh()
 
         return viewMvc.getRootView()
     }

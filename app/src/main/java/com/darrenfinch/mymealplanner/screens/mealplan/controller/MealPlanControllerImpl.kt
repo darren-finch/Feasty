@@ -1,7 +1,9 @@
 package com.darrenfinch.mymealplanner.screens.mealplan.controller
 
+import androidx.annotation.StringRes
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.constants.Constants
+import com.darrenfinch.mymealplanner.common.constants.DefaultModels
 import com.darrenfinch.mymealplanner.common.dialogs.DialogResult
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
@@ -16,6 +18,7 @@ import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.usecases.*
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
+import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanMacros
 import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanVm
 import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanFragment.Companion.SELECTED_MEAL_PLAN_INDEX
 import com.darrenfinch.mymealplanner.screens.mealplan.view.MealPlanViewMvc
@@ -23,11 +26,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.Serializable
 import kotlin.coroutines.CoroutineContext
+import kotlin.math.min
 
 class MealPlanControllerImpl(
     private var viewModel: MealPlanVm,
-    private val getMealPlanUseCase: GetMealPlanUseCase,
     private val getAllMealPlansUseCase: GetAllMealPlansUseCase,
     private val getMealsForMealPlanUseCase: GetMealsForMealPlanUseCase,
     private val insertMealPlanMealUseCase: InsertMealPlanMealUseCase,
@@ -42,12 +46,18 @@ class MealPlanControllerImpl(
     private val uiContext: CoroutineContext
 ) : MealPlanController, MealPlanViewMvc.Listener, DialogsEventBus.Listener {
 
+    private sealed class ScreenState : Serializable {
+        object Loading : ScreenState()
+        class HasData(val mealPlans: List<UiMealPlan>, val mealPlanMeals: List<UiMealPlanMeal>, val mealPlanMacros: MealPlanMacros, val selectedMealPlanIndex: Int) : ScreenState()
+        object NoData : ScreenState()
+        class Error(@StringRes val errorMsgId: Int) : ScreenState()
+    }
+
     data class SavedState(val viewModel: MealPlanVm) : ControllerSavedState
 
     private lateinit var viewMvc: MealPlanViewMvc
 
     private var getAllMealPlansJob: Job? = null
-    private var getMealsForMealPlanJob: Job? = null
     private var deleteMealPlanJob: Job? = null
     private var insertMealPlanMealJob: Job? = null
     private var deleteMealPlanMealJob: Job? = null
@@ -66,35 +76,46 @@ class MealPlanControllerImpl(
         dialogsEventBus.unregisterListener(this)
         getAllMealPlansJob?.cancel()
         deleteMealPlanJob?.cancel()
+        insertMealPlanMealJob?.cancel()
         deleteMealPlanMealJob?.cancel()
     }
 
-    override fun getAllMealPlans() {
-        viewMvc.showProgressIndication()
-
+    override fun refresh() {
+        getAllMealPlansJob?.cancel()
         getAllMealPlansJob = CoroutineScope(backgroundContext).launch {
-            val allMealPlans = getAllMealPlansUseCase.getAllMealPlans()
-            viewModel.setInitialMealPlans(allMealPlans)
-
             withContext(uiContext) {
-                viewMvc.bindMealPlans(allMealPlans)
-                viewMvc.hideProgressIndication()
-                selectUserPreferredMealPlan()
-                refreshMealsForSelectedMealPlan()
+                setScreenState(ScreenState.Loading)
             }
 
-        }
-    }
+            val allMealPlans = getAllMealPlansUseCase.getAllMealPlans()
+            val selectedMealPlanIndex = min(sharedPreferencesHelper.getInt(SELECTED_MEAL_PLAN_INDEX), allMealPlans.lastIndex)
+            val selectedMealPlan = allMealPlans.elementAtOrNull(selectedMealPlanIndex)
+                ?: DefaultModels.defaultUiMealPlan.copy(id = Constants.INVALID_ID)
 
-    private fun selectUserPreferredMealPlan() {
-        viewModel.setSelectedMealPlanIndex(sharedPreferencesHelper.getInt(SELECTED_MEAL_PLAN_INDEX))
-        viewMvc.setSelectedMealPlanIndexWithoutNotifying(viewModel.getSelectedMealPlanIndex())
+            val mealPlanMeals = getMealsForMealPlanUseCase.getMealsForMealPlan(selectedMealPlan.id)
+            val mealPlanMacros =
+                MacroCalculator.calculateMealPlanMacros(selectedMealPlan, mealPlanMeals)
+
+            withContext(uiContext) {
+                if (allMealPlans.isEmpty())
+                    setScreenState(ScreenState.NoData)
+                else
+                    setScreenState(
+                        ScreenState.HasData(
+                            allMealPlans,
+                            mealPlanMeals,
+                            mealPlanMacros,
+                            selectedMealPlanIndex
+                        )
+                    )
+            }
+        }
     }
 
     override fun onMealPlanSelected(index: Int) {
         sharedPreferencesHelper.putInt(SELECTED_MEAL_PLAN_INDEX, index)
         viewModel.setSelectedMealPlanIndex(index)
-        refreshMealsForSelectedMealPlan()
+        refresh()
     }
 
     override fun onAddNewMealPlanClicked() {
@@ -102,61 +123,22 @@ class MealPlanControllerImpl(
     }
 
     override fun onDeleteMealPlanClicked() {
-        viewMvc.showProgressIndication()
+        setScreenState(ScreenState.Loading)
 
         deleteMealPlanJob = CoroutineScope(backgroundContext).launch {
             deleteMealPlanUseCase.deleteMealPlan(viewModel.getSelectedMealPlanId())
-            val allMealPlans = getAllMealPlansUseCase.getAllMealPlans()
-            viewModel.setInitialMealPlans(allMealPlans)
 
             withContext(uiContext) {
                 viewModel.moveSelectedMealPlanIndex()
-                viewMvc.hideProgressIndication()
-                viewMvc.bindMealPlans(allMealPlans)
-                viewMvc.setSelectedMealPlanIndexWithoutNotifying(viewModel.getSelectedMealPlanIndex())
+                setSelectedMealPlanIndex(viewModel.getSelectedMealPlanIndex())
             }
 
-            refreshMealsForSelectedMealPlan()
+            refresh()
         }
     }
-
-    fun refreshMealsForSelectedMealPlan() {
-        if (canRefreshMeals()) {
-            getMealsForMealPlanJob = CoroutineScope(backgroundContext).launch {
-                withContext(uiContext) {
-                    viewMvc.showProgressIndication()
-                    viewMvc.hideEmptyListIndication()
-                }
-
-                val curMealPlan = getMealPlanUseCase.getMealPlan(viewModel.getSelectedMealPlanId())
-                val mealPlanMeals =
-                    getMealsForMealPlanUseCase.getMealsForMealPlan(viewModel.getSelectedMealPlanId())
-
-                withContext(uiContext) {
-                    viewMvc.hideProgressIndication()
-                    if (mealPlanMeals.isEmpty())
-                        viewMvc.showEmptyListIndication()
-                    viewMvc.bindMealPlanMeals(mealPlanMeals)
-
-                    calculateMealPlanMacros(curMealPlan, mealPlanMeals)
-                }
-            }
-        }
-    }
-
-    private fun calculateMealPlanMacros(mealPlan: UiMealPlan, mealPlanMeals: List<UiMealPlanMeal>) {
-        val mealPlanMacros = MacroCalculator.calculateMealPlanMacros(mealPlan, mealPlanMeals)
-        viewMvc.bindMealPlanMacros(mealPlanMacros)
-    }
-
-    private fun canRefreshMeals() = ((
-            getMealsForMealPlanJob == null ||
-            getMealsForMealPlanJob?.isCompleted ?: true ||
-            getMealsForMealPlanJob?.isCancelled ?: true ||
-            getMealsForMealPlanJob?.isActive ?: false))
 
     override fun onAddNewMealPlanMealClicked() {
-        if(viewModel.getSelectedMealPlanId() == Constants.INVALID_ID) {
+        if (viewModel.getSelectedMealPlanId() == Constants.INVALID_ID) {
             toastsHelper.showShortMsg(R.string.no_meal_plan_selected_cant_add_meal)
         } else {
             dialogsManager.showSelectMealPlanMealDialog()
@@ -166,7 +148,7 @@ class MealPlanControllerImpl(
     override fun onDeleteMealPlanMealClicked(mealPlanMealId: Int) {
         deleteMealPlanMealJob = CoroutineScope(backgroundContext).launch {
             deleteMealPlanMealUseCase.deleteMealPlanMeal(mealPlanMealId)
-            refreshMealsForSelectedMealPlan()
+            refresh()
         }
     }
 
@@ -198,7 +180,47 @@ class MealPlanControllerImpl(
     private fun addMealToMealPlan(newMealPlanMeal: UiMealPlanMeal) {
         insertMealPlanMealJob = CoroutineScope(backgroundContext).launch {
             insertMealPlanMealUseCase.insertMealPlanMeal(newMealPlanMeal)
-            refreshMealsForSelectedMealPlan()
+            refresh()
         }
+    }
+
+    private fun setScreenState(screenState: ScreenState) {
+        when (screenState) {
+            is ScreenState.Loading -> {
+                viewMvc.showProgressIndication()
+                viewMvc.hideEmptyListIndication()
+            }
+            is ScreenState.NoData -> {
+                viewModel.setInitialMealPlans(emptyList())
+                viewMvc.bindMealPlans(emptyList())
+                viewMvc.bindMealPlanMeals(emptyList())
+                viewMvc.bindMealPlanMacros(DefaultModels.defaultMealPlanMacros)
+                viewMvc.hideProgressIndication()
+                viewMvc.showEmptyListIndication()
+            }
+            is ScreenState.HasData -> {
+                screenState.let {
+                    viewMvc.hideProgressIndication()
+                    viewMvc.hideEmptyListIndication()
+                    viewMvc.bindMealPlans(it.mealPlans)
+                    viewModel.setInitialMealPlans(it.mealPlans)
+                    if(it.mealPlanMeals.isEmpty())
+                        viewMvc.showEmptyListIndication()
+                    else
+                        viewMvc.bindMealPlanMeals(it.mealPlanMeals)
+                    viewMvc.bindMealPlanMacros(it.mealPlanMacros)
+                    setSelectedMealPlanIndex(it.selectedMealPlanIndex)
+                }
+            }
+            is ScreenState.Error -> {
+                toastsHelper.showShortMsg(screenState.errorMsgId)
+            }
+        }
+    }
+
+    private fun setSelectedMealPlanIndex(index: Int) {
+        sharedPreferencesHelper.putInt(SELECTED_MEAL_PLAN_INDEX, index)
+        viewModel.setSelectedMealPlanIndex(index)
+        viewMvc.setSelectedMealPlanIndexWithoutNotifying(index)
     }
 }

@@ -124,7 +124,6 @@ class MealPlanViewMvcImpl(
     }
 
     override fun bindMealPlanMeals(meals: List<UiMealPlanMeal>) {
-        binding.noMealPlanMeals.visibility = if (meals.isEmpty()) View.VISIBLE else View.GONE
         adapter.updateItems(meals)
     }
 

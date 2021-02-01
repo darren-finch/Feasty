@@ -146,7 +146,6 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
 
     fun getMealPlanController() = MealPlanControllerImpl(
         getMealPlanVm(),
-        getGetMealPlanUseCase(),
         getGetAllMealPlansUseCase(),
         getGetMealsForMealPlanUseCase(),
         getInsertMealPlanMealUseCase(),

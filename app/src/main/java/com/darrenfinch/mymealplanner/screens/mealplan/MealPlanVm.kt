@@ -25,9 +25,6 @@ class MealPlanVm : Serializable {
     fun hasMealPlans() = mealPlanIds.isNotEmpty()
 
     fun getSelectedMealPlanId(): Int {
-        return if (selectedMealPlanIndex < mealPlanIds.size && selectedMealPlanIndex != Constants.INVALID_INDEX)
-            mealPlanIds[selectedMealPlanIndex]
-        else
-            Constants.INVALID_ID
+        return mealPlanIds.elementAtOrElse(selectedMealPlanIndex) { Constants.INVALID_INDEX }
     }
 }

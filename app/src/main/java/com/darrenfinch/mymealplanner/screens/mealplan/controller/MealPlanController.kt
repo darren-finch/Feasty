@@ -10,5 +10,5 @@ interface MealPlanController : BaseController {
 
     fun onStop()
 
-    fun getAllMealPlans()
+    fun refresh()
 }
