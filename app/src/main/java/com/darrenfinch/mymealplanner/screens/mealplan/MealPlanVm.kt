@@ -18,7 +18,7 @@ class MealPlanVm : Serializable {
         if(0 < selectedMealPlanIndex) selectedMealPlanIndex--
     }
 
-    fun setMealPlans(mealPlans: List<UiMealPlan>) {
+    fun setInitialMealPlans(mealPlans: List<UiMealPlan>) {
         this.mealPlanIds = mealPlans.map { it.id }.toMutableList()
     }
 

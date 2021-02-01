@@ -43,7 +43,7 @@ class MealPlanFragment : BaseFragment() {
 
     fun restoreControllerState(savedInstanceState: Bundle?) {
         savedInstanceState?.let {
-            controller.restoreState(savedInstanceState.getSerializable(CONTROLLER_SAVED_STATE) as MealPlanController.SavedState)
+            controller.restoreState(savedInstanceState.getSerializable(CONTROLLER_SAVED_STATE) as MealPlanControllerImpl.SavedState)
         }
     }
 

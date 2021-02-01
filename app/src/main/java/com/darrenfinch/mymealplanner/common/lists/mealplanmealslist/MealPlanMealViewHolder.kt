@@ -15,7 +15,7 @@ import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMea
 
 class MealPlanMealViewHolder(private val listener: Listener, itemView: View) : BaseViewHolder<UiMealPlanMeal>(itemView) {
     interface Listener {
-        fun onDelete(mealPlanMeal: UiMealPlanMeal)
+        fun onDelete(mealPlanMealId: Int)
     }
 
     private var binding = MealPlanMealItemBinding.bind(itemView)
@@ -42,7 +42,7 @@ class MealPlanMealViewHolder(private val listener: Listener, itemView: View) : B
 
     private fun handleMenuItemClicked(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.delete -> listener.onDelete(binding.mealPlanMeal!!)
+            R.id.delete -> listener.onDelete(binding.mealPlanMeal!!.id)
         }
         return true
     }

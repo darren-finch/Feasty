@@ -7,6 +7,7 @@ import com.darrenfinch.mymealplanner.common.constants.Constants.DEFAULT_FOOD_DAT
 import com.darrenfinch.mymealplanner.common.constants.Constants.DEFAULT_MEAL_DATA_TITLE
 import com.darrenfinch.mymealplanner.common.constants.Constants.DEFAULT_MEAL_FOOD_DATA_TITLE
 import com.darrenfinch.mymealplanner.common.constants.Constants.DEFAULT_PROTEINS
+import com.darrenfinch.mymealplanner.common.constants.Constants.INVALID_ID
 import com.darrenfinch.mymealplanner.common.constants.Constants.VALID_ID
 import com.darrenfinch.mymealplanner.foods.models.domain.Food
 import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
@@ -14,6 +15,7 @@ import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiMacroNutrients
 import com.darrenfinch.mymealplanner.mealplans.models.domain.MealPlan
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
+import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
 import com.darrenfinch.mymealplanner.meals.models.domain.Meal
 import com.darrenfinch.mymealplanner.meals.models.domain.MealFood
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
@@ -95,5 +97,12 @@ object DefaultModels {
         requiredCarbs = 0,
         requiredFats = 0,
         requiredProteins = 0
+    )
+    val defaultUiMealPlanMeal = UiMealPlanMeal(
+        id = VALID_ID,
+        title = "",
+        foods = listOf(),
+        mealId = INVALID_ID,
+        mealPlanId = INVALID_ID
     )
 }

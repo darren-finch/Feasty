@@ -13,14 +13,12 @@ interface MealPlanViewMvc : ObservableViewMvc<MealPlanViewMvc.Listener>, Progres
         fun onAddNewMealPlanClicked()
         fun onDeleteMealPlanClicked()
         fun onAddNewMealPlanMealClicked()
-        fun onDeleteMealPlanMealClicked(mealPlanMeal: UiMealPlanMeal)
+        fun onDeleteMealPlanMealClicked(mealPlanMealId: Int)
     }
 
     fun bindMealPlanMeals(meals: List<UiMealPlanMeal>)
     fun bindMealPlanMacros(mealPlanMacros: MealPlanMacros)
     fun bindMealPlans(mealPlans: List<UiMealPlan>)
-    fun hideMealPlans()
-    fun showMealPlans()
     fun setSelectedMealPlanIndex(index: Int)
     fun setSelectedMealPlanIndexWithoutNotifying(index: Int)
 }

@@ -19,7 +19,7 @@ import com.darrenfinch.mymealplanner.screens.foodform.controller.FoodFormControl
 import com.darrenfinch.mymealplanner.screens.mealform.MealFormVm
 import com.darrenfinch.mymealplanner.screens.mealform.controller.MealFormControllerImpl
 import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanVm
-import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanController
+import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanControllerImpl
 import com.darrenfinch.mymealplanner.screens.mealplanform.MealPlanFormVm
 import com.darrenfinch.mymealplanner.screens.mealplanform.controller.MealPlanFormController
 import kotlinx.coroutines.Dispatchers
@@ -144,7 +144,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
         uiContext
     )
 
-    fun getMealPlanController() = MealPlanController(
+    fun getMealPlanController() = MealPlanControllerImpl(
         getMealPlanVm(),
         getGetMealPlanUseCase(),
         getGetAllMealPlansUseCase(),

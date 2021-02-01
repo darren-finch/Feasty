@@ -31,8 +31,8 @@ class MealPlanViewMvcImpl(
     private var notifyWhenMealPlanSelected = true
 
     private val listener = object : MealPlanMealsRecyclerViewAdapter.ItemEventListener {
-        override fun onDelete(mealPlanMeal: UiMealPlanMeal) {
-            onDeleteMealPlanMealClicked(mealPlanMeal)
+        override fun onDelete(mealPlanMealId: Int) {
+            onDeleteMealPlanMealClicked(mealPlanMealId)
         }
     }
 
@@ -81,9 +81,9 @@ class MealPlanViewMvcImpl(
         }
     }
 
-    private fun onDeleteMealPlanMealClicked(mealPlanMeal: UiMealPlanMeal) {
+    private fun onDeleteMealPlanMealClicked(mealPlanMealId: Int) {
         for (listener in getListeners()) {
-            listener.onDeleteMealPlanMealClicked(mealPlanMeal)
+            listener.onDeleteMealPlanMealClicked(mealPlanMealId)
         }
     }
 
@@ -144,14 +144,6 @@ class MealPlanViewMvcImpl(
     override fun setSelectedMealPlanIndexWithoutNotifying(index: Int) {
         notifyWhenMealPlanSelected = false
         binding.selectMealPlanSpinner.setSelection(index)
-    }
-
-    override fun hideMealPlans() {
-        binding.selectMealPlanSpinner.visibility = View.GONE
-    }
-
-    override fun showMealPlans() {
-        binding.selectMealPlanSpinner.visibility = View.VISIBLE
     }
 
     override fun releaseViewRefs() {
