@@ -10,7 +10,7 @@ interface MealFormController : BaseController {
 
     fun onStop()
 
-    fun getMealDetailsIfPossibleAndBindToView()
+    fun getMealDetails()
 
     fun setArgs(mealId: Int)
 }

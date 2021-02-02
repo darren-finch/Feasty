@@ -26,7 +26,7 @@ class SelectMealPlanMealViewMvcImpl(
         }
 
         override fun onEdit(mealId: Int) { }
-        override fun onDelete(meal: UiMeal) { }
+        override fun onDelete(mealId: Int) { }
     }
 
     private fun onMealSelected(meal: UiMeal) {
