@@ -78,6 +78,7 @@ internal class MealFormControllerImplTest {
         SUT.getMealDetails()
 
         verify { viewModel.bindMealDetails(getMealUseCaseResult) }
+        verify { viewModel.bindMealDetails(getMealUseCaseResult) }
         verify { viewMvc.bindMealDetails(getMealUseCaseResult) }
     }
 
@@ -95,6 +96,7 @@ internal class MealFormControllerImplTest {
         SUT.getMealDetails()
 
         verify {
+            viewModel.bindMealDetails(defUiMeal)
             viewModel.bindMealDetails(defUiMeal)
             viewMvc.bindMealDetails(defUiMeal)
         }
