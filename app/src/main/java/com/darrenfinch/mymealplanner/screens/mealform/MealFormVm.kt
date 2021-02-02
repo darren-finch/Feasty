@@ -17,7 +17,7 @@ class MealFormVm : StatefulVm() {
     private var title = StatefulVmProperty("", this)
     private var mealFoods = StatefulVmListProperty<UiMealFood>(this)
 
-    fun bindInitialMealDetails(meal: UiMeal) {
+    fun bindMealDetails(meal: UiMeal) {
         id = meal.id
         title.setWithoutNotifying(meal.title)
         mealFoods.set(meal.foods)

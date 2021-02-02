@@ -69,136 +69,55 @@ internal class MealFormControllerImplTest {
         SUT.setArgs(TestConstants.VALID_ID)
 
         every { viewModel.getMealDetails() } returns defUiMeal
+        coEvery { getMealUseCase.getMeal(any()) } returns getMealUseCaseResult
         every { screensNavigator.goBack() } returns true
     }
 
     @Test
-    fun `getMealDetailsIfPossibleAndBindToView() restores view state from view model when meal details are dirty`() {
-        setupDirtyMealDetails()
-        every { viewModel.getMealDetails() } returns defUiMeal2
+    fun `getMealDetails() binds meal details from use case to viewModel and viewMvc when meal details haven't been loaded`() {
+        SUT.getMealDetails()
 
-        SUT.getMealDetailsIfPossibleAndBindToView()
-
-        verify { viewMvc.bindMealDetails(defUiMeal2) }
+        verify { viewModel.bindMealDetails(getMealUseCaseResult) }
+        verify { viewMvc.bindMealDetails(getMealUseCaseResult) }
     }
 
     @Test
-    fun `getMealDetailsIfPossibleAndBindToView() restores view state from view model when meal details are clean`() {
-        setupCleanMealDetails()
-        every { viewModel.getMealDetails() } returns defUiMeal2
-        coEvery { getMealUseCase.getMeal(any()) } returns getMealUseCaseResult
+    fun `getMealDetails() restores view state from view model when meal details have been loaded`() {
+        every { viewModel.getMealDetails() } returns defUiMeal
 
-        SUT.getMealDetailsIfPossibleAndBindToView()
+        SUT.getMealDetails()
 
-        verify { viewMvc.bindMealDetails(defUiMeal2) }
-    }
-
-    @Test
-    fun `getMealDetailsIfPossibleAndBindToView() gets meal details from database if editing meal and meal details are clean`() =
-        runBlockingTest {
-            val mealId = TestConstants.VALID_ID
-
-            setupEditingMeal()
-            setupCleanMealDetails()
-
-            coEvery { getMealUseCase.getMeal(mealId) } returns getMealUseCaseResult
-
-            SUT.getMealDetailsIfPossibleAndBindToView()
-
-            coVerify { getMealUseCase.getMeal(mealId) }
+        verify {
+            viewModel.bindMealDetails(getMealUseCaseResult)
+            viewMvc.bindMealDetails(getMealUseCaseResult)
         }
 
-    @Test
-    fun `getMealDetailsIfPossibleAndBindToView() doesn't get meal details from database if meal details are dirty`() {
-        setupDirtyMealDetails()
+        SUT.getMealDetails()
 
-        SUT.getMealDetailsIfPossibleAndBindToView()
-
-        coVerify { getMealUseCase.getMeal(any()) wasNot Called }
-    }
-
-    @Test
-    fun `getMealDetailsIfPossibleAndBindToView() doesn't get meal details from database when adding a meal and meal details are dirty`() {
-        setupAddingMeal()
-        setupDirtyMealDetails()
-
-        SUT.getMealDetailsIfPossibleAndBindToView()
-
-        coVerify { getMealUseCase.getMeal(any()) wasNot Called }
-    }
-
-    @Test
-    fun `getMealDetailsIfPossibleAndBindToView() doesn't get meal details from database when adding a meal and meal details are clean`() {
-        setupAddingMeal()
-        setupCleanMealDetails()
-
-        SUT.getMealDetailsIfPossibleAndBindToView()
-
-        coVerify { getMealUseCase.getMeal(any()) wasNot Called }
-    }
-
-    @Test
-    fun `getMealDetailsIfPossibleAndBindToView() binds fetched meal details to viewMvc and view model when able to get meal details`() =
-        runBlockingTest {
-            setupEditingMeal()
-            setupCleanMealDetails()
-            coEvery { getMealUseCase.getMeal(TestConstants.VALID_ID) } returns getMealUseCaseResult
-
-            SUT.getMealDetailsIfPossibleAndBindToView()
-
-            verify { viewMvc.bindMealDetails(getMealUseCaseResult) }
-            verify { viewModel.bindInitialMealDetails(getMealUseCaseResult) }
+        verify {
+            viewModel.bindMealDetails(defUiMeal)
+            viewMvc.bindMealDetails(defUiMeal)
         }
+    }
 
     @Test
-    fun `getMealDetailsIfPossibleAndBindToView() correctly hides, shows, then hides progress indication when able to get meal details`() =
+    fun `getMealDetails() correctly shows then hides progress indication`() =
         runBlockingTest {
-            setupEditingMeal()
-            setupCleanMealDetails()
-            excludeRecords { viewMvc.bindMealDetails(any()) }
             coEvery { getMealUseCase.getMeal(any()) } returns getMealUseCaseResult
 
-            SUT.getMealDetailsIfPossibleAndBindToView()
+            SUT.getMealDetails()
 
-            verifySequence {
-                viewMvc.hideProgressIndication()
+            coVerifyOrder {
                 viewMvc.showProgressIndication()
+                getMealUseCase.getMeal(any())
                 viewMvc.hideProgressIndication()
             }
         }
 
     @Test
-    fun `getMealDetailsIfPossibleAndBindToView() hides progress indication if unable to get meal details`() =
-        runBlockingTest {
-            setupDirtyMealDetails()
-            excludeRecords { viewMvc.bindMealDetails(any()) }
-
-            SUT.getMealDetailsIfPossibleAndBindToView()
-
-            verify { viewMvc.hideProgressIndication() }
-        }
-
-    @Test
-    fun `restoreViewState() restores view state from view model`() {
-        every { viewModel.getMealDetails() } returns defUiMeal2
-
-        SUT.restoreViewState()
-
-        verify { viewMvc.bindMealDetails(defUiMeal2) }
-    }
-
-    @Test
-    fun `setInitialMealDetails() binds meal details to view and view model`() {
-        SUT.setInitialMealDetails(defUiMeal2)
-
-        verify { viewMvc.bindMealDetails(defUiMeal2) }
-        verify { viewModel.bindInitialMealDetails(defUiMeal2) }
-    }
-
-    @Test
     fun `onDoneButtonClicked() inserts meal from view model if adding meal, then navigates up`() =
         runBlockingTest {
-            setupAddingMeal()
+            SUT.setArgs(TestConstants.INVALID_ID)
             every { viewModel.getMealDetails() } returns defUiMeal2
 
             SUT.onDoneButtonClicked()
@@ -212,7 +131,7 @@ internal class MealFormControllerImplTest {
     @Test
     fun `onDoneButtonClicked() updates meal from view model if editing meal, then navigates up`() =
         runBlockingTest {
-            setupEditingMeal()
+            SUT.setArgs(TestConstants.VALID_ID)
             every { viewModel.getMealDetails() } returns defUiMeal2
 
             SUT.onDoneButtonClicked()
@@ -263,21 +182,5 @@ internal class MealFormControllerImplTest {
 
         verify { viewModel.addMealFood(selectedFood, desiredServingSize) }
         verify { viewMvc.bindMealDetails(defUiMeal2) }
-    }
-
-    fun setupAddingMeal() {
-        SUT.setArgs(TestConstants.INVALID_ID)
-    }
-
-    fun setupEditingMeal() {
-        SUT.setArgs(TestConstants.VALID_ID)
-    }
-
-    fun setupCleanMealDetails() {
-        every { viewModel.isDirty } returns false
-    }
-
-    fun setupDirtyMealDetails() {
-        every { viewModel.isDirty } returns true
     }
 }

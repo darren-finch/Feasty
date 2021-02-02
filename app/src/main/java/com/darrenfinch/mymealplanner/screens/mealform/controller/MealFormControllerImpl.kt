@@ -1,14 +1,13 @@
 package com.darrenfinch.mymealplanner.screens.mealform.controller
 
 import com.darrenfinch.mymealplanner.common.constants.Constants
-import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.dialogs.DialogResult
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.SelectFoodForMealDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityDialogEvent
-import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.FOOD_ID_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.DESIRED_SERVING_SIZE_RESULT
+import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.FOOD_ID_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD_RESULT
 import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
@@ -38,10 +37,17 @@ class MealFormControllerImpl(
     private val uiContext: CoroutineContext
 ) : MealFormController, MealFormViewMvc.Listener, BackPressListener, DialogsEventBus.Listener {
 
-    data class SavedState(val viewModel: MealFormVm) :
+    private sealed class ScreenState {
+        object Loading : ScreenState()
+        class HasData(val mealDetails: UiMeal) : ScreenState()
+    }
+
+    data class SavedState(val viewModel: MealFormVm, val hasLoadedMealDetails: Boolean) :
         ControllerSavedState
 
     private var mealIdArg = Constants.INVALID_ID
+
+    private var hasLoadedMealDetails = false
 
     private lateinit var viewMvc: MealFormViewMvc
 
@@ -64,32 +70,34 @@ class MealFormControllerImpl(
         getMealJob?.cancel()
     }
 
-    override fun getMealDetailsIfPossibleAndBindToView() {
-        restoreViewState()
-        viewMvc.hideProgressIndication()
-
-        if (canGetFoodDetails()) {
-            viewMvc.showProgressIndication()
+    override fun getMealDetails() {
+        setState(ScreenState.Loading)
+        if(hasLoadedMealDetails) {
+            // view model is retained on config changes, so this essentially restores the view
+            setState(ScreenState.HasData(viewModel.getMealDetails()))
+        } else {
             getMealJob = CoroutineScope(backgroundContext).launch {
                 val mealDetails = getMealUseCase.getMeal(mealIdArg)
                 withContext(uiContext) {
-                    viewMvc.hideProgressIndication()
-                    setInitialMealDetails(mealDetails)
+                    setState(ScreenState.HasData(mealDetails))
                 }
             }
         }
     }
 
-    fun restoreViewState() {
-        viewMvc.bindMealDetails(viewModel.getMealDetails())
+    private fun setState(screenState: ScreenState) {
+        when (screenState) {
+            is ScreenState.Loading -> {
+                viewMvc.showProgressIndication()
+            }
+            is ScreenState.HasData -> {
+                viewMvc.hideProgressIndication()
+                viewModel.bindMealDetails(screenState.mealDetails)
+                viewMvc.bindMealDetails(screenState.mealDetails)
+                hasLoadedMealDetails = true
+            }
+        }
     }
-
-    fun setInitialMealDetails(mealDetails: UiMeal) {
-        viewMvc.bindMealDetails(mealDetails)
-        viewModel.bindInitialMealDetails(mealDetails)
-    }
-
-    fun canGetFoodDetails() = !viewModel.isDirty && mealIdArg != Constants.INVALID_ID
 
     override fun onAddNewFoodButtonClicked() {
         dialogsManager.showSelectFoodForMealScreenDialog()
@@ -120,11 +128,12 @@ class MealFormControllerImpl(
     override fun restoreState(state: ControllerSavedState) {
         (state as SavedState).let {
             viewModel = it.viewModel
+            hasLoadedMealDetails = it.hasLoadedMealDetails
         }
     }
 
     override fun getState(): ControllerSavedState {
-        return SavedState(viewModel)
+        return SavedState(viewModel, hasLoadedMealDetails)
     }
 
     override fun onBackPressed(): Boolean {
@@ -141,7 +150,7 @@ class MealFormControllerImpl(
                 val selectedFoodQuantity =
                     result.getSerializable(DESIRED_SERVING_SIZE_RESULT) as PhysicalQuantity
                 viewModel.addMealFood(selectedFood, selectedFoodQuantity)
-                viewMvc.bindMealDetails(viewModel.getMealDetails())
+                setState(ScreenState.HasData(viewModel.getMealDetails()))
             }
         }
     }

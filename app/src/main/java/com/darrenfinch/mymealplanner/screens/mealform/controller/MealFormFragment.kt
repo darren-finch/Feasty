@@ -49,7 +49,7 @@ class MealFormFragment : BaseFragment() {
         controller.bindView(viewMvc)
         setControllerArgs(requireArguments())
         restoreControllerState(savedInstanceState)
-        controller.getMealDetailsIfPossibleAndBindToView()
+        controller.getMealDetails()
 
         return viewMvc.getRootView()
     }
