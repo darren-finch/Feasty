@@ -10,7 +10,7 @@ class MealsRecyclerViewAdapter(
     private val config: Config,
     private val itemEventListener: ItemEventListener
 ) : BaseRecyclerViewAdapter<UiMeal, MealViewHolder>(mutableListOf()), MealViewHolder.Listener {
-    data class Config(val showViewMoreButton: Boolean = true)
+    data class Config(val showViewMoreButton: Boolean = true, val allowEditingItems: Boolean = true)
 
     interface ItemEventListener {
         fun onSelect(meal: UiMeal)

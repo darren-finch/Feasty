@@ -9,8 +9,7 @@ import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.utils.KeyboardUtils
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
-import com.darrenfinch.mymealplanner.databinding.FragmentSelectMealFoodQuantityBinding
-import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
+import com.darrenfinch.mymealplanner.databinding.FragmentSelectFoodQuantityBinding
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiMacroNutrients
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 
@@ -18,9 +17,9 @@ class SelectFoodQuantityViewMvcImpl(
     inflater: LayoutInflater,
     parent: ViewGroup?
 ) : BaseObservableViewMvc<SelectFoodQuantityViewMvc.Listener>(), SelectFoodQuantityViewMvc {
-    private var _binding: FragmentSelectMealFoodQuantityBinding? = DataBindingUtil.inflate(
+    private var _binding: FragmentSelectFoodQuantityBinding? = DataBindingUtil.inflate(
         inflater,
-        R.layout.fragment_select_meal_food_quantity,
+        R.layout.fragment_select_food_quantity,
         parent,
         false
     )
@@ -61,7 +60,7 @@ class SelectFoodQuantityViewMvcImpl(
     }
 
     override fun bindMacros(macroNutrients: UiMacroNutrients) {
-        binding.mealFoodInfoTextView.text = macroNutrients.toString()
+        binding.mealFoodMacrosTextView.text = macroNutrients.toString()
     }
 
     override fun makeDialog(): Dialog {

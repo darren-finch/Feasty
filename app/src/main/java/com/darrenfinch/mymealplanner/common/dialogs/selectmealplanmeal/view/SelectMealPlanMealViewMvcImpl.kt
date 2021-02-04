@@ -11,6 +11,7 @@ import com.darrenfinch.mymealplanner.common.lists.mealslist.MealsRecyclerViewAda
 import com.darrenfinch.mymealplanner.common.lists.itemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentSelectItemBinding
+import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 
 class SelectMealPlanMealViewMvcImpl(
@@ -26,7 +27,9 @@ class SelectMealPlanMealViewMvcImpl(
         }
 
         override fun onEdit(mealId: Int) { }
-        override fun onDelete(mealId: Int) { }
+        override fun onDelete(mealId: Int) {
+            onDelete(mealId)
+        }
     }
 
     private fun onMealSelected(meal: UiMeal) {

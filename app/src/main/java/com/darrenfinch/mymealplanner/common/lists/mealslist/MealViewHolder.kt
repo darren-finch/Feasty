@@ -8,6 +8,7 @@ import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.lists.BaseViewHolder
 import com.darrenfinch.mymealplanner.common.lists.mealfoodslist.MealFoodsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.databinding.MealItemBinding
+import com.darrenfinch.mymealplanner.foods.models.domain.MacroCalculator
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 import net.cachapa.expandablelayout.ExpandableLayout
 
@@ -23,8 +24,9 @@ class MealViewHolder(private val config: MealsRecyclerViewAdapter.Config, privat
 
     override fun bind(item: UiMeal) {
         binding.apply {
-            meal = item
-            viewHolder = this@MealViewHolder
+            mealTitleTextView.text = item.title
+            macroNutrientsTextView.text = MacroCalculator.calculateMealMacros(item)
+
             cardBottom.setOnExpansionUpdateListener(this@MealViewHolder)
 
             cardTop.setOnClickListener {
@@ -34,6 +36,8 @@ class MealViewHolder(private val config: MealsRecyclerViewAdapter.Config, privat
             dropdownImageButton.setOnClickListener {
                 cardBottom.toggle()
             }
+
+            divider.alpha = 0.0f
 
             if (config.showViewMoreButton) {
                 viewMoreButton.setOnClickListener {
@@ -46,6 +50,8 @@ class MealViewHolder(private val config: MealsRecyclerViewAdapter.Config, privat
                             }
                             true
                         }
+                        if(!config.allowEditingItems)
+                            menu.removeItem(R.id.edit)
                         show()
                     }
                 }
@@ -60,6 +66,7 @@ class MealViewHolder(private val config: MealsRecyclerViewAdapter.Config, privat
 
     override fun onExpansionUpdate(expansionFraction: Float, state: Int) {
         binding.dropdownImageButton.rotation = expansionFraction * 180
+        binding.divider.alpha = if(expansionFraction > 0) expansionFraction / 2 else 0.0f
     }
 
     private fun initAdapter(meal: UiMeal) {

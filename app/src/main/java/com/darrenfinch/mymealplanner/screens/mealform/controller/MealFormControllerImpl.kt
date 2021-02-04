@@ -4,6 +4,8 @@ import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.dialogs.DialogResult
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
+import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogEvent
+import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.controller.EditMealFoodDialog.Companion.MEAL_FOOD_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.SelectFoodForMealDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.DESIRED_SERVING_SIZE_RESULT
@@ -15,9 +17,8 @@ import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
-import com.darrenfinch.mymealplanner.meals.usecases.GetMealUseCase
-import com.darrenfinch.mymealplanner.meals.usecases.InsertMealUseCase
-import com.darrenfinch.mymealplanner.meals.usecases.UpdateMealUseCase
+import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
+import com.darrenfinch.mymealplanner.meals.usecases.*
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.screens.mealform.MealFormVm
 import com.darrenfinch.mymealplanner.screens.mealform.view.MealFormViewMvc
@@ -99,6 +100,15 @@ class MealFormControllerImpl(
         }
     }
 
+    override fun onMealFoodEdit(mealFood: UiMealFood) {
+        dialogsManager.showEditMealFoodDialog(mealFood)
+    }
+
+    override fun onMealFoodDelete(id: Int) {
+        viewModel.removeMealFood(id)
+        viewMvc.bindMealDetails(viewModel.getMealDetails())
+    }
+
     override fun onAddNewFoodButtonClicked() {
         dialogsManager.showSelectFoodForMealScreenDialog()
     }
@@ -143,14 +153,22 @@ class MealFormControllerImpl(
 
     override fun onDialogEvent(event: Any, result: DialogResult?) {
         result?.let {
-            if (event == SelectFoodForMealDialogEvent.ON_FOOD_CHOSEN) {
-                dialogsManager.showSelectFoodQuantityDialog(result.getInt(FOOD_ID_RESULT))
-            } else if (event == SelectFoodQuantityDialogEvent.ON_DESIRED_FOOD_SERVING_SIZE_CHOSEN) {
-                val selectedFood = result.getSerializable(SELECTED_FOOD_RESULT) as UiFood
-                val selectedFoodQuantity =
-                    result.getSerializable(DESIRED_SERVING_SIZE_RESULT) as PhysicalQuantity
-                viewModel.addMealFood(selectedFood, selectedFoodQuantity)
-                setState(ScreenState.HasData(viewModel.getMealDetails()))
+            when (event) {
+                SelectFoodForMealDialogEvent.ON_FOOD_CHOSEN -> {
+                    dialogsManager.showSelectFoodQuantityDialog(result.getInt(FOOD_ID_RESULT))
+                }
+                SelectFoodQuantityDialogEvent.ON_DESIRED_FOOD_SERVING_SIZE_CHOSEN -> {
+                    val selectedFood = result.getSerializable(SELECTED_FOOD_RESULT) as UiFood
+                    val selectedFoodQuantity =
+                        result.getSerializable(DESIRED_SERVING_SIZE_RESULT) as PhysicalQuantity
+                    viewModel.addMealFood(selectedFood, selectedFoodQuantity)
+                    setState(ScreenState.HasData(viewModel.getMealDetails()))
+                }
+                EditMealFoodDialogEvent.ON_DONE_CLICKED -> {
+                    val editedMealFood = result.getSerializable(MEAL_FOOD_RESULT) as UiMealFood
+                    viewModel.updateMealFood(editedMealFood)
+                    setState(ScreenState.HasData(viewModel.getMealDetails()))
+                }
             }
         }
     }

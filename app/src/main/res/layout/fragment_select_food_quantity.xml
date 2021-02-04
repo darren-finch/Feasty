@@ -24,7 +24,7 @@
             tools:text="Food Title" />
 
         <TextView
-            android:id="@+id/mealFoodInfoTextView"
+            android:id="@+id/mealFoodMacrosTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/standard_margin"
@@ -43,7 +43,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toStartOf="@+id/measurementUnitTextView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mealFoodInfoTextView">
+            app:layout_constraintTop_toBottomOf="@+id/mealFoodMacrosTextView">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/foodQuantityEditText"

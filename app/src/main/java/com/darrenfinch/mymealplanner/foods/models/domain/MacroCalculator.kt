@@ -1,13 +1,14 @@
 package com.darrenfinch.mymealplanner.foods.models.domain
 
-import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
-import com.darrenfinch.mymealplanner.meals.models.domain.Meal
 import com.darrenfinch.mymealplanner.mealplans.models.domain.MealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.models.mappers.uiMealPlanMealToMealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
+import com.darrenfinch.mymealplanner.meals.models.domain.Meal
+import com.darrenfinch.mymealplanner.meals.models.domain.MealFood
 import com.darrenfinch.mymealplanner.meals.models.mappers.uiMealToMeal
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
+import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanMacros
 
 object MacroCalculator {
@@ -51,22 +52,7 @@ object MacroCalculator {
     }
 
     fun calculateMealMacros(meal: Meal): String {
-        var totalCalories = 0
-        var totalProteins = 0
-        var totalCarbohydrates = 0
-        var totalFats = 0
-
-        meal.foods.forEach { food -> totalCalories += food.macroNutrients.calories }
-        meal.foods.forEach { food -> totalProteins += food.macroNutrients.proteins }
-        meal.foods.forEach { food -> totalCarbohydrates += food.macroNutrients.carbs }
-        meal.foods.forEach { food -> totalFats += food.macroNutrients.fats }
-
-        return MacroNutrients(
-            totalCalories,
-            totalCarbohydrates,
-            totalProteins,
-            totalFats
-        ).toString()
+        return calculateMacrosFromMealFoods(meal.foods)
     }
 
     fun calculateMealMacros(mealPlanMeal: UiMealPlanMeal): String {
@@ -74,15 +60,19 @@ object MacroCalculator {
     }
 
     fun calculateMealMacros(mealPlanMeal: MealPlanMeal): String {
+        return calculateMacrosFromMealFoods(mealPlanMeal.foods)
+    }
+
+    private fun calculateMacrosFromMealFoods(mealFoods: List<MealFood>): String {
         var totalCalories = 0
         var totalProteins = 0
         var totalCarbohydrates = 0
         var totalFats = 0
 
-        mealPlanMeal.foods.forEach { food -> totalCalories += food.macroNutrients.calories }
-        mealPlanMeal.foods.forEach { food -> totalProteins += food.macroNutrients.proteins }
-        mealPlanMeal.foods.forEach { food -> totalCarbohydrates += food.macroNutrients.carbs }
-        mealPlanMeal.foods.forEach { food -> totalFats += food.macroNutrients.fats }
+        mealFoods.forEach { food -> totalCalories += food.updatedMacroNutrients.calories }
+        mealFoods.forEach { food -> totalProteins += food.updatedMacroNutrients.proteins }
+        mealFoods.forEach { food -> totalCarbohydrates += food.updatedMacroNutrients.carbs }
+        mealFoods.forEach { food -> totalFats += food.updatedMacroNutrients.fats }
 
         return MacroNutrients(
             totalCalories,
@@ -94,16 +84,16 @@ object MacroCalculator {
 
     fun calculateMealPlanMacros(mealPlan: UiMealPlan, mealPlanMeals: List<UiMealPlanMeal>): MealPlanMacros {
         val totalCalories = mealPlanMeals.sumBy { mealPlanMeal ->
-            mealPlanMeal.foods.sumBy { food -> food.macroNutrients.calories }
+            mealPlanMeal.foods.sumBy { food -> food.originalMacroNutrients.calories }
         }
         val totalCarbs = mealPlanMeals.sumBy { mealPlanMeal ->
-            mealPlanMeal.foods.sumBy { food -> food.macroNutrients.carbs }
+            mealPlanMeal.foods.sumBy { food -> food.originalMacroNutrients.carbs }
         }
         val totalFats = mealPlanMeals.sumBy { mealPlanMeal ->
-            mealPlanMeal.foods.sumBy { food -> food.macroNutrients.fats }
+            mealPlanMeal.foods.sumBy { food -> food.originalMacroNutrients.fats }
         }
         val totalProteins = mealPlanMeals.sumBy { mealPlanMeal ->
-            mealPlanMeal.foods.sumBy { food -> food.macroNutrients.proteins }
+            mealPlanMeal.foods.sumBy { food -> food.originalMacroNutrients.proteins }
         }
 
         return MealPlanMacros(

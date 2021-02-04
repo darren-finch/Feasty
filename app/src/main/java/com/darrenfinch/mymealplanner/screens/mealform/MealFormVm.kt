@@ -34,7 +34,9 @@ class MealFormVm : StatefulVm() {
     }
 
     fun addMealFood(selectedFood: UiFood, selectedFoodQuantity: PhysicalQuantity) {
-        mealFoods.set((mealFoods.get() + foodToMealFood(selectedFood, id, selectedFoodQuantity)).toMutableList())
+        val mealFoodsList = mealFoods.get()
+        val mealFood = foodToMealFood(selectedFood, id, selectedFoodQuantity)
+        mealFoods.set(mealFoodsList + mealFood)
     }
 
     private fun foodToMealFood(
@@ -49,6 +51,7 @@ class MealFormVm : StatefulVm() {
             mealId,
             food.title,
             desiredServingSize,
+            food.servingSize,
             macroNutrientsToUiMacroNutrients(
                 MacroCalculator.baseMacrosOnNewServingSize(
                     uiMacroNutrientsToMacroNutrients(food.macroNutrients),
@@ -57,5 +60,20 @@ class MealFormVm : StatefulVm() {
                 )
             )
         )
+    }
+
+    fun updateMealFood(editedMealFood: UiMealFood) {
+        val mealFoodsList = mealFoods.get()
+        val mealFoodToUpdate = mealFoodsList.find { it.id == editedMealFood.id }
+        mealFoodToUpdate?.let {
+            val mealFoodIndex = mealFoodsList.indexOf(it)
+            mealFoodsList[mealFoodIndex] = editedMealFood
+            mealFoods.set(mealFoodsList)
+        }
+    }
+
+    fun removeMealFood(mealFoodId: Int) {
+        val mealFoodToRemove = mealFoods.get().find { it.id == mealFoodId }
+        mealFoodToRemove?.let { mealFoods.set(mealFoods.get() - it) }
     }
 }

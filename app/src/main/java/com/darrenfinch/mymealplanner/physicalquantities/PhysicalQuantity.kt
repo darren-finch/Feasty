@@ -2,6 +2,7 @@ package com.darrenfinch.mymealplanner.physicalquantities
 
 import com.darrenfinch.mymealplanner.physicalquantities.units.MeasurementUnit
 import java.io.Serializable
+import kotlin.math.floor
 
 // TODO: Consider splitting into data, domain, and presentation models.
 // Since this is not an anemic model, maybe also consider moving some other operations to their respective models, for consistency
@@ -46,7 +47,7 @@ class PhysicalQuantity(val quantity: Double, val unit: MeasurementUnit) : Serial
      */
     @Suppress("MemberVisibilityCanBePrivate")
     fun getAsString(abbreviateUnit: Boolean): String =
-        "$quantity ${unit.getUnitAsString(plural = quantity > 1, abbreviated = abbreviateUnit)}"
+        "${if((quantity == floor(quantity)) && quantity.isFinite()) quantity.toInt() else quantity} ${unit.getUnitAsString(plural = quantity > 1, abbreviated = abbreviateUnit)}"
 
     override fun toString(): String {
         return getAsString(false)

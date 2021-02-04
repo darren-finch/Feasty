@@ -1,5 +1,6 @@
 package com.darrenfinch.mymealplanner.meals.models.domain
 
+import com.darrenfinch.mymealplanner.foods.models.domain.MacroCalculator
 import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 
@@ -12,5 +13,9 @@ data class MealFood(
     val mealId: Int = 0,
     val title: String,
     val desiredServingSize: PhysicalQuantity,
-    val macroNutrients: MacroNutrients
-)
+    val originalServingSize: PhysicalQuantity,
+    val originalMacroNutrients: MacroNutrients
+) {
+    val updatedMacroNutrients: MacroNutrients
+        get() = MacroCalculator.baseMacrosOnNewServingSize(originalMacroNutrients, originalServingSize, desiredServingSize)
+}

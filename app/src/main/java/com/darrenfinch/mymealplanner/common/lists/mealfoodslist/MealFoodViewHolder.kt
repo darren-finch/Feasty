@@ -2,17 +2,57 @@ package com.darrenfinch.mymealplanner.common.lists.mealfoodslist
 
 import android.annotation.SuppressLint
 import android.view.View
+import android.widget.PopupMenu
+import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.lists.BaseViewHolder
 import com.darrenfinch.mymealplanner.databinding.MealFoodItemBinding
+import com.darrenfinch.mymealplanner.meals.models.mappers.uiMealFoodToMealFood
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
 
-class MealFoodViewHolder(itemView: View) : BaseViewHolder<UiMealFood>(itemView)
-{
-    private var binding = MealFoodItemBinding.bind(itemView)
+class MealFoodViewHolder(
+    private val config: MealFoodsRecyclerViewAdapter.Config,
+    private val listener: Listener,
+    itemView: View
+) : BaseViewHolder<UiMealFood>(itemView) {
+    interface Listener {
+        fun onEdit(mealFood: UiMealFood)
+        fun onDelete(mealFoodId: Int)
+    }
+
+    private val binding = MealFoodItemBinding.bind(itemView)
 
     @SuppressLint("SetTextI18n")
     override fun bind(item: UiMealFood) {
-        binding.foodTitleTextView.text = item.title
-        binding.mealFoodInfoTextView.text = "${item.desiredServingSize} | ${item.macroNutrients}"
+        binding.apply {
+            if(config.showAsFullCard) {
+                mealFoodCardLayout.visibility = View.VISIBLE
+
+                foodTitleTextViewCard.text = item.title
+                mealFoodMacrosTextViewCard.text = "${item.desiredServingSize.getAsString(true)} | ${uiMealFoodToMealFood(item).updatedMacroNutrients}"
+
+                viewMoreButtonCard.setOnClickListener {
+                    PopupMenu(itemView.context, viewMoreButtonCard).apply {
+                        inflate(R.menu.context_menu)
+
+                        setOnMenuItemClickListener { menuItem ->
+                            when (menuItem.itemId) {
+                                R.id.edit -> listener.onEdit(item)
+                                R.id.delete -> listener.onDelete(item.id)
+                            }
+                            true
+                        }
+                        show()
+                    }
+                }
+            }
+            else {
+                mealFoodRegularLayout.visibility = View.VISIBLE
+
+                foodTitleTextViewRegular.text = item.title
+                mealFoodMacrosTextViewRegular.text = "${item.desiredServingSize.getAsString(true)} | ${uiMealFoodToMealFood(item).updatedMacroNutrients}"
+
+                viewMoreButtonRegular.visibility = View.GONE
+            }
+        }
     }
 }

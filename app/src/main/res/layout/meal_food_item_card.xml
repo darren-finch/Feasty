@@ -5,15 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="com.darrenfinch.mymealplanner.common.utils.StringUtils"/>
-        <variable
-            name="food"
-            type="com.darrenfinch.mymealplanner.foods.models.presentation.UiFood" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
         style="@style/AppTheme.BigCardViewStyle"
         android:id="@+id/foodCardView"
-        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -27,66 +23,37 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/standard_margin_half"
                 android:layout_marginStart="@dimen/standard_margin_half"
-                android:text="@{food.title}"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/foodInfoTextView"
+                app:layout_constraintEnd_toStartOf="@+id/mealFoodMacrosTextView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
                 tools:text="Toast" />
 
             <TextView
-                android:id="@+id/foodInfoTextView"
+                android:id="@+id/mealFoodMacrosTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/standard_margin_half"
                 android:layout_marginVertical="@dimen/standard_margin_half"
                 android:gravity="end"
-                android:text="@{food.macroNutrients.toString()}"
                 app:layout_constraintEnd_toStartOf="@+id/viewMoreButton"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/foodTitleTextView"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="120 calories | 8P | 23C | 2P" />
-
-            <!-- Combines food quantity and food quantity unit -->
-
-            <TextView
-                android:id="@+id/servingSizeLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/standard_margin_half"
-                android:layout_marginEnd="@dimen/standard_margin_half"
-                android:gravity="end"
-                android:text="@string/serving_size"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/foodQuantityTextView"
-                app:layout_constraintTop_toBottomOf="@+id/foodTitleTextView" />
-
-            <TextView
-                android:id="@+id/foodQuantityTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/standard_margin_half"
-                android:layout_marginEnd="@dimen/standard_margin_half"
-                android:gravity="end"
-                android:text="@{food.servingSize.getAsString(true)}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/foodTitleTextView"
-                tools:text="2 units" />
 
             <ImageButton
                 android:id="@+id/viewMoreButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/standard_margin_half"
+                android:layout_marginHorizontal="@dimen/standard_margin_half"
                 android:background="#00FFFFFF"
-                android:contentDescription="@string/view_more"
                 android:src="@drawable/ic_more"
+                app:layout_constraintBottom_toBottomOf="@+id/mealFoodMacrosTextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/mealFoodMacrosTextView"
+                android:contentDescription="@string/view_more" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

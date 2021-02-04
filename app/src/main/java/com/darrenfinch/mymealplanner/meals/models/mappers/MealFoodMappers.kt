@@ -1,8 +1,6 @@
 package com.darrenfinch.mymealplanner.meals.models.mappers
 
-import com.darrenfinch.mymealplanner.foods.models.domain.MacroCalculator
 import com.darrenfinch.mymealplanner.foods.models.mappers.dbMacroNutrientsToMacroNutrients
-import com.darrenfinch.mymealplanner.foods.models.mappers.macroNutrientsToDbMacroNutrients
 import com.darrenfinch.mymealplanner.foods.models.mappers.macroNutrientsToUiMacroNutrients
 import com.darrenfinch.mymealplanner.foods.models.mappers.uiMacroNutrientsToMacroNutrients
 import com.darrenfinch.mymealplanner.meals.models.domain.MealFood
@@ -15,12 +13,9 @@ fun dbMealFoodToMealFood(dbMealFood: DatabaseMealFood, dbFoodReference: Database
     title = dbFoodReference.title,
     mealId = dbMealFood.mealId,
     foodId = dbMealFood.foodId,
-    macroNutrients = MacroCalculator.baseMacrosOnNewServingSize(
-        oldMacros = dbMacroNutrientsToMacroNutrients(dbFoodReference.macroNutrients),
-        oldServingSize = dbFoodReference.servingSize,
-        newServingSize = dbMealFood.desiredServingSize
-    ),
-    desiredServingSize = dbMealFood.desiredServingSize
+    originalMacroNutrients = dbMacroNutrientsToMacroNutrients(dbFoodReference.macroNutrients),
+    desiredServingSize = dbMealFood.desiredServingSize,
+    originalServingSize = dbFoodReference.servingSize
 )
 
 fun mealFoodToUiMealFood(mealFood: MealFood) = UiMealFood(
@@ -28,8 +23,9 @@ fun mealFoodToUiMealFood(mealFood: MealFood) = UiMealFood(
     title = mealFood.title,
     mealId = mealFood.mealId,
     foodId = mealFood.foodId,
-    macroNutrients = macroNutrientsToUiMacroNutrients(mealFood.macroNutrients),
-    desiredServingSize = mealFood.desiredServingSize
+    originalMacroNutrients = macroNutrientsToUiMacroNutrients(mealFood.originalMacroNutrients),
+    desiredServingSize = mealFood.desiredServingSize,
+    originalServingSize = mealFood.originalServingSize
 )
 
 fun uiMealFoodToMealFood(uiMealFood: UiMealFood) = MealFood(
@@ -37,8 +33,9 @@ fun uiMealFoodToMealFood(uiMealFood: UiMealFood) = MealFood(
     title = uiMealFood.title,
     mealId = uiMealFood.mealId,
     foodId = uiMealFood.foodId,
-    macroNutrients = uiMacroNutrientsToMacroNutrients(uiMealFood.macroNutrients),
-    desiredServingSize = uiMealFood.desiredServingSize
+    originalMacroNutrients = uiMacroNutrientsToMacroNutrients(uiMealFood.originalMacroNutrients),
+    desiredServingSize = uiMealFood.desiredServingSize,
+    originalServingSize = uiMealFood.originalServingSize
 )
 
 fun mealFoodToDbMealFood(mealFood: MealFood) = DatabaseMealFood(
@@ -48,22 +45,21 @@ fun mealFoodToDbMealFood(mealFood: MealFood) = DatabaseMealFood(
     desiredServingSize = mealFood.desiredServingSize
 )
 
-// TODO: Consider a cleaner approach. Maybe simplify mappings?
+@Suppress("UnnecessaryVariable")
 fun dbMealFoodsToMealFoods(
     dbMealFoods: List<DatabaseMealFood>,
     dbFoodReferences: List<DatabaseFood?>
 ): List<MealFood> {
-    val mealFoods = mutableListOf<MealFood>()
-    for (i in 0..dbMealFoods.lastIndex) {
-        if(i < dbFoodReferences.size) {
-            if(dbFoodReferences[i] != null) {
-                mealFoods.add(
-                    dbMealFoodToMealFood(
-                        dbMealFoods[i],
-                        dbFoodReferences[i]!!
-                    )
-                )
-            }
+    val dbMealFoodsArray = dbMealFoods.toTypedArray()
+    val dbMealFoodArray = dbFoodReferences.toTypedArray()
+
+    val mealFoods = dbMealFoodsArray.mapIndexedNotNull { i, dbMealFood ->
+        val dbFoodReference = dbMealFoodArray.getOrNull(i)
+        dbFoodReference?.let {
+            dbMealFoodToMealFood(
+                dbMealFood,
+                it
+            )
         }
     }
 

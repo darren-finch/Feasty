@@ -8,12 +8,13 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.common.lists.mealplanmealslist.MealPlanMealsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.common.lists.itemdecorations.MarginItemDecoration
+import com.darrenfinch.mymealplanner.common.lists.mealslist.MealsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentMealPlanBinding
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
+import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanMacros
 
 class MealPlanViewMvcImpl(
@@ -30,13 +31,16 @@ class MealPlanViewMvcImpl(
 
     private var notifyWhenMealPlanSelected = true
 
-    private val listener = object : MealPlanMealsRecyclerViewAdapter.ItemEventListener {
-        override fun onDelete(mealPlanMealId: Int) {
-            onDeleteMealPlanMealClicked(mealPlanMealId)
+    private val listener = object : MealsRecyclerViewAdapter.ItemEventListener {
+        override fun onSelect(meal: UiMeal) { }
+        override fun onEdit(mealId: Int) { }
+
+        override fun onDelete(mealId: Int) {
+            onDeleteMealPlanMealClicked(mealId)
         }
     }
 
-    private val adapter = MealPlanMealsRecyclerViewAdapter(listener)
+    private val adapter = MealsRecyclerViewAdapter(MealsRecyclerViewAdapter.Config(allowEditingItems = false), listener)
 
     init {
         setRootView(binding.root)
@@ -124,7 +128,13 @@ class MealPlanViewMvcImpl(
     }
 
     override fun bindMealPlanMeals(meals: List<UiMealPlanMeal>) {
-        adapter.updateItems(meals)
+        adapter.updateItems(meals.map {
+            UiMeal(
+                id = it.id,
+                title = it.title,
+                foods = it.foods
+            )
+        })
     }
 
     override fun bindMealPlanMacros(mealPlanMacros: MealPlanMacros) {

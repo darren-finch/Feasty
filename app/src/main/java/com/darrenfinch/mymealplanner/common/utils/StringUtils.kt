@@ -3,8 +3,6 @@ package com.darrenfinch.mymealplanner.common.utils
 import com.darrenfinch.mymealplanner.screens.mealplan.MacroType
 
 object StringUtils {
-    fun getMealTitleTemp(title: String) = if (title.isNotEmpty()) title else "(enter name)"
-
     fun makeTotalVsRequiredNutrientString(
         totalAmount: Int,
         requiredAmount: Int,

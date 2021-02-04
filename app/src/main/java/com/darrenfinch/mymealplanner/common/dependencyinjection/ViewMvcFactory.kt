@@ -2,6 +2,8 @@ package com.darrenfinch.mymealplanner.common.dependencyinjection
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.view.EditMealFoodViewMvc
+import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.view.EditMealFoodViewMvcImpl
 import com.darrenfinch.mymealplanner.screens.foodform.view.FoodFormViewMvc
 import com.darrenfinch.mymealplanner.screens.foodform.view.FoodFormViewMvcImpl
 import com.darrenfinch.mymealplanner.screens.mealform.view.MealFormViewMvc
@@ -27,4 +29,5 @@ class ViewMvcFactory(private val inflater: LayoutInflater) {
     fun getMealPlanFormViewMvc(parent: ViewGroup?) = MealPlanFormViewMvcImpl(inflater, parent)
     fun getSelectFoodForMealViewMvc(parent: ViewGroup?) = SelectFoodForMealViewMvcImpl(inflater, parent)
     fun getSelectMealPlanMealViewMvc(parent: ViewGroup?) = SelectMealPlanMealViewMvcImpl(inflater, parent)
+    fun getEditMealViewMvc(parent: ViewGroup?) = EditMealFoodViewMvcImpl(inflater, parent)
 }

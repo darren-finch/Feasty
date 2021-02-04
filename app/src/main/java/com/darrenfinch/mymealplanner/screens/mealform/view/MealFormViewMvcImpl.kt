@@ -13,6 +13,7 @@ import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentMealFormBinding
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
+import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
 
 class MealFormViewMvcImpl(
     inflater: LayoutInflater,
@@ -27,7 +28,24 @@ class MealFormViewMvcImpl(
     )
     private val binding = _binding!!
 
-    private val mealFoodsRecyclerViewAdapter = MealFoodsRecyclerViewAdapter()
+    private val mealFoodsAdapterListener = object : MealFoodsRecyclerViewAdapter.ItemEventListener {
+        override fun onItemEdit(mealFood: UiMealFood) {
+            for (listener in getListeners()) {
+                listener.onMealFoodEdit(mealFood)
+            }
+        }
+
+        override fun onItemDelete(mealFoodId: Int) {
+            for (listener in getListeners()) {
+                listener.onMealFoodDelete(mealFoodId)
+            }
+        }
+    }
+
+    private val mealFoodsRecyclerViewAdapter = MealFoodsRecyclerViewAdapter(
+        MealFoodsRecyclerViewAdapter.Config(showAsFullCard = true),
+        listener = mealFoodsAdapterListener
+    )
 
     init {
         setRootView(binding.root)

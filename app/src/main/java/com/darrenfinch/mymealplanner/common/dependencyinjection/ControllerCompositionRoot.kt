@@ -3,6 +3,8 @@ package com.darrenfinch.mymealplanner.common.dependencyinjection
 import android.app.Application
 import android.view.LayoutInflater
 import android.view.View
+import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodVm
+import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.controller.EditMealFoodController
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.controller.SelectFoodForMealController
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityVm
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityController
@@ -71,6 +73,8 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     private fun getUpdateMealPlanMealUseCase() = UpdateMealPlanMealUseCase(getMainRepository())
     private fun getDeleteMealPlanMealUseCase() = DeleteMealPlanMealUseCase(getMainRepository())
 
+    private fun getGetMealFoodUseCase() = GetMealFoodUseCase(getMainRepository())
+
 
     // Dialog controllers
     fun getSelectMealFoodQuantityController(
@@ -99,6 +103,12 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
         getDialogsEventBus(),
         backgroundContext,
         uiContext
+    )
+
+    fun getEditMealController() = EditMealFoodController(
+        getEditMealFoodVm(),
+        dialogsManager = getDialogsManager(),
+        dialogsEventBus = getDialogsEventBus()
     )
 
     // Normal screen controllers
@@ -141,7 +151,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
         getDialogsEventBus(),
         getBackPressDispatcher(),
         backgroundContext,
-        uiContext
+        uiContext,
     )
 
     fun getMealPlanController() = MealPlanControllerImpl(
@@ -171,6 +181,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
 
     // View models
     fun getSelectFoodQuantityVm() = SelectFoodQuantityVm()
+    private fun getEditMealFoodVm() = EditMealFoodVm()
     fun getFoodFormVm() = FoodFormVm()
     fun getMealFormVm() = MealFormVm()
     fun getMealPlanFormVm() = MealPlanFormVm()
