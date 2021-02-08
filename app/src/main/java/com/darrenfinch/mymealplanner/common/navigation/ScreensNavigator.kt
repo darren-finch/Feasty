@@ -2,16 +2,31 @@ package com.darrenfinch.mymealplanner.common.navigation
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import com.darrenfinch.mymealplanner.common.misc.BaseObservable
 import com.darrenfinch.mymealplanner.screens.allfoods.controller.AllFoodsFragment
 import com.darrenfinch.mymealplanner.screens.allmeals.controller.AllMealsFragment
 import com.darrenfinch.mymealplanner.screens.foodform.controller.FoodFormFragment
 import com.darrenfinch.mymealplanner.screens.mealform.controller.MealFormFragment
 import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanFragment
 import com.darrenfinch.mymealplanner.screens.mealplanform.controller.MealPlanFormFragment
+import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealFragment
+import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.controller.SelectMealPlanMealFragment
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavTransactionOptions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
-class ScreensNavigator(private val navController: FragNavController) {
+class ScreensNavigator(private val navController: FragNavController) :
+    BaseObservable<ScreensNavigator.Listener>() {
+
+    interface Listener {
+        fun onGoBackWithResult(result: ScreenResult)
+    }
 
     private val rootFragmentListener = object : FragNavController.RootFragmentListener {
         override val numberOfRootFragments = 3
@@ -26,11 +41,42 @@ class ScreensNavigator(private val navController: FragNavController) {
         }
     }
 
+    private val transactionListener = object : FragNavController.TransactionListener {
+        override fun onFragmentTransaction(
+            fragment: Fragment?,
+            transactionType: FragNavController.TransactionType
+        ) {
+            if (transactionType == FragNavController.TransactionType.POP) {
+                notifyListenersOfFragmentPop()
+            }
+        }
+
+        private fun notifyListenersOfFragmentPop() {
+            navController.currentFrag?.lifecycle?.addObserver(object : LifecycleObserver {
+                @OnLifecycleEvent(Lifecycle.Event.ON_START)
+                fun onFragmentStart() {
+                    curScreenResult?.let {
+                        for (listener in getListeners()) {
+                            listener.onGoBackWithResult(it)
+                        }
+                        curScreenResult = null
+                    }
+                    navController.currentFrag?.lifecycle?.removeObserver(this)
+                }
+            })
+        }
+
+        override fun onTabTransaction(fragment: Fragment?, index: Int) {}
+    }
+
+    private var curScreenResult: ScreenResult? = null
+
     private val enterAnim = android.R.anim.fade_in
     private val exitAnim = android.R.anim.fade_out
 
     fun init(savedInstanceState: Bundle?) {
         navController.rootFragmentListener = rootFragmentListener
+        navController.transactionListener = transactionListener
         navController.initialize(FragNavController.TAB1, savedInstanceState)
     }
 
@@ -38,7 +84,7 @@ class ScreensNavigator(private val navController: FragNavController) {
         navController.onSaveInstanceState(savedInstanceState)
     }
 
-    fun goBack(): Boolean {
+    fun navigateUp(): Boolean {
         return if (navController.isRootFragment) {
             false
         } else {
@@ -51,13 +97,26 @@ class ScreensNavigator(private val navController: FragNavController) {
         }
     }
 
+    fun navigateUpWithResult(result: ScreenResult): Boolean {
+        return if (navController.isRootFragment) {
+            false
+        } else {
+            curScreenResult = result
+            navController.popFragment(
+                FragNavTransactionOptions.newBuilder()
+                    .customAnimations(enterAnim, exitAnim, enterAnim, exitAnim)
+                    .build()
+            )
+            true
+        }
+    }
+
     fun switchTab(index: Int) {
-        val enterAnimation = if(navController.currentStackIndex < index) android.R.anim.slide_out_right else android.R.anim.slide_in_left
-        val exitAnimation = if(navController.currentStackIndex < index) android.R.anim.slide_in_left else android.R.anim.slide_out_right
-        navController.switchTab(index,
+        navController.switchTab(
+            index,
             FragNavTransactionOptions.newBuilder()
-            .customAnimations(enterAnim, exitAnim, enterAnim, exitAnim)
-            .build()
+                .customAnimations(enterAnim, exitAnim, enterAnim, exitAnim)
+                .build()
         )
     }
 
@@ -84,6 +143,24 @@ class ScreensNavigator(private val navController: FragNavController) {
     fun toMealPlanFormScreen() {
         navController.pushFragment(
             MealPlanFormFragment.newInstance(),
+            FragNavTransactionOptions.newBuilder()
+                .customAnimations(enterAnim, exitAnim)
+                .build()
+        )
+    }
+
+    fun toSelectFoodForMealScreen() {
+        navController.pushFragment(
+            SelectFoodForMealFragment.newInstance(),
+            FragNavTransactionOptions.newBuilder()
+                .customAnimations(enterAnim, exitAnim)
+                .build()
+        )
+    }
+
+    fun toSelectMealPlanMealScreen() {
+        navController.pushFragment(
+            SelectMealPlanMealFragment.newInstance(),
             FragNavTransactionOptions.newBuilder()
                 .customAnimations(enterAnim, exitAnim)
                 .build()

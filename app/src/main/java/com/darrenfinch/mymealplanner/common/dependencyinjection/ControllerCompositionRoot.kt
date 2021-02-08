@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodVm
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.controller.EditMealFoodController
-import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.controller.SelectFoodForMealController
+import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealController
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityVm
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityController
-import com.darrenfinch.mymealplanner.common.dialogs.selectmealplanmeal.controller.SelectMealPlanMealController
+import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.controller.SelectMealPlanMealController
 import com.darrenfinch.mymealplanner.common.helpers.KeyboardHelper
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.foods.usecases.*
@@ -90,8 +90,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     fun getSelectFoodForMealController(
     ) = SelectFoodForMealController(
         getGetAllFoodsUseCase(),
-        getDialogsManager(),
-        getDialogsEventBus(),
+        getScreensNavigator(),
         backgroundContext,
         uiContext
     )
@@ -99,8 +98,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     fun getSelectMealPlanMealController(
     ) = SelectMealPlanMealController(
         getGetAllMealsUseCase(),
-        getDialogsManager(),
-        getDialogsEventBus(),
+        getScreensNavigator(),
         backgroundContext,
         uiContext
     )
@@ -163,8 +161,6 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
         getDeleteMealPlanMealUseCase(),
         getScreensNavigator(),
         getToastsHelper(),
-        getDialogsManager(),
-        getDialogsEventBus(),
         getSharedPreferencesHelper(),
         backgroundContext,
         uiContext

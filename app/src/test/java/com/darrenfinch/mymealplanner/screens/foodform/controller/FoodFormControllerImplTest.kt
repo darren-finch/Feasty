@@ -59,7 +59,7 @@ internal class FoodFormControllerImplTest {
         SUT.setArgs(TestConstants.VALID_ID)
 
         every { viewModel.getFoodDetails() } returns defUiFood
-        every { screensNavigator.goBack() } returns true
+        every { screensNavigator.navigateUp() } returns true
     }
 
     @Test
@@ -188,7 +188,7 @@ internal class FoodFormControllerImplTest {
 
         coVerifySequence {
             insertFoodUseCase.insertFood(defUiFood2)
-            screensNavigator.goBack()
+            screensNavigator.navigateUp()
         }
     }
 
@@ -201,7 +201,7 @@ internal class FoodFormControllerImplTest {
 
         coVerifySequence {
             updateFoodUseCase.updateFood(defUiFood2)
-            screensNavigator.goBack()
+            screensNavigator.navigateUp()
         }
     }
 
@@ -209,14 +209,14 @@ internal class FoodFormControllerImplTest {
     fun `onNavigateUp() navigates up`() {
         SUT.onNavigateUp()
 
-        verify { screensNavigator.goBack() }
+        verify { screensNavigator.navigateUp() }
     }
 
     @Test
     fun `onBackPressed() navigates up and returns true`() {
         assertEquals(SUT.onBackPressed(), true)
 
-        verify { screensNavigator.goBack() }
+        verify { screensNavigator.navigateUp() }
     }
 
     fun setupAddingFood() {

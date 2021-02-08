@@ -1,7 +1,5 @@
-package com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.view
+package com.darrenfinch.mymealplanner.screens.selectfoodformeal.view
 
-import android.app.AlertDialog
-import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -42,6 +40,13 @@ class SelectFoodForMealViewMvcImpl(
 
     private fun initUI() {
         binding.apply {
+            toolbar.setNavigationOnClickListener {
+                for (listener in getListeners()) {
+                    listener.onNavigateUp()
+                }
+            }
+            toolbar.setTitle(R.string.select_food)
+
             itemsRecyclerView.adapter = adapter
             itemsRecyclerView.layoutManager = LinearLayoutManager(getContext())
             itemsRecyclerView.addItemDecoration(
@@ -56,15 +61,7 @@ class SelectFoodForMealViewMvcImpl(
         adapter.updateItems(foods)
     }
 
-    override fun makeDialog(): Dialog {
-        return AlertDialog.Builder(getContext())
-            .setView(getRootView())
-            .setTitle(getString(R.string.select_food))
-            .setNegativeButton(android.R.string.cancel) { _, _ -> }
-            .show()
-    }
-
     override fun releaseViewRefs() {
-
+        _binding = null
     }
 }

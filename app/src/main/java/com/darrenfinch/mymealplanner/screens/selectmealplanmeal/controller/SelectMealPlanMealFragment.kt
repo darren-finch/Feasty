@@ -1,11 +1,15 @@
-package com.darrenfinch.mymealplanner.common.dialogs.selectmealplanmeal.controller
+package com.darrenfinch.mymealplanner.screens.selectmealplanmeal.controller
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
-import com.darrenfinch.mymealplanner.common.dialogs.selectmealplanmeal.view.SelectMealPlanMealViewMvc
+import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
+import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.view.SelectMealPlanMealViewMvc
 
-class SelectMealPlanMealDialog : BaseDialog() {
+class SelectMealPlanMealFragment : BaseFragment() {
 
     companion object {
         const val TAG = "SelectMealPlanMealDialog"
@@ -13,9 +17,9 @@ class SelectMealPlanMealDialog : BaseDialog() {
         // Dialog results
         const val SELECTED_MEAL_RESULT = "SELECTED_MEAL_RESULT"
 
-        fun newInstance(): SelectMealPlanMealDialog {
+        fun newInstance(): SelectMealPlanMealFragment {
             val bundle = Bundle()
-            val fragment = SelectMealPlanMealDialog()
+            val fragment = SelectMealPlanMealFragment()
             fragment.arguments = bundle
             return fragment
         }
@@ -29,13 +33,17 @@ class SelectMealPlanMealDialog : BaseDialog() {
         controller = controllerCompositionRoot.getSelectMealPlanMealController()
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         viewMvc = controllerCompositionRoot.getViewMvcFactory().getSelectMealPlanMealViewMvc(null)
 
         controller.bindView(viewMvc)
         controller.getAllMealsAndBindToView()
 
-        return viewMvc.makeDialog()
+        return viewMvc.getRootView()
     }
 
     override fun onStart() {

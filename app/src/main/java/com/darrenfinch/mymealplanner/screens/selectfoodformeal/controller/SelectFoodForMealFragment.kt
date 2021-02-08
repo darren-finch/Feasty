@@ -1,21 +1,22 @@
-package com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.controller
+package com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller
 
-import android.app.Dialog
 import android.os.Bundle
-import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
-import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.view.SelectFoodForMealViewMvc
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
+import com.darrenfinch.mymealplanner.screens.selectfoodformeal.view.SelectFoodForMealViewMvc
 
-//TODO: Convert into generic item selection dialog
-class SelectFoodForMealDialog : BaseDialog() {
+class SelectFoodForMealFragment : BaseFragment() {
     companion object {
         const val TAG = "SelectFoodForMealDialog"
 
         // Dialog results
         const val FOOD_ID_RESULT = "FOOD_ID_RESULT"
 
-        fun newInstance(): SelectFoodForMealDialog {
+        fun newInstance(): SelectFoodForMealFragment {
             val bundle = Bundle()
-            val fragment = SelectFoodForMealDialog()
+            val fragment = SelectFoodForMealFragment()
             fragment.arguments = bundle
             return fragment
         }
@@ -29,13 +30,17 @@ class SelectFoodForMealDialog : BaseDialog() {
         controller = controllerCompositionRoot.getSelectFoodForMealController()
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         viewMvc = controllerCompositionRoot.getViewMvcFactory().getSelectFoodForMealViewMvc(null)
 
         controller.bindView(viewMvc)
         controller.getAllFoodsAndBindToView()
 
-        return viewMvc.makeDialog()
+        return viewMvc.getRootView()
     }
 
     override fun onStart() {

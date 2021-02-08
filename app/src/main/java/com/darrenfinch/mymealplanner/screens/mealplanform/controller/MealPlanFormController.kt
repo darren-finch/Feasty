@@ -4,11 +4,9 @@ import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
-import com.darrenfinch.mymealplanner.common.constants.DefaultModels
 import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
 import com.darrenfinch.mymealplanner.screens.mealplanform.view.MealPlanFormViewMvc
 import com.darrenfinch.mymealplanner.mealplans.usecases.InsertMealPlanUseCase
-import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
 import com.darrenfinch.mymealplanner.screens.mealplanform.MealPlanFormVm
 import kotlinx.coroutines.runBlocking
 import kotlin.coroutines.CoroutineContext
@@ -50,11 +48,11 @@ class MealPlanFormController(
         runBlocking(backgroundContext) {
             insertMealPlanUseCase.insertMealPlan(viewModel.getState())
         }
-        screensNavigator.goBack()
+        screensNavigator.navigateUp()
     }
 
     override fun onNavigateUp() {
-        screensNavigator.goBack()
+        screensNavigator.navigateUp()
     }
 
     override fun onTitleChange(newTitle: String) {
@@ -88,7 +86,7 @@ class MealPlanFormController(
     }
 
     override fun onBackPressed(): Boolean {
-        screensNavigator.goBack()
+        screensNavigator.navigateUp()
         return true
     }
 }

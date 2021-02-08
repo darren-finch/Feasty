@@ -6,7 +6,6 @@ import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.controller.EditMealFoodDialog.Companion.MEAL_FOOD_RESULT
-import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.SelectFoodForMealDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.DESIRED_SERVING_SIZE_RESULT
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.FOOD_ID_RESULT
@@ -14,6 +13,7 @@ import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controlle
 import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
+import com.darrenfinch.mymealplanner.common.navigation.ScreenResult
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
@@ -36,7 +36,8 @@ class MealFormControllerImpl(
     private val backPressDispatcher: BackPressDispatcher,
     private val backgroundContext: CoroutineContext,
     private val uiContext: CoroutineContext
-) : MealFormController, MealFormViewMvc.Listener, BackPressListener, DialogsEventBus.Listener {
+) : MealFormController, MealFormViewMvc.Listener, BackPressListener, DialogsEventBus.Listener,
+    ScreensNavigator.Listener {
 
     private sealed class ScreenState {
         object Loading : ScreenState()
@@ -62,12 +63,14 @@ class MealFormControllerImpl(
         viewMvc.registerListener(this)
         dialogsEventBus.registerListener(this)
         backPressDispatcher.registerListener(this)
+        screensNavigator.registerListener(this)
     }
 
     override fun onStop() {
         viewMvc.unregisterListener(this)
         dialogsEventBus.unregisterListener(this)
         backPressDispatcher.unregisterListener(this)
+        screensNavigator.unregisterListener(this)
         getMealJob?.cancel()
     }
 
@@ -110,7 +113,7 @@ class MealFormControllerImpl(
     }
 
     override fun onAddNewFoodButtonClicked() {
-        dialogsManager.showSelectFoodForMealScreenDialog()
+        screensNavigator.toSelectFoodForMealScreen()
     }
 
     override fun onDoneButtonClicked() {
@@ -120,11 +123,11 @@ class MealFormControllerImpl(
             else
                 updateMealUseCase.updateMeal(viewModel.getMealDetails())
         }
-        screensNavigator.goBack()
+        screensNavigator.navigateUp()
     }
 
     override fun onNavigateUp() {
-        screensNavigator.goBack()
+        screensNavigator.navigateUp()
     }
 
     override fun onTitleChange(newTitle: String) {
@@ -147,16 +150,13 @@ class MealFormControllerImpl(
     }
 
     override fun onBackPressed(): Boolean {
-        screensNavigator.goBack()
+        screensNavigator.navigateUp()
         return true
     }
 
     override fun onDialogEvent(event: Any, result: DialogResult?) {
         result?.let {
             when (event) {
-                SelectFoodForMealDialogEvent.ON_FOOD_CHOSEN -> {
-                    dialogsManager.showSelectFoodQuantityDialog(result.getInt(FOOD_ID_RESULT))
-                }
                 SelectFoodQuantityDialogEvent.ON_DESIRED_FOOD_SERVING_SIZE_CHOSEN -> {
                     val selectedFood = result.getSerializable(SELECTED_FOOD_RESULT) as UiFood
                     val selectedFoodQuantity =
@@ -171,5 +171,9 @@ class MealFormControllerImpl(
                 }
             }
         }
+    }
+
+    override fun onGoBackWithResult(result: ScreenResult) {
+        dialogsManager.showSelectFoodQuantityDialog(result.getInt(FOOD_ID_RESULT))
     }
 }

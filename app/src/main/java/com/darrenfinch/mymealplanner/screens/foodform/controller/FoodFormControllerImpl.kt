@@ -83,11 +83,11 @@ class FoodFormControllerImpl(
             else
                 updateFoodUseCase.updateFood(viewModel.getFoodDetails())
         }
-        screensNavigator.goBack()
+        screensNavigator.navigateUp()
     }
 
     override fun onNavigateUp() {
-        screensNavigator.goBack()
+        screensNavigator.navigateUp()
     }
 
     override fun onTitleChange(newTitle: String) {
@@ -133,6 +133,6 @@ class FoodFormControllerImpl(
     }
 
     override fun onBackPressed(): Boolean {
-        return screensNavigator.goBack()
+        return screensNavigator.navigateUp()
     }
 }

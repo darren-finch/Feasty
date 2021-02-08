@@ -1,17 +1,14 @@
-package com.darrenfinch.mymealplanner.common.dialogs.selectmealplanmeal.view
+package com.darrenfinch.mymealplanner.screens.selectmealplanmeal.view
 
-import android.app.AlertDialog
-import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.common.lists.mealslist.MealsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.common.lists.itemdecorations.MarginItemDecoration
+import com.darrenfinch.mymealplanner.common.lists.mealslist.MealsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentSelectItemBinding
-import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 
 class SelectMealPlanMealViewMvcImpl(
@@ -47,6 +44,13 @@ class SelectMealPlanMealViewMvcImpl(
 
     private fun initUI() {
         binding.apply {
+            toolbar.setNavigationOnClickListener {
+                for (listener in getListeners()) {
+                    listener.onNavigateUp()
+                }
+            }
+            toolbar.setTitle(R.string.select_meal)
+
             itemsRecyclerView.adapter = adapter
             itemsRecyclerView.layoutManager = LinearLayoutManager(getContext())
             itemsRecyclerView.addItemDecoration(MarginItemDecoration(16))
@@ -55,15 +59,6 @@ class SelectMealPlanMealViewMvcImpl(
 
     override fun bindMeals(meals: List<UiMeal>) {
         adapter.updateItems(meals)
-    }
-
-    override fun makeDialog(): Dialog {
-        return AlertDialog.Builder(getContext())
-            .setView(getRootView())
-            .setTitle(getString(R.string.select_meal))
-            .setPositiveButton(android.R.string.ok) { _, _ -> }
-            .setNegativeButton(android.R.string.cancel) { _, _ -> }
-            .show()
     }
 
     override fun releaseViewRefs() {

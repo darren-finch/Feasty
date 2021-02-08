@@ -5,8 +5,8 @@ import com.darrenfinch.mymealplanner.TestDefaultModels
 import com.darrenfinch.mymealplanner.common.dialogs.DialogResult
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
-import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.SelectFoodForMealDialogEvent
-import com.darrenfinch.mymealplanner.common.dialogs.selectfoodformeal.controller.SelectFoodForMealDialog
+import com.darrenfinch.mymealplanner.screens.selectfoodformeal.SelectFoodForMealDialogEvent
+import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealFragment
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
@@ -70,7 +70,7 @@ internal class MealFormControllerImplTest {
 
         every { viewModel.getMealDetails() } returns defUiMeal
         coEvery { getMealUseCase.getMeal(any()) } returns getMealUseCaseResult
-        every { screensNavigator.goBack() } returns true
+        every { screensNavigator.navigateUp() } returns true
     }
 
     @Test
@@ -126,7 +126,7 @@ internal class MealFormControllerImplTest {
 
             coVerifySequence {
                 insertMealUseCase.insertMeal(defUiMeal2)
-                screensNavigator.goBack()
+                screensNavigator.navigateUp()
             }
         }
 
@@ -140,7 +140,7 @@ internal class MealFormControllerImplTest {
 
             coVerifySequence {
                 updateMealUseCase.updateMeal(defUiMeal2)
-                screensNavigator.goBack()
+                screensNavigator.navigateUp()
             }
         }
 
@@ -148,21 +148,21 @@ internal class MealFormControllerImplTest {
     fun `onNavigateUp() navigates up`() {
         SUT.onNavigateUp()
 
-        verify { screensNavigator.goBack() }
+        verify { screensNavigator.navigateUp() }
     }
 
     @Test
     fun `onBackPressed() navigates up and returns true`() {
         assertEquals(SUT.onBackPressed(), true)
 
-        verify { screensNavigator.goBack() }
+        verify { screensNavigator.navigateUp() }
     }
 
     @Test
     fun `onDialogEvent() shows select food quantity dialog with correct args when event is SelectFoodForMealDialog-ON_FOOD_CHOSEN`() {
         val foodId = TestConstants.VALID_ID
         val result = mockk<DialogResult>()
-        every { result.getInt(SelectFoodForMealDialog.FOOD_ID_RESULT) } returns foodId
+        every { result.getInt(SelectFoodForMealFragment.FOOD_ID_RESULT) } returns foodId
 
         SUT.onDialogEvent(SelectFoodForMealDialogEvent.ON_FOOD_CHOSEN, result)
 
