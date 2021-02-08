@@ -6,10 +6,7 @@ import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.controller.EditMealFoodDialog.Companion.MEAL_FOOD_RESULT
-import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityDialogEvent
-import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.DESIRED_SERVING_SIZE_RESULT
-import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.FOOD_ID_RESULT
-import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog.Companion.SELECTED_FOOD_RESULT
+import com.darrenfinch.mymealplanner.common.logs.TAG
 import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
@@ -18,10 +15,13 @@ import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
-import com.darrenfinch.mymealplanner.meals.usecases.*
-import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
+import com.darrenfinch.mymealplanner.meals.usecases.GetMealUseCase
+import com.darrenfinch.mymealplanner.meals.usecases.InsertMealUseCase
+import com.darrenfinch.mymealplanner.meals.usecases.UpdateMealUseCase
 import com.darrenfinch.mymealplanner.screens.mealform.MealFormVm
 import com.darrenfinch.mymealplanner.screens.mealform.view.MealFormViewMvc
+import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealFragment
+import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealFragment.Companion.SELECTED_FOOD_RESULT
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -118,7 +118,7 @@ class MealFormControllerImpl(
 
     override fun onDoneButtonClicked() {
         runBlocking(backgroundContext) {
-            if (mealIdArg == Constants.INVALID_ID)
+            if (mealIdArg == Constants.NEW_ITEM_ID)
                 insertMealUseCase.insertMeal(viewModel.getMealDetails())
             else
                 updateMealUseCase.updateMeal(viewModel.getMealDetails())
@@ -157,13 +157,6 @@ class MealFormControllerImpl(
     override fun onDialogEvent(event: Any, result: DialogResult?) {
         result?.let {
             when (event) {
-                SelectFoodQuantityDialogEvent.ON_DESIRED_FOOD_SERVING_SIZE_CHOSEN -> {
-                    val selectedFood = result.getSerializable(SELECTED_FOOD_RESULT) as UiFood
-                    val selectedFoodQuantity =
-                        result.getSerializable(DESIRED_SERVING_SIZE_RESULT) as PhysicalQuantity
-                    viewModel.addMealFood(selectedFood, selectedFoodQuantity)
-                    setState(ScreenState.HasData(viewModel.getMealDetails()))
-                }
                 EditMealFoodDialogEvent.ON_DONE_CLICKED -> {
                     val editedMealFood = result.getSerializable(MEAL_FOOD_RESULT) as UiMealFood
                     viewModel.updateMealFood(editedMealFood)
@@ -174,6 +167,10 @@ class MealFormControllerImpl(
     }
 
     override fun onGoBackWithResult(result: ScreenResult) {
-        dialogsManager.showSelectFoodQuantityDialog(result.getInt(FOOD_ID_RESULT))
+        if(result.tag == SelectFoodForMealFragment.TAG) {
+            val selectedFood = result.getSerializable(SELECTED_FOOD_RESULT) as UiFood
+            viewModel.addMealFood(selectedFood)
+            setState(ScreenState.HasData(viewModel.getMealDetails()))
+        }
     }
 }

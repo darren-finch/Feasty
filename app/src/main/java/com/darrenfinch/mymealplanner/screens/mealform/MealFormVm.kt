@@ -33,33 +33,18 @@ class MealFormVm : StatefulVm() {
         title.set(newTitle)
     }
 
-    fun addMealFood(selectedFood: UiFood, selectedFoodQuantity: PhysicalQuantity) {
+    fun addMealFood(selectedFood: UiFood) {
         val mealFoodsList = mealFoods.get()
-        val mealFood = foodToMealFood(selectedFood, id, selectedFoodQuantity)
-        mealFoods.set(mealFoodsList + mealFood)
-    }
-
-    private fun foodToMealFood(
-        food: UiFood,
-        mealId: Int,
-        desiredServingSize: PhysicalQuantity
-    ): UiMealFood {
-        return UiMealFood(
-            // New meal foods have invalid ids so that we can know which meal foods to insert to the db and which to update.
-            Constants.INVALID_ID,
-            food.id,
-            mealId,
-            food.title,
-            desiredServingSize,
-            food.servingSize,
-            macroNutrientsToUiMacroNutrients(
-                MacroCalculator.baseMacrosOnNewServingSize(
-                    uiMacroNutrientsToMacroNutrients(food.macroNutrients),
-                    food.servingSize,
-                    desiredServingSize
-                )
-            )
+        val mealFood = UiMealFood(
+            id = Constants.NEW_ITEM_ID,
+            title = selectedFood.title,
+            foodId = selectedFood.id,
+            mealId = id,
+            desiredServingSize = selectedFood.servingSize,
+            originalServingSize = selectedFood.servingSize,
+            originalMacroNutrients = selectedFood.macroNutrients
         )
+        mealFoods.set(mealFoodsList + mealFood)
     }
 
     fun updateMealFood(editedMealFood: UiMealFood) {

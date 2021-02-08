@@ -25,7 +25,7 @@ class UpdateMealUseCase(private val repository: MainRepository) {
 
     private suspend fun insertNewMealFoods(updatedMealFoods: List<MealFood>, mealId: Int) {
         updatedMealFoods.forEach {
-            if(it.id == Constants.INVALID_ID) {
+            if(it.id == Constants.NEW_ITEM_ID) {
                 repository.insertMealFood(mealFoodToDbMealFood(it.copy(id = Constants.VALID_ID, mealId = mealId)))
             }
         }

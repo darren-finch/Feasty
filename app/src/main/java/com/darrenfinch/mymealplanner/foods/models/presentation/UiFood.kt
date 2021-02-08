@@ -1,6 +1,5 @@
 package com.darrenfinch.mymealplanner.foods.models.presentation
 
-import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import java.io.Serializable
 

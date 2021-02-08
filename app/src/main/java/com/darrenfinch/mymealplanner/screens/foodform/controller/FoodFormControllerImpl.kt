@@ -78,7 +78,7 @@ class FoodFormControllerImpl(
 
     override fun onDoneButtonClicked() {
         runBlocking(backgroundContext) {
-            if (foodIdArg == Constants.INVALID_ID)
+            if (foodIdArg == Constants.NEW_ITEM_ID)
                 insertFoodUseCase.insertFood(viewModel.getFoodDetails())
             else
                 updateFoodUseCase.updateFood(viewModel.getFoodDetails())

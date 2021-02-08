@@ -21,12 +21,12 @@ class SelectFoodForMealViewMvcImpl(
     private val binding = _binding!!
 
     private val foodsListItemEventListener = object : FoodsRecyclerViewAdapter.ItemEventListener {
-        override fun onItemClick(foodId: Int) {
+        override fun onItemClick(foodId: Int) {}
+        override fun onItemClick(food: UiFood) {
             for (listener in getListeners()) {
-                listener.onFoodChosen(foodId)
+                listener.onFoodChosen(food)
             }
         }
-        override fun onItemClick(food: UiFood) {}
         override fun onItemEdit(foodId: Int) {}
         override fun onItemDelete(foodId: Int) {}
     }

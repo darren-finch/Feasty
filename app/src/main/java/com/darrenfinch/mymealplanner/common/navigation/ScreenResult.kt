@@ -3,7 +3,7 @@ package com.darrenfinch.mymealplanner.common.navigation
 import android.os.Bundle
 import java.io.Serializable
 
-class ScreenResult {
+class ScreenResult(val tag: String = "") {
     private val data = Bundle()
 
     fun putInt(key: String, value: Int) = data.putInt(key, value)

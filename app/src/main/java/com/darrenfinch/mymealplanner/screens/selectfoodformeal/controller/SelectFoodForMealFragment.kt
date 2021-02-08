@@ -9,10 +9,8 @@ import com.darrenfinch.mymealplanner.screens.selectfoodformeal.view.SelectFoodFo
 
 class SelectFoodForMealFragment : BaseFragment() {
     companion object {
-        const val TAG = "SelectFoodForMealDialog"
-
         // Dialog results
-        const val FOOD_ID_RESULT = "FOOD_ID_RESULT"
+        const val SELECTED_FOOD_RESULT = "SELECTED_FOOD_RESULT"
 
         fun newInstance(): SelectFoodForMealFragment {
             val bundle = Bundle()

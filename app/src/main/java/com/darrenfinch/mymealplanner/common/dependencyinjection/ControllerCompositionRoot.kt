@@ -5,10 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodVm
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.controller.EditMealFoodController
-import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealController
-import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityVm
-import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityController
-import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.controller.SelectMealPlanMealController
 import com.darrenfinch.mymealplanner.common.helpers.KeyboardHelper
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.foods.usecases.*
@@ -24,6 +20,8 @@ import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanVm
 import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanControllerImpl
 import com.darrenfinch.mymealplanner.screens.mealplanform.MealPlanFormVm
 import com.darrenfinch.mymealplanner.screens.mealplanform.controller.MealPlanFormController
+import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealController
+import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.controller.SelectMealPlanMealController
 import kotlinx.coroutines.Dispatchers
 
 //This composition root is scoped to a fragment, which is a controller
@@ -75,17 +73,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
 
     private fun getGetMealFoodUseCase() = GetMealFoodUseCase(getMainRepository())
 
-
     // Dialog controllers
-    fun getSelectMealFoodQuantityController(
-    ) = SelectFoodQuantityController(
-        getSelectFoodQuantityVm(),
-        getGetFoodUseCase(),
-        getDialogsManager(),
-        getDialogsEventBus(),
-        backgroundContext,
-        uiContext
-    )
 
     fun getSelectFoodForMealController(
     ) = SelectFoodForMealController(
@@ -176,7 +164,6 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
 
 
     // View models
-    fun getSelectFoodQuantityVm() = SelectFoodQuantityVm()
     private fun getEditMealFoodVm() = EditMealFoodVm()
     fun getFoodFormVm() = FoodFormVm()
     fun getMealFormVm() = MealFormVm()

@@ -12,7 +12,7 @@ class InsertMealUseCase(private val repository: MainRepository) {
         val regularMeal = uiMealToMeal(meal)
         val newMealId = repository.insertMeal(mealToDbMeal(regularMeal)).toInt()
         regularMeal.foods.forEach {
-            if(it.id == Constants.INVALID_ID) {
+            if(it.id == Constants.NEW_ITEM_ID) {
                 repository.insertMealFood(mealFoodToDbMealFood(it.copy(id = Constants.VALID_ID, mealId = newMealId)))
             }
         }

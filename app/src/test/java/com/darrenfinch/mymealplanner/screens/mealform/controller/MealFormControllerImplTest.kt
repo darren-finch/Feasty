@@ -5,8 +5,6 @@ import com.darrenfinch.mymealplanner.TestDefaultModels
 import com.darrenfinch.mymealplanner.common.dialogs.DialogResult
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
-import com.darrenfinch.mymealplanner.screens.selectfoodformeal.SelectFoodForMealDialogEvent
-import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealFragment
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
@@ -156,17 +154,6 @@ internal class MealFormControllerImplTest {
         assertEquals(SUT.onBackPressed(), true)
 
         verify { screensNavigator.navigateUp() }
-    }
-
-    @Test
-    fun `onDialogEvent() shows select food quantity dialog with correct args when event is SelectFoodForMealDialog-ON_FOOD_CHOSEN`() {
-        val foodId = TestConstants.VALID_ID
-        val result = mockk<DialogResult>()
-        every { result.getInt(SelectFoodForMealFragment.FOOD_ID_RESULT) } returns foodId
-
-        SUT.onDialogEvent(SelectFoodForMealDialogEvent.ON_FOOD_CHOSEN, result)
-
-        verify { dialogsManager.showSelectFoodQuantityDialog(foodId) }
     }
 
     @Test
