@@ -50,8 +50,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     // Use cases
     private fun getGetAllFoodsUseCase() = GetAllFoodsUseCase(getMainRepository())
     private fun getGetFoodUseCase() = GetFoodUseCase(getMainRepository())
-    private fun getInsertFoodUseCase() = InsertFoodUseCase(getMainRepository())
-    private fun getUpdateFoodUseCase() = UpdateFoodUseCase(getMainRepository())
+    private fun getUpsertFoodUseCase() = UpsertFoodUseCase(getMainRepository())
     private fun getDeleteFoodUseCase() = DeleteFoodUseCase(getMainRepository())
 
     private fun getGetAllMealsUseCase() = GetAllMealsUseCase(getMainRepository())
@@ -102,8 +101,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
         getFoodFormVm(),
         getScreensNavigator(),
         getGetFoodUseCase(),
-        getInsertFoodUseCase(),
-        getUpdateFoodUseCase(),
+        getUpsertFoodUseCase(),
         getBackPressDispatcher(),
         backgroundContext,
         uiContext

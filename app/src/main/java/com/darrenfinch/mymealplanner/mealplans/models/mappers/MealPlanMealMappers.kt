@@ -5,18 +5,18 @@ import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMea
 import com.darrenfinch.mymealplanner.meals.models.mappers.dbMealFoodsToMealFoods
 import com.darrenfinch.mymealplanner.meals.models.mappers.mealFoodToUiMealFood
 import com.darrenfinch.mymealplanner.meals.models.mappers.uiMealFoodToMealFood
-import com.darrenfinch.mymealplanner.model.room.models.foods.DatabaseFood
-import com.darrenfinch.mymealplanner.model.room.models.mealplans.DatabaseMealPlan
-import com.darrenfinch.mymealplanner.model.room.models.mealplans.DatabaseMealPlanMeal
-import com.darrenfinch.mymealplanner.model.room.models.meals.DatabaseMeal
-import com.darrenfinch.mymealplanner.model.room.models.meals.DatabaseMealFood
+import com.darrenfinch.mymealplanner.data.room.models.foods.DbFood
+import com.darrenfinch.mymealplanner.data.room.models.mealplans.DbMealPlan
+import com.darrenfinch.mymealplanner.data.room.models.mealplans.DbMealPlanMeal
+import com.darrenfinch.mymealplanner.data.room.models.meals.DbMeal
+import com.darrenfinch.mymealplanner.data.room.models.meals.DbMealFood
 
 fun dbMealPlanMealToMealPlanMeal(
-    dbMealPlanMeal: DatabaseMealPlanMeal,
-    dbMeal: DatabaseMeal,
-    dbMealPlan: DatabaseMealPlan,
-    dbMealFoods: List<DatabaseMealFood>,
-    dbFoodReferences: List<DatabaseFood?>
+    dbMealPlanMeal: DbMealPlanMeal,
+    dbMeal: DbMeal,
+    dbMealPlan: DbMealPlan,
+    dbMealFoods: List<DbMealFood>,
+    dbFoodReferences: List<DbFood?>
 ) = MealPlanMeal(
     id = dbMealPlanMeal.id,
     title = dbMeal.title,
@@ -45,7 +45,7 @@ fun uiMealPlanMealToMealPlanMeal(uiMealPlanMeal: UiMealPlanMeal) = MealPlanMeal(
     }
 )
 
-fun mealPlanMealToDbMealPlanMeal(mealPlanMeal: MealPlanMeal) = DatabaseMealPlanMeal(
+fun mealPlanMealToDbMealPlanMeal(mealPlanMeal: MealPlanMeal) = DbMealPlanMeal(
     id = mealPlanMeal.id,
     mealId = mealPlanMeal.mealId,
     mealPlanId = mealPlanMeal.mealPlanId,

@@ -1,24 +1,20 @@
-package com.darrenfinch.mymealplanner.model.room
+package com.darrenfinch.mymealplanner.data.room
 
 import androidx.room.TypeConverter
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.physicalquantities.stringsToUnits
-import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
-import com.darrenfinch.mymealplanner.foods.models.presentation.UiMacroNutrients
-import com.darrenfinch.mymealplanner.model.room.models.foods.DatabaseMacroNutrients
-import com.darrenfinch.mymealplanner.model.room.models.meals.DatabaseMealFood
+import com.darrenfinch.mymealplanner.data.room.models.foods.DbMacroNutrients
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
 class RoomConverters {
     @TypeConverter
-    fun convertMacroNutrientsToJsonString(value: DatabaseMacroNutrients): String {
+    fun convertMacroNutrientsToJsonString(value: DbMacroNutrients): String {
         return Gson().toJson(value)
     }
 
     @TypeConverter
-    fun convertJsonStringToMacroNutrients(value: String): DatabaseMacroNutrients {
-        return Gson().fromJson(value, DatabaseMacroNutrients::class.java)
+    fun convertJsonStringToMacroNutrients(value: String): DbMacroNutrients {
+        return Gson().fromJson(value, DbMacroNutrients::class.java)
     }
 
     @TypeConverter

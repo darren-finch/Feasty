@@ -1,6 +1,6 @@
-package com.darrenfinch.mymealplanner.model.room.models.foods
+package com.darrenfinch.mymealplanner.data.room.models.foods
 
-data class DatabaseMacroNutrients(
+data class DbMacroNutrients(
     val calories: Int,
     val carbs: Int,
     val proteins: Int,

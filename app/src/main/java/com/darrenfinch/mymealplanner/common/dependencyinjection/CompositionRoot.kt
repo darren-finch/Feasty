@@ -3,8 +3,8 @@ package com.darrenfinch.mymealplanner.common.dependencyinjection
 import android.app.Application
 import androidx.room.Room
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
-import com.darrenfinch.mymealplanner.model.MainRepository
-import com.darrenfinch.mymealplanner.model.room.FeastyDatabase
+import com.darrenfinch.mymealplanner.data.MainRepository
+import com.darrenfinch.mymealplanner.data.room.FeastyDatabase
 
 //This is the global composition root
 class CompositionRoot(private val application: Application) {

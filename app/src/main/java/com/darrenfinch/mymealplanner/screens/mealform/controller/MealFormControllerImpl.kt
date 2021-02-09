@@ -1,13 +1,11 @@
 package com.darrenfinch.mymealplanner.screens.mealform.controller
 
 import com.darrenfinch.mymealplanner.common.constants.Constants
-import com.darrenfinch.mymealplanner.common.dialogs.DialogResult
+import com.darrenfinch.mymealplanner.common.controllers.ControllerSavedState
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogEvent
-import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.controller.EditMealFoodDialog.Companion.MEAL_FOOD_RESULT
-import com.darrenfinch.mymealplanner.common.logs.TAG
-import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
+import com.darrenfinch.mymealplanner.common.logs.getClassTag
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
 import com.darrenfinch.mymealplanner.common.navigation.ScreenResult
@@ -154,20 +152,15 @@ class MealFormControllerImpl(
         return true
     }
 
-    override fun onDialogEvent(event: Any, result: DialogResult?) {
-        result?.let {
-            when (event) {
-                EditMealFoodDialogEvent.ON_DONE_CLICKED -> {
-                    val editedMealFood = result.getSerializable(MEAL_FOOD_RESULT) as UiMealFood
-                    viewModel.updateMealFood(editedMealFood)
-                    setState(ScreenState.HasData(viewModel.getMealDetails()))
-                }
-            }
+    override fun onDialogEvent(event: Any) {
+        if(event is EditMealFoodDialogEvent.OnPositiveButtonClicked) {
+            viewModel.updateMealFood(event.mealFoodResult)
+            setState(ScreenState.HasData(viewModel.getMealDetails()))
         }
     }
 
     override fun onGoBackWithResult(result: ScreenResult) {
-        if(result.tag == SelectFoodForMealFragment.TAG) {
+        if(result.tag == SelectFoodForMealFragment.getClassTag()) {
             val selectedFood = result.getSerializable(SELECTED_FOOD_RESULT) as UiFood
             viewModel.addMealFood(selectedFood)
             setState(ScreenState.HasData(viewModel.getMealDetails()))

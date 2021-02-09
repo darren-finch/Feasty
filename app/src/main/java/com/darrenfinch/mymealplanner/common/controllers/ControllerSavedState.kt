@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.common.misc
+package com.darrenfinch.mymealplanner.common.controllers
 
 import java.io.Serializable
 

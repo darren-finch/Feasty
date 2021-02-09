@@ -5,7 +5,7 @@ import com.darrenfinch.mymealplanner.meals.models.mappers.mealFoodToDbMealFood
 import com.darrenfinch.mymealplanner.meals.models.mappers.mealToDbMeal
 import com.darrenfinch.mymealplanner.meals.models.mappers.uiMealToMeal
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
-import com.darrenfinch.mymealplanner.model.MainRepository
+import com.darrenfinch.mymealplanner.data.MainRepository
 
 class InsertMealUseCase(private val repository: MainRepository) {
     suspend fun insertMeal(meal: UiMeal) {
@@ -13,7 +13,7 @@ class InsertMealUseCase(private val repository: MainRepository) {
         val newMealId = repository.insertMeal(mealToDbMeal(regularMeal)).toInt()
         regularMeal.foods.forEach {
             if(it.id == Constants.NEW_ITEM_ID) {
-                repository.insertMealFood(mealFoodToDbMealFood(it.copy(id = Constants.VALID_ID, mealId = newMealId)))
+                repository.insertMealFood(mealFoodToDbMealFood(it.copy(id = Constants.EXISTING_ITEM_ID, mealId = newMealId)))
             }
         }
     }

@@ -8,7 +8,10 @@ import com.darrenfinch.mymealplanner.common.constants.Constants.DEFAULT_MEAL_DAT
 import com.darrenfinch.mymealplanner.common.constants.Constants.DEFAULT_MEAL_FOOD_DATA_TITLE
 import com.darrenfinch.mymealplanner.common.constants.Constants.DEFAULT_PROTEINS
 import com.darrenfinch.mymealplanner.common.constants.Constants.INVALID_ID
-import com.darrenfinch.mymealplanner.common.constants.Constants.VALID_ID
+import com.darrenfinch.mymealplanner.common.constants.Constants.NEW_ITEM_ID
+import com.darrenfinch.mymealplanner.common.constants.Constants.EXISTING_ITEM_ID
+import com.darrenfinch.mymealplanner.data.room.models.foods.DbFood
+import com.darrenfinch.mymealplanner.data.room.models.foods.DbMacroNutrients
 import com.darrenfinch.mymealplanner.foods.models.domain.Food
 import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
@@ -24,6 +27,22 @@ import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanMacros
 
 object DefaultModels {
+
+    // Data models
+    private val defaultDbMacroNutrients = DbMacroNutrients(
+        calories = DEFAULT_CALORIES,
+        carbs = DEFAULT_CARBS,
+        fats = DEFAULT_FATS,
+        proteins = DEFAULT_PROTEINS
+    )
+    val defaultDbFood = DbFood(
+        id = NEW_ITEM_ID,
+        title = "",
+        servingSize = PhysicalQuantity.defaultPhysicalQuantity,
+        macroNutrients = defaultDbMacroNutrients
+    )
+
+
     // Domain models
 
     val defaultPhysicalQuantity = PhysicalQuantity.defaultPhysicalQuantity
@@ -39,7 +58,7 @@ object DefaultModels {
         requiredProteins = 0
     )
     val defaultMealPlan = MealPlan(
-        id = VALID_ID,
+        id = NEW_ITEM_ID,
         title = "",
         requiredCalories = 0,
         requiredCarbohydrates = 0,
@@ -53,22 +72,22 @@ object DefaultModels {
         proteins = DEFAULT_PROTEINS
     )
     val defaultMealFood = MealFood(
-        id = VALID_ID,
-        foodId = VALID_ID,
-        mealId = VALID_ID,
+        id = NEW_ITEM_ID,
+        foodId = EXISTING_ITEM_ID,
+        mealId = EXISTING_ITEM_ID,
         title = DEFAULT_MEAL_FOOD_DATA_TITLE,
         desiredServingSize = PhysicalQuantity.defaultPhysicalQuantity,
         originalServingSize = PhysicalQuantity.defaultPhysicalQuantity,
         originalMacroNutrients = defaultMacroNutrients
     )
     val defaultFood = Food(
-        id = VALID_ID,
+        id = NEW_ITEM_ID,
         title = DEFAULT_FOOD_DATA_TITLE,
         servingSize = PhysicalQuantity.defaultPhysicalQuantity,
         macroNutrients = defaultMacroNutrients
     )
     val defaultMeal = Meal(
-        id = VALID_ID,
+        id = NEW_ITEM_ID,
         title = DEFAULT_MEAL_DATA_TITLE,
         foods = listOf()
     )
@@ -84,27 +103,27 @@ object DefaultModels {
         proteins = DEFAULT_PROTEINS
     )
     val defaultUiFood = UiFood(
-        id = VALID_ID,
+        id = NEW_ITEM_ID,
         title = DEFAULT_FOOD_DATA_TITLE,
         servingSize = PhysicalQuantity.defaultPhysicalQuantity,
         macroNutrients = defaultUiMacroNutrients
     )
     val defaultUiMeal = UiMeal(
-        id = VALID_ID,
+        id = NEW_ITEM_ID,
         title = DEFAULT_MEAL_DATA_TITLE,
         foods = listOf()
     )
     val defaultUiMealFood = UiMealFood(
-        id = VALID_ID,
-        foodId = VALID_ID,
-        mealId = VALID_ID,
+        id = NEW_ITEM_ID,
+        foodId = INVALID_ID,
+        mealId = INVALID_ID,
         title = DEFAULT_MEAL_FOOD_DATA_TITLE,
         desiredServingSize = PhysicalQuantity.defaultPhysicalQuantity,
         originalServingSize = PhysicalQuantity.defaultPhysicalQuantity,
         originalMacroNutrients = defaultUiMacroNutrients,
     )
     val defaultUiMealPlan = UiMealPlan(
-        id = VALID_ID,
+        id = NEW_ITEM_ID,
         title = "",
         requiredCalories = 0,
         requiredCarbs = 0,
@@ -112,7 +131,7 @@ object DefaultModels {
         requiredProteins = 0
     )
     val defaultUiMealPlanMeal = UiMealPlanMeal(
-        id = VALID_ID,
+        id = NEW_ITEM_ID,
         title = "",
         foods = listOf(),
         mealId = INVALID_ID,

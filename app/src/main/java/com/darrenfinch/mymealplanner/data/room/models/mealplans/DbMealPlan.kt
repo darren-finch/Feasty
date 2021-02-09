@@ -1,10 +1,10 @@
-package com.darrenfinch.mymealplanner.model.room.models.mealplans
+package com.darrenfinch.mymealplanner.data.room.models.mealplans
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "mealPlans")
-data class DatabaseMealPlan(
+data class DbMealPlan(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val title: String,
     val requiredCalories: Int,

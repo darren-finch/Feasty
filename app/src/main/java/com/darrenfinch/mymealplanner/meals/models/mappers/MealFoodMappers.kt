@@ -5,10 +5,10 @@ import com.darrenfinch.mymealplanner.foods.models.mappers.macroNutrientsToUiMacr
 import com.darrenfinch.mymealplanner.foods.models.mappers.uiMacroNutrientsToMacroNutrients
 import com.darrenfinch.mymealplanner.meals.models.domain.MealFood
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
-import com.darrenfinch.mymealplanner.model.room.models.foods.DatabaseFood
-import com.darrenfinch.mymealplanner.model.room.models.meals.DatabaseMealFood
+import com.darrenfinch.mymealplanner.data.room.models.foods.DbFood
+import com.darrenfinch.mymealplanner.data.room.models.meals.DbMealFood
 
-fun dbMealFoodToMealFood(dbMealFood: DatabaseMealFood, dbFoodReference: DatabaseFood) = MealFood(
+fun dbMealFoodToMealFood(dbMealFood: DbMealFood, dbFoodReference: DbFood) = MealFood(
     id = dbMealFood.id,
     title = dbFoodReference.title,
     mealId = dbMealFood.mealId,
@@ -38,7 +38,7 @@ fun uiMealFoodToMealFood(uiMealFood: UiMealFood) = MealFood(
     originalServingSize = uiMealFood.originalServingSize
 )
 
-fun mealFoodToDbMealFood(mealFood: MealFood) = DatabaseMealFood(
+fun mealFoodToDbMealFood(mealFood: MealFood) = DbMealFood(
     id = mealFood.id,
     mealId = mealFood.mealId,
     foodId = mealFood.foodId,
@@ -47,8 +47,8 @@ fun mealFoodToDbMealFood(mealFood: MealFood) = DatabaseMealFood(
 
 @Suppress("UnnecessaryVariable")
 fun dbMealFoodsToMealFoods(
-    dbMealFoods: List<DatabaseMealFood>,
-    dbFoodReferences: List<DatabaseFood?>
+    dbMealFoods: List<DbMealFood>,
+    dbFoodReferences: List<DbFood?>
 ): List<MealFood> {
     val dbMealFoodsArray = dbMealFoods.toTypedArray()
     val dbMealFoodArray = dbFoodReferences.toTypedArray()

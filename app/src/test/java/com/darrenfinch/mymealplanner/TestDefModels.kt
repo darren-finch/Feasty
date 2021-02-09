@@ -2,7 +2,9 @@ package com.darrenfinch.mymealplanner
 
 import com.darrenfinch.mymealplanner.common.constants.DefaultModels
 
-object TestDefaultModels {
+object TestDefModels {
+    val defUiMacros = DefaultModels.defaultUiMacroNutrients
+    val defDbFood = DefaultModels.defaultDbFood
     val defMealPlanMacros = DefaultModels.defaultMealPlanMacros
     val defUiMealPlan = DefaultModels.defaultUiMealPlan
     val defPhysicalQuantity = DefaultModels.defaultPhysicalQuantity

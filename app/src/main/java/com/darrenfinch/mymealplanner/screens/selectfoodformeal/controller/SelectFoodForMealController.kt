@@ -1,8 +1,8 @@
 package com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller
 
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
-import com.darrenfinch.mymealplanner.common.logs.TAG
-import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
+import com.darrenfinch.mymealplanner.common.controllers.ControllerSavedState
+import com.darrenfinch.mymealplanner.common.logs.getClassTag
 import com.darrenfinch.mymealplanner.common.navigation.ScreenResult
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
@@ -60,7 +60,7 @@ class SelectFoodForMealController(
     }
 
     override fun onFoodChosen(food: UiFood) {
-        screensNavigator.navigateUpWithResult(ScreenResult(SelectFoodForMealFragment.TAG).apply {
+        screensNavigator.navigateUpWithResult(ScreenResult(SelectFoodForMealFragment.getClassTag()).apply {
             putSerializable(SELECTED_FOOD_RESULT, food)
         })
     }

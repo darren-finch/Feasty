@@ -1,12 +1,11 @@
 package com.darrenfinch.mymealplanner.screens.foodform.controller
 
 import com.darrenfinch.mymealplanner.TestConstants
-import com.darrenfinch.mymealplanner.TestDefaultModels
+import com.darrenfinch.mymealplanner.TestDefModels
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.foods.usecases.GetFoodUseCase
-import com.darrenfinch.mymealplanner.foods.usecases.InsertFoodUseCase
-import com.darrenfinch.mymealplanner.foods.usecases.UpdateFoodUseCase
+import com.darrenfinch.mymealplanner.foods.usecases.UpsertFoodUseCase
 import com.darrenfinch.mymealplanner.screens.foodform.FoodFormVm
 import com.darrenfinch.mymealplanner.screens.foodform.view.FoodFormViewMvc
 import com.darrenfinch.mymealplanner.testrules.CoroutinesTestExtension
@@ -22,9 +21,9 @@ import org.junit.jupiter.api.extension.RegisterExtension
 @ExperimentalCoroutinesApi
 internal class FoodFormControllerImplTest {
 
-    val defUiFood = TestDefaultModels.defUiFood.copy(title = "defUiFood")
-    val defUiFood2 = TestDefaultModels.defUiFood.copy(title = "defUiFood2")
-    val getFoodUseCaseResult = TestDefaultModels.defUiFood.copy(title = "getFoodUseCaseResult")
+    val defUiFood = TestDefModels.defUiFood.copy(title = "defUiFood")
+    val defUiFood2 = TestDefModels.defUiFood.copy(title = "defUiFood2")
+    val getFoodUseCaseResult = TestDefModels.defUiFood.copy(title = "getFoodUseCaseResult")
 
     @JvmField
     @RegisterExtension
@@ -33,8 +32,7 @@ internal class FoodFormControllerImplTest {
     private val viewModel = mockk<FoodFormVm>(relaxUnitFun = true)
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
     private val getFoodUseCase = mockk<GetFoodUseCase>(relaxUnitFun = true)
-    private val insertFoodUseCase = mockk<InsertFoodUseCase>(relaxUnitFun = true)
-    private val updateFoodUseCase = mockk<UpdateFoodUseCase>(relaxUnitFun = true)
+    private val upsertFoodUseCase = mockk<UpsertFoodUseCase>(relaxUnitFun = true)
     private val backPressDispatcher = mockk<BackPressDispatcher>(relaxUnitFun = true)
 
     private val viewMvc = mockk<FoodFormViewMvc>(relaxUnitFun = true)
@@ -47,160 +45,69 @@ internal class FoodFormControllerImplTest {
             viewModel,
             screensNavigator,
             getFoodUseCase,
-            insertFoodUseCase,
-            updateFoodUseCase,
+            upsertFoodUseCase,
             backPressDispatcher,
             coroutinesTestExtension.testDispatcher,
             coroutinesTestExtension.testDispatcher
         )
         SUT.bindView(viewMvc)
 
-        // Default to editing a meal
-        SUT.setArgs(TestConstants.VALID_ID)
-
         every { viewModel.getFoodDetails() } returns defUiFood
+        coEvery { getFoodUseCase.getFood(any()) } returns getFoodUseCaseResult
         every { screensNavigator.navigateUp() } returns true
     }
 
     @Test
-    fun `getFoodDetailsIfPossibleAndBindToView() restores view state when food details are dirty`() {
-        setupDirtyFoodDetails()
+    fun `getFoodDetails() sets view state from view model when food details have been loaded`() {
+        every { viewModel.getFoodDetails() } returns defUiFood
 
-        SUT.getFoodDetailsIfPossibleAndBindToView()
+        SUT.getFoodDetails()
 
-        verify { viewMvc.bindFoodDetails(defUiFood) }
+        verify {
+            viewModel.bindFoodDetails(getFoodUseCaseResult)
+            viewMvc.bindFoodDetails(getFoodUseCaseResult)
+        }
+
+        SUT.getFoodDetails()
+
+        verify {
+            viewModel.bindFoodDetails(defUiFood)
+            viewModel.bindFoodDetails(defUiFood)
+            viewMvc.bindFoodDetails(defUiFood)
+        }
     }
 
     @Test
-    fun `getFoodDetailsIfPossibleAndBindToView() restores view state when food details are clean`() {
-        setupCleanFoodDetails()
-        coEvery { getFoodUseCase.getFood(any()) } returns getFoodUseCaseResult
+    fun `getFoodDetails() sets view state from use case when food details haven't been loaded`() {
+        SUT.getFoodDetails()
 
-        SUT.getFoodDetailsIfPossibleAndBindToView()
-
-        verify { viewMvc.bindFoodDetails(defUiFood) }
-    }
-
-    @Test
-    fun `getFoodDetailsIfPossibleAndBindToView() gets food details from database if editing food and food details are clean`() = runBlockingTest {
-        val foodId = TestConstants.VALID_ID
-
-        setupEditingFood()
-        setupCleanFoodDetails()
-
-        coEvery { getFoodUseCase.getFood(foodId) } returns getFoodUseCaseResult
-
-        SUT.getFoodDetailsIfPossibleAndBindToView()
-
-        coVerify { getFoodUseCase.getFood(foodId) }
-    }
-
-    @Test
-    fun `getFoodDetailsIfPossibleAndBindToView() doesn't get food details from database if food details are dirty`() {
-        setupDirtyFoodDetails()
-
-        SUT.getFoodDetailsIfPossibleAndBindToView()
-
-        coVerify { getFoodUseCase.getFood(any()) wasNot Called }
-    }
-
-    @Test
-    fun `getFoodDetailsIfPossibleAndBindToView() doesn't get food details from database when adding a food and food details are dirty`() {
-        setupAddingFood()
-        setupDirtyFoodDetails()
-
-        SUT.getFoodDetailsIfPossibleAndBindToView()
-
-        coVerify { getFoodUseCase.getFood(any()) wasNot Called }
-    }
-
-    @Test
-    fun `getFoodDetailsIfPossibleAndBindToView() doesn't get food details from database when adding a food and food details are clean`() {
-        setupAddingFood()
-        setupCleanFoodDetails()
-
-        SUT.getFoodDetailsIfPossibleAndBindToView()
-
-        coVerify { getFoodUseCase.getFood(any()) wasNot Called }
-    }
-
-    @Test
-    fun `getFoodDetailsIfPossibleAndBindToView() binds fetched food details to viewMvc and view model when able to get food details`() = runBlockingTest {
-        setupEditingFood()
-        setupCleanFoodDetails()
-        coEvery { getFoodUseCase.getFood(TestConstants.VALID_ID) } returns getFoodUseCaseResult
-
-        SUT.getFoodDetailsIfPossibleAndBindToView()
-
+        verify { viewModel.bindFoodDetails(getFoodUseCaseResult) }
+        verify { viewModel.bindFoodDetails(getFoodUseCaseResult) }
         verify { viewMvc.bindFoodDetails(getFoodUseCaseResult) }
-        verify { viewModel.bindInitialFoodDetails(getFoodUseCaseResult) }
     }
 
     @Test
-    fun `getFoodDetailsIfPossibleAndBindToView() correctly hides, shows, then hides progress indication when able to get food details`() = runBlockingTest {
-        setupEditingFood()
-        setupCleanFoodDetails()
-        excludeRecords { viewMvc.bindFoodDetails(any()) }
-        coEvery { getFoodUseCase.getFood(any()) } returns getFoodUseCaseResult
+    fun `getFoodDetails() correctly shows then hides progress indication`() =
+        runBlockingTest {
+            coEvery { getFoodUseCase.getFood(any()) } returns getFoodUseCaseResult
 
-        SUT.getFoodDetailsIfPossibleAndBindToView()
+            SUT.getFoodDetails()
 
-        verifySequence {
-            viewMvc.hideProgressIndication()
-            viewMvc.showProgressIndication()
-            viewMvc.hideProgressIndication()
+            coVerifyOrder {
+                viewMvc.showProgressIndication()
+                getFoodUseCase.getFood(any())
+                viewMvc.hideProgressIndication()
+            }
         }
-    }
 
     @Test
-    fun `getFoodDetailsIfPossibleAndBindToView() hides progress indication if unable to get food details`() = runBlockingTest {
-        setupDirtyFoodDetails()
-        excludeRecords { viewMvc.bindFoodDetails(any()) }
-
-        SUT.getFoodDetailsIfPossibleAndBindToView()
-
-        verify { viewMvc.hideProgressIndication() }
-    }
-
-    @Test
-    fun `restoreViewState() restores view state from view model`() {
-        every { viewModel.getFoodDetails() } returns defUiFood2
-
-        SUT.restoreViewState()
-
-        verify { viewMvc.bindFoodDetails(defUiFood2) }
-    }
-
-    @Test
-    fun `setInitialFoodDetails() binds food details to view and view model`() {
-        SUT.setInitialFoodDetails(defUiFood2)
-
-        verify { viewMvc.bindFoodDetails(defUiFood2) }
-        verify { viewModel.bindInitialFoodDetails(defUiFood2) }
-    }
-
-    @Test
-    fun `onDoneButtonClicked() inserts food from view model if adding food, then navigates up`() = runBlockingTest {
-        setupAddingFood()
+    fun `onDoneButtonClicked() upserts food details then navigates up`() = runBlockingTest {
         every { viewModel.getFoodDetails() } returns defUiFood2
 
         SUT.onDoneButtonClicked()
 
         coVerifySequence {
-            insertFoodUseCase.insertFood(defUiFood2)
-            screensNavigator.navigateUp()
-        }
-    }
-
-    @Test
-    fun `onDoneButtonClicked() updates food from view model if editing food, then navigates up`() = runBlockingTest {
-        setupEditingFood()
-        every { viewModel.getFoodDetails() } returns defUiFood2
-
-        SUT.onDoneButtonClicked()
-
-        coVerifySequence {
-            updateFoodUseCase.updateFood(defUiFood2)
+            upsertFoodUseCase.upsertFood(defUiFood2)
             screensNavigator.navigateUp()
         }
     }
@@ -217,21 +124,5 @@ internal class FoodFormControllerImplTest {
         assertEquals(SUT.onBackPressed(), true)
 
         verify { screensNavigator.navigateUp() }
-    }
-
-    fun setupAddingFood() {
-        SUT.setArgs(TestConstants.INVALID_ID)
-    }
-
-    fun setupEditingFood() {
-        SUT.setArgs(TestConstants.VALID_ID)
-    }
-
-    fun setupCleanFoodDetails() {
-        every { viewModel.isDirty } returns false
-    }
-
-    fun setupDirtyFoodDetails() {
-        every { viewModel.isDirty } returns true
     }
 }

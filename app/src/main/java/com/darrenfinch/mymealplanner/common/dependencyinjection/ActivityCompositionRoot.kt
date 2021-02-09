@@ -8,7 +8,7 @@ import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.helpers.SharedPreferencesHelper
 import com.darrenfinch.mymealplanner.common.helpers.ToastsHelper
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
-import com.darrenfinch.mymealplanner.model.MainRepository
+import com.darrenfinch.mymealplanner.data.MainRepository
 import com.ncapdevi.fragnav.FragNavController
 
 //This composition root is scoped to a particular activity

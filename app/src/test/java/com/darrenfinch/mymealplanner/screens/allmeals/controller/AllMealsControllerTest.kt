@@ -1,7 +1,7 @@
 package com.darrenfinch.mymealplanner.screens.allmeals.controller
 
 import com.darrenfinch.mymealplanner.TestConstants
-import com.darrenfinch.mymealplanner.TestDefaultModels
+import com.darrenfinch.mymealplanner.TestDefModels
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.meals.usecases.DeleteMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.GetAllMealsUseCase
@@ -42,7 +42,7 @@ internal class AllMealsControllerTest {
 
     @Test
     fun `getAllMealsAndBindToView() gets all meals using use case and binds them to view`() = runBlockingTest {
-        val useCaseResult = listOf(TestDefaultModels.defUiMeal)
+        val useCaseResult = listOf(TestDefModels.defUiMeal)
         coEvery { getAllMealsUseCase.getAllMeals() } returns useCaseResult
 
         SUT.getAllMealsAndBindToView()
@@ -91,7 +91,7 @@ internal class AllMealsControllerTest {
     }
 
     fun setupGetAllMealsUseCase() {
-        val useCaseResult = listOf(TestDefaultModels.defUiMeal)
+        val useCaseResult = listOf(TestDefModels.defUiMeal)
         coEvery { getAllMealsUseCase.getAllMeals() } returns useCaseResult
     }
 }

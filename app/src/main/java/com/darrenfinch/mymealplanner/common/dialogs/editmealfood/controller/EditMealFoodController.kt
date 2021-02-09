@@ -1,13 +1,12 @@
 package com.darrenfinch.mymealplanner.common.dialogs.editmealfood.controller
 
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
-import com.darrenfinch.mymealplanner.common.dialogs.DialogResult
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogEvent
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodVm
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.view.EditMealFoodViewMvc
-import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
+import com.darrenfinch.mymealplanner.common.controllers.ControllerSavedState
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
 
 class EditMealFoodController(
@@ -16,7 +15,8 @@ class EditMealFoodController(
     private val dialogsEventBus: DialogsEventBus,
 ) : BaseController, EditMealFoodViewMvc.Listener {
 
-    data class SavedState(val viewModel: EditMealFoodVm, val hasLoadedMealFoodDetails: Boolean) : ControllerSavedState
+    data class SavedState(val viewModel: EditMealFoodVm, val hasLoadedMealFoodDetails: Boolean) :
+        ControllerSavedState
 
     private lateinit var viewMvc: EditMealFoodViewMvc
 
@@ -24,7 +24,9 @@ class EditMealFoodController(
 
     fun bindView(viewMvc: EditMealFoodViewMvc) {
         this.viewMvc = viewMvc
+    }
 
+    fun bindViewStateToView() {
         viewMvc.bindMealFoodTitle(viewModel.getMealFoodTitle())
         viewMvc.bindMealFoodMacros(viewModel.getUpdatedMealFoodMacros())
         viewMvc.bindMealFoodDesiredServingSize(viewModel.getDesiredMealFoodServingSize())
@@ -56,10 +58,7 @@ class EditMealFoodController(
     override fun onPositiveButtonClicked() {
         dialogsManager.clearDialog()
         dialogsEventBus.postEvent(
-            EditMealFoodDialogEvent.ON_DONE_CLICKED,
-            DialogResult().apply {
-                putSerializable(EditMealFoodDialog.MEAL_FOOD_RESULT, viewModel.getMealFoodDetails())
-            }
+            EditMealFoodDialogEvent.OnPositiveButtonClicked(viewModel.getMealFoodDetails())
         )
     }
 

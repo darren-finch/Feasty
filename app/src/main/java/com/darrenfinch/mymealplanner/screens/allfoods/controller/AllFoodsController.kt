@@ -2,7 +2,7 @@ package com.darrenfinch.mymealplanner.screens.allfoods.controller
 
 import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
-import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
+import com.darrenfinch.mymealplanner.common.controllers.ControllerSavedState
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.foods.usecases.DeleteFoodUseCase
 import com.darrenfinch.mymealplanner.foods.usecases.GetAllFoodsUseCase

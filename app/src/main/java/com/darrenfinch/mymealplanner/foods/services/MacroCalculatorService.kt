@@ -1,5 +1,6 @@
-package com.darrenfinch.mymealplanner.foods.models.domain
+package com.darrenfinch.mymealplanner.foods.services
 
+import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
 import com.darrenfinch.mymealplanner.mealplans.models.domain.MealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.models.mappers.uiMealPlanMealToMealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
@@ -11,7 +12,7 @@ import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanMacros
 
-object MacroCalculator {
+object MacroCalculatorService {
 
     /**
      * Takes some macro nutrients that are based on oldServingSize

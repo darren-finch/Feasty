@@ -4,7 +4,7 @@ import com.darrenfinch.mymealplanner.common.constants.DefaultModels
 import com.darrenfinch.mymealplanner.meals.models.mappers.dbMealToMeal
 import com.darrenfinch.mymealplanner.meals.models.mappers.mealToUiMeal
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
-import com.darrenfinch.mymealplanner.model.MainRepository
+import com.darrenfinch.mymealplanner.data.MainRepository
 
 class GetMealUseCase(val repository: MainRepository) {
     suspend fun getMeal(id: Int): UiMeal {

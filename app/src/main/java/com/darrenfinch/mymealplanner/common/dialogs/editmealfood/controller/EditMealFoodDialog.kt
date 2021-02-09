@@ -9,8 +9,6 @@ import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
 
 class EditMealFoodDialog : BaseDialog() {
     companion object {
-        const val TAG = "EditMealFoodDialog"
-
         // Saved state
         const val CONTROLLER_SAVED_STATE = "CONTROLLER_SAVED_STATE"
 
@@ -44,6 +42,7 @@ class EditMealFoodDialog : BaseDialog() {
         setControllerArgs(requireArguments())
         restoreControllerState(savedInstanceState)
         controller.bindView(viewMvc)
+        controller.bindViewStateToView()
 
         return viewMvc.makeDialog()
     }

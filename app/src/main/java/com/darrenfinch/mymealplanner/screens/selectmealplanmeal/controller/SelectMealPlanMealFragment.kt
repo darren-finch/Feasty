@@ -1,19 +1,15 @@
 package com.darrenfinch.mymealplanner.screens.selectmealplanmeal.controller
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
 import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.view.SelectMealPlanMealViewMvc
 
 class SelectMealPlanMealFragment : BaseFragment() {
 
     companion object {
-        const val TAG = "SelectMealPlanMealDialog"
-
         // Dialog results
         const val SELECTED_MEAL_RESULT = "SELECTED_MEAL_RESULT"
 

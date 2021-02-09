@@ -2,10 +2,9 @@ package com.darrenfinch.mymealplanner.foods.models.mappers
 
 import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiMacroNutrients
-import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
-import com.darrenfinch.mymealplanner.model.room.models.foods.DatabaseMacroNutrients
+import com.darrenfinch.mymealplanner.data.room.models.foods.DbMacroNutrients
 
-fun dbMacroNutrientsToMacroNutrients(dbMacroNutrients: DatabaseMacroNutrients) = MacroNutrients(
+fun dbMacroNutrientsToMacroNutrients(dbMacroNutrients: DbMacroNutrients) = MacroNutrients(
     calories = dbMacroNutrients.calories,
     carbs = dbMacroNutrients.carbs,
     proteins = dbMacroNutrients.proteins,
@@ -26,7 +25,7 @@ fun uiMacroNutrientsToMacroNutrients(uiMacroNutrients: UiMacroNutrients) = Macro
     fats = uiMacroNutrients.fats
 )
 
-fun macroNutrientsToDbMacroNutrients(macroNutrients: MacroNutrients) = DatabaseMacroNutrients(
+fun macroNutrientsToDbMacroNutrients(macroNutrients: MacroNutrients) = DbMacroNutrients(
     calories = macroNutrients.calories,
     carbs = macroNutrients.carbs,
     proteins = macroNutrients.proteins,

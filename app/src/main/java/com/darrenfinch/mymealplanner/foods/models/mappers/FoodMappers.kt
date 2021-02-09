@@ -2,9 +2,9 @@ package com.darrenfinch.mymealplanner.foods.models.mappers
 
 import com.darrenfinch.mymealplanner.foods.models.domain.Food
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
-import com.darrenfinch.mymealplanner.model.room.models.foods.DatabaseFood
+import com.darrenfinch.mymealplanner.data.room.models.foods.DbFood
 
-fun dbFoodToFood(dbFood: DatabaseFood) = Food(
+fun dbFoodToFood(dbFood: DbFood) = Food(
     id = dbFood.id,
     title = dbFood.title,
     servingSize = dbFood.servingSize,
@@ -25,7 +25,7 @@ fun uiFoodToFood(uiFood: UiFood) = Food(
     macroNutrients = uiMacroNutrientsToMacroNutrients(uiFood.macroNutrients)
 )
 
-fun foodToDbFood(food: Food) = DatabaseFood(
+fun foodToDbFood(food: Food) = DbFood(
     id = food.id,
     title = food.title,
     servingSize = food.servingSize,

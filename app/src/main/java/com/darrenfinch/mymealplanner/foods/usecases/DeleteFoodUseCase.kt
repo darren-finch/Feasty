@@ -5,7 +5,7 @@ import com.darrenfinch.mymealplanner.meals.models.domain.MealFood
 import com.darrenfinch.mymealplanner.meals.models.mappers.dbMealFoodToMealFood
 import com.darrenfinch.mymealplanner.meals.models.mappers.dbMealToMeal
 import com.darrenfinch.mymealplanner.meals.models.mappers.mealToDbMeal
-import com.darrenfinch.mymealplanner.model.MainRepository
+import com.darrenfinch.mymealplanner.data.MainRepository
 
 class DeleteFoodUseCase(private val repository: MainRepository) {
     suspend fun deleteFood(id: Int) {

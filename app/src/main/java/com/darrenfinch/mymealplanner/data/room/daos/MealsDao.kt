@@ -1,21 +1,21 @@
-package com.darrenfinch.mymealplanner.model.room.daos
+package com.darrenfinch.mymealplanner.data.room.daos
 
 import androidx.room.*
-import com.darrenfinch.mymealplanner.model.room.models.meals.DatabaseMeal
+import com.darrenfinch.mymealplanner.data.room.models.meals.DbMeal
 
 @Dao
 interface MealsDao {
     @Query("SELECT * FROM meals")
-    suspend fun getAllMeals(): List<DatabaseMeal>
+    suspend fun getAllMeals(): List<DbMeal>
 
     @Query("SELECT * FROM meals WHERE id = :id")
-    suspend fun getMeal(id: Int): DatabaseMeal?
+    suspend fun getMeal(id: Int): DbMeal?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMeal(meal: DatabaseMeal): Long
+    suspend fun insertMeal(meal: DbMeal): Long
 
     @Update
-    suspend fun updateMeal(meal: DatabaseMeal)
+    suspend fun updateMeal(meal: DbMeal)
 
     @Query("DELETE FROM meals WHERE id = :id")
     suspend fun deleteMeal(id: Int)

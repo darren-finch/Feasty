@@ -1,4 +1,4 @@
-package com.darrenfinch.mymealplanner.model.room.models.meals
+package com.darrenfinch.mymealplanner.data.room.models.meals
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey
 * 2. No type converters needed for meals
 */
 @Entity(tableName = "meals")
-data class DatabaseMeal(
+data class DbMeal(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val title: String

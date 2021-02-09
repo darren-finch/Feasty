@@ -45,7 +45,7 @@ class FoodFormFragment : BaseFragment() {
         controller.bindView(viewMvc)
         setControllerArgs(requireArguments())
         restoreControllerState(savedInstanceState)
-        controller.getFoodDetailsIfPossibleAndBindToView()
+        controller.getFoodDetails()
 
         return viewMvc.getRootView()
     }

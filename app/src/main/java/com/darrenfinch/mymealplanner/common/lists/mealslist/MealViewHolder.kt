@@ -8,7 +8,7 @@ import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.lists.BaseViewHolder
 import com.darrenfinch.mymealplanner.common.lists.mealfoodslist.MealFoodsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.databinding.MealItemBinding
-import com.darrenfinch.mymealplanner.foods.models.domain.MacroCalculator
+import com.darrenfinch.mymealplanner.foods.services.MacroCalculatorService
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 import net.cachapa.expandablelayout.ExpandableLayout
 
@@ -25,7 +25,7 @@ class MealViewHolder(private val config: MealsRecyclerViewAdapter.Config, privat
     override fun bind(item: UiMeal) {
         binding.apply {
             mealTitleTextView.text = item.title
-            macroNutrientsTextView.text = MacroCalculator.calculateMealMacros(item)
+            macroNutrientsTextView.text = MacroCalculatorService.calculateMealMacros(item)
 
             cardBottom.setOnExpansionUpdateListener(this@MealViewHolder)
 

@@ -3,7 +3,7 @@ package com.darrenfinch.mymealplanner.common.dialogs.editmealfood
 import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.ui.viewmodels.StatefulVm
 import com.darrenfinch.mymealplanner.common.ui.viewmodels.StatefulVmProperty
-import com.darrenfinch.mymealplanner.foods.models.domain.MacroCalculator
+import com.darrenfinch.mymealplanner.foods.services.MacroCalculatorService
 import com.darrenfinch.mymealplanner.foods.models.mappers.macroNutrientsToUiMacroNutrients
 import com.darrenfinch.mymealplanner.foods.models.mappers.uiMacroNutrientsToMacroNutrients
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiMacroNutrients
@@ -30,7 +30,7 @@ class EditMealFoodVm : StatefulVm() {
         get() = PhysicalQuantity(desiredServingSizeQuantity.get(), desiredServingSizeUnit.get())
     private val updatedMacroNutrients: UiMacroNutrients
         get() = macroNutrientsToUiMacroNutrients(
-            MacroCalculator.baseMacrosOnNewServingSize(
+            MacroCalculatorService.baseMacrosOnNewServingSize(
                 uiMacroNutrientsToMacroNutrients(originalMacroNutrients),
                 originalServingSize,
                 desiredServingSize

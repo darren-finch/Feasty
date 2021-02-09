@@ -4,7 +4,7 @@ import com.darrenfinch.mymealplanner.common.extensions.parallelMap
 import com.darrenfinch.mymealplanner.mealplans.models.mappers.dbMealPlanMealToMealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.models.mappers.mealPlanMealToUiMealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
-import com.darrenfinch.mymealplanner.model.MainRepository
+import com.darrenfinch.mymealplanner.data.MainRepository
 import kotlin.coroutines.coroutineContext
 
 class GetMealsForMealPlanUseCase(private val repository: MainRepository) {

@@ -4,16 +4,12 @@ import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.ui.viewmodels.StatefulVm
 import com.darrenfinch.mymealplanner.common.ui.viewmodels.StatefulVmListProperty
 import com.darrenfinch.mymealplanner.common.ui.viewmodels.StatefulVmProperty
-import com.darrenfinch.mymealplanner.foods.models.domain.MacroCalculator
-import com.darrenfinch.mymealplanner.foods.models.mappers.macroNutrientsToUiMacroNutrients
-import com.darrenfinch.mymealplanner.foods.models.mappers.uiMacroNutrientsToMacroNutrients
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
-import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 
 class MealFormVm : StatefulVm() {
-    private var id = Constants.VALID_ID
+    private var id = Constants.NEW_ITEM_ID
     private var title = StatefulVmProperty("", this)
     private var mealFoods = StatefulVmListProperty<UiMealFood>(this)
 

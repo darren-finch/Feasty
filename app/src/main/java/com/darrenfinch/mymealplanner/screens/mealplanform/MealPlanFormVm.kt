@@ -6,7 +6,7 @@ import com.darrenfinch.mymealplanner.common.ui.viewmodels.StatefulVmProperty
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
 
 class MealPlanFormVm : StatefulVm() {
-    private var id = Constants.VALID_ID
+    private var id = Constants.EXISTING_ITEM_ID
     private var title = StatefulVmProperty("", this)
     private var requiredCalories = StatefulVmProperty(0, this)
     private var requiredCarbohydrates = StatefulVmProperty(0, this)

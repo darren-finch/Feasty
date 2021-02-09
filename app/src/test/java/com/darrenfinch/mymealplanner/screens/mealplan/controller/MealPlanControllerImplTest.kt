@@ -1,23 +1,23 @@
 package com.darrenfinch.mymealplanner.screens.mealplan.controller
 
 import com.darrenfinch.mymealplanner.TestConstants
-import com.darrenfinch.mymealplanner.TestDefaultModels
+import com.darrenfinch.mymealplanner.TestDefModels
 import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.constants.DefaultModels
-import com.darrenfinch.mymealplanner.common.dialogs.DialogResult
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
-import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.SelectMealPlanMealDialogEvent
-import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.controller.SelectMealPlanMealDialog
 import com.darrenfinch.mymealplanner.common.helpers.SharedPreferencesHelper
 import com.darrenfinch.mymealplanner.common.helpers.ToastsHelper
+import com.darrenfinch.mymealplanner.common.logs.getClassTag
+import com.darrenfinch.mymealplanner.common.navigation.ScreenResult
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
-import com.darrenfinch.mymealplanner.foods.models.domain.MacroCalculator
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiMacroNutrients
+import com.darrenfinch.mymealplanner.foods.services.MacroCalculatorService
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
 import com.darrenfinch.mymealplanner.mealplans.usecases.*
 import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanVm
 import com.darrenfinch.mymealplanner.screens.mealplan.view.MealPlanViewMvc
+import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.controller.SelectMealPlanMealFragment
 import com.darrenfinch.mymealplanner.testrules.CoroutinesTestExtension
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,15 +25,16 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
+import org.mockito.ArgumentMatchers.anyString
 
 @Suppress("RemoveRedundantQualifierName")
 @ExperimentalCoroutinesApi
 internal class MealPlanControllerImplTest {
-    private val defUiMeal = TestDefaultModels.defUiMeal
-    private val defUiMealPlan = TestDefaultModels.defUiMealPlan.copy(title = "defUiMealPlan")
-    private val defUiMealPlan2 = TestDefaultModels.defUiMealPlan.copy(title = "defUiMealPlan2")
+    private val defUiMeal = TestDefModels.defUiMeal
+    private val defUiMealPlan = TestDefModels.defUiMealPlan.copy(title = "defUiMealPlan")
+    private val defUiMealPlan2 = TestDefModels.defUiMealPlan.copy(title = "defUiMealPlan2")
 
-    private val defUiMealPlanMeal = TestDefaultModels.defUiMealPlanMeal
+    private val defUiMealPlanMeal = TestDefModels.defUiMealPlanMeal
 
     private val getAllMealPlansResult = listOf(defUiMealPlan)
     private val getMealsForMealPlanResult = listOf(defUiMealPlanMeal)
@@ -72,8 +73,6 @@ internal class MealPlanControllerImplTest {
             deleteMealPlanMealUseCase,
             screensNavigator,
             toastsHelper,
-            dialogsManager,
-            dialogsEventBus,
             sharedPreferencesHelper,
             coroutinesTestExtension.testDispatcher,
             coroutinesTestExtension.testDispatcher
@@ -94,7 +93,7 @@ internal class MealPlanControllerImplTest {
 
         verify {
             viewMvc.registerListener(SUT)
-            dialogsEventBus.registerListener(SUT)
+            screensNavigator.registerListener(SUT)
         }
     }
 
@@ -104,7 +103,7 @@ internal class MealPlanControllerImplTest {
 
         verify {
             viewMvc.unregisterListener(SUT)
-            dialogsEventBus.unregisterListener(SUT)
+            screensNavigator.unregisterListener(SUT)
         }
     }
 
@@ -154,18 +153,18 @@ internal class MealPlanControllerImplTest {
                 requiredCarbs = 250
             )
             val mealPlanMeals = listOf(
-                TestDefaultModels.defUiMealPlanMeal.copy(
+                TestDefModels.defUiMealPlanMeal.copy(
                     foods = listOf(
-                        TestDefaultModels.defUiMealFood.copy(
-                            macroNutrients = UiMacroNutrients(
+                        TestDefModels.defUiMealFood.copy(
+                            originalMacroNutrients = UiMacroNutrients(
                                 800,
                                 80,
                                 80,
                                 30
                             )
                         ),
-                        TestDefaultModels.defUiMealFood.copy(
-                            macroNutrients = UiMacroNutrients(
+                        TestDefModels.defUiMealFood.copy(
+                            originalMacroNutrients = UiMacroNutrients(
                                 800,
                                 80,
                                 80,
@@ -175,7 +174,7 @@ internal class MealPlanControllerImplTest {
                     )
                 )
             )
-            val mealPlanMacros = MacroCalculator.calculateMealPlanMacros(mealPlan, mealPlanMeals)
+            val mealPlanMacros = MacroCalculatorService.calculateMealPlanMacros(mealPlan, mealPlanMeals)
             coEvery { getAllMealPlansUseCase.getAllMealPlans() } returns listOf(mealPlan)
             coEvery { getMealsForMealPlanUseCase.getMealsForMealPlan(any()) } returns mealPlanMeals
 
@@ -224,7 +223,7 @@ internal class MealPlanControllerImplTest {
                 viewModel.setInitialMealPlans(getAllMealPlansResult)
                 viewMvc.bindMealPlanMeals(getMealsForMealPlanResult)
                 viewMvc.bindMealPlanMacros(
-                    MacroCalculator.calculateMealPlanMacros(
+                    MacroCalculatorService.calculateMealPlanMacros(
                         getAllMealPlansResult[defSelectedMealPlanIndex],
                         getMealsForMealPlanResult
                     )
@@ -287,15 +286,15 @@ internal class MealPlanControllerImplTest {
 
             SUT.onAddNewMealPlanMealClicked()
 
-            verify { toastsHelper.showShortMsg(any()) }
+            verify { toastsHelper.showShortMsg(anyString()) }
         }
 
     @Test
-    internal fun `onAddNewMealPlanMealClicked() opens select meal plan meal dialog if there is a meal plan to add it to`() =
+    internal fun `onAddNewMealPlanMealClicked() opens select meal plan meal fragment if there is a meal plan to add it to`() =
         runBlockingTest {
             SUT.onAddNewMealPlanMealClicked()
 
-            verify { dialogsManager.showSelectMealPlanMealDialog() }
+            verify { screensNavigator.toSelectMealPlanMealScreen() }
         }
 
     @Test
@@ -307,21 +306,19 @@ internal class MealPlanControllerImplTest {
         }
 
     @Test
-    internal fun `onDialogEvent() adds selected meal to currently selected meal plan, then refreshes meal plans`() =
+    internal fun `onGoBackWithResult() adds selected meal to currently selected meal plan, then refreshes meal plans`() =
         runBlockingTest {
-            val dialogResult = mockk<DialogResult>(relaxUnitFun = true)
-            every { dialogResult.getSerializable(SelectMealPlanMealDialog.SELECTED_MEAL_RESULT) } returns defUiMeal
+            val screenResult = mockk<ScreenResult>(relaxUnitFun = true)
+            every { screenResult.tag } returns SelectMealPlanMealFragment.getClassTag()
+            every { screenResult.getSerializable(SelectMealPlanMealFragment.SELECTED_MEAL_RESULT) } returns defUiMeal
 
             val mealToBeAdded = defUiMealPlanMeal.copy(
-                id = Constants.VALID_ID,
+                id = Constants.EXISTING_ITEM_ID,
                 mealPlanId = defUiMealPlan.id,
                 mealId = 0
             )
 
-            SUT.onDialogEvent(
-                SelectMealPlanMealDialogEvent.ON_MEAL_SELECTED,
-                dialogResult
-            )
+            SUT.onGoBackWithResult(screenResult)
 
             coVerifySequence {
                 insertMealPlanMealUseCase.insertMealPlanMeal(mealToBeAdded)

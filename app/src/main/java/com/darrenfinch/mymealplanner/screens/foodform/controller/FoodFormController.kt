@@ -8,6 +8,6 @@ interface FoodFormController : BaseController, FoodFormViewMvc.Listener, BackPre
     fun bindView(viewMvc: FoodFormViewMvc)
     fun onStart()
     fun onStop()
-    fun getFoodDetailsIfPossibleAndBindToView()
+    fun getFoodDetails()
     fun setArgs(foodId: Int)
 }

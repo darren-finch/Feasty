@@ -6,8 +6,8 @@ import com.darrenfinch.mymealplanner.meals.models.mappers.mealFoodToDbMealFood
 import com.darrenfinch.mymealplanner.meals.models.mappers.mealToDbMeal
 import com.darrenfinch.mymealplanner.meals.models.mappers.uiMealToMeal
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
-import com.darrenfinch.mymealplanner.model.MainRepository
-import com.darrenfinch.mymealplanner.model.room.models.meals.DatabaseMealFood
+import com.darrenfinch.mymealplanner.data.MainRepository
+import com.darrenfinch.mymealplanner.data.room.models.meals.DbMealFood
 
 class UpdateMealUseCase(private val repository: MainRepository) {
     suspend fun updateMeal(meal: UiMeal) {
@@ -26,12 +26,12 @@ class UpdateMealUseCase(private val repository: MainRepository) {
     private suspend fun insertNewMealFoods(updatedMealFoods: List<MealFood>, mealId: Int) {
         updatedMealFoods.forEach {
             if(it.id == Constants.NEW_ITEM_ID) {
-                repository.insertMealFood(mealFoodToDbMealFood(it.copy(id = Constants.VALID_ID, mealId = mealId)))
+                repository.insertMealFood(mealFoodToDbMealFood(it.copy(id = Constants.EXISTING_ITEM_ID, mealId = mealId)))
             }
         }
     }
 
-    private suspend fun updateEditedMealFoods(oldMealFoods: List<DatabaseMealFood>, updatedMealFoods: List<MealFood>) {
+    private suspend fun updateEditedMealFoods(oldMealFoods: List<DbMealFood>, updatedMealFoods: List<MealFood>) {
         val oldMealFoodIds = oldMealFoods.map { it.id }
         val updatedMealFoodIds = updatedMealFoods.map { it.id }
         val editedMealFoodIds = oldMealFoodIds intersect updatedMealFoodIds

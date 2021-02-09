@@ -1,19 +1,20 @@
 package com.darrenfinch.mymealplanner.screens.mealform.controller
 
 import com.darrenfinch.mymealplanner.TestConstants
-import com.darrenfinch.mymealplanner.TestDefaultModels
-import com.darrenfinch.mymealplanner.common.dialogs.DialogResult
+import com.darrenfinch.mymealplanner.TestDefModels
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
-import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.SelectFoodQuantityDialogEvent
-import com.darrenfinch.mymealplanner.common.dialogs.selectfoodquantity.controller.SelectFoodQuantityDialog
+import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogEvent
+import com.darrenfinch.mymealplanner.common.logs.getClassTag
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
+import com.darrenfinch.mymealplanner.common.navigation.ScreenResult
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.meals.usecases.GetMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.InsertMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.UpdateMealUseCase
 import com.darrenfinch.mymealplanner.screens.mealform.MealFormVm
 import com.darrenfinch.mymealplanner.screens.mealform.view.MealFormViewMvc
+import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealFragment
 import com.darrenfinch.mymealplanner.testrules.CoroutinesTestExtension
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,9 +27,11 @@ import org.junit.jupiter.api.extension.RegisterExtension
 @Suppress("RemoveRedundantQualifierName")
 @ExperimentalCoroutinesApi
 internal class MealFormControllerImplTest {
-    val defUiMeal = TestDefaultModels.defUiMeal.copy(title = "defUiMeal")
-    val defUiMeal2 = TestDefaultModels.defUiMeal.copy(title = "defUiMeal2")
-    val getMealUseCaseResult = TestDefaultModels.defUiMeal.copy(title = "getMealUseCaseResult")
+    val defUiMeal = TestDefModels.defUiMeal.copy(title = "defUiMeal")
+    val defUiMeal2 = TestDefModels.defUiMeal.copy(title = "defUiMeal2")
+    val getMealUseCaseResult = TestDefModels.defUiMeal.copy(title = "getMealUseCaseResult")
+
+    val defUiMealFood = TestDefModels.defUiMealFood.copy(title = "defUiMealFood")
 
     @JvmField
     @RegisterExtension
@@ -72,7 +75,7 @@ internal class MealFormControllerImplTest {
     }
 
     @Test
-    fun `getMealDetails() binds meal details from use case to viewModel and viewMvc when meal details haven't been loaded`() {
+    fun `getMealDetails() sets view state from use case when meal details haven't been loaded`() {
         SUT.getMealDetails()
 
         verify { viewModel.bindMealDetails(getMealUseCaseResult) }
@@ -81,7 +84,7 @@ internal class MealFormControllerImplTest {
     }
 
     @Test
-    fun `getMealDetails() restores view state from view model when meal details have been loaded`() {
+    fun `getMealDetails() sets view state from view model when meal details have been loaded`() {
         every { viewModel.getMealDetails() } returns defUiMeal
 
         SUT.getMealDetails()
@@ -157,19 +160,27 @@ internal class MealFormControllerImplTest {
     }
 
     @Test
-    fun `onDialogEvent() adds selected food with desired serving size from select food quantity screen to view model and binds updated meal details to view`() {
-        val selectedFood = TestDefaultModels.defUiFood
-        val desiredServingSize = TestDefaultModels.defPhysicalQuantity
+    internal fun `onGoBackWithResult() adds select meal food to view model`() {
+        val screenResult = mockk<ScreenResult>()
+        val defUiFood = TestDefModels.defUiFood
+        every { screenResult.tag } returns SelectFoodForMealFragment.getClassTag()
+        every { screenResult.getSerializable(SelectFoodForMealFragment.SELECTED_FOOD_RESULT) } returns defUiFood
 
-        val result = mockk<DialogResult>()
-        every { result.getSerializable(SelectFoodQuantityDialog.SELECTED_FOOD_RESULT) } returns selectedFood
-        every { result.getSerializable(SelectFoodQuantityDialog.DESIRED_SERVING_SIZE_RESULT) } returns desiredServingSize
+        SUT.onGoBackWithResult(screenResult)
 
+        verify { viewModel.addMealFood(defUiFood) }
+    }
+
+    @Test
+    internal fun `onDialogResult() updates meal food in view model and refreshes view if event is positive button clicked from edit meal food dialog`() {
+        val dialogEvent = EditMealFoodDialogEvent.OnPositiveButtonClicked(defUiMealFood)
         every { viewModel.getMealDetails() } returns defUiMeal2
 
-        SUT.onDialogEvent(SelectFoodQuantityDialogEvent.ON_DESIRED_FOOD_SERVING_SIZE_CHOSEN, result)
+        SUT.onDialogEvent(dialogEvent)
 
-        verify { viewModel.addMealFood(selectedFood, desiredServingSize) }
-        verify { viewMvc.bindMealDetails(defUiMeal2) }
+        verifyOrder {
+            viewModel.updateMealFood(defUiMealFood)
+            viewMvc.bindMealDetails(defUiMeal2)
+        }
     }
 }

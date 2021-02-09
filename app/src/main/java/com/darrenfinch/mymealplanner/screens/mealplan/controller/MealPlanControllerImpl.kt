@@ -4,14 +4,13 @@ import androidx.annotation.StringRes
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.constants.DefaultModels
-import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
-import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
+import com.darrenfinch.mymealplanner.common.controllers.ControllerSavedState
 import com.darrenfinch.mymealplanner.common.helpers.SharedPreferencesHelper
 import com.darrenfinch.mymealplanner.common.helpers.ToastsHelper
-import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
+import com.darrenfinch.mymealplanner.common.logs.getClassTag
 import com.darrenfinch.mymealplanner.common.navigation.ScreenResult
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
-import com.darrenfinch.mymealplanner.foods.models.domain.MacroCalculator
+import com.darrenfinch.mymealplanner.foods.services.MacroCalculatorService
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.usecases.*
@@ -92,7 +91,7 @@ class MealPlanControllerImpl(
 
             val mealPlanMeals = getMealsForMealPlanUseCase.getMealsForMealPlan(selectedMealPlan.id)
             val mealPlanMacros =
-                MacroCalculator.calculateMealPlanMacros(selectedMealPlan, mealPlanMeals)
+                MacroCalculatorService.calculateMealPlanMacros(selectedMealPlan, mealPlanMeals)
 
             withContext(uiContext) {
                 if (allMealPlans.isEmpty())
@@ -161,16 +160,18 @@ class MealPlanControllerImpl(
     }
 
     override fun onGoBackWithResult(result: ScreenResult) {
-        val selectedMeal =
-            result.getSerializable(SelectMealPlanMealFragment.SELECTED_MEAL_RESULT) as UiMeal
-        val newMealPlanMeal = UiMealPlanMeal(
-            Constants.VALID_ID,
-            viewModel.getSelectedMealPlanId(),
-            selectedMeal.id,
-            selectedMeal.title,
-            selectedMeal.foods
-        )
-        addMealToMealPlan(newMealPlanMeal)
+        if(result.tag == SelectMealPlanMealFragment.getClassTag()) {
+            val selectedMeal =
+                result.getSerializable(SelectMealPlanMealFragment.SELECTED_MEAL_RESULT) as UiMeal
+            val newMealPlanMeal = UiMealPlanMeal(
+                Constants.EXISTING_ITEM_ID,
+                viewModel.getSelectedMealPlanId(),
+                selectedMeal.id,
+                selectedMeal.title,
+                selectedMeal.foods
+            )
+            addMealToMealPlan(newMealPlanMeal)
+        }
     }
 
     private fun addMealToMealPlan(newMealPlanMeal: UiMealPlanMeal) {

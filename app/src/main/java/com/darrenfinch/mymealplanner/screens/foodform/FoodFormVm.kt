@@ -9,7 +9,7 @@ import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.physicalquantities.units.MeasurementUnit
 
 class FoodFormVm : StatefulVm() {
-    private var id = Constants.VALID_ID
+    private var id = Constants.EXISTING_ITEM_ID
     private var title = StatefulVmProperty("", this)
     private var servingSizeQuantity = StatefulVmProperty(0.0, this)
     private var servingSizeUnit = StatefulVmProperty<MeasurementUnit>(MeasurementUnit.defaultUnit, this)
@@ -18,7 +18,7 @@ class FoodFormVm : StatefulVm() {
     private var fats = StatefulVmProperty(0, this)
     private var proteins = StatefulVmProperty(0, this)
 
-    fun bindInitialFoodDetails(food: UiFood) {
+    fun bindFoodDetails(food: UiFood) {
         id = food.id
         title.set(food.title)
         servingSizeQuantity.set(food.servingSize.quantity)

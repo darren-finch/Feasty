@@ -4,7 +4,7 @@ import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
-import com.darrenfinch.mymealplanner.common.misc.ControllerSavedState
+import com.darrenfinch.mymealplanner.common.controllers.ControllerSavedState
 import com.darrenfinch.mymealplanner.screens.mealplanform.view.MealPlanFormViewMvc
 import com.darrenfinch.mymealplanner.mealplans.usecases.InsertMealPlanUseCase
 import com.darrenfinch.mymealplanner.screens.mealplanform.MealPlanFormVm
