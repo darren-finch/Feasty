@@ -1,5 +1,6 @@
 package com.darrenfinch.mymealplanner.common.extensions
 
+import android.text.BoringLayout
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
@@ -12,3 +13,5 @@ fun <A, B> List<A>.parallelMap(context: CoroutineContext, f: suspend (A) -> B): 
 fun <A, B> List<A>.parallelMapNotNull(context: CoroutineContext, f: suspend (A) -> B): List<B> = runBlocking(context) {
     mapNotNull { async(context) { f(it) } }.awaitAll()
 }
+
+fun <A> List<A>.indexIsValid(index: Int) = index in 0..lastIndex

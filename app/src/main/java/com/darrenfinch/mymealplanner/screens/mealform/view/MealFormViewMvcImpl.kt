@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.lists.mealfoodslist.MealFoodsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.common.lists.itemdecorations.MarginItemDecoration
-import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentMealFormBinding
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
@@ -29,15 +28,15 @@ class MealFormViewMvcImpl(
     private val binding = _binding!!
 
     private val mealFoodsAdapterListener = object : MealFoodsRecyclerViewAdapter.ItemEventListener {
-        override fun onItemEdit(mealFood: UiMealFood) {
+        override fun onItemEdit(mealFood: UiMealFood, index: Int) {
             for (listener in getListeners()) {
-                listener.onMealFoodEdit(mealFood)
+                listener.onMealFoodEdit(mealFood, index)
             }
         }
 
-        override fun onItemDelete(mealFoodId: Int) {
+        override fun onItemDelete(index: Int) {
             for (listener in getListeners()) {
-                listener.onMealFoodDelete(mealFoodId)
+                listener.onMealFoodDelete(index)
             }
         }
     }

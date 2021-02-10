@@ -8,41 +8,55 @@ import com.darrenfinch.mymealplanner.meals.models.mappers.uiMealToMeal
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 import com.darrenfinch.mymealplanner.data.MainRepository
 import com.darrenfinch.mymealplanner.data.room.models.meals.DbMealFood
+import com.darrenfinch.mymealplanner.meals.models.mappers.uiMealFoodToMealFood
+import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
 
-class UpdateMealUseCase(private val repository: MainRepository) {
+class UpdateMealUseCase(
+    private val repository: MainRepository,
+    private val insertMealFoodUseCase: InsertMealFoodUseCase,
+    private val updateMealFoodUseCase: UpdateMealFoodUseCase
+) {
     suspend fun updateMeal(meal: UiMeal) {
-        val newMeal = uiMealToMeal(meal)
-        val updatedMealFoods = newMeal.foods
+        val updatedMealFoods = meal.foods
 
-        val oldDbMealFoods = repository.getMealFoodsForMeal(newMeal.id)
+        val oldDbMealFoods = repository.getMealFoodsForMeal(meal.id)
 
-        insertNewMealFoods(updatedMealFoods, newMeal.id)
+        insertNewMealFoods(updatedMealFoods, meal.id)
         updateEditedMealFoods(oldDbMealFoods, updatedMealFoods)
-        deleteOldMealFoodsThatAreNotInUpdatedMealFoods(oldDbMealFoods.map { it.id }.toIntArray(), updatedMealFoods.map { it.id }.toIntArray())
+        deleteOldMealFoodsThatAreNotInUpdatedMealFoods(
+            oldDbMealFoods.map { it.id }.toIntArray(),
+            updatedMealFoods.map { it.id }.toIntArray()
+        )
 
-        repository.updateMeal(mealToDbMeal(newMeal))
+        repository.updateMeal(mealToDbMeal(uiMealToMeal(meal)))
     }
 
-    private suspend fun insertNewMealFoods(updatedMealFoods: List<MealFood>, mealId: Int) {
+    private suspend fun insertNewMealFoods(updatedMealFoods: List<UiMealFood>, mealId: Int) {
         updatedMealFoods.forEach {
-            if(it.id == Constants.NEW_ITEM_ID) {
-                repository.insertMealFood(mealFoodToDbMealFood(it.copy(id = Constants.EXISTING_ITEM_ID, mealId = mealId)))
+            if (it.id == Constants.NEW_ITEM_ID) {
+                insertMealFoodUseCase.insertMealFood(it, mealId)
             }
         }
     }
 
-    private suspend fun updateEditedMealFoods(oldMealFoods: List<DbMealFood>, updatedMealFoods: List<MealFood>) {
+    private suspend fun updateEditedMealFoods(
+        oldMealFoods: List<DbMealFood>,
+        updatedMealFoods: List<UiMealFood>
+    ) {
         val oldMealFoodIds = oldMealFoods.map { it.id }
         val updatedMealFoodIds = updatedMealFoods.map { it.id }
         val editedMealFoodIds = oldMealFoodIds intersect updatedMealFoodIds
 
         editedMealFoodIds.forEach { editedMealFoodId ->
             val editedMealFood = updatedMealFoods.find { it.id == editedMealFoodId }
-            editedMealFood?.let { repository.updateMealFood(mealFoodToDbMealFood(it) ) }
+            editedMealFood?.let { updateMealFoodUseCase.updateMealFood(it) }
         }
     }
 
-    private suspend fun deleteOldMealFoodsThatAreNotInUpdatedMealFoods(oldMealFoodIds: IntArray, updatedMealFoodsIds: IntArray) {
+    private suspend fun deleteOldMealFoodsThatAreNotInUpdatedMealFoods(
+        oldMealFoodIds: IntArray,
+        updatedMealFoodsIds: IntArray
+    ) {
         val mealFoodsToDelete = oldMealFoodIds.toList() subtract updatedMealFoodsIds.toList()
         mealFoodsToDelete.forEach {
             repository.deleteMealFood(it)

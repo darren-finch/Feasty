@@ -14,13 +14,15 @@ class EditMealFoodDialog : BaseDialog() {
 
         // Arguments
         const val MEAL_FOOD_ARG = "MEAL_FOOD_ARG"
+        const val INDEX_ARG = "INDEX_ARG"
 
         // Dialog results
         const val MEAL_FOOD_RESULT = "MEAL_FOOD_RESULT"
 
-        fun newInstance(mealFood: UiMealFood): EditMealFoodDialog {
+        fun newInstance(mealFood: UiMealFood, index: Int): EditMealFoodDialog {
             val bundle = Bundle().apply {
                 putSerializable(MEAL_FOOD_ARG, mealFood)
+                putInt(INDEX_ARG, index)
             }
             val fragment = EditMealFoodDialog()
             fragment.arguments = bundle
@@ -48,7 +50,10 @@ class EditMealFoodDialog : BaseDialog() {
     }
 
     private fun setControllerArgs(arguments: Bundle) {
-        controller.setArgs(arguments.getSerializable(MEAL_FOOD_ARG) as UiMealFood)
+        controller.setArgs(
+            arguments.getSerializable(MEAL_FOOD_ARG) as UiMealFood,
+            arguments.getInt(INDEX_ARG)
+        )
     }
 
     private fun restoreControllerState(savedInstanceState: Bundle?) {

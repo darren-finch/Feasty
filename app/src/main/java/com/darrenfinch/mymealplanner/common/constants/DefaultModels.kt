@@ -12,6 +12,7 @@ import com.darrenfinch.mymealplanner.common.constants.Constants.NEW_ITEM_ID
 import com.darrenfinch.mymealplanner.common.constants.Constants.EXISTING_ITEM_ID
 import com.darrenfinch.mymealplanner.data.room.models.foods.DbFood
 import com.darrenfinch.mymealplanner.data.room.models.foods.DbMacroNutrients
+import com.darrenfinch.mymealplanner.data.room.models.meals.DbMeal
 import com.darrenfinch.mymealplanner.foods.models.domain.Food
 import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
@@ -29,7 +30,7 @@ import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanMacros
 object DefaultModels {
 
     // Data models
-    private val defaultDbMacroNutrients = DbMacroNutrients(
+    val defaultDbMacroNutrients = DbMacroNutrients(
         calories = DEFAULT_CALORIES,
         carbs = DEFAULT_CARBS,
         fats = DEFAULT_FATS,
@@ -41,7 +42,10 @@ object DefaultModels {
         servingSize = PhysicalQuantity.defaultPhysicalQuantity,
         macroNutrients = defaultDbMacroNutrients
     )
-
+    val defaultDbMeal = DbMeal(
+        id = NEW_ITEM_ID,
+        title = ""
+    )
 
     // Domain models
 

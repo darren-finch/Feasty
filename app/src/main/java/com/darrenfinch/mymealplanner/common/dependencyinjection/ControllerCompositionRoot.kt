@@ -55,8 +55,9 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
 
     private fun getGetAllMealsUseCase() = GetAllMealsUseCase(getMainRepository())
     private fun getGetMealUseCase() = GetMealUseCase(getMainRepository())
-    private fun getInsertMealUseCase() = InsertMealUseCase(getMainRepository())
-    private fun getUpdateMealUseCase() = UpdateMealUseCase(getMainRepository())
+    private fun getUpsertMealUseCase() = UpsertMealUseCase(getInsertMealUseCase(), getUpdateMealUseCase())
+    private fun getInsertMealUseCase() = InsertMealUseCase(getMainRepository(), getInsertMealFoodUseCase())
+    private fun getUpdateMealUseCase() = UpdateMealUseCase(getMainRepository(), getInsertMealFoodUseCase(), getUpdateMealFoodUseCase())
     private fun getDeleteMealUseCase() = DeleteMealUseCase(getMainRepository())
 
     private fun getGetAllMealPlansUseCase() = GetAllMealPlansUseCase(getMainRepository())
@@ -71,6 +72,8 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     private fun getDeleteMealPlanMealUseCase() = DeleteMealPlanMealUseCase(getMainRepository())
 
     private fun getGetMealFoodUseCase() = GetMealFoodUseCase(getMainRepository())
+    private fun getInsertMealFoodUseCase() = InsertMealFoodUseCase(getMainRepository())
+    private fun getUpdateMealFoodUseCase() = UpdateMealFoodUseCase(getMainRepository())
 
     // Dialog controllers
 
@@ -127,8 +130,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
 
     fun getMealFormController() = MealFormControllerImpl(
         getMealFormVm(),
-        getInsertMealUseCase(),
-        getUpdateMealUseCase(),
+        getUpsertMealUseCase(),
         getGetMealUseCase(),
         getScreensNavigator(),
         getDialogsManager(),

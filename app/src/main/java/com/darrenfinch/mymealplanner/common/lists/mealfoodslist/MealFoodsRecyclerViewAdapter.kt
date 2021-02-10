@@ -16,8 +16,8 @@ class MealFoodsRecyclerViewAdapter(
     data class Config(val showAsFullCard: Boolean = false)
 
     interface ItemEventListener {
-        fun onItemEdit(mealFood: UiMealFood)
-        fun onItemDelete(mealFoodId: Int)
+        fun onItemEdit(mealFood: UiMealFood, index: Int)
+        fun onItemDelete(index: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealFoodViewHolder {
@@ -29,11 +29,11 @@ class MealFoodsRecyclerViewAdapter(
         )
     }
 
-    override fun onEdit(mealFood: UiMealFood) {
-        listener?.onItemEdit(mealFood)
+    override fun onEdit(mealFood: UiMealFood, index: Int) {
+        listener?.onItemEdit(mealFood, index)
     }
 
-    override fun onDelete(mealFoodId: Int) {
-        listener?.onItemDelete(mealFoodId)
+    override fun onDelete(index: Int) {
+        listener?.onItemDelete(index)
     }
 }

@@ -7,8 +7,8 @@ import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
 
 interface MealFormViewMvc : ObservableViewMvc<MealFormViewMvc.Listener>, ProgressIndicatorViewMvc {
     interface Listener {
-        fun onMealFoodEdit(mealFood: UiMealFood)
-        fun onMealFoodDelete(id: Int)
+        fun onMealFoodEdit(mealFood: UiMealFood, index: Int)
+        fun onMealFoodDelete(index: Int)
 
         fun onAddNewFoodButtonClicked()
         fun onDoneButtonClicked()

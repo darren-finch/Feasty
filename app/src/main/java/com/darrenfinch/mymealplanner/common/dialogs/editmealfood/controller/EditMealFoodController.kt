@@ -1,5 +1,6 @@
 package com.darrenfinch.mymealplanner.common.dialogs.editmealfood.controller
 
+import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
@@ -15,10 +16,12 @@ class EditMealFoodController(
     private val dialogsEventBus: DialogsEventBus,
 ) : BaseController, EditMealFoodViewMvc.Listener {
 
-    data class SavedState(val viewModel: EditMealFoodVm, val hasLoadedMealFoodDetails: Boolean) :
+    data class SavedState(val viewModel: EditMealFoodVm, val hasLoadedMealFoodDetails: Boolean, val indexArgState: Int) :
         ControllerSavedState
 
     private lateinit var viewMvc: EditMealFoodViewMvc
+
+    private var indexArgState = Constants.INVALID_INDEX
 
     private var hasLoadedMealFoodDetails = false
 
@@ -44,21 +47,23 @@ class EditMealFoodController(
         (state as SavedState).let {
             viewModel = it.viewModel
             hasLoadedMealFoodDetails = it.hasLoadedMealFoodDetails
+            indexArgState = it.indexArgState
         }
     }
 
     override fun getState(): ControllerSavedState {
-        return SavedState(viewModel, hasLoadedMealFoodDetails)
+        return SavedState(viewModel, hasLoadedMealFoodDetails, indexArgState)
     }
 
-    fun setArgs(mealFood: UiMealFood) {
+    fun setArgs(mealFood: UiMealFood, index: Int) {
+        indexArgState = index
         viewModel.bindMealFoodDetails(mealFood)
     }
 
     override fun onPositiveButtonClicked() {
         dialogsManager.clearDialog()
         dialogsEventBus.postEvent(
-            EditMealFoodDialogEvent.OnPositiveButtonClicked(viewModel.getMealFoodDetails())
+            EditMealFoodDialogEvent.OnPositiveButtonClicked(viewModel.getMealFoodDetails(), indexArgState)
         )
     }
 

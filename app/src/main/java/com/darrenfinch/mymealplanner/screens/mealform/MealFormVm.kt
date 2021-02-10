@@ -1,6 +1,7 @@
 package com.darrenfinch.mymealplanner.screens.mealform
 
 import com.darrenfinch.mymealplanner.common.constants.Constants
+import com.darrenfinch.mymealplanner.common.extensions.indexIsValid
 import com.darrenfinch.mymealplanner.common.ui.viewmodels.StatefulVm
 import com.darrenfinch.mymealplanner.common.ui.viewmodels.StatefulVmListProperty
 import com.darrenfinch.mymealplanner.common.ui.viewmodels.StatefulVmProperty
@@ -43,18 +44,21 @@ class MealFormVm : StatefulVm() {
         mealFoods.set(mealFoodsList + mealFood)
     }
 
-    fun updateMealFood(editedMealFood: UiMealFood) {
+    fun updateMealFood(editedMealFood: UiMealFood, index: Int) {
         val mealFoodsList = mealFoods.get()
-        val mealFoodToUpdate = mealFoodsList.find { it.id == editedMealFood.id }
-        mealFoodToUpdate?.let {
-            val mealFoodIndex = mealFoodsList.indexOf(it)
-            mealFoodsList[mealFoodIndex] = editedMealFood
+
+        if (mealFoodsList.indexIsValid(index)) {
+            mealFoodsList[index] = editedMealFood
             mealFoods.set(mealFoodsList)
         }
     }
 
-    fun removeMealFood(mealFoodId: Int) {
-        val mealFoodToRemove = mealFoods.get().find { it.id == mealFoodId }
-        mealFoodToRemove?.let { mealFoods.set(mealFoods.get() - it) }
+    fun removeMealFood(index: Int) {
+        val mealFoodsList = mealFoods.get()
+
+        if (mealFoodsList.indexIsValid(index)) {
+            mealFoodsList.removeAt(index)
+            mealFoods.set(mealFoodsList)
+        }
     }
 }

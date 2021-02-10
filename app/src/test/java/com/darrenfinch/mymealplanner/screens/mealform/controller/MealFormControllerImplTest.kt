@@ -1,7 +1,7 @@
 package com.darrenfinch.mymealplanner.screens.mealform.controller
 
-import com.darrenfinch.mymealplanner.TestConstants
 import com.darrenfinch.mymealplanner.TestDefModels
+import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogEvent
@@ -12,6 +12,7 @@ import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.meals.usecases.GetMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.InsertMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.UpdateMealUseCase
+import com.darrenfinch.mymealplanner.meals.usecases.UpsertMealUseCase
 import com.darrenfinch.mymealplanner.screens.mealform.MealFormVm
 import com.darrenfinch.mymealplanner.screens.mealform.view.MealFormViewMvc
 import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealFragment
@@ -42,8 +43,7 @@ internal class MealFormControllerImplTest {
     private val dialogsManager = mockk<DialogsManager>(relaxUnitFun = true)
     private val dialogsEventBus = mockk<DialogsEventBus>(relaxUnitFun = true)
     private val getMealUseCase = mockk<GetMealUseCase>(relaxUnitFun = true)
-    private val insertMealUseCase = mockk<InsertMealUseCase>(relaxUnitFun = true)
-    private val updateMealUseCase = mockk<UpdateMealUseCase>(relaxUnitFun = true)
+    private val upsertMealUseCase = mockk<UpsertMealUseCase>(relaxUnitFun = true)
     private val backPressDispatcher = mockk<BackPressDispatcher>(relaxUnitFun = true)
 
     private val viewMvc = mockk<MealFormViewMvc>(relaxUnitFun = true)
@@ -54,8 +54,7 @@ internal class MealFormControllerImplTest {
     fun setUp() {
         SUT = MealFormControllerImpl(
             viewModel,
-            insertMealUseCase,
-            updateMealUseCase,
+            upsertMealUseCase,
             getMealUseCase,
             screensNavigator,
             dialogsManager,
@@ -67,7 +66,7 @@ internal class MealFormControllerImplTest {
         SUT.bindView(viewMvc)
 
         // Default to editing a meal
-        SUT.setArgs(TestConstants.VALID_ID)
+        SUT.setArgs(Constants.EXISTING_ITEM_ID)
 
         every { viewModel.getMealDetails() } returns defUiMeal
         coEvery { getMealUseCase.getMeal(any()) } returns getMealUseCaseResult
@@ -118,32 +117,39 @@ internal class MealFormControllerImplTest {
         }
 
     @Test
-    fun `onDoneButtonClicked() inserts meal from view model if adding meal, then navigates up`() =
+    fun `onDoneButtonClicked() upserts meal then navigates up`() =
         runBlockingTest {
-            SUT.setArgs(TestConstants.INVALID_ID)
             every { viewModel.getMealDetails() } returns defUiMeal2
 
             SUT.onDoneButtonClicked()
 
             coVerifySequence {
-                insertMealUseCase.insertMeal(defUiMeal2)
+                upsertMealUseCase.upsertMeal(defUiMeal2)
                 screensNavigator.navigateUp()
             }
         }
 
     @Test
-    fun `onDoneButtonClicked() updates meal from view model if editing meal, then navigates up`() =
-        runBlockingTest {
-            SUT.setArgs(TestConstants.VALID_ID)
-            every { viewModel.getMealDetails() } returns defUiMeal2
+    internal fun `onMealFoodEdit() shows edit meal food dialog with correct arguments`() {
+        val index = 1
 
-            SUT.onDoneButtonClicked()
+        SUT.onMealFoodEdit(defUiMealFood, 1)
 
-            coVerifySequence {
-                updateMealUseCase.updateMeal(defUiMeal2)
-                screensNavigator.navigateUp()
-            }
+        verify { dialogsManager.showEditMealFoodDialog(defUiMealFood, index) }
+    }
+
+    @Test
+    internal fun `onMealFoodDelete() removes meal food from view model and refreshes view`() {
+        val index = 1
+        every { viewModel.getMealDetails() } returns defUiMeal2
+
+        SUT.onMealFoodDelete(index)
+
+        verifyOrder {
+            viewModel.removeMealFood(index)
+            viewMvc.bindMealDetails(defUiMeal2)
         }
+    }
 
     @Test
     fun `onNavigateUp() navigates up`() {
@@ -173,13 +179,14 @@ internal class MealFormControllerImplTest {
 
     @Test
     internal fun `onDialogResult() updates meal food in view model and refreshes view if event is positive button clicked from edit meal food dialog`() {
-        val dialogEvent = EditMealFoodDialogEvent.OnPositiveButtonClicked(defUiMealFood)
+        val index = 0
+        val dialogEvent = EditMealFoodDialogEvent.OnPositiveButtonClicked(defUiMealFood, index)
         every { viewModel.getMealDetails() } returns defUiMeal2
 
         SUT.onDialogEvent(dialogEvent)
 
         verifyOrder {
-            viewModel.updateMealFood(defUiMealFood)
+            viewModel.updateMealFood(defUiMealFood, index)
             viewMvc.bindMealDetails(defUiMeal2)
         }
     }

@@ -15,8 +15,8 @@ class MealFoodViewHolder(
     itemView: View
 ) : BaseViewHolder<UiMealFood>(itemView) {
     interface Listener {
-        fun onEdit(mealFood: UiMealFood)
-        fun onDelete(mealFoodId: Int)
+        fun onEdit(mealFood: UiMealFood, index: Int)
+        fun onDelete(index: Int)
     }
 
     private val binding = MealFoodItemBinding.bind(itemView)
@@ -36,8 +36,8 @@ class MealFoodViewHolder(
 
                         setOnMenuItemClickListener { menuItem ->
                             when (menuItem.itemId) {
-                                R.id.edit -> listener.onEdit(item)
-                                R.id.delete -> listener.onDelete(item.id)
+                                R.id.edit -> listener.onEdit(item, adapterPosition)
+                                R.id.delete -> listener.onDelete(adapterPosition)
                             }
                             true
                         }
