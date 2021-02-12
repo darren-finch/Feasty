@@ -43,6 +43,10 @@ class MainActivity : BaseActivity(), BackPressDispatcher {
         activityCompositionRoot.getScreensNavigator().onSaveInstanceState(outState)
     }
 
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        activityCompositionRoot.getScreensNavigator().onRestoreInstanceState(savedInstanceState)
+    }
+
     override fun registerListener(listener: BackPressListener) {
         backPressedListeners.add(listener)
     }

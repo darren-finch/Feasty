@@ -41,12 +41,12 @@ class MealPlanFormController(
     }
 
     fun bindMealDetailsToView() {
-        viewMvc.bindMealPlanDetails(viewModel.getState())
+        viewMvc.bindMealPlanDetails(viewModel.getMealPlanDetails())
     }
 
     override fun onDoneButtonClicked() {
         runBlocking(backgroundContext) {
-            insertMealPlanUseCase.insertMealPlan(viewModel.getState())
+            insertMealPlanUseCase.insertMealPlan(viewModel.getMealPlanDetails())
         }
         screensNavigator.navigateUp()
     }

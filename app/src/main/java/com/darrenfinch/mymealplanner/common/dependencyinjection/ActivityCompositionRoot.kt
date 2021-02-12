@@ -7,6 +7,7 @@ import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.helpers.SharedPreferencesHelper
 import com.darrenfinch.mymealplanner.common.helpers.ToastsHelper
+import com.darrenfinch.mymealplanner.common.navigation.NavigationOptions
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.data.MainRepository
 import com.ncapdevi.fragnav.FragNavController
@@ -18,7 +19,7 @@ class ActivityCompositionRoot(
 ) {
     private val fragNavController =
         FragNavController(activity.supportFragmentManager, R.id.container)
-    private val screensNavigator = ScreensNavigator(fragNavController)
+    private val screensNavigator = ScreensNavigator(fragNavController, NavigationOptions.defaultTransactionOptions)
     private val dialogsManager = DialogsManager(fragNavController)
     private val toastsHelper = ToastsHelper(activity)
     private val sharedPreferencesHelper = SharedPreferencesHelper(activity)

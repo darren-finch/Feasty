@@ -164,7 +164,7 @@ class MealPlanControllerImpl(
             val selectedMeal =
                 result.getSerializable(SelectMealPlanMealFragment.SELECTED_MEAL_RESULT) as UiMeal
             val newMealPlanMeal = UiMealPlanMeal(
-                Constants.EXISTING_ITEM_ID,
+                id = Constants.NEW_ITEM_ID,
                 viewModel.getSelectedMealPlanId(),
                 selectedMeal.id,
                 selectedMeal.title,

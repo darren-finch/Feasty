@@ -6,6 +6,7 @@ import com.darrenfinch.mymealplanner.common.views.ProgressIndicatorViewMvc
 import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanMacros
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
+import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 
 interface MealPlanViewMvc : ObservableViewMvc<MealPlanViewMvc.Listener>, ProgressIndicatorViewMvc, ListViewMvc {
     interface Listener {

@@ -49,7 +49,7 @@ class AllFoodsController(
     }
 
     override fun onAddNewFoodClicked() {
-        screensNavigator.toFoodFormScreen(Constants.INVALID_ID)
+        screensNavigator.toFoodFormScreen(Constants.NEW_ITEM_ID)
     }
 
     override fun onFoodEdit(foodId: Int) {

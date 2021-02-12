@@ -32,15 +32,19 @@ class MealPlanViewMvcImpl(
     private var notifyWhenMealPlanSelected = true
 
     private val listener = object : MealsRecyclerViewAdapter.ItemEventListener {
-        override fun onSelect(meal: UiMeal) { }
-        override fun onEdit(mealId: Int) { }
+        override fun onSelect(meal: UiMeal) {}
+        override fun onEdit(mealId: Int) {}
 
         override fun onDelete(mealId: Int) {
+            // TODO: THIS IS SCREWED UP. SHOULD BE MEAL PLAN MEAL ID
             onDeleteMealPlanMealClicked(mealId)
         }
     }
 
-    private val adapter = MealsRecyclerViewAdapter(MealsRecyclerViewAdapter.Config(allowEditingItems = false), listener)
+    private val adapter = MealsRecyclerViewAdapter(
+        MealsRecyclerViewAdapter.Config(allowEditingItems = false),
+        listener
+    )
 
     init {
         setRootView(binding.root)
@@ -103,22 +107,23 @@ class MealPlanViewMvcImpl(
     }
 
     private fun setSelectMealPlanSpinnerItemSelectListener() {
-        binding.selectMealPlanSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                if(notifyWhenMealPlanSelected) {
-                    onMealPlanSelected(position)
-                } else {
-                    notifyWhenMealPlanSelected = true
+        binding.selectMealPlanSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (notifyWhenMealPlanSelected) {
+                        onMealPlanSelected(position)
+                    } else {
+                        notifyWhenMealPlanSelected = true
+                    }
                 }
-            }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) { }
-        }
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
     }
 
     private fun onMealPlanSelected(index: Int) {

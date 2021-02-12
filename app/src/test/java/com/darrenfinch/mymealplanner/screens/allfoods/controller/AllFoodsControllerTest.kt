@@ -1,7 +1,7 @@
 package com.darrenfinch.mymealplanner.screens.allfoods.controller
 
-import com.darrenfinch.mymealplanner.TestConstants
 import com.darrenfinch.mymealplanner.TestDefModels
+import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.foods.usecases.DeleteFoodUseCase
 import com.darrenfinch.mymealplanner.foods.usecases.GetAllFoodsUseCase
@@ -66,15 +66,15 @@ internal class AllFoodsControllerTest {
     }
 
     @Test
-    fun `onAddNewFoodClicked() goes to food form screen with invalid id`() {
+    fun `onAddNewFoodClicked() goes to food form screen with new item id`() {
         SUT.onAddNewFoodClicked()
 
-        verify { screensNavigator.toFoodFormScreen(TestConstants.INVALID_ID) }
+        verify { screensNavigator.toFoodFormScreen(Constants.NEW_ITEM_ID) }
     }
 
     @Test
     fun `onFoodDelete() deletes food with use case`() = runBlockingTest {
-        val foodId = TestConstants.VALID_ID
+        val foodId = Constants.EXISTING_ITEM_ID
         setupGetAllFoodsUseCase()
 
         SUT.onFoodDelete(foodId)
@@ -84,7 +84,7 @@ internal class AllFoodsControllerTest {
 
     @Test
     fun `onFoodEdit() opens food form screen with given id`() {
-        val foodId = TestConstants.VALID_ID
+        val foodId = Constants.EXISTING_ITEM_ID
 
         SUT.onFoodEdit(foodId)
 

@@ -12,7 +12,10 @@ import com.darrenfinch.mymealplanner.common.constants.Constants.NEW_ITEM_ID
 import com.darrenfinch.mymealplanner.common.constants.Constants.EXISTING_ITEM_ID
 import com.darrenfinch.mymealplanner.data.room.models.foods.DbFood
 import com.darrenfinch.mymealplanner.data.room.models.foods.DbMacroNutrients
+import com.darrenfinch.mymealplanner.data.room.models.mealplans.DbMealPlan
+import com.darrenfinch.mymealplanner.data.room.models.mealplans.DbMealPlanMeal
 import com.darrenfinch.mymealplanner.data.room.models.meals.DbMeal
+import com.darrenfinch.mymealplanner.data.room.models.meals.DbMealFood
 import com.darrenfinch.mymealplanner.foods.models.domain.Food
 import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
@@ -28,8 +31,8 @@ import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanMacros
 
 object DefaultModels {
-
     // Data models
+
     val defaultDbMacroNutrients = DbMacroNutrients(
         calories = DEFAULT_CALORIES,
         carbs = DEFAULT_CARBS,
@@ -42,10 +45,30 @@ object DefaultModels {
         servingSize = PhysicalQuantity.defaultPhysicalQuantity,
         macroNutrients = defaultDbMacroNutrients
     )
+    val defaultDbMealFood = DbMealFood(
+        id = NEW_ITEM_ID,
+        foodId = INVALID_ID,
+        mealId = INVALID_ID,
+        desiredServingSize = PhysicalQuantity.defaultPhysicalQuantity
+    )
     val defaultDbMeal = DbMeal(
         id = NEW_ITEM_ID,
         title = ""
     )
+    val defaultDbMealPlan = DbMealPlan(
+        id = NEW_ITEM_ID,
+        title = "",
+        requiredCalories = 0,
+        requiredCarbohydrates = 0,
+        requiredFats = 0,
+        requiredProteins = 0,
+    )
+    val defaultDbMealPlanMeal = DbMealPlanMeal(
+        id = NEW_ITEM_ID,
+        mealPlanId = INVALID_ID,
+        mealId = INVALID_ID
+    )
+
 
     // Domain models
 
@@ -77,8 +100,8 @@ object DefaultModels {
     )
     val defaultMealFood = MealFood(
         id = NEW_ITEM_ID,
-        foodId = EXISTING_ITEM_ID,
-        mealId = EXISTING_ITEM_ID,
+        foodId = INVALID_ID,
+        mealId = INVALID_ID,
         title = DEFAULT_MEAL_FOOD_DATA_TITLE,
         desiredServingSize = PhysicalQuantity.defaultPhysicalQuantity,
         originalServingSize = PhysicalQuantity.defaultPhysicalQuantity,
@@ -95,7 +118,6 @@ object DefaultModels {
         title = DEFAULT_MEAL_DATA_TITLE,
         foods = listOf()
     )
-
 
 
     // Presentation models

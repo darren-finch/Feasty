@@ -1,9 +1,10 @@
 package com.darrenfinch.mymealplanner.common.constants
 
 object Constants {
+    const val DEFAULT_INDEX = 0
     const val INVALID_INDEX = -1
 
-    const val INVALID_ID = -1
+    const val INVALID_ID = -2
     const val NEW_ITEM_ID = -1
     // when entities are inserted into Room, this becomes their id so Room can auto-generate their id
     const val EXISTING_ITEM_ID = 0

@@ -16,16 +16,18 @@ import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.Select
 import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.controller.SelectMealPlanMealFragment
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavTransactionOptions
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 
-class ScreensNavigator(private val navController: FragNavController) :
-    BaseObservable<ScreensNavigator.Listener>() {
+class ScreensNavigator(
+    private val navController: FragNavController,
+    private val defaultTransactionOptions: FragNavTransactionOptions
+) : BaseObservable<ScreensNavigator.Listener>() {
 
     interface Listener {
         fun onGoBackWithResult(result: ScreenResult)
+    }
+
+    companion object {
+        private const val CUR_SCREEN_RESULT = "CUR_SCREEN_RESULT"
     }
 
     private val rootFragmentListener = object : FragNavController.RootFragmentListener {
@@ -71,17 +73,23 @@ class ScreensNavigator(private val navController: FragNavController) :
 
     private var curScreenResult: ScreenResult? = null
 
-    private val enterAnim = android.R.anim.fade_in
-    private val exitAnim = android.R.anim.fade_out
-
     fun init(savedInstanceState: Bundle?) {
         navController.rootFragmentListener = rootFragmentListener
         navController.transactionListener = transactionListener
         navController.initialize(FragNavController.TAB1, savedInstanceState)
     }
 
-    fun onSaveInstanceState(savedInstanceState: Bundle?) {
-        navController.onSaveInstanceState(savedInstanceState)
+    fun onSaveInstanceState(outState: Bundle) {
+        curScreenResult?.let { outState.putSerializable(CUR_SCREEN_RESULT, it) }
+        navController.onSaveInstanceState(outState)
+    }
+
+    fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        savedInstanceState?.let {
+            curScreenResult = savedInstanceState.getSerializable(
+                CUR_SCREEN_RESULT
+            ) as ScreenResult
+        }
     }
 
     fun navigateUp(): Boolean {
@@ -89,9 +97,7 @@ class ScreensNavigator(private val navController: FragNavController) :
             false
         } else {
             navController.popFragment(
-                FragNavTransactionOptions.newBuilder()
-                    .customAnimations(enterAnim, exitAnim, enterAnim, exitAnim)
-                    .build()
+                defaultTransactionOptions
             )
             true
         }
@@ -103,9 +109,7 @@ class ScreensNavigator(private val navController: FragNavController) :
         } else {
             curScreenResult = result
             navController.popFragment(
-                FragNavTransactionOptions.newBuilder()
-                    .customAnimations(enterAnim, exitAnim, enterAnim, exitAnim)
-                    .build()
+                defaultTransactionOptions
             )
             true
         }
@@ -114,18 +118,14 @@ class ScreensNavigator(private val navController: FragNavController) :
     fun switchTab(index: Int) {
         navController.switchTab(
             index,
-            FragNavTransactionOptions.newBuilder()
-                .customAnimations(enterAnim, exitAnim, enterAnim, exitAnim)
-                .build()
+            defaultTransactionOptions
         )
     }
 
     fun toFoodFormScreen(foodId: Int) {
         navController.pushFragment(
             FoodFormFragment.newInstance(foodId),
-            FragNavTransactionOptions.newBuilder()
-                .customAnimations(enterAnim, exitAnim)
-                .build()
+            defaultTransactionOptions
         )
     }
 
@@ -134,36 +134,28 @@ class ScreensNavigator(private val navController: FragNavController) :
     ) {
         navController.pushFragment(
             MealFormFragment.newInstance(mealId),
-            FragNavTransactionOptions.newBuilder()
-                .customAnimations(enterAnim, exitAnim)
-                .build()
+            defaultTransactionOptions
         )
     }
 
     fun toMealPlanFormScreen() {
         navController.pushFragment(
             MealPlanFormFragment.newInstance(),
-            FragNavTransactionOptions.newBuilder()
-                .customAnimations(enterAnim, exitAnim)
-                .build()
+            defaultTransactionOptions
         )
     }
 
     fun toSelectFoodForMealScreen() {
         navController.pushFragment(
             SelectFoodForMealFragment.newInstance(),
-            FragNavTransactionOptions.newBuilder()
-                .customAnimations(enterAnim, exitAnim)
-                .build()
+            defaultTransactionOptions
         )
     }
 
     fun toSelectMealPlanMealScreen() {
         navController.pushFragment(
             SelectMealPlanMealFragment.newInstance(),
-            FragNavTransactionOptions.newBuilder()
-                .customAnimations(enterAnim, exitAnim)
-                .build()
+            defaultTransactionOptions
         )
     }
 }

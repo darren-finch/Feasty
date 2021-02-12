@@ -4,10 +4,10 @@ import com.darrenfinch.mymealplanner.TestDefModels
 import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.data.MainRepository
 import com.darrenfinch.mymealplanner.meals.models.mappers.mealFoodToDbMealFood
+import com.darrenfinch.mymealplanner.meals.models.mappers.mealToDbMeal
 import com.darrenfinch.mymealplanner.meals.models.mappers.uiMealFoodToMealFood
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
+import com.darrenfinch.mymealplanner.meals.models.mappers.uiMealToMeal
+import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.BeforeEach
@@ -24,12 +24,15 @@ internal class UpdateMealUseCaseTest {
     private val existingUiMealFood = TestDefModels.defUiMealFood.copy(id = 1)
     private val newUiMealFood = TestDefModels.defUiMealFood.copy(id = Constants.NEW_ITEM_ID)
     private val newUiMealFoods = listOf(existingUiMealFood, newUiMealFood)
-    private val mealId = 1
-    private val uiMealToBeUpdated = TestDefModels.defUiMeal.copy(id = mealId, foods = newUiMealFoods)
 
     private val existingDbMealFood1 = mealFoodToDbMealFood(uiMealFoodToMealFood(existingUiMealFood)).copy(id = 1)
     private val existingDbMealFood2 = mealFoodToDbMealFood(uiMealFoodToMealFood(existingUiMealFood)).copy(id = 2)
     private val oldDbMealFoods = listOf(existingDbMealFood1, existingDbMealFood2)
+
+    private val mealId = 1
+    private val uiMealToBeUpdated = TestDefModels.defUiMeal.copy(id = mealId, foods = newUiMealFoods)
+
+    private val dbMealToBeUpdated = mealToDbMeal(uiMealToMeal(uiMealToBeUpdated))
 
     @BeforeEach
     internal fun setUp() {
@@ -61,5 +64,24 @@ internal class UpdateMealUseCaseTest {
         SUT.updateMeal(uiMealToBeUpdated)
 
         coVerify { repository.deleteMealFood(2) }
+    }
+
+    @Test
+    internal fun `updateMeal() updates meal in repository`() = runBlockingTest {
+        SUT.updateMeal(uiMealToBeUpdated)
+
+        coVerify { repository.updateMeal(dbMealToBeUpdated) }
+    }
+
+    @Test
+    internal fun `updateMeal() does everything in correct order`() = runBlockingTest {
+        SUT.updateMeal(uiMealToBeUpdated)
+
+        coVerifyOrder {
+            insertMealFoodUseCase.insertMealFood(any(), any())
+            updateMealFoodUseCase.updateMealFood(any())
+            repository.deleteMealFood(any())
+            repository.updateMeal(any())
+        }
     }
 }

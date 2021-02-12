@@ -1,11 +1,9 @@
 package com.darrenfinch.mymealplanner.screens.mealplan.controller
 
-import com.darrenfinch.mymealplanner.TestConstants
+import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.TestDefModels
 import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.constants.DefaultModels
-import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
-import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.helpers.SharedPreferencesHelper
 import com.darrenfinch.mymealplanner.common.helpers.ToastsHelper
 import com.darrenfinch.mymealplanner.common.logs.getClassTag
@@ -25,22 +23,19 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
-import org.mockito.ArgumentMatchers.anyString
 
 @Suppress("RemoveRedundantQualifierName")
 @ExperimentalCoroutinesApi
 internal class MealPlanControllerImplTest {
-    private val defUiMeal = TestDefModels.defUiMeal
+    private val defUiMeal1 = TestDefModels.defUiMeal.copy(title = "defUiMeal1")
+    private val defUiMealPlanMeal1 = TestDefModels.defUiMealPlanMeal.copy(title = "defUiMealPlanMeal1")
+    private val defUiMealPlanMeal2 = TestDefModels.defUiMealPlanMeal.copy(title = "defUiMealPlanMeal2")
     private val defUiMealPlan = TestDefModels.defUiMealPlan.copy(title = "defUiMealPlan")
-    private val defUiMealPlan2 = TestDefModels.defUiMealPlan.copy(title = "defUiMealPlan2")
-
-    private val defUiMealPlanMeal = TestDefModels.defUiMealPlanMeal
+    private val defSelectedMealPlanIndex = Constants.DEFAULT_INDEX
+    private val defSelectedMealPlanId = Constants.EXISTING_ITEM_ID
 
     private val getAllMealPlansResult = listOf(defUiMealPlan)
-    private val getMealsForMealPlanResult = listOf(defUiMealPlanMeal)
-
-    private val defSelectedMealPlanIndex = TestConstants.DEFAULT_INDEX
-    private val defSelectedMealPlanId = TestConstants.VALID_ID
+    private val getMealsForMealPlanResult = listOf(defUiMealPlanMeal1, defUiMealPlanMeal2)
 
     @JvmField
     @RegisterExtension
@@ -54,8 +49,6 @@ internal class MealPlanControllerImplTest {
     private val deleteMealPlanMealUseCase = mockk<DeleteMealPlanMealUseCase>(relaxUnitFun = true)
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
     private val toastsHelper = mockk<ToastsHelper>(relaxUnitFun = true)
-    private val dialogsManager = mockk<DialogsManager>(relaxUnitFun = true)
-    private val dialogsEventBus = mockk<DialogsEventBus>(relaxUnitFun = true)
     private val sharedPreferencesHelper = mockk<SharedPreferencesHelper>(relaxUnitFun = true)
 
     private val viewMvc = mockk<MealPlanViewMvc>(relaxUnitFun = true)
@@ -174,9 +167,9 @@ internal class MealPlanControllerImplTest {
                     )
                 )
             )
-            val mealPlanMacros = MacroCalculatorService.calculateMealPlanMacros(mealPlan, mealPlanMeals)
+            val mealPlanMacros = MacroCalculatorService.calculateMealPlanMacros(mealPlan, getMealsForMealPlanResult)
             coEvery { getAllMealPlansUseCase.getAllMealPlans() } returns listOf(mealPlan)
-            coEvery { getMealsForMealPlanUseCase.getMealsForMealPlan(any()) } returns mealPlanMeals
+            coEvery { getMealsForMealPlanUseCase.getMealsForMealPlan(any()) } returns getMealsForMealPlanResult
 
             SUT.refresh()
 
@@ -286,7 +279,9 @@ internal class MealPlanControllerImplTest {
 
             SUT.onAddNewMealPlanMealClicked()
 
-            verify { toastsHelper.showShortMsg(anyString()) }
+            verify {
+                toastsHelper.showShortMsg(R.string.no_meal_plan_selected_cant_add_meal)
+            }
         }
 
     @Test
@@ -308,15 +303,17 @@ internal class MealPlanControllerImplTest {
     @Test
     internal fun `onGoBackWithResult() adds selected meal to currently selected meal plan, then refreshes meal plans`() =
         runBlockingTest {
+            val selectedMeal = defUiMeal1
+            val mealToBeAdded = TestDefModels.defUiMealPlanMeal.copy(
+                id = Constants.NEW_ITEM_ID,
+                mealId = defUiMeal1.id,
+                mealPlanId = viewModel.getSelectedMealPlanId(),
+                title = defUiMeal1.title
+            )
+
             val screenResult = mockk<ScreenResult>(relaxUnitFun = true)
             every { screenResult.tag } returns SelectMealPlanMealFragment.getClassTag()
-            every { screenResult.getSerializable(SelectMealPlanMealFragment.SELECTED_MEAL_RESULT) } returns defUiMeal
-
-            val mealToBeAdded = defUiMealPlanMeal.copy(
-                id = Constants.EXISTING_ITEM_ID,
-                mealPlanId = defUiMealPlan.id,
-                mealId = 0
-            )
+            every { screenResult.getSerializable(SelectMealPlanMealFragment.SELECTED_MEAL_RESULT) } returns selectedMeal
 
             SUT.onGoBackWithResult(screenResult)
 

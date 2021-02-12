@@ -18,4 +18,14 @@ class GetMealUseCase(val repository: MainRepository) {
             DefaultModels.defaultUiMeal
         }
     }
+
+    suspend fun getMealNullable(id: Int): UiMeal? {
+        val meal = getMeal(id)
+        return if(meal != DefaultModels.defaultUiMeal) {
+            meal
+        }
+        else {
+            null
+        }
+    }
 }

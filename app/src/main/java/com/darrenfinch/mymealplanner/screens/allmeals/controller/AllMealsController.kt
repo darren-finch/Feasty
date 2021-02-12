@@ -1,5 +1,6 @@
 package com.darrenfinch.mymealplanner.screens.allmeals.controller
 
+import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.controllers.ControllerSavedState
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
@@ -48,7 +49,7 @@ class AllMealsController(
     }
 
     override fun onAddNewMealClicked() {
-        screensNavigator.toMealFormScreen(-1)
+        screensNavigator.toMealFormScreen(Constants.NEW_ITEM_ID)
     }
 
     override fun onMealEdit(mealId: Int) {

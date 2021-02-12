@@ -41,7 +41,7 @@ class SelectFoodForMealController(
         getAllFoodsJob?.cancel()
     }
 
-    fun getAllFoodsAndBindToView() {
+    fun getAllFoods() {
         getAllFoodsJob = CoroutineScope(backgroundContext).launch {
             val allFoods = getAllFoodsUseCase.getAllFoods()
             withContext(uiContext) {

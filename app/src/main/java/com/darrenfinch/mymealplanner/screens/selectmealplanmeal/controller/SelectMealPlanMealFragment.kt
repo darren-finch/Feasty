@@ -37,7 +37,7 @@ class SelectMealPlanMealFragment : BaseFragment() {
         viewMvc = controllerCompositionRoot.getViewMvcFactory().getSelectMealPlanMealViewMvc(null)
 
         controller.bindView(viewMvc)
-        controller.getAllMealsAndBindToView()
+        controller.getAllMeals()
 
         return viewMvc.getRootView()
     }
