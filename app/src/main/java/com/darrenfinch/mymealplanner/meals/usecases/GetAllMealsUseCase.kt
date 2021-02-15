@@ -7,14 +7,10 @@ import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 import com.darrenfinch.mymealplanner.data.MainRepository
 import kotlin.coroutines.coroutineContext
 
-class GetAllMealsUseCase(private val repository: MainRepository) {
-
+class GetAllMealsUseCase(private val repository: MainRepository, private val getMealUseCase: GetMealUseCase) {
     suspend fun getAllMeals(): List<UiMeal> {
         return repository.getAllMeals().parallelMap(coroutineContext) { dbMeal ->
-            val dbMealFoods = repository.getMealFoodsForMeal(dbMeal.id)
-            val dbFoodReferences = dbMealFoods.map { dbMealFood -> repository.getFood(dbMealFood.foodId) }
-            mealToUiMeal(dbMealToMeal(dbMeal, dbMealFoods, dbFoodReferences))
-        }
+            getMealUseCase.getMealNullable(dbMeal.id)
+        }.filterNotNull()
     }
-
 }

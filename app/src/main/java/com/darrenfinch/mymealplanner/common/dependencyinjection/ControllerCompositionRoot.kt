@@ -53,7 +53,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     private fun getUpsertFoodUseCase() = UpsertFoodUseCase(getMainRepository())
     private fun getDeleteFoodUseCase() = DeleteFoodUseCase(getMainRepository())
 
-    private fun getGetAllMealsUseCase() = GetAllMealsUseCase(getMainRepository())
+    private fun getGetAllMealsUseCase() = GetAllMealsUseCase(getMainRepository(), getGetMealUseCase())
     private fun getGetMealUseCase() = GetMealUseCase(getMainRepository())
     private fun getUpsertMealUseCase() = UpsertMealUseCase(getInsertMealUseCase(), getUpdateMealUseCase())
     private fun getInsertMealUseCase() = InsertMealUseCase(getMainRepository(), getInsertMealFoodUseCase())
@@ -61,17 +61,13 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     private fun getDeleteMealUseCase() = DeleteMealUseCase(getMainRepository())
 
     private fun getGetAllMealPlansUseCase() = GetAllMealPlansUseCase(getMainRepository())
-    private fun getGetMealPlanUseCase() = GetMealPlanUseCase(getMainRepository())
     private fun getInsertMealPlanUseCase() = InsertMealPlanUseCase(getMainRepository())
-    private fun getUpdateMealPlanUseCase() = UpdateMealPlanUseCase(getMainRepository())
     private fun getDeleteMealPlanUseCase() = DeleteMealPlanUseCase(getMainRepository())
 
     private fun getGetMealsForMealPlanUseCase() = GetMealsForMealPlanUseCase(getMainRepository(), getGetMealUseCase())
     private fun getInsertMealPlanMealUseCase() = InsertMealPlanMealUseCase(getMainRepository())
-    private fun getUpdateMealPlanMealUseCase() = UpdateMealPlanMealUseCase(getMainRepository())
     private fun getDeleteMealPlanMealUseCase() = DeleteMealPlanMealUseCase(getMainRepository())
 
-    private fun getGetMealFoodUseCase() = GetMealFoodUseCase(getMainRepository())
     private fun getInsertMealFoodUseCase() = InsertMealFoodUseCase(getMainRepository())
     private fun getUpdateMealFoodUseCase() = UpdateMealFoodUseCase(getMainRepository())
 
