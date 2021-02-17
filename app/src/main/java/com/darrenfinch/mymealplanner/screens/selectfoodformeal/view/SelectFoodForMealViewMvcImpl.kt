@@ -27,11 +27,15 @@ class SelectFoodForMealViewMvcImpl(
                 listener.onFoodChosen(food)
             }
         }
+
         override fun onItemEdit(foodId: Int) {}
         override fun onItemDelete(foodId: Int) {}
     }
 
-    private val adapter = FoodsRecyclerViewAdapter(FoodsRecyclerViewAdapter.Config(showViewMoreButton = false), foodsListItemEventListener)
+    private val adapter = FoodsRecyclerViewAdapter(
+        FoodsRecyclerViewAdapter.Config(showViewMoreButton = false),
+        foodsListItemEventListener
+    )
 
     init {
         setRootView(binding.root)

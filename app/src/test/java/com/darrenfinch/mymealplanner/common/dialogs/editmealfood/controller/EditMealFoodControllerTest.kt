@@ -1,7 +1,6 @@
 package com.darrenfinch.mymealplanner.common.dialogs.editmealfood.controller
 
 import com.darrenfinch.mymealplanner.TestDefModels
-import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogEvent
@@ -52,7 +51,7 @@ internal class EditMealFoodControllerTest {
 
         verifySequence {
             viewMvc.bindMealFoodTitle(defUiMealFood.title)
-            viewMvc.bindMealFoodMacros(defUiMealFood.originalMacroNutrients)
+            viewMvc.bindMealFoodMacros(defUiMealFood.macroNutrients)
             viewMvc.bindMealFoodDesiredServingSize(defUiMealFood.desiredServingSize)
         }
     }

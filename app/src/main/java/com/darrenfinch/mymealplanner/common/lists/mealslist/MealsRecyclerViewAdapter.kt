@@ -1,15 +1,17 @@
 package com.darrenfinch.mymealplanner.common.lists.mealslist
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.lists.BaseRecyclerViewAdapter
+import com.darrenfinch.mymealplanner.common.lists.DragAndDropRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 
 class MealsRecyclerViewAdapter(
     private val config: Config,
     private val itemEventListener: ItemEventListener
-) : BaseRecyclerViewAdapter<UiMeal, MealViewHolder>(mutableListOf()), MealViewHolder.Listener {
+) : DragAndDropRecyclerViewAdapter<UiMeal, MealViewHolder>(), MealViewHolder.Listener {
     data class Config(val showViewMoreButton: Boolean = true, val allowEditingItems: Boolean = true)
 
     interface ItemEventListener {

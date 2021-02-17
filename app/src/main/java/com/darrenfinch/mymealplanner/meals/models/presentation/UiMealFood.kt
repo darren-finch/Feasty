@@ -11,5 +11,5 @@ data class UiMealFood(
     val title: String,
     val desiredServingSize: PhysicalQuantity,
     val originalServingSize: PhysicalQuantity,
-    val originalMacroNutrients: UiMacroNutrients,
+    val macroNutrients: UiMacroNutrients,
 ) : Serializable

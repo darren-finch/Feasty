@@ -5,14 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.common.lists.mealfoodslist.MealFoodsRecyclerViewAdapter
+import com.darrenfinch.mymealplanner.common.lists.SimpleItemTouchHelperCallback
 import com.darrenfinch.mymealplanner.common.lists.itemdecorations.MarginItemDecoration
+import com.darrenfinch.mymealplanner.common.lists.mealfoodslist.MealFoodsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentMealFormBinding
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
+
 
 class MealFormViewMvcImpl(
     inflater: LayoutInflater,
@@ -53,6 +56,14 @@ class MealFormViewMvcImpl(
 
     private fun setupUI() {
         binding.apply {
+            mealFoodsRecyclerView.adapter = mealFoodsRecyclerViewAdapter
+            mealFoodsRecyclerView.layoutManager = LinearLayoutManager(getContext())
+            mealFoodsRecyclerView.addItemDecoration(MarginItemDecoration(16))
+
+            val callback: ItemTouchHelper.Callback = SimpleItemTouchHelperCallback(mealFoodsRecyclerViewAdapter)
+            val touchHelper = ItemTouchHelper(callback)
+            touchHelper.attachToRecyclerView(mealFoodsRecyclerView)
+
             addNewFood.setOnClickListener {
                 onAddNewFoodButtonClicked()
             }
@@ -68,10 +79,6 @@ class MealFormViewMvcImpl(
                     listener.onTitleChange(text.toString())
                 }
             }
-
-            mealFoodsRecyclerView.adapter = mealFoodsRecyclerViewAdapter
-            mealFoodsRecyclerView.layoutManager = LinearLayoutManager(getContext())
-            mealFoodsRecyclerView.addItemDecoration(MarginItemDecoration(16))
         }
     }
 

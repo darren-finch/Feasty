@@ -9,7 +9,6 @@ import com.darrenfinch.mymealplanner.common.constants.Constants.DEFAULT_MEAL_FOO
 import com.darrenfinch.mymealplanner.common.constants.Constants.DEFAULT_PROTEINS
 import com.darrenfinch.mymealplanner.common.constants.Constants.INVALID_ID
 import com.darrenfinch.mymealplanner.common.constants.Constants.NEW_ITEM_ID
-import com.darrenfinch.mymealplanner.common.constants.Constants.EXISTING_ITEM_ID
 import com.darrenfinch.mymealplanner.data.room.models.foods.DbFood
 import com.darrenfinch.mymealplanner.data.room.models.foods.DbMacroNutrients
 import com.darrenfinch.mymealplanner.data.room.models.mealplans.DbMealPlan
@@ -146,7 +145,7 @@ object DefaultModels {
         title = DEFAULT_MEAL_FOOD_DATA_TITLE,
         desiredServingSize = PhysicalQuantity.defaultPhysicalQuantity,
         originalServingSize = PhysicalQuantity.defaultPhysicalQuantity,
-        originalMacroNutrients = defaultUiMacroNutrients,
+        macroNutrients = defaultUiMacroNutrients,
     )
     val defaultUiMealPlan = UiMealPlan(
         id = NEW_ITEM_ID,

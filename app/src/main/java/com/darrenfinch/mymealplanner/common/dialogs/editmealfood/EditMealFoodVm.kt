@@ -56,10 +56,10 @@ class EditMealFoodVm : StatefulVm() {
         desiredServingSizeUnit.set(mealFood.desiredServingSize.unit)
         originalServingSizeQuantity = mealFood.originalServingSize.quantity
         originalServingSizeUnit = mealFood.originalServingSize.unit
-        calories = mealFood.originalMacroNutrients.calories
-        carbs = mealFood.originalMacroNutrients.carbs
-        fats = mealFood.originalMacroNutrients.fats
-        proteins = mealFood.originalMacroNutrients.proteins
+        calories = mealFood.macroNutrients.calories
+        carbs = mealFood.macroNutrients.carbs
+        fats = mealFood.macroNutrients.fats
+        proteins = mealFood.macroNutrients.proteins
     }
 
     fun getMealFoodDetails() = UiMealFood(
@@ -69,7 +69,7 @@ class EditMealFoodVm : StatefulVm() {
         title = title,
         originalServingSize = originalServingSize,
         desiredServingSize = desiredServingSize,
-        originalMacroNutrients = originalMacroNutrients
+        macroNutrients = originalMacroNutrients
     )
 
     fun getMealFoodTitle() = title

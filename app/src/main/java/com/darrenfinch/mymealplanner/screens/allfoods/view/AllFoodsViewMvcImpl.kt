@@ -4,13 +4,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
+import com.darrenfinch.mymealplanner.common.lists.SimpleItemTouchHelperCallback
 import com.darrenfinch.mymealplanner.common.lists.foodslist.FoodsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.common.lists.itemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentAllFoodsBinding
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
+
 
 class AllFoodsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseObservableViewMvc<AllFoodsViewMvc.Listener>(), AllFoodsViewMvc {
 
@@ -37,9 +40,17 @@ class AllFoodsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
         }
     }
 
-    private val foodsListAdapter = FoodsRecyclerViewAdapter(FoodsRecyclerViewAdapter.Config(true), foodsListItemEventListener)
+    private val foodsListAdapter = FoodsRecyclerViewAdapter(
+        FoodsRecyclerViewAdapter.Config(true),
+        foodsListItemEventListener
+    )
 
-    private var _binding: FragmentAllFoodsBinding? = DataBindingUtil.inflate(inflater, R.layout.fragment_all_foods, parent, false)
+    private var _binding: FragmentAllFoodsBinding? = DataBindingUtil.inflate(
+        inflater,
+        R.layout.fragment_all_foods,
+        parent,
+        false
+    )
     private val binding = _binding!!
 
     init {
@@ -53,6 +64,10 @@ class AllFoodsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
             foodsRecyclerView.layoutManager = LinearLayoutManager(getContext())
             foodsRecyclerView.addItemDecoration(MarginItemDecoration(16))
             addFoodFab.setOnClickListener { onAddNewFoodClicked() }
+
+            val callback = SimpleItemTouchHelperCallback(foodsListAdapter)
+            val touchHelper = ItemTouchHelper(callback)
+            touchHelper.attachToRecyclerView(foodsRecyclerView)
         }
     }
 

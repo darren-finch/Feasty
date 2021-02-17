@@ -22,8 +22,6 @@ class MealPlanVm : Serializable {
         this.mealPlanIds = mealPlans.map { it.id }.toMutableList()
     }
 
-    fun hasMealPlans() = mealPlanIds.isNotEmpty()
-
     fun getSelectedMealPlanId(): Int {
         return mealPlanIds.elementAtOrElse(selectedMealPlanIndex) { Constants.INVALID_INDEX }
     }

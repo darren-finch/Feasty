@@ -4,17 +4,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
-import com.darrenfinch.mymealplanner.common.lists.mealslist.MealsRecyclerViewAdapter
+import com.darrenfinch.mymealplanner.common.lists.SimpleItemTouchHelperCallback
 import com.darrenfinch.mymealplanner.common.lists.itemdecorations.MarginItemDecoration
+import com.darrenfinch.mymealplanner.common.lists.mealslist.MealsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentAllMealsBinding
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 
-class AllMealsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseObservableViewMvc<AllMealsViewMvc.Listener>(), AllMealsViewMvc {
+
+class AllMealsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) :
+    BaseObservableViewMvc<AllMealsViewMvc.Listener>(), AllMealsViewMvc {
     private val mealItemEventListener = object : MealsRecyclerViewAdapter.ItemEventListener {
-        override fun onSelect(meal: UiMeal) { }
+        override fun onSelect(meal: UiMeal) {}
 
         override fun onEdit(mealId: Int) {
             for (listener in getListeners()) {
@@ -27,11 +31,13 @@ class AllMealsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
                 listener.onMealDelete(mealId)
             }
         }
-
     }
 
     private val mealsRecyclerViewAdapter =
-        MealsRecyclerViewAdapter(MealsRecyclerViewAdapter.Config(), mealItemEventListener)
+        MealsRecyclerViewAdapter(
+            MealsRecyclerViewAdapter.Config(),
+            mealItemEventListener
+        )
 
     private var _binding: FragmentAllMealsBinding? = DataBindingUtil.inflate(
         inflater,
@@ -56,11 +62,15 @@ class AllMealsViewMvcImpl(inflater: LayoutInflater, parent: ViewGroup?) : BaseOb
                 )
             )
             addMealFab.setOnClickListener { onAddNewMealClicked() }
+
+            val callback = SimpleItemTouchHelperCallback(mealsRecyclerViewAdapter)
+            val touchHelper = ItemTouchHelper(callback)
+            touchHelper.attachToRecyclerView(mealsRecyclerView)
         }
     }
 
     private fun onAddNewMealClicked() {
-        for(listener in getListeners()) {
+        for (listener in getListeners()) {
             listener.onAddNewMealClicked()
         }
     }

@@ -149,7 +149,7 @@ internal class MealPlanControllerImplTest {
                 TestDefModels.defUiMealPlanMeal.copy(
                     foods = listOf(
                         TestDefModels.defUiMealFood.copy(
-                            originalMacroNutrients = UiMacroNutrients(
+                            macroNutrients = UiMacroNutrients(
                                 800,
                                 80,
                                 80,
@@ -157,7 +157,7 @@ internal class MealPlanControllerImplTest {
                             )
                         ),
                         TestDefModels.defUiMealFood.copy(
-                            originalMacroNutrients = UiMacroNutrients(
+                            macroNutrients = UiMacroNutrients(
                                 800,
                                 80,
                                 80,

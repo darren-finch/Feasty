@@ -45,7 +45,13 @@ class MealPlanControllerImpl(
 
     private sealed class ScreenState : Serializable {
         object Loading : ScreenState()
-        class HasData(val mealPlans: List<UiMealPlan>, val mealPlanMeals: List<UiMealPlanMeal>, val mealPlanMacros: MealPlanMacros, val selectedMealPlanIndex: Int) : ScreenState()
+        class HasData(
+            val mealPlans: List<UiMealPlan>,
+            val mealPlanMeals: List<UiMealPlanMeal>,
+            val mealPlanMacros: MealPlanMacros,
+            val selectedMealPlanIndex: Int
+        ) : ScreenState()
+
         object NoData : ScreenState()
         class Error(@StringRes val errorMsgId: Int) : ScreenState()
     }
@@ -85,9 +91,8 @@ class MealPlanControllerImpl(
             }
 
             val allMealPlans = getAllMealPlansUseCase.getAllMealPlans()
-            val selectedMealPlanIndex = min(sharedPreferencesHelper.getInt(SELECTED_MEAL_PLAN_INDEX), allMealPlans.lastIndex)
-            val selectedMealPlan = allMealPlans.elementAtOrNull(selectedMealPlanIndex)
-                ?: DefaultModels.defaultUiMealPlan.copy(id = Constants.INVALID_ID)
+            val selectedMealPlanIndex = getFirstValidMealPlanIndex(allMealPlans)
+            val selectedMealPlan = getSelectedMealPlan(allMealPlans, selectedMealPlanIndex)
 
             val mealPlanMeals = getMealsForMealPlanUseCase.getMealsForMealPlan(selectedMealPlan.id)
             val mealPlanMacros =
@@ -107,6 +112,17 @@ class MealPlanControllerImpl(
                     )
             }
         }
+    }
+
+    private fun getFirstValidMealPlanIndex(allMealPlans: List<UiMealPlan>) =
+        min(sharedPreferencesHelper.getInt(SELECTED_MEAL_PLAN_INDEX), allMealPlans.lastIndex)
+
+    private fun getSelectedMealPlan(
+        allMealPlans: List<UiMealPlan>,
+        selectedMealPlanIndex: Int
+    ): UiMealPlan {
+        return allMealPlans.elementAtOrNull(selectedMealPlanIndex)
+            ?: DefaultModels.defaultUiMealPlan.copy(id = Constants.INVALID_ID)
     }
 
     override fun onMealPlanSelected(index: Int) {
@@ -160,7 +176,7 @@ class MealPlanControllerImpl(
     }
 
     override fun onGoBackWithResult(result: ScreenResult) {
-        if(result.tag == SelectMealPlanMealFragment.getClassTag()) {
+        if (result.tag == SelectMealPlanMealFragment.getClassTag()) {
             val selectedMeal =
                 result.getSerializable(SelectMealPlanMealFragment.SELECTED_MEAL_RESULT) as UiMeal
             val newMealPlanMeal = UiMealPlanMeal(
@@ -201,7 +217,7 @@ class MealPlanControllerImpl(
                     viewMvc.hideEmptyListIndication()
                     viewMvc.bindMealPlans(it.mealPlans)
                     viewModel.setInitialMealPlans(it.mealPlans)
-                    if(it.mealPlanMeals.isEmpty())
+                    if (it.mealPlanMeals.isEmpty())
                         viewMvc.showEmptyListIndication()
                     else
                         viewMvc.bindMealPlanMeals(it.mealPlanMeals)

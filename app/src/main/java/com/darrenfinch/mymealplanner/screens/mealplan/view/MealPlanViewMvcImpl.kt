@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
+import com.darrenfinch.mymealplanner.common.lists.SimpleItemTouchHelperCallback
 import com.darrenfinch.mymealplanner.common.lists.itemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.lists.mealslist.MealsRecyclerViewAdapter
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
@@ -16,6 +18,7 @@ import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanMacros
+
 
 class MealPlanViewMvcImpl(
     inflater: LayoutInflater,
@@ -41,7 +44,7 @@ class MealPlanViewMvcImpl(
         }
     }
 
-    private val adapter = MealsRecyclerViewAdapter(
+    private val mealsRecyclerViewAdapter = MealsRecyclerViewAdapter(
         MealsRecyclerViewAdapter.Config(allowEditingItems = false),
         listener
     )
@@ -53,9 +56,13 @@ class MealPlanViewMvcImpl(
 
     private fun setupUI() {
         binding.apply {
-            mealPlanMealsRecyclerView.adapter = adapter
+            mealPlanMealsRecyclerView.adapter = mealsRecyclerViewAdapter
             mealPlanMealsRecyclerView.layoutManager = LinearLayoutManager(getContext())
             mealPlanMealsRecyclerView.addItemDecoration(MarginItemDecoration(16))
+
+            val callback = SimpleItemTouchHelperCallback(mealsRecyclerViewAdapter)
+            val touchHelper = ItemTouchHelper(callback)
+            touchHelper.attachToRecyclerView(mealPlanMealsRecyclerView)
 
             addMealPlanMealFab.setOnClickListener { onAddNewMealPlanMealClicked() }
 
@@ -133,7 +140,7 @@ class MealPlanViewMvcImpl(
     }
 
     override fun bindMealPlanMeals(meals: List<UiMealPlanMeal>) {
-        adapter.updateItems(meals.map {
+        mealsRecyclerViewAdapter.updateItems(meals.map {
             UiMeal(
                 id = it.id,
                 title = it.title,

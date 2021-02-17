@@ -39,7 +39,7 @@ class MealFormVm : StatefulVm() {
             mealId = id,
             desiredServingSize = selectedFood.servingSize,
             originalServingSize = selectedFood.servingSize,
-            originalMacroNutrients = selectedFood.macroNutrients
+            macroNutrients = selectedFood.macroNutrients
         )
         mealFoods.set(mealFoodsList + mealFood)
     }
