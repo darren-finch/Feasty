@@ -10,7 +10,7 @@ import com.darrenfinch.mymealplanner.common.navigation.ScreenDataReturnBuffer
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.meals.usecases.GetMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.UpsertMealUseCase
-import com.darrenfinch.mymealplanner.screens.mealform.MealFormVm
+import com.darrenfinch.mymealplanner.screens.mealform.MealFormData
 import com.darrenfinch.mymealplanner.screens.mealform.view.MealFormViewMvc
 import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealFragment
 import com.darrenfinch.mymealplanner.testrules.CoroutinesTestExtension
@@ -35,7 +35,7 @@ internal class MealFormControllerImplTest {
     @RegisterExtension
     val coroutinesTestExtension = CoroutinesTestExtension()
 
-    private val viewModel = mockk<MealFormVm>(relaxUnitFun = true)
+    private val screenData = mockk<MealFormData>(relaxUnitFun = true)
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
     private val screenDataReturnBuffer = mockk<ScreenDataReturnBuffer>(relaxUnitFun = true)
     private val dialogsManager = mockk<DialogsManager>(relaxUnitFun = true)
@@ -51,7 +51,7 @@ internal class MealFormControllerImplTest {
     @BeforeEach
     fun setUp() {
         SUT = MealFormControllerImpl(
-            viewModel,
+            screenData,
             upsertMealUseCase,
             getMealUseCase,
             screensNavigator,
@@ -67,7 +67,7 @@ internal class MealFormControllerImplTest {
         // Default to editing a meal
         SUT.setArgs(Constants.EXISTING_ITEM_ID)
 
-        every { viewModel.getMealDetails() } returns defUiMeal
+        every { screenData.getMealDetails() } returns defUiMeal
         coEvery { getMealUseCase.getMeal(any()) } returns getMealUseCaseResult
         every { screensNavigator.navigateUp() } returns true
     }
@@ -80,28 +80,28 @@ internal class MealFormControllerImplTest {
     }
 
     @Test
-    internal fun `onStart() adds chosen food to view model and rebinds meal to view if chosen food exists`() {
+    internal fun `onStart() adds chosen food to screen data and rebinds meal to view if chosen food exists`() {
         val chosenUiFood = TestDefModels.defUiFood
         every { screenDataReturnBuffer.hasDataForToken(SelectFoodForMealFragment.ASYNC_COMPLETION_TOKEN) } returns true
         every { screenDataReturnBuffer.getData(SelectFoodForMealFragment.ASYNC_COMPLETION_TOKEN) } returns chosenUiFood
-        every { viewModel.getMealDetails() } returns defUiMeal
+        every { screenData.getMealDetails() } returns defUiMeal
 
         SUT.onStart()
 
         verify {
-            viewModel.addMealFood(chosenUiFood)
+            screenData.addMealFood(chosenUiFood)
             viewMvc.bindMealDetails(defUiMeal)
         }
     }
 
     @Test
-    internal fun `onStart() doesn't add chosen food to view model or rebind meal to view if chosen food doesn't exist`() {
+    internal fun `onStart() doesn't add chosen food to screen data or rebind meal to view if chosen food doesn't exist`() {
         every { screenDataReturnBuffer.hasDataForToken(SelectFoodForMealFragment.ASYNC_COMPLETION_TOKEN) } returns false
 
         SUT.onStart()
 
         verify(inverse = true) {
-            viewModel.addMealFood(any())
+            screenData.addMealFood(any())
             viewMvc.bindMealDetails(defUiMeal)
         }
     }
@@ -121,27 +121,27 @@ internal class MealFormControllerImplTest {
     fun `getMealDetails() sets view state from use case when meal details haven't been loaded`() {
         SUT.getMealDetails()
 
-        verify { viewModel.bindMealDetails(getMealUseCaseResult) }
-        verify { viewModel.bindMealDetails(getMealUseCaseResult) }
+        verify { screenData.bindMealDetails(getMealUseCaseResult) }
+        verify { screenData.bindMealDetails(getMealUseCaseResult) }
         verify { viewMvc.bindMealDetails(getMealUseCaseResult) }
     }
 
     @Test
-    fun `getMealDetails() sets view state from view model when meal details have been loaded`() {
-        every { viewModel.getMealDetails() } returns defUiMeal
+    fun `getMealDetails() sets view state from screen data when meal details have been loaded`() {
+        every { screenData.getMealDetails() } returns defUiMeal
 
         SUT.getMealDetails()
 
         verify {
-            viewModel.bindMealDetails(getMealUseCaseResult)
+            screenData.bindMealDetails(getMealUseCaseResult)
             viewMvc.bindMealDetails(getMealUseCaseResult)
         }
 
         SUT.getMealDetails()
 
         verify {
-            viewModel.bindMealDetails(defUiMeal)
-            viewModel.bindMealDetails(defUiMeal)
+            screenData.bindMealDetails(defUiMeal)
+            screenData.bindMealDetails(defUiMeal)
             viewMvc.bindMealDetails(defUiMeal)
         }
     }
@@ -163,7 +163,7 @@ internal class MealFormControllerImplTest {
     @Test
     fun `onDoneButtonClicked() upserts meal then navigates up`() =
         runBlockingTest {
-            every { viewModel.getMealDetails() } returns defUiMeal2
+            every { screenData.getMealDetails() } returns defUiMeal2
 
             SUT.onDoneButtonClicked()
 
@@ -183,14 +183,14 @@ internal class MealFormControllerImplTest {
     }
 
     @Test
-    internal fun `onMealFoodDelete() removes meal food from view model and refreshes view`() {
+    internal fun `onMealFoodDelete() removes meal food from screen data and refreshes view`() {
         val index = 1
-        every { viewModel.getMealDetails() } returns defUiMeal2
+        every { screenData.getMealDetails() } returns defUiMeal2
 
         SUT.onMealFoodDelete(index)
 
         verifyOrder {
-            viewModel.removeMealFood(index)
+            screenData.removeMealFood(index)
             viewMvc.bindMealDetails(defUiMeal2)
         }
     }
@@ -210,15 +210,15 @@ internal class MealFormControllerImplTest {
     }
 
     @Test
-    internal fun `onDialogResult() updates meal food in view model and refreshes view if event is positive button clicked from edit meal food dialog`() {
+    internal fun `onDialogResult() updates meal food in screen data and refreshes view if event is positive button clicked from edit meal food dialog`() {
         val index = 0
         val dialogEvent = EditMealFoodDialogEvent.OnPositiveButtonClicked(defUiMealFood, index)
-        every { viewModel.getMealDetails() } returns defUiMeal2
+        every { screenData.getMealDetails() } returns defUiMeal2
 
         SUT.onDialogEvent(dialogEvent)
 
         verifyOrder {
-            viewModel.updateMealFood(defUiMealFood, index)
+            screenData.updateMealFood(defUiMealFood, index)
             viewMvc.bindMealDetails(defUiMeal2)
         }
     }

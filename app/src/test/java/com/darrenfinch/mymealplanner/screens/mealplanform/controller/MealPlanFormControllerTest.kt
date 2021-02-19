@@ -4,7 +4,7 @@ import com.darrenfinch.mymealplanner.TestDefModels
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.mealplans.usecases.InsertMealPlanUseCase
-import com.darrenfinch.mymealplanner.screens.mealplanform.MealPlanFormVm
+import com.darrenfinch.mymealplanner.screens.mealplanform.MealPlanFormData
 import com.darrenfinch.mymealplanner.screens.mealplanform.view.MealPlanFormViewMvc
 import com.darrenfinch.mymealplanner.testrules.CoroutinesTestExtension
 import io.mockk.*
@@ -22,7 +22,7 @@ internal class MealPlanFormControllerTest {
     @RegisterExtension
     val coroutinesTestExtension = CoroutinesTestExtension()
 
-    private val viewModel = mockk<MealPlanFormVm>(relaxUnitFun = true)
+    private val screenData = mockk<MealPlanFormData>(relaxUnitFun = true)
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
     private val backPressDispatcher = mockk<BackPressDispatcher>(relaxUnitFun = true)
     private val insertMealPlanUseCase = mockk<InsertMealPlanUseCase>(relaxUnitFun = true)
@@ -34,7 +34,7 @@ internal class MealPlanFormControllerTest {
     @BeforeEach
     fun setUp() {
         SUT = MealPlanFormController(
-            viewModel,
+            screenData,
             insertMealPlanUseCase,
             screensNavigator,
             backPressDispatcher,
@@ -42,7 +42,7 @@ internal class MealPlanFormControllerTest {
         )
         SUT.bindView(viewMvc)
 
-        every { viewModel.getMealPlanDetails() } returns uiMealPlanDetails
+        every { screenData.getMealPlanDetails() } returns uiMealPlanDetails
         every { screensNavigator.navigateUp() } returns true
     }
 
@@ -67,7 +67,7 @@ internal class MealPlanFormControllerTest {
     }
 
     @Test
-    internal fun `bindMealDetailsToView() binds meal details to view from view model`() {
+    internal fun `bindMealDetailsToView() binds meal details to view from screen data`() {
         SUT.bindMealDetailsToView()
 
         verify {

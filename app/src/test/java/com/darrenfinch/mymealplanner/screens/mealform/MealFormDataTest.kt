@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class MealFormVmTest {
-    private lateinit var SUT: MealFormVm
+internal class MealFormDataTest {
+    private lateinit var SUT: MealFormData
 
     private val initialUiMealFood1 = DefaultModels.defaultUiMealFood.copy(title = "initialUiMealFood1")
     private val initialUiMealFood2 = DefaultModels.defaultUiMealFood.copy(title = "initialUiMealFood2")
@@ -21,7 +21,7 @@ internal class MealFormVmTest {
 
     @BeforeEach
     internal fun setUp() {
-        SUT = MealFormVm()
+        SUT = MealFormData()
 
         SUT.bindMealDetails(defUiMeal)
     }

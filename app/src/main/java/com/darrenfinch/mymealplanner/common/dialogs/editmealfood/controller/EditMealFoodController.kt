@@ -5,22 +5,23 @@ import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogEvent
-import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodVm
+import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogData
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.view.EditMealFoodViewMvc
 import com.darrenfinch.mymealplanner.common.controllers.ControllerSavedState
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
 
 class EditMealFoodController(
-    private var viewModel: EditMealFoodVm,
+    private var screenData: EditMealFoodDialogData,
     private val dialogsManager: DialogsManager,
     private val dialogsEventBus: DialogsEventBus,
 ) : BaseController, EditMealFoodViewMvc.Listener {
 
-    data class SavedState(val viewModel: EditMealFoodVm, val hasLoadedMealFoodDetails: Boolean, val indexArgState: Int) :
+    data class SavedState(val screenData: EditMealFoodDialogData, val hasLoadedMealFoodDetails: Boolean, val indexArgState: Int) :
         ControllerSavedState
 
     private lateinit var viewMvc: EditMealFoodViewMvc
 
+    // This variable is an argument that is also saved across config changes, so I'm keeping it here in the controller for now.
     private var indexArgState = Constants.INVALID_INDEX
 
     private var hasLoadedMealFoodDetails = false
@@ -30,9 +31,9 @@ class EditMealFoodController(
     }
 
     fun bindViewStateToView() {
-        viewMvc.bindMealFoodTitle(viewModel.getMealFoodTitle())
-        viewMvc.bindMealFoodMacros(viewModel.getUpdatedMealFoodMacros())
-        viewMvc.bindMealFoodDesiredServingSize(viewModel.getDesiredMealFoodServingSize())
+        viewMvc.bindMealFoodTitle(screenData.getTitle())
+        viewMvc.bindMealFoodMacros(screenData.getMacrosBasedOnDesiredServingSize())
+        viewMvc.bindMealFoodDesiredServingSize(screenData.getDesiredServingSize())
     }
 
     fun onStart() {
@@ -45,30 +46,30 @@ class EditMealFoodController(
 
     override fun restoreState(state: ControllerSavedState) {
         (state as SavedState).let {
-            viewModel = it.viewModel
+            screenData = it.screenData
             hasLoadedMealFoodDetails = it.hasLoadedMealFoodDetails
             indexArgState = it.indexArgState
         }
     }
 
     override fun getState(): ControllerSavedState {
-        return SavedState(viewModel, hasLoadedMealFoodDetails, indexArgState)
+        return SavedState(screenData, hasLoadedMealFoodDetails, indexArgState)
     }
 
     fun setArgs(mealFood: UiMealFood, index: Int) {
         indexArgState = index
-        viewModel.bindMealFoodDetails(mealFood)
+        screenData.bindMealFoodDetails(mealFood)
     }
 
     override fun onPositiveButtonClicked() {
         dialogsManager.clearDialog()
         dialogsEventBus.postEvent(
-            EditMealFoodDialogEvent.OnPositiveButtonClicked(viewModel.getMealFoodDetails(), indexArgState)
+            EditMealFoodDialogEvent.OnPositiveButtonClicked(screenData.getMealFoodDetails(), indexArgState)
         )
     }
 
     override fun onMealFoodServingSizeQuantityChange(quantity: Double) {
-        viewModel.setDesiredServingSizeQuantity(quantity)
-        viewMvc.bindMealFoodMacros(viewModel.getUpdatedMealFoodMacros())
+        screenData.setDesiredServingSizeQuantity(quantity)
+        viewMvc.bindMealFoodMacros(screenData.getMacrosBasedOnDesiredServingSize())
     }
 }

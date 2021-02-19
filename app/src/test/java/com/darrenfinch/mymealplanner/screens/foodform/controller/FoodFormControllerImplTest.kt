@@ -5,7 +5,7 @@ import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.foods.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.foods.usecases.UpsertFoodUseCase
-import com.darrenfinch.mymealplanner.screens.foodform.FoodFormVm
+import com.darrenfinch.mymealplanner.screens.foodform.FoodFormData
 import com.darrenfinch.mymealplanner.screens.foodform.view.FoodFormViewMvc
 import com.darrenfinch.mymealplanner.testrules.CoroutinesTestExtension
 import io.mockk.*
@@ -28,7 +28,7 @@ internal class FoodFormControllerImplTest {
     @RegisterExtension
     val coroutinesTestExtension = CoroutinesTestExtension()
 
-    private val viewModel = mockk<FoodFormVm>(relaxUnitFun = true)
+    private val screenData = mockk<FoodFormData>(relaxUnitFun = true)
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
     private val getFoodUseCase = mockk<GetFoodUseCase>(relaxUnitFun = true)
     private val upsertFoodUseCase = mockk<UpsertFoodUseCase>(relaxUnitFun = true)
@@ -41,7 +41,7 @@ internal class FoodFormControllerImplTest {
     @BeforeEach
     fun setUp() {
         SUT = FoodFormControllerImpl(
-            viewModel,
+            screenData,
             screensNavigator,
             getFoodUseCase,
             upsertFoodUseCase,
@@ -51,27 +51,27 @@ internal class FoodFormControllerImplTest {
         )
         SUT.bindView(viewMvc)
 
-        every { viewModel.getFoodDetails() } returns defUiFood
+        every { screenData.getFoodDetails() } returns defUiFood
         coEvery { getFoodUseCase.getFood(any()) } returns getFoodUseCaseResult
         every { screensNavigator.navigateUp() } returns true
     }
 
     @Test
-    fun `getFoodDetails() sets view state from view model when food details have been loaded`() {
-        every { viewModel.getFoodDetails() } returns defUiFood
+    fun `getFoodDetails() sets view state from screen data when food details have been loaded`() {
+        every { screenData.getFoodDetails() } returns defUiFood
 
         SUT.getFoodDetails()
 
         verify {
-            viewModel.bindFoodDetails(getFoodUseCaseResult)
+            screenData.bindFoodDetails(getFoodUseCaseResult)
             viewMvc.bindFoodDetails(getFoodUseCaseResult)
         }
 
         SUT.getFoodDetails()
 
         verify {
-            viewModel.bindFoodDetails(defUiFood)
-            viewModel.bindFoodDetails(defUiFood)
+            screenData.bindFoodDetails(defUiFood)
+            screenData.bindFoodDetails(defUiFood)
             viewMvc.bindFoodDetails(defUiFood)
         }
     }
@@ -80,8 +80,8 @@ internal class FoodFormControllerImplTest {
     fun `getFoodDetails() sets view state from use case when food details haven't been loaded`() {
         SUT.getFoodDetails()
 
-        verify { viewModel.bindFoodDetails(getFoodUseCaseResult) }
-        verify { viewModel.bindFoodDetails(getFoodUseCaseResult) }
+        verify { screenData.bindFoodDetails(getFoodUseCaseResult) }
+        verify { screenData.bindFoodDetails(getFoodUseCaseResult) }
         verify { viewMvc.bindFoodDetails(getFoodUseCaseResult) }
     }
 
@@ -101,7 +101,7 @@ internal class FoodFormControllerImplTest {
 
     @Test
     fun `onDoneButtonClicked() upserts food details then navigates up`() = runBlockingTest {
-        every { viewModel.getFoodDetails() } returns defUiFood2
+        every { screenData.getFoodDetails() } returns defUiFood2
 
         SUT.onDoneButtonClicked()
 

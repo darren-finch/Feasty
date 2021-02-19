@@ -4,7 +4,8 @@ import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
 import java.io.Serializable
 
-class MealPlanVm : Serializable {
+// TODO: Write test
+class MealPlanData : Serializable {
     private var selectedMealPlanIndex = 0
     private var mealPlanIds = mutableListOf<Int>()
 

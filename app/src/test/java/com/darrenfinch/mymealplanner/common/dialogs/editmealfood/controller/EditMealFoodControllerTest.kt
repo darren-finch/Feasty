@@ -4,7 +4,7 @@ import com.darrenfinch.mymealplanner.TestDefModels
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogEvent
-import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodVm
+import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogData
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.view.EditMealFoodViewMvc
 import io.mockk.every
 import io.mockk.mockk
@@ -17,10 +17,9 @@ import org.junit.jupiter.api.Test
 @ExperimentalCoroutinesApi
 internal class EditMealFoodControllerTest {
     private val defUiMealFood = TestDefModels.defUiMealFood
-    private val defUiMacros = TestDefModels.defUiMacros
     private val defIndex = 0
 
-    private val viewModel = mockk<EditMealFoodVm>(relaxUnitFun = true)
+    private val screenData = mockk<EditMealFoodDialogData>(relaxUnitFun = true)
     private val dialogsManager = mockk<DialogsManager>(relaxUnitFun = true)
     private val dialogsEventBus = mockk<DialogsEventBus>(relaxUnitFun = true)
 
@@ -31,7 +30,7 @@ internal class EditMealFoodControllerTest {
     @BeforeEach
     fun setUp() {
         SUT = EditMealFoodController(
-            viewModel,
+            screenData,
             dialogsManager,
             dialogsEventBus,
         )
@@ -43,41 +42,45 @@ internal class EditMealFoodControllerTest {
 
     @Test
     internal fun `bindViewStateToView() binds view state to view`() {
-        every { viewModel.getMealFoodTitle() } returns defUiMealFood.title
-        every { viewModel.getUpdatedMealFoodMacros() } returns defUiMacros
-        every { viewModel.getDesiredMealFoodServingSize() } returns defUiMealFood.desiredServingSize
+        val macros = TestDefModels.defUiMacros
+
+        every { screenData.getTitle() } returns defUiMealFood.title
+        every { screenData.getMacrosBasedOnDesiredServingSize() } returns macros
+        every { screenData.getDesiredServingSize() } returns defUiMealFood.desiredServingSize
 
         SUT.bindViewStateToView()
 
         verifySequence {
             viewMvc.bindMealFoodTitle(defUiMealFood.title)
-            viewMvc.bindMealFoodMacros(defUiMealFood.macroNutrients)
+            viewMvc.bindMealFoodMacros(macros)
             viewMvc.bindMealFoodDesiredServingSize(defUiMealFood.desiredServingSize)
         }
     }
 
     @Test
-    internal fun `onMealFoodServingSizeQuantityChange() sets desired serving size on view model`() {
+    internal fun `onMealFoodServingSizeQuantityChange() sets desired serving size on screen data`() {
         val testQuantity = 1.0
-        every { viewModel.getUpdatedMealFoodMacros() } returns defUiMacros
+        every { screenData.getMacrosBasedOnDesiredServingSize() } returns TestDefModels.defUiMacros
 
         SUT.onMealFoodServingSizeQuantityChange(testQuantity)
 
-        verify { viewModel.setDesiredServingSizeQuantity(testQuantity) }
+        verify { screenData.setDesiredServingSizeQuantity(testQuantity) }
     }
 
     @Test
-    internal fun `onMealFoodServingSizeQuantityChange() binds updated meal food macros to view`() {
-        every { viewModel.getUpdatedMealFoodMacros() } returns defUiMacros
+    internal fun `onMealFoodServingSizeQuantityChange() binds macros based on desired serving size to view`() {
+        val macros = TestDefModels.defUiMacros
+
+        every { screenData.getMacrosBasedOnDesiredServingSize() } returns macros
 
         SUT.onMealFoodServingSizeQuantityChange(0.0) // quantity doesn't matter for this test
 
-        verify { viewMvc.bindMealFoodMacros(defUiMacros) }
+        verify { viewMvc.bindMealFoodMacros(macros) }
     }
 
     @Test
     internal fun `onPositiveButtonClicked() closes current dialog`() {
-        every { viewModel.getMealFoodDetails() } returns defUiMealFood
+        every { screenData.getMealFoodDetails() } returns defUiMealFood
 
         SUT.onPositiveButtonClicked()
 
@@ -86,7 +89,7 @@ internal class EditMealFoodControllerTest {
 
     @Test
     internal fun `onPositiveButtonClicked() sends out correct event with result`() {
-        every { viewModel.getMealFoodDetails() } returns defUiMealFood
+        every { screenData.getMealFoodDetails() } returns defUiMealFood
 
         SUT.onPositiveButtonClicked()
 

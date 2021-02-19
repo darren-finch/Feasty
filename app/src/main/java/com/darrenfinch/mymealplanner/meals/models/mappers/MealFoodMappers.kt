@@ -23,7 +23,7 @@ fun mealFoodToUiMealFood(mealFood: MealFood) = UiMealFood(
     title = mealFood.title,
     mealId = mealFood.mealId,
     foodId = mealFood.foodId,
-    macroNutrients = macroNutrientsToUiMacroNutrients(mealFood.originalMacroNutrients),
+    originalMacroNutrients = macroNutrientsToUiMacroNutrients(mealFood.originalMacroNutrients),
     desiredServingSize = mealFood.desiredServingSize,
     originalServingSize = mealFood.originalServingSize
 )
@@ -33,7 +33,7 @@ fun uiMealFoodToMealFood(uiMealFood: UiMealFood) = MealFood(
     title = uiMealFood.title,
     mealId = uiMealFood.mealId,
     foodId = uiMealFood.foodId,
-    originalMacroNutrients = uiMacroNutrientsToMacroNutrients(uiMealFood.macroNutrients),
+    originalMacroNutrients = uiMacroNutrientsToMacroNutrients(uiMealFood.originalMacroNutrients),
     desiredServingSize = uiMealFood.desiredServingSize,
     originalServingSize = uiMealFood.originalServingSize
 )

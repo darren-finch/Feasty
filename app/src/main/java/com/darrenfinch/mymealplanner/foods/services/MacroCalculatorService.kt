@@ -85,16 +85,16 @@ object MacroCalculatorService {
 
     fun calculateMealPlanMacros(mealPlan: UiMealPlan, mealPlanMeals: List<UiMealPlanMeal>): MealPlanMacros {
         val totalCalories = mealPlanMeals.sumBy { mealPlanMeal ->
-            mealPlanMeal.foods.sumBy { food -> food.macroNutrients.calories }
+            mealPlanMeal.foods.sumBy { food -> food.originalMacroNutrients.calories }
         }
         val totalCarbs = mealPlanMeals.sumBy { mealPlanMeal ->
-            mealPlanMeal.foods.sumBy { food -> food.macroNutrients.carbs }
+            mealPlanMeal.foods.sumBy { food -> food.originalMacroNutrients.carbs }
         }
         val totalFats = mealPlanMeals.sumBy { mealPlanMeal ->
-            mealPlanMeal.foods.sumBy { food -> food.macroNutrients.fats }
+            mealPlanMeal.foods.sumBy { food -> food.originalMacroNutrients.fats }
         }
         val totalProteins = mealPlanMeals.sumBy { mealPlanMeal ->
-            mealPlanMeal.foods.sumBy { food -> food.macroNutrients.proteins }
+            mealPlanMeal.foods.sumBy { food -> food.originalMacroNutrients.proteins }
         }
 
         return MealPlanMacros(

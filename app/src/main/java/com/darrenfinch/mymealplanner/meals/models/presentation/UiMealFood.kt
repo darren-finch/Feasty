@@ -10,6 +10,7 @@ data class UiMealFood(
     val mealId: Int = 0,
     val title: String,
     val desiredServingSize: PhysicalQuantity,
+    // the macro nutrients based on desired serving size are calculated on-the-fly
     val originalServingSize: PhysicalQuantity,
-    val macroNutrients: UiMacroNutrients,
+    val originalMacroNutrients: UiMacroNutrients,
 ) : Serializable

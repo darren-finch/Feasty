@@ -13,7 +13,7 @@ import com.darrenfinch.mymealplanner.foods.services.MacroCalculatorService
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.usecases.*
-import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanVm
+import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanData
 import com.darrenfinch.mymealplanner.screens.mealplan.view.MealPlanViewMvc
 import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.controller.SelectMealPlanMealFragment
 import com.darrenfinch.mymealplanner.testrules.CoroutinesTestExtension
@@ -41,7 +41,7 @@ internal class MealPlanControllerImplTest {
     @RegisterExtension
     val coroutinesTestExtension = CoroutinesTestExtension()
 
-    private val viewModel = mockk<MealPlanVm>(relaxUnitFun = true)
+    private val screenData = mockk<MealPlanData>(relaxUnitFun = true)
     private val getAllMealPlansUseCase = mockk<GetAllMealPlansUseCase>(relaxUnitFun = true)
     private val getMealsForMealPlanUseCase = mockk<GetMealsForMealPlanUseCase>(relaxUnitFun = true)
     private val deleteMealPlanUseCase = mockk<DeleteMealPlanUseCase>(relaxUnitFun = true)
@@ -59,7 +59,7 @@ internal class MealPlanControllerImplTest {
     @BeforeEach
     internal fun setUp() {
         SUT = MealPlanControllerImpl(
-            viewModel,
+            screenData,
             getAllMealPlansUseCase,
             getMealsForMealPlanUseCase,
             insertMealPlanMealUseCase,
@@ -76,8 +76,8 @@ internal class MealPlanControllerImplTest {
         SUT.bindView(viewMvc)
 
         every { sharedPreferencesHelper.getInt(MealPlanFragment.SELECTED_MEAL_PLAN_INDEX) } returns selectedMealPlanIndex
-        every { viewModel.getSelectedMealPlanIndex() } returns selectedMealPlanIndex
-        every { viewModel.getSelectedMealPlanId() } returns selectedMealPlanId
+        every { screenData.getSelectedMealPlanIndex() } returns selectedMealPlanIndex
+        every { screenData.getSelectedMealPlanId() } returns selectedMealPlanId
         coEvery { getAllMealPlansUseCase.getAllMealPlans() } returns getAllMealPlansResult
         coEvery { getMealsForMealPlanUseCase.getMealsForMealPlan(any()) } returns getMealsForMealPlanResult
     }
@@ -184,7 +184,7 @@ internal class MealPlanControllerImplTest {
                 TestDefModels.defUiMealPlanMeal.copy(
                     foods = listOf(
                         TestDefModels.defUiMealFood.copy(
-                            macroNutrients = UiMacroNutrients(
+                            originalMacroNutrients = UiMacroNutrients(
                                 800,
                                 80,
                                 80,
@@ -192,7 +192,7 @@ internal class MealPlanControllerImplTest {
                             )
                         ),
                         TestDefModels.defUiMealFood.copy(
-                            macroNutrients = UiMacroNutrients(
+                            originalMacroNutrients = UiMacroNutrients(
                                 800,
                                 80,
                                 80,
@@ -231,7 +231,7 @@ internal class MealPlanControllerImplTest {
             SUT.refresh()
 
             verifyOrder {
-                viewModel.setInitialMealPlans(emptyList())
+                screenData.setInitialMealPlans(emptyList())
                 viewMvc.bindMealPlans(emptyList())
                 viewMvc.bindMealPlanMeals(emptyList())
                 viewMvc.bindMealPlanMacros(DefaultModels.defaultMealPlanMacros)
@@ -249,7 +249,7 @@ internal class MealPlanControllerImplTest {
                 viewMvc.hideProgressIndication()
                 viewMvc.hideEmptyListIndication()
                 viewMvc.bindMealPlans(getAllMealPlansResult)
-                viewModel.setInitialMealPlans(getAllMealPlansResult)
+                screenData.setInitialMealPlans(getAllMealPlansResult)
                 viewMvc.bindMealPlanMeals(getMealsForMealPlanResult)
                 viewMvc.bindMealPlanMacros(
                     MacroCalculatorService.calculateMealPlanMacros(
@@ -257,7 +257,7 @@ internal class MealPlanControllerImplTest {
                         getMealsForMealPlanResult
                     )
                 )
-                viewModel.setSelectedMealPlanIndex(selectedMealPlanIndex)
+                screenData.setSelectedMealPlanIndex(selectedMealPlanIndex)
                 viewMvc.setSelectedMealPlanIndexWithoutNotifying(selectedMealPlanIndex)
             }
         }
@@ -278,7 +278,7 @@ internal class MealPlanControllerImplTest {
 
         coVerifyOrder {
             sharedPreferencesHelper.putInt(any(), selectedMealPlanIndex)
-            viewModel.setSelectedMealPlanIndex(selectedMealPlanIndex)
+            screenData.setSelectedMealPlanIndex(selectedMealPlanIndex)
             getAllMealPlansUseCase.getAllMealPlans()
         }
     }
@@ -291,7 +291,7 @@ internal class MealPlanControllerImplTest {
             coVerifyOrder {
                 viewMvc.showProgressIndication()
                 viewMvc.hideEmptyListIndication()
-                viewModel.moveSelectedMealPlanIndex()
+                screenData.moveSelectedMealPlanIndex()
                 getAllMealPlansUseCase.getAllMealPlans()
             }
         }
@@ -311,7 +311,7 @@ internal class MealPlanControllerImplTest {
     @Test
     internal fun `onAddNewMealPlanMealClicked() shows error toast if no selected meal plan`() =
         runBlockingTest {
-            every { viewModel.getSelectedMealPlanId() } returns Constants.INVALID_ID
+            every { screenData.getSelectedMealPlanId() } returns Constants.INVALID_ID
 
             SUT.onAddNewMealPlanMealClicked()
 

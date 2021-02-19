@@ -8,13 +8,13 @@ import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 import com.darrenfinch.mymealplanner.foods.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.foods.usecases.UpsertFoodUseCase
 import com.darrenfinch.mymealplanner.physicalquantities.units.MeasurementUnit
-import com.darrenfinch.mymealplanner.screens.foodform.FoodFormVm
+import com.darrenfinch.mymealplanner.screens.foodform.FoodFormData
 import com.darrenfinch.mymealplanner.screens.foodform.view.FoodFormViewMvc
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 class FoodFormControllerImpl(
-    private var viewModel: FoodFormVm,
+    private var screenData: FoodFormData,
     private val screensNavigator: ScreensNavigator,
     private val getFoodUseCase: GetFoodUseCase,
     private val upsertFoodUseCase: UpsertFoodUseCase,
@@ -28,7 +28,7 @@ class FoodFormControllerImpl(
         class HasData(val foodDetails: UiFood) : ScreenState()
     }
 
-    data class SavedState(val viewModel: FoodFormVm, val hasLoadedFoodDetails: Boolean) :
+    data class SavedState(val screenData: FoodFormData, val hasLoadedFoodDetails: Boolean) :
         ControllerSavedState
 
     private lateinit var viewMvc: FoodFormViewMvc
@@ -59,7 +59,7 @@ class FoodFormControllerImpl(
 
         if (hasLoadedFoodDetails) {
             // view model is retained on config changes, so this essentially restores the view
-            setScreenState(ScreenState.HasData(viewModel.getFoodDetails()))
+            setScreenState(ScreenState.HasData(screenData.getFoodDetails()))
         } else {
             getFoodJob = CoroutineScope(backgroundContext).launch {
                 val foodDetails = getFoodUseCase.getFood(foodIdArg)
@@ -77,7 +77,7 @@ class FoodFormControllerImpl(
             }
             is ScreenState.HasData -> {
                 viewMvc.hideProgressIndication()
-                viewModel.bindFoodDetails(screenState.foodDetails)
+                screenData.bindFoodDetails(screenState.foodDetails)
                 viewMvc.bindFoodDetails(screenState.foodDetails)
                 hasLoadedFoodDetails = true
             }
@@ -86,7 +86,7 @@ class FoodFormControllerImpl(
 
     override fun onDoneButtonClicked() {
         runBlocking(backgroundContext) {
-            upsertFoodUseCase.upsertFood(viewModel.getFoodDetails())
+            upsertFoodUseCase.upsertFood(screenData.getFoodDetails())
         }
         screensNavigator.navigateUp()
     }
@@ -96,31 +96,31 @@ class FoodFormControllerImpl(
     }
 
     override fun onTitleChange(newTitle: String) {
-        viewModel.setTitle(newTitle)
+        screenData.setTitle(newTitle)
     }
 
     override fun onServingSizeQuantityChange(newServingSizeQuantity: Double) {
-        viewModel.setServingSizeQuantity(newServingSizeQuantity)
+        screenData.setServingSizeQuantity(newServingSizeQuantity)
     }
 
     override fun onServingSizeUnitChange(newServingSizeUnit: MeasurementUnit) {
-        viewModel.setServingSizeUnit(newServingSizeUnit)
+        screenData.setServingSizeUnit(newServingSizeUnit)
     }
 
     override fun onCaloriesChange(newCalories: Int) {
-        viewModel.setCalories(newCalories)
+        screenData.setCalories(newCalories)
     }
 
     override fun onCarbsChange(newCarbs: Int) {
-        viewModel.setCarbs(newCarbs)
+        screenData.setCarbs(newCarbs)
     }
 
     override fun onFatsChange(newFats: Int) {
-        viewModel.setFats(newFats)
+        screenData.setFats(newFats)
     }
 
     override fun onProteinsChange(newProteins: Int) {
-        viewModel.setProteins(newProteins)
+        screenData.setProteins(newProteins)
     }
 
     override fun setArgs(foodId: Int) {
@@ -129,13 +129,13 @@ class FoodFormControllerImpl(
 
     override fun restoreState(state: ControllerSavedState) {
         (state as SavedState).let {
-            viewModel = it.viewModel
+            screenData = it.screenData
             hasLoadedFoodDetails = it.hasLoadedFoodDetails
         }
     }
 
     override fun getState(): ControllerSavedState {
-        return SavedState(viewModel, hasLoadedFoodDetails)
+        return SavedState(screenData, hasLoadedFoodDetails)
     }
 
     override fun onBackPressed(): Boolean {

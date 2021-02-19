@@ -145,7 +145,7 @@ object DefaultModels {
         title = DEFAULT_MEAL_FOOD_DATA_TITLE,
         desiredServingSize = PhysicalQuantity.defaultPhysicalQuantity,
         originalServingSize = PhysicalQuantity.defaultPhysicalQuantity,
-        macroNutrients = defaultUiMacroNutrients,
+        originalMacroNutrients = defaultUiMacroNutrients,
     )
     val defaultUiMealPlan = UiMealPlan(
         id = NEW_ITEM_ID,

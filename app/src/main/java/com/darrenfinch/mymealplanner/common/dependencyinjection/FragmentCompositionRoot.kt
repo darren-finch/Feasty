@@ -3,7 +3,7 @@ package com.darrenfinch.mymealplanner.common.dependencyinjection
 import android.app.Application
 import android.view.LayoutInflater
 import android.view.View
-import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodVm
+import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogData
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.controller.EditMealFoodController
 import com.darrenfinch.mymealplanner.common.helpers.KeyboardHelper
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
@@ -12,13 +12,13 @@ import com.darrenfinch.mymealplanner.mealplans.usecases.*
 import com.darrenfinch.mymealplanner.meals.usecases.*
 import com.darrenfinch.mymealplanner.screens.allfoods.controller.AllFoodsController
 import com.darrenfinch.mymealplanner.screens.allmeals.controller.AllMealsController
-import com.darrenfinch.mymealplanner.screens.foodform.FoodFormVm
+import com.darrenfinch.mymealplanner.screens.foodform.FoodFormData
 import com.darrenfinch.mymealplanner.screens.foodform.controller.FoodFormControllerImpl
-import com.darrenfinch.mymealplanner.screens.mealform.MealFormVm
+import com.darrenfinch.mymealplanner.screens.mealform.MealFormData
 import com.darrenfinch.mymealplanner.screens.mealform.controller.MealFormControllerImpl
-import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanVm
+import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanData
 import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanControllerImpl
-import com.darrenfinch.mymealplanner.screens.mealplanform.MealPlanFormVm
+import com.darrenfinch.mymealplanner.screens.mealplanform.MealPlanFormData
 import com.darrenfinch.mymealplanner.screens.mealplanform.controller.MealPlanFormController
 import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealController
 import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.controller.SelectMealPlanMealController
@@ -165,9 +165,9 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
 
 
     // View models
-    private fun getEditMealFoodVm() = EditMealFoodVm()
-    fun getFoodFormVm() = FoodFormVm()
-    fun getMealFormVm() = MealFormVm()
-    fun getMealPlanFormVm() = MealPlanFormVm()
-    private fun getMealPlanVm() = MealPlanVm()
+    private fun getEditMealFoodVm() = EditMealFoodDialogData()
+    fun getFoodFormVm() = FoodFormData()
+    fun getMealFormVm() = MealFormData()
+    fun getMealPlanFormVm() = MealPlanFormData()
+    private fun getMealPlanVm() = MealPlanData()
 }
