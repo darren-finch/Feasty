@@ -5,19 +5,18 @@ import com.darrenfinch.mymealplanner.common.controllers.ControllerSavedState
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogEvent
-import com.darrenfinch.mymealplanner.common.logs.getClassTag
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
-import com.darrenfinch.mymealplanner.common.navigation.ScreenResult
+import com.darrenfinch.mymealplanner.common.navigation.ScreenDataReturnBuffer
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
-import com.darrenfinch.mymealplanner.meals.usecases.*
+import com.darrenfinch.mymealplanner.meals.usecases.GetMealUseCase
+import com.darrenfinch.mymealplanner.meals.usecases.UpsertMealUseCase
 import com.darrenfinch.mymealplanner.screens.mealform.MealFormVm
 import com.darrenfinch.mymealplanner.screens.mealform.view.MealFormViewMvc
 import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealFragment
-import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealFragment.Companion.SELECTED_FOOD_RESULT
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -26,13 +25,13 @@ class MealFormControllerImpl(
     private val upsertMealUseCase: UpsertMealUseCase,
     private val getMealUseCase: GetMealUseCase,
     private val screensNavigator: ScreensNavigator,
+    private val screenDataReturnBuffer: ScreenDataReturnBuffer,
     private val dialogsManager: DialogsManager,
     private val dialogsEventBus: DialogsEventBus,
     private val backPressDispatcher: BackPressDispatcher,
     private val backgroundContext: CoroutineContext,
     private val uiContext: CoroutineContext
-) : MealFormController, MealFormViewMvc.Listener, BackPressListener, DialogsEventBus.Listener,
-    ScreensNavigator.Listener {
+) : MealFormController, MealFormViewMvc.Listener, BackPressListener, DialogsEventBus.Listener {
 
     private sealed class ScreenState {
         object Loading : ScreenState()
@@ -58,14 +57,22 @@ class MealFormControllerImpl(
         viewMvc.registerListener(this)
         dialogsEventBus.registerListener(this)
         backPressDispatcher.registerListener(this)
-        screensNavigator.registerListener(this)
+
+        addChosenFoodToMealIfExists()
+    }
+
+    private fun addChosenFoodToMealIfExists() {
+        if (screenDataReturnBuffer.hasDataForToken(SelectFoodForMealFragment.ASYNC_COMPLETION_TOKEN)) {
+            val selectedFood = screenDataReturnBuffer.getData(SelectFoodForMealFragment.ASYNC_COMPLETION_TOKEN) as UiFood
+            viewModel.addMealFood(selectedFood)
+            viewMvc.bindMealDetails(viewModel.getMealDetails())
+        }
     }
 
     override fun onStop() {
         viewMvc.unregisterListener(this)
         dialogsEventBus.unregisterListener(this)
         backPressDispatcher.unregisterListener(this)
-        screensNavigator.unregisterListener(this)
         getMealJob?.cancel()
     }
 
@@ -149,14 +156,6 @@ class MealFormControllerImpl(
     override fun onDialogEvent(event: Any) {
         if (event is EditMealFoodDialogEvent.OnPositiveButtonClicked) {
             viewModel.updateMealFood(event.selectedMealFoodResult, event.index)
-            viewMvc.bindMealDetails(viewModel.getMealDetails())
-        }
-    }
-
-    override fun onGoBackWithResult(result: ScreenResult) {
-        if (result.tag == SelectFoodForMealFragment.getClassTag()) {
-            val selectedFood = result.getSerializable(SELECTED_FOOD_RESULT) as UiFood
-            viewModel.addMealFood(selectedFood)
             viewMvc.bindMealDetails(viewModel.getMealDetails())
         }
     }

@@ -20,11 +20,7 @@ import com.ncapdevi.fragnav.FragNavTransactionOptions
 class ScreensNavigator(
     private val navController: FragNavController,
     private val defaultTransactionOptions: FragNavTransactionOptions
-) : BaseObservable<ScreensNavigator.Listener>() {
-
-    interface Listener {
-        fun onGoBackWithResult(result: ScreenResult)
-    }
+) {
 
     companion object {
         private const val CUR_SCREEN_RESULT = "CUR_SCREEN_RESULT"
@@ -43,71 +39,19 @@ class ScreensNavigator(
         }
     }
 
-    private val transactionListener = object : FragNavController.TransactionListener {
-        override fun onFragmentTransaction(
-            fragment: Fragment?,
-            transactionType: FragNavController.TransactionType
-        ) {
-            if (transactionType == FragNavController.TransactionType.POP) {
-                notifyListenersOfFragmentPop()
-            }
-        }
-
-        private fun notifyListenersOfFragmentPop() {
-            navController.currentFrag?.lifecycle?.addObserver(object : LifecycleObserver {
-                @OnLifecycleEvent(Lifecycle.Event.ON_START)
-                fun onFragmentStart() {
-                    curScreenResult?.let {
-                        for (listener in getListeners()) {
-                            listener.onGoBackWithResult(it)
-                        }
-                        curScreenResult = null
-                    }
-                    navController.currentFrag?.lifecycle?.removeObserver(this)
-                }
-            })
-        }
-
-        override fun onTabTransaction(fragment: Fragment?, index: Int) {}
-    }
-
-    private var curScreenResult: ScreenResult? = null
-
     fun init(savedInstanceState: Bundle?) {
         navController.rootFragmentListener = rootFragmentListener
-        navController.transactionListener = transactionListener
         navController.initialize(FragNavController.TAB1, savedInstanceState)
     }
 
     fun onSaveInstanceState(outState: Bundle) {
-        curScreenResult?.let { outState.putSerializable(CUR_SCREEN_RESULT, it) }
         navController.onSaveInstanceState(outState)
-    }
-
-    fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        savedInstanceState?.let {
-            curScreenResult = savedInstanceState.getSerializable(
-                CUR_SCREEN_RESULT
-            ) as ScreenResult
-        }
     }
 
     fun navigateUp(): Boolean {
         return if (navController.isRootFragment) {
             false
         } else {
-            navController.popFragment(
-                defaultTransactionOptions
-            )
-            true
-        }
-    }
-
-    fun navigateUpWithResult(result: ScreenResult): Boolean {
-        return if (navController.isRootFragment) {
-            false
-        } else {
-            curScreenResult = result
             navController.popFragment(
                 defaultTransactionOptions
             )

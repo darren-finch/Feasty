@@ -20,7 +20,7 @@ class SelectMealPlanMealViewMvcImpl(
 
     private val mealsListItemEventListener = object : MealsRecyclerViewAdapter.ItemEventListener {
         override fun onSelect(meal: UiMeal) {
-            onMealSelected(meal)
+            onMealChosen(meal)
         }
 
         override fun onEdit(mealId: Int) { }
@@ -29,9 +29,9 @@ class SelectMealPlanMealViewMvcImpl(
         }
     }
 
-    private fun onMealSelected(meal: UiMeal) {
+    private fun onMealChosen(meal: UiMeal) {
         for (listener in getListeners()) {
-            listener.onMealSelected(meal)
+            listener.onMealChosen(meal)
         }
     }
 

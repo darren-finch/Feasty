@@ -1,16 +1,12 @@
 package com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller
 
 import com.darrenfinch.mymealplanner.TestDefModels
-import com.darrenfinch.mymealplanner.common.logs.getClassTag
-import com.darrenfinch.mymealplanner.common.navigation.ScreenResult
+import com.darrenfinch.mymealplanner.common.navigation.ScreenDataReturnBuffer
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.foods.usecases.GetAllFoodsUseCase
 import com.darrenfinch.mymealplanner.screens.selectfoodformeal.view.SelectFoodForMealViewMvc
 import com.darrenfinch.mymealplanner.testrules.CoroutinesTestExtension
-import io.mockk.coEvery
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -19,12 +15,14 @@ import org.junit.jupiter.api.extension.RegisterExtension
 @ExperimentalCoroutinesApi
 internal class SelectFoodForMealControllerTest {
 
-    private val defUiFood1 = TestDefModels.defUiFood.copy(title = "defUiFood1")
-    private val defUiFood2 = TestDefModels.defUiFood.copy(title = "defUiFood2")
-    private val getAllFoodsUseCaseResult = listOf(defUiFood1, defUiFood2)
+    private val getAllFoodsUseCaseResult = listOf(
+        TestDefModels.defUiFood.copy(title = "defUiFood1"),
+        TestDefModels.defUiFood.copy(title = "defUiFood2")
+    )
 
     private val getAllFoodsUseCase = mockk<GetAllFoodsUseCase>(relaxUnitFun = true)
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
+    private val screenDataReturnBuffer = mockk<ScreenDataReturnBuffer>(relaxUnitFun = true)
     private val viewMvc = mockk<SelectFoodForMealViewMvc>(relaxUnitFun = true)
 
     @JvmField
@@ -38,6 +36,7 @@ internal class SelectFoodForMealControllerTest {
         SUT = SelectFoodForMealController(
             getAllFoodsUseCase,
             screensNavigator,
+            screenDataReturnBuffer,
             coroutinesTestExtension.testDispatcher,
             coroutinesTestExtension.testDispatcher
         )
@@ -79,5 +78,20 @@ internal class SelectFoodForMealControllerTest {
         SUT.onNavigateUp()
 
         verify { screensNavigator.navigateUp() }
+    }
+
+    @Test
+    internal fun `onFoodChosen() puts chosen food into screen data return buffer then navigates back`() {
+        val chosenFood = TestDefModels.defUiFood.copy(title = "chosenFood")
+
+        SUT.onFoodChosen(chosenFood)
+
+        verifySequence {
+            screenDataReturnBuffer.putData(
+                chosenFood,
+                SelectFoodForMealFragment.ASYNC_COMPLETION_TOKEN
+            )
+            screensNavigator.navigateUp()
+        }
     }
 }

@@ -7,8 +7,7 @@ import com.darrenfinch.mymealplanner.common.constants.DefaultModels
 import com.darrenfinch.mymealplanner.common.controllers.ControllerSavedState
 import com.darrenfinch.mymealplanner.common.helpers.SharedPreferencesHelper
 import com.darrenfinch.mymealplanner.common.helpers.ToastsHelper
-import com.darrenfinch.mymealplanner.common.logs.getClassTag
-import com.darrenfinch.mymealplanner.common.navigation.ScreenResult
+import com.darrenfinch.mymealplanner.common.navigation.ScreenDataReturnBuffer
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.foods.services.MacroCalculatorService
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
@@ -36,12 +35,12 @@ class MealPlanControllerImpl(
     private val deleteMealPlanUseCase: DeleteMealPlanUseCase,
     private val deleteMealPlanMealUseCase: DeleteMealPlanMealUseCase,
     private val screensNavigator: ScreensNavigator,
+    private val screenDataReturnBuffer: ScreenDataReturnBuffer,
     private val toastsHelper: ToastsHelper,
     private val sharedPreferencesHelper: SharedPreferencesHelper,
     private val backgroundContext: CoroutineContext,
     private val uiContext: CoroutineContext
-) : MealPlanController, MealPlanViewMvc.Listener,
-    ScreensNavigator.Listener {
+) : MealPlanController, MealPlanViewMvc.Listener {
 
     private sealed class ScreenState : Serializable {
         object Loading : ScreenState()
@@ -71,12 +70,31 @@ class MealPlanControllerImpl(
 
     override fun onStart() {
         viewMvc.registerListener(this)
-        screensNavigator.registerListener(this)
+
+        addChosenMealToMealPlanIfExists()
+    }
+
+    private fun addChosenMealToMealPlanIfExists() {
+        if(screenDataReturnBuffer.hasDataForToken(SelectMealPlanMealFragment.ASYNC_COMPLETION_TOKEN)) {
+            val selectedMeal =
+                screenDataReturnBuffer.getData(SelectMealPlanMealFragment.ASYNC_COMPLETION_TOKEN) as UiMeal
+            val newMealPlanMeal = UiMealPlanMeal(
+                id = Constants.NEW_ITEM_ID,
+                viewModel.getSelectedMealPlanId(),
+                selectedMeal.id,
+                selectedMeal.title,
+                selectedMeal.foods
+            )
+
+            insertMealPlanMealJob = CoroutineScope(backgroundContext).launch {
+                insertMealPlanMealUseCase.insertMealPlanMeal(newMealPlanMeal)
+                refresh()
+            }
+        }
     }
 
     override fun onStop() {
         viewMvc.unregisterListener(this)
-        screensNavigator.unregisterListener(this)
         getAllMealPlansJob?.cancel()
         deleteMealPlanJob?.cancel()
         insertMealPlanMealJob?.cancel()
@@ -173,28 +191,6 @@ class MealPlanControllerImpl(
 
     override fun getState(): ControllerSavedState {
         return SavedState(viewModel)
-    }
-
-    override fun onGoBackWithResult(result: ScreenResult) {
-        if (result.tag == SelectMealPlanMealFragment.getClassTag()) {
-            val selectedMeal =
-                result.getSerializable(SelectMealPlanMealFragment.SELECTED_MEAL_RESULT) as UiMeal
-            val newMealPlanMeal = UiMealPlanMeal(
-                id = Constants.NEW_ITEM_ID,
-                viewModel.getSelectedMealPlanId(),
-                selectedMeal.id,
-                selectedMeal.title,
-                selectedMeal.foods
-            )
-            addMealToMealPlan(newMealPlanMeal)
-        }
-    }
-
-    private fun addMealToMealPlan(newMealPlanMeal: UiMealPlanMeal) {
-        insertMealPlanMealJob = CoroutineScope(backgroundContext).launch {
-            insertMealPlanMealUseCase.insertMealPlanMeal(newMealPlanMeal)
-            refresh()
-        }
     }
 
     private fun setScreenState(screenState: ScreenState) {

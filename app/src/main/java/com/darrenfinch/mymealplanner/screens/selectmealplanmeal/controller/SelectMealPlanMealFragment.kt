@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
+import com.darrenfinch.mymealplanner.common.logs.getClassTag
 import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.view.SelectMealPlanMealViewMvc
 
 class SelectMealPlanMealFragment : BaseFragment() {
 
     companion object {
+        val ASYNC_COMPLETION_TOKEN = getClassTag()
+
         // Dialog results
         const val SELECTED_MEAL_RESULT = "SELECTED_MEAL_RESULT"
 

@@ -6,7 +6,7 @@ import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 interface SelectMealPlanMealViewMvc : ObservableViewMvc<SelectMealPlanMealViewMvc.Listener> {
     interface Listener {
         fun onNavigateUp()
-        fun onMealSelected(selectedMeal: UiMeal)
+        fun onMealChosen(chosenMeal: UiMeal)
     }
 
     fun bindMeals(meals: List<UiMeal>)

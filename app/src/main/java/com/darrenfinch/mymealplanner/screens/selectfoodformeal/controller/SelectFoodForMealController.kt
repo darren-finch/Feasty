@@ -2,12 +2,10 @@ package com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller
 
 import com.darrenfinch.mymealplanner.common.controllers.BaseController
 import com.darrenfinch.mymealplanner.common.controllers.ControllerSavedState
-import com.darrenfinch.mymealplanner.common.logs.getClassTag
-import com.darrenfinch.mymealplanner.common.navigation.ScreenResult
+import com.darrenfinch.mymealplanner.common.navigation.ScreenDataReturnBuffer
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 import com.darrenfinch.mymealplanner.foods.usecases.GetAllFoodsUseCase
-import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealFragment.Companion.SELECTED_FOOD_RESULT
 import com.darrenfinch.mymealplanner.screens.selectfoodformeal.view.SelectFoodForMealViewMvc
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -18,6 +16,7 @@ import kotlin.coroutines.CoroutineContext
 class SelectFoodForMealController(
     private val getAllFoodsUseCase: GetAllFoodsUseCase,
     private val screensNavigator: ScreensNavigator,
+    private val screenDataReturnBuffer: ScreenDataReturnBuffer,
     private val backgroundContext: CoroutineContext,
     private val uiContext: CoroutineContext
 ) : BaseController, SelectFoodForMealViewMvc.Listener {
@@ -60,8 +59,7 @@ class SelectFoodForMealController(
     }
 
     override fun onFoodChosen(food: UiFood) {
-        screensNavigator.navigateUpWithResult(ScreenResult(SelectFoodForMealFragment.getClassTag()).apply {
-            putSerializable(SELECTED_FOOD_RESULT, food)
-        })
+        screenDataReturnBuffer.putData(food, SelectFoodForMealFragment.ASYNC_COMPLETION_TOKEN)
+        screensNavigator.navigateUp()
     }
 }

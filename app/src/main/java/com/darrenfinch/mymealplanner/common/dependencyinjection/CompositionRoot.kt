@@ -3,6 +3,8 @@ package com.darrenfinch.mymealplanner.common.dependencyinjection
 import android.app.Application
 import androidx.room.Room
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
+import com.darrenfinch.mymealplanner.common.navigation.ScreenDataReturnBuffer
+import com.darrenfinch.mymealplanner.common.navigation.ScreenResult
 import com.darrenfinch.mymealplanner.data.MainRepository
 import com.darrenfinch.mymealplanner.data.room.FeastyDatabase
 
@@ -14,6 +16,7 @@ class CompositionRoot(private val application: Application) {
             .build()
     private val mainRepository = MainRepository(getDatabase())
     private val dialogsEventBus = DialogsEventBus()
+    private val screenDataReturnBuffer = ScreenDataReturnBuffer()
 
     fun getApplication(): Application {
         return application
@@ -29,5 +32,9 @@ class CompositionRoot(private val application: Application) {
 
     fun getDialogsEventBus(): DialogsEventBus {
         return dialogsEventBus
+    }
+
+    fun getScreenDataReturnBuffer(): ScreenDataReturnBuffer {
+        return screenDataReturnBuffer
     }
 }

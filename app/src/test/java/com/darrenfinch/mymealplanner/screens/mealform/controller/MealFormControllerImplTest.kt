@@ -5,13 +5,10 @@ import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogEvent
-import com.darrenfinch.mymealplanner.common.logs.getClassTag
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
-import com.darrenfinch.mymealplanner.common.navigation.ScreenResult
+import com.darrenfinch.mymealplanner.common.navigation.ScreenDataReturnBuffer
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.meals.usecases.GetMealUseCase
-import com.darrenfinch.mymealplanner.meals.usecases.InsertMealUseCase
-import com.darrenfinch.mymealplanner.meals.usecases.UpdateMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.UpsertMealUseCase
 import com.darrenfinch.mymealplanner.screens.mealform.MealFormVm
 import com.darrenfinch.mymealplanner.screens.mealform.view.MealFormViewMvc
@@ -40,6 +37,7 @@ internal class MealFormControllerImplTest {
 
     private val viewModel = mockk<MealFormVm>(relaxUnitFun = true)
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
+    private val screenDataReturnBuffer = mockk<ScreenDataReturnBuffer>(relaxUnitFun = true)
     private val dialogsManager = mockk<DialogsManager>(relaxUnitFun = true)
     private val dialogsEventBus = mockk<DialogsEventBus>(relaxUnitFun = true)
     private val getMealUseCase = mockk<GetMealUseCase>(relaxUnitFun = true)
@@ -57,6 +55,7 @@ internal class MealFormControllerImplTest {
             upsertMealUseCase,
             getMealUseCase,
             screensNavigator,
+            screenDataReturnBuffer,
             dialogsManager,
             dialogsEventBus,
             backPressDispatcher,
@@ -71,6 +70,51 @@ internal class MealFormControllerImplTest {
         every { viewModel.getMealDetails() } returns defUiMeal
         coEvery { getMealUseCase.getMeal(any()) } returns getMealUseCaseResult
         every { screensNavigator.navigateUp() } returns true
+    }
+
+    @Test
+    internal fun `onStart() registers listeners`() {
+        every { screenDataReturnBuffer.hasDataForToken(SelectFoodForMealFragment.ASYNC_COMPLETION_TOKEN) } returns false
+
+        SUT.onStart()
+    }
+
+    @Test
+    internal fun `onStart() adds chosen food to view model and rebinds meal to view if chosen food exists`() {
+        val chosenUiFood = TestDefModels.defUiFood
+        every { screenDataReturnBuffer.hasDataForToken(SelectFoodForMealFragment.ASYNC_COMPLETION_TOKEN) } returns true
+        every { screenDataReturnBuffer.getData(SelectFoodForMealFragment.ASYNC_COMPLETION_TOKEN) } returns chosenUiFood
+        every { viewModel.getMealDetails() } returns defUiMeal
+
+        SUT.onStart()
+
+        verify {
+            viewModel.addMealFood(chosenUiFood)
+            viewMvc.bindMealDetails(defUiMeal)
+        }
+    }
+
+    @Test
+    internal fun `onStart() doesn't add chosen food to view model or rebind meal to view if chosen food doesn't exist`() {
+        every { screenDataReturnBuffer.hasDataForToken(SelectFoodForMealFragment.ASYNC_COMPLETION_TOKEN) } returns false
+
+        SUT.onStart()
+
+        verify(inverse = true) {
+            viewModel.addMealFood(any())
+            viewMvc.bindMealDetails(defUiMeal)
+        }
+    }
+
+    @Test
+    internal fun `onStop() unregisters listeners`() {
+        SUT.onStop()
+
+        verify {
+            viewMvc.unregisterListener(SUT)
+            dialogsEventBus.unregisterListener(SUT)
+            backPressDispatcher.unregisterListener(SUT)
+        }
     }
 
     @Test
@@ -163,18 +207,6 @@ internal class MealFormControllerImplTest {
         assertEquals(SUT.onBackPressed(), true)
 
         verify { screensNavigator.navigateUp() }
-    }
-
-    @Test
-    internal fun `onGoBackWithResult() adds select meal food to view model`() {
-        val screenResult = mockk<ScreenResult>()
-        val defUiFood = TestDefModels.defUiFood
-        every { screenResult.tag } returns SelectFoodForMealFragment.getClassTag()
-        every { screenResult.getSerializable(SelectFoodForMealFragment.SELECTED_FOOD_RESULT) } returns defUiFood
-
-        SUT.onGoBackWithResult(screenResult)
-
-        verify { viewModel.addMealFood(defUiFood) }
     }
 
     @Test

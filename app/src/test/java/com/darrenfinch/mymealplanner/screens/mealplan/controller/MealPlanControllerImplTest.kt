@@ -6,12 +6,12 @@ import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.constants.DefaultModels
 import com.darrenfinch.mymealplanner.common.helpers.SharedPreferencesHelper
 import com.darrenfinch.mymealplanner.common.helpers.ToastsHelper
-import com.darrenfinch.mymealplanner.common.logs.getClassTag
-import com.darrenfinch.mymealplanner.common.navigation.ScreenResult
+import com.darrenfinch.mymealplanner.common.navigation.ScreenDataReturnBuffer
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiMacroNutrients
 import com.darrenfinch.mymealplanner.foods.services.MacroCalculatorService
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
+import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.usecases.*
 import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanVm
 import com.darrenfinch.mymealplanner.screens.mealplan.view.MealPlanViewMvc
@@ -27,15 +27,15 @@ import org.junit.jupiter.api.extension.RegisterExtension
 @Suppress("RemoveRedundantQualifierName")
 @ExperimentalCoroutinesApi
 internal class MealPlanControllerImplTest {
-    private val defUiMeal1 = TestDefModels.defUiMeal.copy(title = "defUiMeal1")
-    private val defUiMealPlanMeal1 = TestDefModels.defUiMealPlanMeal.copy(title = "defUiMealPlanMeal1")
-    private val defUiMealPlanMeal2 = TestDefModels.defUiMealPlanMeal.copy(title = "defUiMealPlanMeal2")
-    private val defUiMealPlan = TestDefModels.defUiMealPlan.copy(title = "defUiMealPlan")
-    private val defSelectedMealPlanIndex = Constants.DEFAULT_INDEX
-    private val defSelectedMealPlanId = Constants.EXISTING_ITEM_ID
+    private val selectedMealPlanIndex = Constants.DEFAULT_INDEX
+    private val selectedMealPlanId = Constants.EXISTING_ITEM_ID
 
-    private val getAllMealPlansResult = listOf(defUiMealPlan)
-    private val getMealsForMealPlanResult = listOf(defUiMealPlanMeal1, defUiMealPlanMeal2)
+    private val getAllMealPlansResult =
+        listOf(TestDefModels.defUiMealPlan.copy(title = "defUiMealPlan"))
+    private val getMealsForMealPlanResult = listOf(
+        TestDefModels.defUiMealPlanMeal.copy(title = "defUiMealPlanMeal1"),
+        TestDefModels.defUiMealPlanMeal.copy(title = "defUiMealPlanMeal2")
+    )
 
     @JvmField
     @RegisterExtension
@@ -48,6 +48,7 @@ internal class MealPlanControllerImplTest {
     private val insertMealPlanMealUseCase = mockk<InsertMealPlanMealUseCase>(relaxUnitFun = true)
     private val deleteMealPlanMealUseCase = mockk<DeleteMealPlanMealUseCase>(relaxUnitFun = true)
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
+    private val screenDataReturnBuffer = mockk<ScreenDataReturnBuffer>(relaxUnitFun = true)
     private val toastsHelper = mockk<ToastsHelper>(relaxUnitFun = true)
     private val sharedPreferencesHelper = mockk<SharedPreferencesHelper>(relaxUnitFun = true)
 
@@ -65,6 +66,7 @@ internal class MealPlanControllerImplTest {
             deleteMealPlanUseCase,
             deleteMealPlanMealUseCase,
             screensNavigator,
+            screenDataReturnBuffer,
             toastsHelper,
             sharedPreferencesHelper,
             coroutinesTestExtension.testDispatcher,
@@ -73,20 +75,54 @@ internal class MealPlanControllerImplTest {
 
         SUT.bindView(viewMvc)
 
-        every { sharedPreferencesHelper.getInt(MealPlanFragment.SELECTED_MEAL_PLAN_INDEX) } returns defSelectedMealPlanIndex
-        every { viewModel.getSelectedMealPlanIndex() } returns defSelectedMealPlanIndex
-        every { viewModel.getSelectedMealPlanId() } returns defSelectedMealPlanId
+        every { sharedPreferencesHelper.getInt(MealPlanFragment.SELECTED_MEAL_PLAN_INDEX) } returns selectedMealPlanIndex
+        every { viewModel.getSelectedMealPlanIndex() } returns selectedMealPlanIndex
+        every { viewModel.getSelectedMealPlanId() } returns selectedMealPlanId
         coEvery { getAllMealPlansUseCase.getAllMealPlans() } returns getAllMealPlansResult
         coEvery { getMealsForMealPlanUseCase.getMealsForMealPlan(any()) } returns getMealsForMealPlanResult
     }
 
     @Test
     internal fun `onStart() registers listeners`() {
+        every { screenDataReturnBuffer.hasDataForToken(SelectMealPlanMealFragment.ASYNC_COMPLETION_TOKEN) } returns false
+
         SUT.onStart()
 
         verify {
             viewMvc.registerListener(SUT)
-            screensNavigator.registerListener(SUT)
+        }
+    }
+
+    @Test
+    internal fun `onStart() adds chosen meal from screen data buffer to current meal plan if chosen meal exists, then refreshes meal plans`() {
+        val chosenMeal = TestDefModels.defUiMeal.copy(title = "chosenMeal")
+        val chosenMealAsMealPlanMeal = UiMealPlanMeal(
+            id = Constants.NEW_ITEM_ID,
+            mealPlanId = selectedMealPlanId,
+            mealId = chosenMeal.id,
+            title = chosenMeal.title,
+            foods = chosenMeal.foods
+        )
+        every { screenDataReturnBuffer.hasDataForToken(SelectMealPlanMealFragment.ASYNC_COMPLETION_TOKEN) } returns true
+        every { screenDataReturnBuffer.getData(SelectMealPlanMealFragment.ASYNC_COMPLETION_TOKEN) } returns chosenMeal
+
+        SUT.onStart()
+
+        coVerify {
+            insertMealPlanMealUseCase.insertMealPlanMeal(chosenMealAsMealPlanMeal)
+            getAllMealPlansUseCase.getAllMealPlans()
+        }
+    }
+
+    @Test
+    internal fun `onStart() doesn't add chosen meal to meal plan or refresh meal plans if chosen meal doesn't exist`() {
+        every { screenDataReturnBuffer.hasDataForToken(SelectMealPlanMealFragment.ASYNC_COMPLETION_TOKEN) } returns false
+
+        SUT.onStart()
+
+        coVerify(inverse = true) {
+            insertMealPlanMealUseCase.insertMealPlanMeal(any())
+            getAllMealPlansUseCase.getAllMealPlans()
         }
     }
 
@@ -96,7 +132,6 @@ internal class MealPlanControllerImplTest {
 
         verify {
             viewMvc.unregisterListener(SUT)
-            screensNavigator.unregisterListener(SUT)
         }
     }
 
@@ -167,7 +202,8 @@ internal class MealPlanControllerImplTest {
                     )
                 )
             )
-            val mealPlanMacros = MacroCalculatorService.calculateMealPlanMacros(mealPlan, getMealsForMealPlanResult)
+            val mealPlanMacros =
+                MacroCalculatorService.calculateMealPlanMacros(mealPlan, getMealsForMealPlanResult)
             coEvery { getAllMealPlansUseCase.getAllMealPlans() } returns listOf(mealPlan)
             coEvery { getMealsForMealPlanUseCase.getMealsForMealPlan(any()) } returns getMealsForMealPlanResult
 
@@ -217,12 +253,12 @@ internal class MealPlanControllerImplTest {
                 viewMvc.bindMealPlanMeals(getMealsForMealPlanResult)
                 viewMvc.bindMealPlanMacros(
                     MacroCalculatorService.calculateMealPlanMacros(
-                        getAllMealPlansResult[defSelectedMealPlanIndex],
+                        getAllMealPlansResult[selectedMealPlanIndex],
                         getMealsForMealPlanResult
                     )
                 )
-                viewModel.setSelectedMealPlanIndex(defSelectedMealPlanIndex)
-                viewMvc.setSelectedMealPlanIndexWithoutNotifying(defSelectedMealPlanIndex)
+                viewModel.setSelectedMealPlanIndex(selectedMealPlanIndex)
+                viewMvc.setSelectedMealPlanIndexWithoutNotifying(selectedMealPlanIndex)
             }
         }
 
@@ -238,11 +274,11 @@ internal class MealPlanControllerImplTest {
 
     @Test
     internal fun `onMealPlanSelected() selects new meal and refreshes meals`() = runBlockingTest {
-        SUT.onMealPlanSelected(defSelectedMealPlanIndex)
+        SUT.onMealPlanSelected(selectedMealPlanIndex)
 
         coVerifyOrder {
-            sharedPreferencesHelper.putInt(any(), defSelectedMealPlanIndex)
-            viewModel.setSelectedMealPlanIndex(defSelectedMealPlanIndex)
+            sharedPreferencesHelper.putInt(any(), selectedMealPlanIndex)
+            viewModel.setSelectedMealPlanIndex(selectedMealPlanIndex)
             getAllMealPlansUseCase.getAllMealPlans()
         }
     }
@@ -298,28 +334,5 @@ internal class MealPlanControllerImplTest {
             SUT.onAddNewMealPlanClicked()
 
             verify { screensNavigator.toMealPlanFormScreen() }
-        }
-
-    @Test
-    internal fun `onGoBackWithResult() adds selected meal to currently selected meal plan, then refreshes meal plans`() =
-        runBlockingTest {
-            val selectedMeal = defUiMeal1
-            val mealToBeAdded = TestDefModels.defUiMealPlanMeal.copy(
-                id = Constants.NEW_ITEM_ID,
-                mealId = defUiMeal1.id,
-                mealPlanId = viewModel.getSelectedMealPlanId(),
-                title = defUiMeal1.title
-            )
-
-            val screenResult = mockk<ScreenResult>(relaxUnitFun = true)
-            every { screenResult.tag } returns SelectMealPlanMealFragment.getClassTag()
-            every { screenResult.getSerializable(SelectMealPlanMealFragment.SELECTED_MEAL_RESULT) } returns selectedMeal
-
-            SUT.onGoBackWithResult(screenResult)
-
-            coVerifySequence {
-                insertMealPlanMealUseCase.insertMealPlanMeal(mealToBeAdded)
-                getAllMealPlansUseCase.getAllMealPlans()
-            }
         }
 }

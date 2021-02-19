@@ -35,11 +35,11 @@ class EditMealFoodDialog : BaseDialog() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        controller = controllerCompositionRoot.getEditMealController()
+        controller = fragmentCompositionRoot.getEditMealController()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        viewMvc = controllerCompositionRoot.getViewMvcFactory().getEditMealViewMvc(null)
+        viewMvc = fragmentCompositionRoot.getViewMvcFactory().getEditMealViewMvc(null)
 
         setControllerArgs(requireArguments())
         restoreControllerState(savedInstanceState)

@@ -8,6 +8,7 @@ import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.helpers.SharedPreferencesHelper
 import com.darrenfinch.mymealplanner.common.helpers.ToastsHelper
 import com.darrenfinch.mymealplanner.common.navigation.NavigationOptions
+import com.darrenfinch.mymealplanner.common.navigation.ScreenDataReturnBuffer
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.data.MainRepository
 import com.ncapdevi.fragnav.FragNavController
@@ -38,6 +39,10 @@ class ActivityCompositionRoot(
 
     fun getDialogsEventBus(): DialogsEventBus {
         return compositionRoot.getDialogsEventBus()
+    }
+
+    fun getScreenDataReturnBuffer(): ScreenDataReturnBuffer {
+        return compositionRoot.getScreenDataReturnBuffer()
     }
 
     fun getScreensNavigator(): ScreensNavigator {

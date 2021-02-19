@@ -25,7 +25,7 @@ import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.controller.Selec
 import kotlinx.coroutines.Dispatchers
 
 //This composition root is scoped to a fragment, which is a controller
-class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCompositionRoot) {
+class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompositionRoot) {
 
     // Coroutine contexts
     val backgroundContext = Dispatchers.IO
@@ -33,6 +33,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
 
     // Object dependencies
     fun getDialogsEventBus() = activityCompositionRoot.getDialogsEventBus()
+    fun getScreenDataReturnBuffer() = activityCompositionRoot.getScreenDataReturnBuffer()
     fun getDialogsManager() = activityCompositionRoot.getDialogsManager()
     fun getViewMvcFactory(): ViewMvcFactory = ViewMvcFactory(getLayoutInflater())
     fun getBackPressDispatcher() = getActivity() as BackPressDispatcher
@@ -77,6 +78,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     ) = SelectFoodForMealController(
         getGetAllFoodsUseCase(),
         getScreensNavigator(),
+        getScreenDataReturnBuffer(),
         backgroundContext,
         uiContext
     )
@@ -85,6 +87,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
     ) = SelectMealPlanMealController(
         getGetAllMealsUseCase(),
         getScreensNavigator(),
+        getScreenDataReturnBuffer(),
         backgroundContext,
         uiContext
     )
@@ -129,6 +132,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
         getUpsertMealUseCase(),
         getGetMealUseCase(),
         getScreensNavigator(),
+        getScreenDataReturnBuffer(),
         getDialogsManager(),
         getDialogsEventBus(),
         getBackPressDispatcher(),
@@ -144,6 +148,7 @@ class ControllerCompositionRoot(private val activityCompositionRoot: ActivityCom
         getDeleteMealPlanUseCase(),
         getDeleteMealPlanMealUseCase(),
         getScreensNavigator(),
+        getScreenDataReturnBuffer(),
         getToastsHelper(),
         getSharedPreferencesHelper(),
         backgroundContext,
