@@ -135,11 +135,11 @@ class MealPlanViewMvcImpl(
 
     private fun onMealPlanSelected(index: Int) {
         for (listeners in getListeners()) {
-            listeners.onMealPlanSelected(index)
+            listeners.onMealPlanSelectedByUser(index)
         }
     }
 
-    override fun bindMealPlanMeals(meals: List<UiMealPlanMeal>) {
+    override fun bindMealsForSelectedMealPlan(meals: List<UiMealPlanMeal>) {
         mealsRecyclerViewAdapter.updateItems(meals.map {
             UiMeal(
                 id = it.id,
@@ -158,11 +158,6 @@ class MealPlanViewMvcImpl(
     }
 
     override fun setSelectedMealPlanIndex(index: Int) {
-        notifyWhenMealPlanSelected = true
-        binding.selectMealPlanSpinner.setSelection(index)
-    }
-
-    override fun setSelectedMealPlanIndexWithoutNotifying(index: Int) {
         notifyWhenMealPlanSelected = false
         binding.selectMealPlanSpinner.setSelection(index)
     }

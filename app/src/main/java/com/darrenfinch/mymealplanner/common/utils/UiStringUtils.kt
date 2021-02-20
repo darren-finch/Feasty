@@ -2,7 +2,7 @@ package com.darrenfinch.mymealplanner.common.utils
 
 import com.darrenfinch.mymealplanner.screens.mealplan.MacroType
 
-object StringUtils {
+object UiStringUtils {
     fun makeTotalVsRequiredNutrientString(
         totalAmount: Int,
         requiredAmount: Int,

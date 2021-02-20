@@ -16,7 +16,10 @@ import com.darrenfinch.mymealplanner.screens.foodform.FoodFormData
 import com.darrenfinch.mymealplanner.screens.foodform.controller.FoodFormControllerImpl
 import com.darrenfinch.mymealplanner.screens.mealform.MealFormData
 import com.darrenfinch.mymealplanner.screens.mealform.controller.MealFormControllerImpl
-import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanData
+import com.darrenfinch.mymealplanner.screens.mealplan.controller.GetValidIndexHelper
+import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanSavableData
+import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanScreenStatePresenter
+import com.darrenfinch.mymealplanner.screens.mealplan.controller.RefreshMealPlanScreenUseCase
 import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanControllerImpl
 import com.darrenfinch.mymealplanner.screens.mealplanform.MealPlanFormData
 import com.darrenfinch.mymealplanner.screens.mealplanform.controller.MealPlanFormController
@@ -43,9 +46,11 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
     fun getApplication(): Application = activityCompositionRoot.getApplication()
     private fun getMainRepository() = activityCompositionRoot.getMainRepository()
     private fun getScreensNavigator() = activityCompositionRoot.getScreensNavigator()
+
     private fun getToastsHelper() = activityCompositionRoot.getToastsHelper()
     private fun getSharedPreferencesHelper() = activityCompositionRoot.getSharedPreferencesHelper()
     private fun getKeyboardHelper(view: View) = KeyboardHelper(getContext(), view)
+    private fun getGetValidIndexHelper() = GetValidIndexHelper()
 
 
     // Use cases
@@ -54,23 +59,43 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
     private fun getUpsertFoodUseCase() = UpsertFoodUseCase(getMainRepository())
     private fun getDeleteFoodUseCase() = DeleteFoodUseCase(getMainRepository())
 
-    private fun getGetAllMealsUseCase() = GetAllMealsUseCase(getMainRepository(), getGetMealUseCase())
+    private fun getGetAllMealsUseCase() =
+        GetAllMealsUseCase(getMainRepository(), getGetMealUseCase())
+
     private fun getGetMealUseCase() = GetMealUseCase(getMainRepository())
-    private fun getUpsertMealUseCase() = UpsertMealUseCase(getInsertMealUseCase(), getUpdateMealUseCase())
-    private fun getInsertMealUseCase() = InsertMealUseCase(getMainRepository(), getInsertMealFoodUseCase())
-    private fun getUpdateMealUseCase() = UpdateMealUseCase(getMainRepository(), getInsertMealFoodUseCase(), getUpdateMealFoodUseCase())
+    private fun getUpsertMealUseCase() =
+        UpsertMealUseCase(getInsertMealUseCase(), getUpdateMealUseCase())
+
+    private fun getInsertMealUseCase() =
+        InsertMealUseCase(getMainRepository(), getInsertMealFoodUseCase())
+
+    private fun getUpdateMealUseCase() = UpdateMealUseCase(
+        getMainRepository(),
+        getInsertMealFoodUseCase(),
+        getUpdateMealFoodUseCase()
+    )
+
     private fun getDeleteMealUseCase() = DeleteMealUseCase(getMainRepository())
 
     private fun getGetAllMealPlansUseCase() = GetAllMealPlansUseCase(getMainRepository())
     private fun getInsertMealPlanUseCase() = InsertMealPlanUseCase(getMainRepository())
     private fun getDeleteMealPlanUseCase() = DeleteMealPlanUseCase(getMainRepository())
 
-    private fun getGetMealsForMealPlanUseCase() = GetMealsForMealPlanUseCase(getMainRepository(), getGetMealUseCase())
+    private fun getGetMealsForMealPlanUseCase() =
+        GetMealsForMealPlanUseCase(getMainRepository(), getGetMealUseCase())
+
     private fun getInsertMealPlanMealUseCase() = InsertMealPlanMealUseCase(getMainRepository())
     private fun getDeleteMealPlanMealUseCase() = DeleteMealPlanMealUseCase(getMainRepository())
 
     private fun getInsertMealFoodUseCase() = InsertMealFoodUseCase(getMainRepository())
     private fun getUpdateMealFoodUseCase() = UpdateMealFoodUseCase(getMainRepository())
+
+    private fun getRefreshMealPlanScreenUseCase() = RefreshMealPlanScreenUseCase(
+        getGetAllMealPlansUseCase(),
+        getGetMealsForMealPlanUseCase(),
+        getSharedPreferencesHelper(),
+        getGetValidIndexHelper()
+    )
 
     // Dialog controllers
 
@@ -142,8 +167,8 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
 
     fun getMealPlanController() = MealPlanControllerImpl(
         getMealPlanVm(),
-        getGetAllMealPlansUseCase(),
-        getGetMealsForMealPlanUseCase(),
+        getMealPlanScreenStatePresenter(),
+        getRefreshMealPlanScreenUseCase(),
         getInsertMealPlanMealUseCase(),
         getDeleteMealPlanUseCase(),
         getDeleteMealPlanMealUseCase(),
@@ -154,6 +179,8 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
         backgroundContext,
         uiContext
     )
+
+    private fun getMealPlanScreenStatePresenter() = MealPlanScreenStatePresenter()
 
     fun getMealPlanFormController() = MealPlanFormController(
         getMealPlanFormVm(),
@@ -169,5 +196,5 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
     fun getFoodFormVm() = FoodFormData()
     fun getMealFormVm() = MealFormData()
     fun getMealPlanFormVm() = MealPlanFormData()
-    private fun getMealPlanVm() = MealPlanData()
+    private fun getMealPlanVm() = MealPlanSavableData()
 }

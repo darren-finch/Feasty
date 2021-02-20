@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     
     <data>
-        <import type="com.darrenfinch.mymealplanner.common.utils.StringUtils"/>
+        <import type="com.darrenfinch.mymealplanner.common.utils.UiStringUtils"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

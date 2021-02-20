@@ -10,16 +10,17 @@ import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 
 interface MealPlanViewMvc : ObservableViewMvc<MealPlanViewMvc.Listener>, ProgressIndicatorViewMvc, ListViewMvc {
     interface Listener {
-        fun onMealPlanSelected(index: Int)
+        fun onMealPlanSelectedByUser(index: Int)
         fun onAddNewMealPlanClicked()
         fun onDeleteMealPlanClicked()
         fun onAddNewMealPlanMealClicked()
         fun onDeleteMealPlanMealClicked(mealPlanMealId: Int)
     }
 
-    fun bindMealPlanMeals(meals: List<UiMealPlanMeal>)
+    fun bindMealsForSelectedMealPlan(meals: List<UiMealPlanMeal>)
     fun bindMealPlanMacros(mealPlanMacros: MealPlanMacros)
     fun bindMealPlans(mealPlans: List<UiMealPlan>)
+
+    // This does not notify the caller that they selected this index
     fun setSelectedMealPlanIndex(index: Int)
-    fun setSelectedMealPlanIndexWithoutNotifying(index: Int)
 }

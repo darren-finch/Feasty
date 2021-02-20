@@ -15,3 +15,4 @@ fun <A, B> List<A>.parallelMapNotNull(context: CoroutineContext, f: suspend (A) 
 }
 
 fun <A> List<A>.indexIsValid(index: Int) = index in 0..lastIndex
+fun <A> List<A>.indexOrLastIndex(index: Int) = if (indexIsValid(index)) index else lastIndex

@@ -3,17 +3,12 @@ package com.darrenfinch.mymealplanner.screens.mealplan.controller
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.TestDefModels
 import com.darrenfinch.mymealplanner.common.constants.Constants
-import com.darrenfinch.mymealplanner.common.constants.DefaultModels
 import com.darrenfinch.mymealplanner.common.helpers.SharedPreferencesHelper
 import com.darrenfinch.mymealplanner.common.helpers.ToastsHelper
 import com.darrenfinch.mymealplanner.common.navigation.ScreenDataReturnBuffer
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
-import com.darrenfinch.mymealplanner.foods.models.presentation.UiMacroNutrients
-import com.darrenfinch.mymealplanner.foods.services.MacroCalculatorService
-import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlan
 import com.darrenfinch.mymealplanner.mealplans.models.presentation.UiMealPlanMeal
 import com.darrenfinch.mymealplanner.mealplans.usecases.*
-import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanData
 import com.darrenfinch.mymealplanner.screens.mealplan.view.MealPlanViewMvc
 import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.controller.SelectMealPlanMealFragment
 import com.darrenfinch.mymealplanner.testrules.CoroutinesTestExtension
@@ -30,9 +25,9 @@ internal class MealPlanControllerImplTest {
     private val selectedMealPlanIndex = Constants.DEFAULT_INDEX
     private val selectedMealPlanId = Constants.EXISTING_ITEM_ID
 
-    private val getAllMealPlansResult =
+    private val allMealPlans =
         listOf(TestDefModels.defUiMealPlan.copy(title = "defUiMealPlan"))
-    private val getMealsForMealPlanResult = listOf(
+    private val mealsForSelectedMealPlan = listOf(
         TestDefModels.defUiMealPlanMeal.copy(title = "defUiMealPlanMeal1"),
         TestDefModels.defUiMealPlanMeal.copy(title = "defUiMealPlanMeal2")
     )
@@ -41,9 +36,9 @@ internal class MealPlanControllerImplTest {
     @RegisterExtension
     val coroutinesTestExtension = CoroutinesTestExtension()
 
-    private val screenData = mockk<MealPlanData>(relaxUnitFun = true)
-    private val getAllMealPlansUseCase = mockk<GetAllMealPlansUseCase>(relaxUnitFun = true)
-    private val getMealsForMealPlanUseCase = mockk<GetMealsForMealPlanUseCase>(relaxUnitFun = true)
+    private val savableScreenData = mockk<MealPlanSavableData>(relaxUnitFun = true)
+    private val screenStatePresenter = mockk<MealPlanScreenStatePresenter>(relaxUnitFun = true)
+    private val refreshMealPlanScreenUseCase = mockk<RefreshMealPlanScreenUseCase>()
     private val deleteMealPlanUseCase = mockk<DeleteMealPlanUseCase>(relaxUnitFun = true)
     private val insertMealPlanMealUseCase = mockk<InsertMealPlanMealUseCase>(relaxUnitFun = true)
     private val deleteMealPlanMealUseCase = mockk<DeleteMealPlanMealUseCase>(relaxUnitFun = true)
@@ -59,9 +54,9 @@ internal class MealPlanControllerImplTest {
     @BeforeEach
     internal fun setUp() {
         SUT = MealPlanControllerImpl(
-            screenData,
-            getAllMealPlansUseCase,
-            getMealsForMealPlanUseCase,
+            savableScreenData,
+            screenStatePresenter,
+            refreshMealPlanScreenUseCase,
             insertMealPlanMealUseCase,
             deleteMealPlanUseCase,
             deleteMealPlanMealUseCase,
@@ -76,10 +71,16 @@ internal class MealPlanControllerImplTest {
         SUT.bindView(viewMvc)
 
         every { sharedPreferencesHelper.getInt(MealPlanFragment.SELECTED_MEAL_PLAN_INDEX) } returns selectedMealPlanIndex
-        every { screenData.getSelectedMealPlanIndex() } returns selectedMealPlanIndex
-        every { screenData.getSelectedMealPlanId() } returns selectedMealPlanId
-        coEvery { getAllMealPlansUseCase.getAllMealPlans() } returns getAllMealPlansResult
-        coEvery { getMealsForMealPlanUseCase.getMealsForMealPlan(any()) } returns getMealsForMealPlanResult
+        every { savableScreenData.getSelectedMealPlanIndex() } returns selectedMealPlanIndex
+        every { savableScreenData.getSelectedMealPlanId() } returns selectedMealPlanId
+        coEvery { refreshMealPlanScreenUseCase.refresh() } returns RefreshMealPlanScreenUseCase.Result.NoMealPlans
+    }
+
+    @Test
+    internal fun `bindView() binds view to screen state presenter`() {
+        SUT.bindView(viewMvc)
+
+        verify { screenStatePresenter.bindView(viewMvc) }
     }
 
     @Test
@@ -110,7 +111,7 @@ internal class MealPlanControllerImplTest {
 
         coVerify {
             insertMealPlanMealUseCase.insertMealPlanMeal(chosenMealAsMealPlanMeal)
-            getAllMealPlansUseCase.getAllMealPlans()
+            refreshMealPlanScreenUseCase.refresh()
         }
     }
 
@@ -122,7 +123,7 @@ internal class MealPlanControllerImplTest {
 
         coVerify(inverse = true) {
             insertMealPlanMealUseCase.insertMealPlanMeal(any())
-            getAllMealPlansUseCase.getAllMealPlans()
+            refreshMealPlanScreenUseCase.refresh()
         }
     }
 
@@ -136,163 +137,96 @@ internal class MealPlanControllerImplTest {
     }
 
     @Test
-    internal fun `refresh() shows then hides progress indication()`() = runBlockingTest {
-        SUT.refresh()
-
-        verifyOrder {
-            viewMvc.showProgressIndication()
-            viewMvc.hideProgressIndication()
-        }
-    }
-
-    @Test
-    internal fun `refresh() hides empty list indication if there are meal plans to display`() =
+    internal fun `refresh() sets screen state to loading, then shows screen state through presenter`() =
         runBlockingTest {
-            SUT.refresh()
-
-            verify { viewMvc.hideEmptyListIndication() }
-        }
-
-    @Test
-    internal fun `refresh() binds meal plans from use case to view if there are meal plans to display`() =
-        runBlockingTest {
-            SUT.refresh()
-
-            verify { viewMvc.bindMealPlans(getAllMealPlansResult) }
-        }
-
-    @Test
-    internal fun `refresh() refreshes meal plan meals for selected meal plan if there are meals to display`() =
-        runBlockingTest {
-            SUT.refresh()
-
-            verify { viewMvc.bindMealPlanMeals(getMealsForMealPlanResult) }
-        }
-
-    @Test
-    internal fun `refresh() binds meal plan macros if there are meals to display`() =
-        runBlockingTest {
-            val mealPlan = UiMealPlan(
-                id = 0,
-                title = "",
-                requiredCalories = 2000,
-                requiredProteins = 175,
-                requiredFats = 60,
-                requiredCarbs = 250
-            )
-            val mealPlanMeals = listOf(
-                TestDefModels.defUiMealPlanMeal.copy(
-                    foods = listOf(
-                        TestDefModels.defUiMealFood.copy(
-                            originalMacroNutrients = UiMacroNutrients(
-                                800,
-                                80,
-                                80,
-                                30
-                            )
-                        ),
-                        TestDefModels.defUiMealFood.copy(
-                            originalMacroNutrients = UiMacroNutrients(
-                                800,
-                                80,
-                                80,
-                                30
-                            )
-                        )
-                    )
-                )
-            )
-            val mealPlanMacros =
-                MacroCalculatorService.calculateMealPlanMacros(mealPlan, getMealsForMealPlanResult)
-            coEvery { getAllMealPlansUseCase.getAllMealPlans() } returns listOf(mealPlan)
-            coEvery { getMealsForMealPlanUseCase.getMealsForMealPlan(any()) } returns getMealsForMealPlanResult
-
-            SUT.refresh()
-
-            verify { viewMvc.bindMealPlanMacros(mealPlanMacros) }
-        }
-
-    @Test
-    internal fun `refresh() sets view to loading`() = runBlockingTest {
-        SUT.refresh()
-
-        verify {
-            viewMvc.showProgressIndication()
-            viewMvc.hideEmptyListIndication()
-        }
-    }
-
-    @Test
-    internal fun `refresh() sets screen state to no data when there aren't any meal plans`() =
-        runBlockingTest {
-            coEvery { getAllMealPlansUseCase.getAllMealPlans() } returns emptyList()
-            coEvery { getMealsForMealPlanUseCase.getMealsForMealPlan(any()) } returns emptyList()
+            coEvery { refreshMealPlanScreenUseCase.refresh() } returns RefreshMealPlanScreenUseCase.Result.NoMealPlans
+            excludeRecords { screenStatePresenter.bindView(viewMvc) }
 
             SUT.refresh()
 
             verifyOrder {
-                screenData.setInitialMealPlans(emptyList())
-                viewMvc.bindMealPlans(emptyList())
-                viewMvc.bindMealPlanMeals(emptyList())
-                viewMvc.bindMealPlanMacros(DefaultModels.defaultMealPlanMacros)
-                viewMvc.hideProgressIndication()
-                viewMvc.showEmptyListIndication()
+                screenStatePresenter.presentState(MealPlanScreenState.Loading)
+                screenStatePresenter.presentState(MealPlanScreenState.NoMealPlans)
             }
         }
 
     @Test
-    internal fun `refresh() sets view to have all data when there is a meal plan and meal plan meals`() =
+    internal fun `refresh() - when refresh meal plan screen use case returns no meal plans result - sets initial meal plans in screen data to empty list`() =
         runBlockingTest {
+            coEvery { refreshMealPlanScreenUseCase.refresh() } returns RefreshMealPlanScreenUseCase.Result.NoMealPlans
+
             SUT.refresh()
 
-            verifyOrder {
-                viewMvc.hideProgressIndication()
-                viewMvc.hideEmptyListIndication()
-                viewMvc.bindMealPlans(getAllMealPlansResult)
-                screenData.setInitialMealPlans(getAllMealPlansResult)
-                viewMvc.bindMealPlanMeals(getMealsForMealPlanResult)
-                viewMvc.bindMealPlanMacros(
-                    MacroCalculatorService.calculateMealPlanMacros(
-                        getAllMealPlansResult[selectedMealPlanIndex],
-                        getMealsForMealPlanResult
-                    )
+            verify {
+                savableScreenData.setInitialMealPlans(emptyList())
+            }
+        }
+
+    @Test
+    internal fun `refresh() - when refresh meal plan screen use case returns has meal plans but no meals for selected meal plan result - sets meal plans in screen data and updates selected meal plan index`() =
+        runBlockingTest {
+            coEvery { refreshMealPlanScreenUseCase.refresh() } returns RefreshMealPlanScreenUseCase.Result.HasMealPlansButNoMealsForSelectedMealPlan(
+                allMealPlans,
+                TestDefModels.defMealPlanMacros,
+                selectedMealPlanIndex
+            )
+
+            SUT.refresh()
+
+            verify {
+                savableScreenData.setInitialMealPlans(allMealPlans)
+                sharedPreferencesHelper.putInt(
+                    MealPlanFragment.SELECTED_MEAL_PLAN_INDEX,
+                    selectedMealPlanIndex
                 )
-                screenData.setSelectedMealPlanIndex(selectedMealPlanIndex)
-                viewMvc.setSelectedMealPlanIndexWithoutNotifying(selectedMealPlanIndex)
+                savableScreenData.setSelectedMealPlanIndex(selectedMealPlanIndex)
+                viewMvc.setSelectedMealPlanIndex(selectedMealPlanIndex)
             }
         }
 
     @Test
-    internal fun `refresh() sets view to show empty list indication when there is no meals for selected meal plan`() =
+    internal fun `refresh() - when refresh meal plan screen use case returns has meal plans and meals for selected meal plan result - sets meal plans in screen data and updates selected meal plan index`() =
         runBlockingTest {
-            coEvery { getMealsForMealPlanUseCase.getMealsForMealPlan(any()) } returns emptyList()
+            coEvery { refreshMealPlanScreenUseCase.refresh() } returns RefreshMealPlanScreenUseCase.Result.HasMealPlansAndMealsForSelectedMealPlan(
+                allMealPlans,
+                TestDefModels.defMealPlanMacros,
+                selectedMealPlanIndex,
+                mealsForSelectedMealPlan
+            )
 
             SUT.refresh()
 
-            verify { viewMvc.showEmptyListIndication() }
+            verify {
+                savableScreenData.setInitialMealPlans(allMealPlans)
+                sharedPreferencesHelper.putInt(
+                    MealPlanFragment.SELECTED_MEAL_PLAN_INDEX,
+                    selectedMealPlanIndex
+                )
+                savableScreenData.setSelectedMealPlanIndex(selectedMealPlanIndex)
+                viewMvc.setSelectedMealPlanIndex(selectedMealPlanIndex)
+            }
         }
 
     @Test
-    internal fun `onMealPlanSelected() selects new meal and refreshes meals`() = runBlockingTest {
-        SUT.onMealPlanSelected(selectedMealPlanIndex)
+    internal fun `onMealPlanSelectedByUser() selects new meal and refreshes meals`() =
+        runBlockingTest {
+            SUT.onMealPlanSelectedByUser(selectedMealPlanIndex)
 
-        coVerifyOrder {
-            sharedPreferencesHelper.putInt(any(), selectedMealPlanIndex)
-            screenData.setSelectedMealPlanIndex(selectedMealPlanIndex)
-            getAllMealPlansUseCase.getAllMealPlans()
+            coVerifyOrder {
+                sharedPreferencesHelper.putInt(any(), selectedMealPlanIndex)
+                savableScreenData.setSelectedMealPlanIndex(selectedMealPlanIndex)
+                refreshMealPlanScreenUseCase.refresh()
+            }
         }
-    }
 
     @Test
-    internal fun `onDeleteMealPlanClicked() sets screen state to loading, moves selected meal plan index, and refreshes meal plans`() =
+    internal fun `onDeleteMealPlanClicked() moves selected meal plan index and refreshes meal plans`() =
         runBlockingTest {
             SUT.onDeleteMealPlanClicked()
 
             coVerifyOrder {
-                viewMvc.showProgressIndication()
-                viewMvc.hideEmptyListIndication()
-                screenData.moveSelectedMealPlanIndex()
-                getAllMealPlansUseCase.getAllMealPlans()
+                savableScreenData.moveSelectedMealPlanIndex()
+                refreshMealPlanScreenUseCase.refresh()
             }
         }
 
@@ -304,14 +238,14 @@ internal class MealPlanControllerImplTest {
 
             coVerifyOrder {
                 deleteMealPlanMealUseCase.deleteMealPlanMeal(defMealPlanMealId)
-                getAllMealPlansUseCase.getAllMealPlans()
+                refreshMealPlanScreenUseCase.refresh()
             }
         }
 
     @Test
     internal fun `onAddNewMealPlanMealClicked() shows error toast if no selected meal plan`() =
         runBlockingTest {
-            every { screenData.getSelectedMealPlanId() } returns Constants.INVALID_ID
+            every { savableScreenData.getSelectedMealPlanId() } returns Constants.INVALID_ID
 
             SUT.onAddNewMealPlanMealClicked()
 

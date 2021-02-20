@@ -7,7 +7,7 @@
 
         <import type="com.darrenfinch.mymealplanner.screens.mealplan.MacroType" />
 
-        <import type="com.darrenfinch.mymealplanner.common.utils.StringUtils" />
+        <import type="com.darrenfinch.mymealplanner.common.utils.UiStringUtils" />
 
         <variable
             name="mealPlanMacros"
@@ -80,7 +80,7 @@
                 android:fontFamily="sans-serif-black"
                 android:foregroundGravity="center"
                 android:gravity="center"
-                android:text="@{StringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalCalories, mealPlanMacros.requiredCalories, MacroType.CALORIE, false)}"
+                android:text="@{UiStringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalCalories, mealPlanMacros.requiredCalories, MacroType.CALORIE, false)}"
                 android:textAppearance="?attr/textAppearanceHeadline4"
                 tools:text="1850/2200 Calories" />
 
@@ -121,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:foregroundGravity="center_vertical"
-                android:text="@{StringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalCarbs, mealPlanMacros.requiredCarbs, MacroType.CARBOHYDRATE, true)}"
+                android:text="@{UiStringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalCarbs, mealPlanMacros.requiredCarbs, MacroType.CARBOHYDRATE, true)}"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
                 tools:text="154/300 Carbs" />
         </LinearLayout>
@@ -153,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:foregroundGravity="center_vertical"
-                android:text="@{StringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalFats, mealPlanMacros.requiredFats, MacroType.FAT, true)}"
+                android:text="@{UiStringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalFats, mealPlanMacros.requiredFats, MacroType.FAT, true)}"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
                 tools:text="33/60 Fat" />
         </LinearLayout>
@@ -185,7 +185,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:foregroundGravity="center_vertical"
-                android:text="@{StringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalProteins, mealPlanMacros.requiredProteins, MacroType.PROTEIN, true)}"
+                android:text="@{UiStringUtils.INSTANCE.makeTotalVsRequiredNutrientString(mealPlanMacros.totalProteins, mealPlanMacros.requiredProteins, MacroType.PROTEIN, true)}"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
                 tools:text="145/200 Carbs" />
         </LinearLayout>
