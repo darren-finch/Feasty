@@ -1,16 +1,21 @@
 package com.darrenfinch.mymealplanner.screens.mealform.controller
 
+import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.TestDefModels
 import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogEvent
+import com.darrenfinch.mymealplanner.common.helpers.KeyboardHelper
+import com.darrenfinch.mymealplanner.common.helpers.ToastsHelper
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.ScreenDataReturnBuffer
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.validation.ValidationResult
 import com.darrenfinch.mymealplanner.meals.usecases.GetMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.UpsertMealUseCase
 import com.darrenfinch.mymealplanner.screens.mealform.MealFormData
+import com.darrenfinch.mymealplanner.screens.mealform.MealFormValidator
 import com.darrenfinch.mymealplanner.screens.mealform.view.MealFormViewMvc
 import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealFragment
 import com.darrenfinch.mymealplanner.testrules.CoroutinesTestExtension
@@ -26,10 +31,9 @@ import org.junit.jupiter.api.extension.RegisterExtension
 @ExperimentalCoroutinesApi
 internal class MealFormControllerImplTest {
     val defUiMeal = TestDefModels.defUiMeal.copy(title = "defUiMeal")
-    val defUiMeal2 = TestDefModels.defUiMeal.copy(title = "defUiMeal2")
-    val getMealUseCaseResult = TestDefModels.defUiMeal.copy(title = "getMealUseCaseResult")
-
     val defUiMealFood = TestDefModels.defUiMealFood.copy(title = "defUiMealFood")
+
+    val getMealUseCaseResult = TestDefModels.defUiMeal.copy(title = "getMealUseCaseResult")
 
     @JvmField
     @RegisterExtension
@@ -38,10 +42,13 @@ internal class MealFormControllerImplTest {
     private val screenData = mockk<MealFormData>(relaxUnitFun = true)
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
     private val screenDataReturnBuffer = mockk<ScreenDataReturnBuffer>(relaxUnitFun = true)
+    private val keyboardHelper = mockk<KeyboardHelper>(relaxUnitFun = true)
     private val dialogsManager = mockk<DialogsManager>(relaxUnitFun = true)
     private val dialogsEventBus = mockk<DialogsEventBus>(relaxUnitFun = true)
+    private val toastsHelper = mockk<ToastsHelper>(relaxUnitFun = true)
     private val getMealUseCase = mockk<GetMealUseCase>(relaxUnitFun = true)
     private val upsertMealUseCase = mockk<UpsertMealUseCase>(relaxUnitFun = true)
+    private val mealFormValidator = mockk<MealFormValidator>(relaxUnitFun = true)
     private val backPressDispatcher = mockk<BackPressDispatcher>(relaxUnitFun = true)
 
     private val viewMvc = mockk<MealFormViewMvc>(relaxUnitFun = true)
@@ -53,11 +60,13 @@ internal class MealFormControllerImplTest {
         SUT = MealFormControllerImpl(
             screenData,
             upsertMealUseCase,
+            mealFormValidator,
             getMealUseCase,
             screensNavigator,
             screenDataReturnBuffer,
             dialogsManager,
             dialogsEventBus,
+            toastsHelper,
             backPressDispatcher,
             coroutinesTestExtension.testDispatcher,
             coroutinesTestExtension.testDispatcher
@@ -77,6 +86,13 @@ internal class MealFormControllerImplTest {
         every { screenDataReturnBuffer.hasDataForToken(SelectFoodForMealFragment.ASYNC_COMPLETION_TOKEN) } returns false
 
         SUT.onStart()
+
+        verify {
+            viewMvc.registerListener(SUT)
+            dialogsEventBus.registerListener(SUT)
+            mealFormValidator.registerListener(SUT)
+            backPressDispatcher.registerListener(SUT)
+        }
     }
 
     @Test
@@ -113,6 +129,7 @@ internal class MealFormControllerImplTest {
         verify {
             viewMvc.unregisterListener(SUT)
             dialogsEventBus.unregisterListener(SUT)
+            mealFormValidator.unregisterListener(SUT)
             backPressDispatcher.unregisterListener(SUT)
         }
     }
@@ -161,17 +178,37 @@ internal class MealFormControllerImplTest {
         }
 
     @Test
-    fun `onDoneButtonClicked() upserts meal then navigates up`() =
+    fun `onDoneButtonClicked() - tests if form is valid`() =
         runBlockingTest {
-            every { screenData.getMealDetails() } returns defUiMeal2
-
             SUT.onDoneButtonClicked()
 
-            coVerifySequence {
-                upsertMealUseCase.upsertMeal(defUiMeal2)
-                screensNavigator.navigateUp()
+            verify {
+                mealFormValidator.testIsValidAndNotify(screenData)
             }
         }
+
+    @Test
+    internal fun `onValidateForm() - validation success - upserts meal and navigates up`() {
+        every { screenData.getMealDetails() } returns defUiMeal
+
+        SUT.onValidateForm(ValidationResult.Success)
+
+        coVerify {
+            upsertMealUseCase.upsertMeal(defUiMeal)
+            screensNavigator.navigateUp()
+        }
+    }
+
+    @Test
+    internal fun `onValidateForm() - validation failure - shows error msg`() {
+        every { screenData.getMealDetails() } returns defUiMeal
+
+        SUT.onValidateForm(ValidationResult.Failure(R.string.please_enter_title))
+
+        coVerify {
+            toastsHelper.showShortMsg(R.string.please_enter_title)
+        }
+    }
 
     @Test
     internal fun `onMealFoodEdit() shows edit meal food dialog with correct arguments`() {
@@ -185,13 +222,22 @@ internal class MealFormControllerImplTest {
     @Test
     internal fun `onMealFoodDelete() removes meal food from screen data and refreshes view`() {
         val index = 1
-        every { screenData.getMealDetails() } returns defUiMeal2
+        every { screenData.getMealDetails() } returns defUiMeal
 
         SUT.onMealFoodDelete(index)
 
         verifyOrder {
             screenData.removeMealFood(index)
-            viewMvc.bindMealDetails(defUiMeal2)
+            viewMvc.bindMealDetails(defUiMeal)
+        }
+    }
+
+    @Test
+    internal fun `onAddNewFoodButtonClicked() closes keyboard and navigates to select food screen`() {
+        SUT.onAddNewFoodButtonClicked()
+
+        verify {
+            screensNavigator.toSelectFoodForMealScreen()
         }
     }
 
@@ -213,13 +259,13 @@ internal class MealFormControllerImplTest {
     internal fun `onDialogResult() updates meal food in screen data and refreshes view if event is positive button clicked from edit meal food dialog`() {
         val index = 0
         val dialogEvent = EditMealFoodDialogEvent.OnPositiveButtonClicked(defUiMealFood, index)
-        every { screenData.getMealDetails() } returns defUiMeal2
+        every { screenData.getMealDetails() } returns defUiMeal
 
         SUT.onDialogEvent(dialogEvent)
 
         verifyOrder {
             screenData.updateMealFood(defUiMealFood, index)
-            viewMvc.bindMealDetails(defUiMeal2)
+            viewMvc.bindMealDetails(defUiMeal)
         }
     }
 }

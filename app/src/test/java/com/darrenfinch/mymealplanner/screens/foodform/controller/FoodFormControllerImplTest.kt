@@ -1,11 +1,15 @@
 package com.darrenfinch.mymealplanner.screens.foodform.controller
 
+import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.TestDefModels
+import com.darrenfinch.mymealplanner.common.helpers.ToastsHelper
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.validation.ValidationResult
 import com.darrenfinch.mymealplanner.foods.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.foods.usecases.UpsertFoodUseCase
 import com.darrenfinch.mymealplanner.screens.foodform.FoodFormData
+import com.darrenfinch.mymealplanner.screens.foodform.FoodFormValidator
 import com.darrenfinch.mymealplanner.screens.foodform.view.FoodFormViewMvc
 import com.darrenfinch.mymealplanner.testrules.CoroutinesTestExtension
 import io.mockk.*
@@ -21,7 +25,6 @@ import org.junit.jupiter.api.extension.RegisterExtension
 internal class FoodFormControllerImplTest {
 
     val defUiFood = TestDefModels.defUiFood.copy(title = "defUiFood")
-    val defUiFood2 = TestDefModels.defUiFood.copy(title = "defUiFood2")
     val getFoodUseCaseResult = TestDefModels.defUiFood.copy(title = "getFoodUseCaseResult")
 
     @JvmField
@@ -32,6 +35,8 @@ internal class FoodFormControllerImplTest {
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
     private val getFoodUseCase = mockk<GetFoodUseCase>(relaxUnitFun = true)
     private val upsertFoodUseCase = mockk<UpsertFoodUseCase>(relaxUnitFun = true)
+    private val foodFormValidator = mockk<FoodFormValidator>(relaxUnitFun = true)
+    private val toastsHelper = mockk<ToastsHelper>(relaxUnitFun = true)
     private val backPressDispatcher = mockk<BackPressDispatcher>(relaxUnitFun = true)
 
     private val viewMvc = mockk<FoodFormViewMvc>(relaxUnitFun = true)
@@ -45,6 +50,8 @@ internal class FoodFormControllerImplTest {
             screensNavigator,
             getFoodUseCase,
             upsertFoodUseCase,
+            foodFormValidator,
+            toastsHelper,
             backPressDispatcher,
             coroutinesTestExtension.testDispatcher,
             coroutinesTestExtension.testDispatcher
@@ -54,6 +61,28 @@ internal class FoodFormControllerImplTest {
         every { screenData.getFoodDetails() } returns defUiFood
         coEvery { getFoodUseCase.getFood(any()) } returns getFoodUseCaseResult
         every { screensNavigator.navigateUp() } returns true
+    }
+
+    @Test
+    internal fun `onStart() registers listeners`() {
+        SUT.onStart()
+
+        verify {
+            viewMvc.registerListener(SUT)
+            backPressDispatcher.registerListener(SUT)
+            foodFormValidator.registerListener(SUT)
+        }
+    }
+
+    @Test
+    internal fun `onStop() unregisters listeners`() {
+        SUT.onStop()
+
+        verify {
+            viewMvc.unregisterListener(SUT)
+            backPressDispatcher.unregisterListener(SUT)
+            foodFormValidator.unregisterListener(SUT)
+        }
     }
 
     @Test
@@ -100,14 +129,32 @@ internal class FoodFormControllerImplTest {
         }
 
     @Test
-    fun `onDoneButtonClicked() upserts food details then navigates up`() = runBlockingTest {
-        every { screenData.getFoodDetails() } returns defUiFood2
-
+    fun `onDoneButtonClicked() tests if form is valid`() = runBlockingTest {
         SUT.onDoneButtonClicked()
 
-        coVerifySequence {
-            upsertFoodUseCase.upsertFood(defUiFood2)
+        verify {
+            foodFormValidator.testIsValidAndNotify(screenData)
+        }
+    }
+
+    @Test
+    internal fun `onValidateForm() - validation success - upserts food details and navigates up`() {
+        every { screenData.getFoodDetails() } returns defUiFood
+
+        SUT.onValidateForm(ValidationResult.Success)
+
+        coVerify {
+            upsertFoodUseCase.upsertFood(defUiFood)
             screensNavigator.navigateUp()
+        }
+    }
+
+    @Test
+    internal fun `onValidateForm() - validation failure - shows error msg`() {
+        SUT.onValidateForm(ValidationResult.Failure(R.string.please_enter_title))
+
+        verify {
+            toastsHelper.showShortMsg(R.string.please_enter_title)
         }
     }
 

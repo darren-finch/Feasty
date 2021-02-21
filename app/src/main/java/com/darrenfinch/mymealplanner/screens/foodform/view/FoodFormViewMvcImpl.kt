@@ -1,10 +1,12 @@
 package com.darrenfinch.mymealplanner.screens.foodform.view
 
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
@@ -104,6 +106,8 @@ class FoodFormViewMvcImpl(
         binding.measurementUnitSpinner.adapter = measurementUnitListArrayAdapter
         val measurementUnitSpinnerSelection = getMeasurementUnitSpinnerSelection()
         binding.measurementUnitSpinner.setSelection(measurementUnitSpinnerSelection)
+
+        // TODO: Make sure keyboard is hidden when spinners open
     }
 
     private fun setupMeasurementTypeSpinner() {
@@ -122,11 +126,11 @@ class FoodFormViewMvcImpl(
     }
 
     private fun getMeasurementUnitSpinnerSelection(): Int {
-        return if(selectedMeasurementType == MeasurementType.Volume) {
-            val selectedMeasurementUnitString: String? = volumeUnitsToStrings[selectedMeasurementUnit]
+        return if (selectedMeasurementType == MeasurementType.Volume) {
+            val selectedMeasurementUnitString: String? =
+                volumeUnitsToStrings[selectedMeasurementUnit]
             stringsToVolumeUnits.keys.toList().indexOf(selectedMeasurementUnitString)
-        }
-        else {
+        } else {
             val selectedMeasurementUnitString: String? = massUnitsToStrings[selectedMeasurementUnit]
             stringsToMassUnits.keys.toList().indexOf(selectedMeasurementUnitString)
         }
@@ -134,10 +138,9 @@ class FoodFormViewMvcImpl(
 
 
     private fun getValidMeasurementUnitsAsStrings(): List<String> {
-        return if(selectedMeasurementType == MeasurementType.Volume) {
+        return if (selectedMeasurementType == MeasurementType.Volume) {
             stringsToVolumeUnits.keys.toList()
-        }
-        else {
+        } else {
             stringsToMassUnits.keys.toList()
         }
     }
@@ -156,8 +159,10 @@ class FoodFormViewMvcImpl(
     }
 
     private fun getMeasurementTypeSpinnerSelection(): Int {
-        val selectedMeasurementTypeString = MeasurementType.validMeasurementTypesToStrings[selectedMeasurementType]
-        return MeasurementType.stringsToValidMeasurementTypes.keys.toList().indexOf(selectedMeasurementTypeString)
+        val selectedMeasurementTypeString =
+            MeasurementType.validMeasurementTypesToStrings[selectedMeasurementType]
+        return MeasurementType.stringsToValidMeasurementTypes.keys.toList()
+            .indexOf(selectedMeasurementTypeString)
     }
 
     private fun getValidMeasurementTypesAsStrings(): List<String> {
@@ -176,7 +181,7 @@ class FoodFormViewMvcImpl(
                 ) {
                     //This will fail if the array of strings given to the parent is incorrect.
                     selectedMeasurementUnit =
-                        if(selectedMeasurementType == MeasurementType.Volume)
+                        if (selectedMeasurementType == MeasurementType.Volume)
                             stringsToVolumeUnits[getValidMeasurementUnitsAsStrings()[position]]!!
                         else
                             stringsToMassUnits[getValidMeasurementUnitsAsStrings()[position]]!!
@@ -198,7 +203,8 @@ class FoodFormViewMvcImpl(
                     id: Long
                 ) {
                     //This will fail if the array of strings given to the parent is incorrect.
-                    selectedMeasurementType = MeasurementType.stringsToValidMeasurementTypes[getValidMeasurementTypesAsStrings()[position]]!!
+                    selectedMeasurementType =
+                        MeasurementType.stringsToValidMeasurementTypes[getValidMeasurementTypesAsStrings()[position]]!!
                     setupMeasurementUnitSpinner()
                 }
             }
@@ -213,6 +219,8 @@ class FoodFormViewMvcImpl(
     }
 
     private fun onNavigateUp() {
+        KeyboardUtils.hideKeyboardFrom(getContext(), getRootView())
+
         for (listener in getListeners()) {
             listener.onNavigateUp()
         }

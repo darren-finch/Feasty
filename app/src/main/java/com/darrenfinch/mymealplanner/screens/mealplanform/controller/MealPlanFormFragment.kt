@@ -62,7 +62,6 @@ class MealPlanFormFragment : BaseFragment() {
     override fun onStop() {
         super.onStop()
         controller.onStop()
-        KeyboardUtils.hideKeyboardFrom(requireContext(), requireView())
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

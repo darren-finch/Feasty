@@ -2,13 +2,17 @@ package com.darrenfinch.mymealplanner.screens.foodform.controller
 
 import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.controllers.ControllerSavedState
+import com.darrenfinch.mymealplanner.common.helpers.ToastsHelper
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.validation.BaseFormValidator
+import com.darrenfinch.mymealplanner.common.validation.ValidationResult
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 import com.darrenfinch.mymealplanner.foods.usecases.GetFoodUseCase
 import com.darrenfinch.mymealplanner.foods.usecases.UpsertFoodUseCase
 import com.darrenfinch.mymealplanner.physicalquantities.units.MeasurementUnit
 import com.darrenfinch.mymealplanner.screens.foodform.FoodFormData
+import com.darrenfinch.mymealplanner.screens.foodform.FoodFormValidator
 import com.darrenfinch.mymealplanner.screens.foodform.view.FoodFormViewMvc
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
@@ -18,10 +22,12 @@ class FoodFormControllerImpl(
     private val screensNavigator: ScreensNavigator,
     private val getFoodUseCase: GetFoodUseCase,
     private val upsertFoodUseCase: UpsertFoodUseCase,
+    private val foodFormValidator: FoodFormValidator,
+    private val toastsHelper: ToastsHelper,
     private val backPressDispatcher: BackPressDispatcher,
     private val backgroundContext: CoroutineContext,
     private val uiContext: CoroutineContext
-) : FoodFormController {
+) : FoodFormController, BaseFormValidator.Listener {
 
     sealed class ScreenState {
         object Loading : ScreenState()
@@ -46,11 +52,13 @@ class FoodFormControllerImpl(
     override fun onStart() {
         viewMvc.registerListener(this)
         backPressDispatcher.registerListener(this)
+        foodFormValidator.registerListener(this)
     }
 
     override fun onStop() {
         viewMvc.unregisterListener(this)
         backPressDispatcher.unregisterListener(this)
+        foodFormValidator.unregisterListener(this)
         getFoodJob?.cancel()
     }
 
@@ -85,10 +93,7 @@ class FoodFormControllerImpl(
     }
 
     override fun onDoneButtonClicked() {
-        runBlocking(backgroundContext) {
-            upsertFoodUseCase.upsertFood(screenData.getFoodDetails())
-        }
-        screensNavigator.navigateUp()
+        foodFormValidator.testIsValidAndNotify(screenData)
     }
 
     override fun onNavigateUp() {
@@ -140,5 +145,16 @@ class FoodFormControllerImpl(
 
     override fun onBackPressed(): Boolean {
         return screensNavigator.navigateUp()
+    }
+
+    override fun onValidateForm(validationResult: ValidationResult) {
+        if (validationResult is ValidationResult.Success) {
+            runBlocking(backgroundContext) {
+                upsertFoodUseCase.upsertFood(screenData.getFoodDetails())
+            }
+            screensNavigator.navigateUp()
+        } else if (validationResult is ValidationResult.Failure) {
+            toastsHelper.showShortMsg(validationResult.errorMsg)
+        }
     }
 }

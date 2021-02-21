@@ -80,6 +80,8 @@ class MealPlanFormViewMvcImpl(
     }
 
     private fun onNavigateUp() {
+        KeyboardUtils.hideKeyboardFrom(getContext(), getRootView())
+
         for (listener in getListeners()) {
             listener.onNavigateUp()
         }

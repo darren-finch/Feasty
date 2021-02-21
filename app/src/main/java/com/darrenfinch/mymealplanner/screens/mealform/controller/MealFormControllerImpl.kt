@@ -5,16 +5,21 @@ import com.darrenfinch.mymealplanner.common.controllers.ControllerSavedState
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogEvent
+import com.darrenfinch.mymealplanner.common.helpers.KeyboardHelper
+import com.darrenfinch.mymealplanner.common.helpers.ToastsHelper
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
 import com.darrenfinch.mymealplanner.common.navigation.ScreenDataReturnBuffer
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.validation.BaseFormValidator
+import com.darrenfinch.mymealplanner.common.validation.ValidationResult
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
 import com.darrenfinch.mymealplanner.meals.usecases.GetMealUseCase
 import com.darrenfinch.mymealplanner.meals.usecases.UpsertMealUseCase
 import com.darrenfinch.mymealplanner.screens.mealform.MealFormData
+import com.darrenfinch.mymealplanner.screens.mealform.MealFormValidator
 import com.darrenfinch.mymealplanner.screens.mealform.view.MealFormViewMvc
 import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealFragment
 import kotlinx.coroutines.*
@@ -23,15 +28,18 @@ import kotlin.coroutines.CoroutineContext
 class MealFormControllerImpl(
     private var screenData: MealFormData,
     private val upsertMealUseCase: UpsertMealUseCase,
+    private val mealFormValidator: MealFormValidator,
     private val getMealUseCase: GetMealUseCase,
     private val screensNavigator: ScreensNavigator,
     private val screenDataReturnBuffer: ScreenDataReturnBuffer,
     private val dialogsManager: DialogsManager,
     private val dialogsEventBus: DialogsEventBus,
+    private val toastsHelper: ToastsHelper,
     private val backPressDispatcher: BackPressDispatcher,
     private val backgroundContext: CoroutineContext,
     private val uiContext: CoroutineContext
-) : MealFormController, MealFormViewMvc.Listener, BackPressListener, DialogsEventBus.Listener {
+) : MealFormController, MealFormViewMvc.Listener, BackPressListener, DialogsEventBus.Listener,
+    BaseFormValidator.Listener {
 
     private sealed class ScreenState {
         object Loading : ScreenState()
@@ -56,6 +64,7 @@ class MealFormControllerImpl(
     override fun onStart() {
         viewMvc.registerListener(this)
         dialogsEventBus.registerListener(this)
+        mealFormValidator.registerListener(this)
         backPressDispatcher.registerListener(this)
 
         addChosenFoodToMealIfExists()
@@ -63,7 +72,8 @@ class MealFormControllerImpl(
 
     private fun addChosenFoodToMealIfExists() {
         if (screenDataReturnBuffer.hasDataForToken(SelectFoodForMealFragment.ASYNC_COMPLETION_TOKEN)) {
-            val selectedFood = screenDataReturnBuffer.getData(SelectFoodForMealFragment.ASYNC_COMPLETION_TOKEN) as UiFood
+            val selectedFood =
+                screenDataReturnBuffer.getData(SelectFoodForMealFragment.ASYNC_COMPLETION_TOKEN) as UiFood
             screenData.addMealFood(selectedFood)
             viewMvc.bindMealDetails(screenData.getMealDetails())
         }
@@ -72,6 +82,7 @@ class MealFormControllerImpl(
     override fun onStop() {
         viewMvc.unregisterListener(this)
         dialogsEventBus.unregisterListener(this)
+        mealFormValidator.unregisterListener(this)
         backPressDispatcher.unregisterListener(this)
         getMealJob?.cancel()
     }
@@ -119,10 +130,7 @@ class MealFormControllerImpl(
     }
 
     override fun onDoneButtonClicked() {
-        runBlocking(backgroundContext) {
-            upsertMealUseCase.upsertMeal(screenData.getMealDetails())
-        }
-        screensNavigator.navigateUp()
+        mealFormValidator.testIsValidAndNotify(screenData)
     }
 
     override fun onNavigateUp() {
@@ -157,6 +165,17 @@ class MealFormControllerImpl(
         if (event is EditMealFoodDialogEvent.OnPositiveButtonClicked) {
             screenData.updateMealFood(event.selectedMealFoodResult, event.index)
             viewMvc.bindMealDetails(screenData.getMealDetails())
+        }
+    }
+
+    override fun onValidateForm(validationResult: ValidationResult) {
+        if (validationResult is ValidationResult.Success) {
+            runBlocking(backgroundContext) {
+                upsertMealUseCase.upsertMeal(screenData.getMealDetails())
+            }
+            screensNavigator.navigateUp()
+        } else if (validationResult is ValidationResult.Failure) {
+            toastsHelper.showShortMsg(validationResult.errorMsg)
         }
     }
 }

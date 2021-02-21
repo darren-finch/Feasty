@@ -46,4 +46,11 @@
     <string name="no_meal_plan_selected_cant_add_meal">Can\'t add meal. No meal plan selected.</string>
     <string name="desired_serving_size">Desired Serving Size</string>
     <string name="edit_meal_food">Edit Meal Food</string>
+
+    <!-- Form validator strings -->
+    <!-- Food form -->
+    <string name="please_enter_title">Please enter a title</string>
+    <string name="serving_size_quantity_must_be_greater_than_zero">Serving size quantity must be more than zero</string>
+    <string name="meal_must_have_at_least_one_food">A meal must have at least one food</string>
+
 </resources>

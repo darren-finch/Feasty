@@ -1,10 +1,14 @@
 package com.darrenfinch.mymealplanner.screens.mealplanform.controller
 
+import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.TestDefModels
+import com.darrenfinch.mymealplanner.common.helpers.ToastsHelper
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
+import com.darrenfinch.mymealplanner.common.validation.ValidationResult
 import com.darrenfinch.mymealplanner.mealplans.usecases.InsertMealPlanUseCase
 import com.darrenfinch.mymealplanner.screens.mealplanform.MealPlanFormData
+import com.darrenfinch.mymealplanner.screens.mealplanform.MealPlanFormValidator
 import com.darrenfinch.mymealplanner.screens.mealplanform.view.MealPlanFormViewMvc
 import com.darrenfinch.mymealplanner.testrules.CoroutinesTestExtension
 import io.mockk.*
@@ -24,6 +28,8 @@ internal class MealPlanFormControllerTest {
 
     private val screenData = mockk<MealPlanFormData>(relaxUnitFun = true)
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
+    private val mealPlanFormValidator = mockk<MealPlanFormValidator>(relaxUnitFun = true)
+    private val toastsHelper = mockk<ToastsHelper>(relaxUnitFun = true)
     private val backPressDispatcher = mockk<BackPressDispatcher>(relaxUnitFun = true)
     private val insertMealPlanUseCase = mockk<InsertMealPlanUseCase>(relaxUnitFun = true)
 
@@ -37,6 +43,8 @@ internal class MealPlanFormControllerTest {
             screenData,
             insertMealPlanUseCase,
             screensNavigator,
+            mealPlanFormValidator,
+            toastsHelper,
             backPressDispatcher,
             coroutinesTestExtension.testDispatcher
         )
@@ -53,6 +61,7 @@ internal class MealPlanFormControllerTest {
         verify {
             viewMvc.registerListener(SUT)
             backPressDispatcher.registerListener(SUT)
+            mealPlanFormValidator.registerListener(SUT)
         }
     }
 
@@ -63,6 +72,7 @@ internal class MealPlanFormControllerTest {
         verify {
             viewMvc.unregisterListener(SUT)
             backPressDispatcher.unregisterListener(SUT)
+            mealPlanFormValidator.unregisterListener(SUT)
         }
     }
 
@@ -76,12 +86,33 @@ internal class MealPlanFormControllerTest {
     }
 
     @Test
-    internal fun `onDoneClicked() inserts meal plan and navigates up`() {
+    internal fun `onDoneButtonClicked() tests if form is valid`() {
         SUT.onDoneButtonClicked()
 
-        coVerifySequence {
-            insertMealPlanUseCase.insertMealPlan(uiMealPlanDetails)
+        verify {
+            mealPlanFormValidator.testIsValidAndNotify(screenData)
+        }
+    }
+
+    @Test
+    internal fun `onValidateForm() - validation success - inserts meal plan details and navigates up`() {
+        val defUiMealPlan = TestDefModels.defUiMealPlan
+        every { screenData.getMealPlanDetails() } returns defUiMealPlan
+
+        SUT.onValidateForm(ValidationResult.Success)
+
+        coVerify {
+            insertMealPlanUseCase.insertMealPlan(defUiMealPlan)
             screensNavigator.navigateUp()
+        }
+    }
+
+    @Test
+    internal fun `onValidateForm() - validation failure - shows error msg`() {
+        SUT.onValidateForm(ValidationResult.Failure(R.string.please_enter_title))
+
+        verify {
+            toastsHelper.showShortMsg(R.string.please_enter_title)
         }
     }
 

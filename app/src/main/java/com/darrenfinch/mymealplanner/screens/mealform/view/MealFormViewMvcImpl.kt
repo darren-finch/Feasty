@@ -11,6 +11,7 @@ import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.lists.SimpleItemTouchHelperCallback
 import com.darrenfinch.mymealplanner.common.lists.itemdecorations.MarginItemDecoration
 import com.darrenfinch.mymealplanner.common.lists.mealfoodslist.MealFoodsRecyclerViewAdapter
+import com.darrenfinch.mymealplanner.common.utils.KeyboardUtils
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentMealFormBinding
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMeal
@@ -83,18 +84,24 @@ class MealFormViewMvcImpl(
     }
 
     private fun onDoneButtonClicked() {
+        KeyboardUtils.hideKeyboardFrom(getContext(), getRootView())
+
         for (listener in getListeners()) {
             listener.onDoneButtonClicked()
         }
     }
 
     private fun onAddNewFoodButtonClicked() {
+        KeyboardUtils.hideKeyboardFrom(getContext(), getRootView())
+
         for (listener in getListeners()) {
             listener.onAddNewFoodButtonClicked()
         }
     }
 
     private fun onNavigateUp() {
+        KeyboardUtils.hideKeyboardFrom(getContext(), getRootView())
+
         for (listener in getListeners()) {
             listener.onNavigateUp()
         }

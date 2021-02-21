@@ -13,8 +13,10 @@ import com.darrenfinch.mymealplanner.meals.usecases.*
 import com.darrenfinch.mymealplanner.screens.allfoods.controller.AllFoodsController
 import com.darrenfinch.mymealplanner.screens.allmeals.controller.AllMealsController
 import com.darrenfinch.mymealplanner.screens.foodform.FoodFormData
+import com.darrenfinch.mymealplanner.screens.foodform.FoodFormValidator
 import com.darrenfinch.mymealplanner.screens.foodform.controller.FoodFormControllerImpl
 import com.darrenfinch.mymealplanner.screens.mealform.MealFormData
+import com.darrenfinch.mymealplanner.screens.mealform.MealFormValidator
 import com.darrenfinch.mymealplanner.screens.mealform.controller.MealFormControllerImpl
 import com.darrenfinch.mymealplanner.screens.mealplan.controller.GetValidIndexHelper
 import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanSavableData
@@ -22,6 +24,7 @@ import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanScreenS
 import com.darrenfinch.mymealplanner.screens.mealplan.controller.RefreshMealPlanScreenUseCase
 import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanControllerImpl
 import com.darrenfinch.mymealplanner.screens.mealplanform.MealPlanFormData
+import com.darrenfinch.mymealplanner.screens.mealplanform.MealPlanFormValidator
 import com.darrenfinch.mymealplanner.screens.mealplanform.controller.MealPlanFormController
 import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealController
 import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.controller.SelectMealPlanMealController
@@ -97,8 +100,12 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
         getGetValidIndexHelper()
     )
 
-    // Dialog controllers
+    // Validators
+    fun getFoodFormValidator() = FoodFormValidator()
+    fun getMealFormValidator() = MealFormValidator()
+    fun getMealPlanFormValidator() = MealPlanFormValidator()
 
+    // Dialog controllers
     fun getSelectFoodForMealController(
     ) = SelectFoodForMealController(
         getGetAllFoodsUseCase(),
@@ -118,17 +125,19 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
     )
 
     fun getEditMealController() = EditMealFoodController(
-        getEditMealFoodVm(),
+        getEditMealFoodData(),
         dialogsManager = getDialogsManager(),
         dialogsEventBus = getDialogsEventBus()
     )
 
     // Normal screen controllers
     fun getFoodFormController() = FoodFormControllerImpl(
-        getFoodFormVm(),
+        getFoodFormData(),
         getScreensNavigator(),
         getGetFoodUseCase(),
         getUpsertFoodUseCase(),
+        getFoodFormValidator(),
+        getToastsHelper(),
         getBackPressDispatcher(),
         backgroundContext,
         uiContext
@@ -153,20 +162,22 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
         )
 
     fun getMealFormController() = MealFormControllerImpl(
-        getMealFormVm(),
+        getMealFormData(),
         getUpsertMealUseCase(),
+        getMealFormValidator(),
         getGetMealUseCase(),
         getScreensNavigator(),
         getScreenDataReturnBuffer(),
         getDialogsManager(),
         getDialogsEventBus(),
+        getToastsHelper(),
         getBackPressDispatcher(),
         backgroundContext,
         uiContext,
     )
 
     fun getMealPlanController() = MealPlanControllerImpl(
-        getMealPlanVm(),
+        getMealPlanData(),
         getMealPlanScreenStatePresenter(),
         getRefreshMealPlanScreenUseCase(),
         getInsertMealPlanMealUseCase(),
@@ -183,18 +194,20 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
     private fun getMealPlanScreenStatePresenter() = MealPlanScreenStatePresenter()
 
     fun getMealPlanFormController() = MealPlanFormController(
-        getMealPlanFormVm(),
+        getMealPlanFormData(),
         getInsertMealPlanUseCase(),
         getScreensNavigator(),
+        getMealPlanFormValidator(),
+        getToastsHelper(),
         getBackPressDispatcher(),
         backgroundContext
     )
 
 
-    // View models
-    private fun getEditMealFoodVm() = EditMealFoodDialogData()
-    fun getFoodFormVm() = FoodFormData()
-    fun getMealFormVm() = MealFormData()
-    fun getMealPlanFormVm() = MealPlanFormData()
-    private fun getMealPlanVm() = MealPlanSavableData()
+    // Screen data (or view models, whatever you wish to call them)
+    private fun getEditMealFoodData() = EditMealFoodDialogData()
+    fun getFoodFormData() = FoodFormData()
+    fun getMealFormData() = MealFormData()
+    fun getMealPlanFormData() = MealPlanFormData()
+    private fun getMealPlanData() = MealPlanSavableData()
 }
