@@ -1,6 +1,6 @@
 package com.darrenfinch.mymealplanner.foods.models.domain
 
-data class MacroNutrients (
+data class MacroNutrients(
     val calories: Int,
     val carbs: Int,
     val proteins: Int,

@@ -6,5 +6,5 @@ data class Food(
     val id: Int = 0,
     val title: String,
     val servingSize: PhysicalQuantity,
-    val macroNutrients: MacroNutrients
+    val macros: MacroNutrients
 )

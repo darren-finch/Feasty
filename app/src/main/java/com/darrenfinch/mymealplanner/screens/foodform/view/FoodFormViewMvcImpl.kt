@@ -1,12 +1,10 @@
 package com.darrenfinch.mymealplanner.screens.foodform.view
 
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
@@ -16,9 +14,7 @@ import com.darrenfinch.mymealplanner.databinding.FragmentFoodFormBinding
 import com.darrenfinch.mymealplanner.physicalquantities.*
 import com.darrenfinch.mymealplanner.physicalquantities.units.MeasurementType
 import com.darrenfinch.mymealplanner.physicalquantities.units.MeasurementUnit
-import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
-import com.darrenfinch.mymealplanner.foods.models.presentation.UiMacroNutrients
 
 class FoodFormViewMvcImpl(
     inflater: LayoutInflater,

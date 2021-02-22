@@ -2,7 +2,7 @@ package com.darrenfinch.mymealplanner.screens.foodform
 
 import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.foods.models.presentation.UiFood
-import com.darrenfinch.mymealplanner.foods.models.presentation.UiMacroNutrients
+import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.physicalquantities.units.MeasurementUnit
 import java.io.Serializable
@@ -22,17 +22,17 @@ class FoodFormData : Serializable {
         title = food.title
         servingSizeQuantity = food.servingSize.quantity
         servingSizeUnit = food.servingSize.unit
-        calories = food.macroNutrients.calories
-        carbs = food.macroNutrients.carbs
-        fats = food.macroNutrients.fats
-        proteins = food.macroNutrients.proteins
+        calories = food.macros.calories
+        carbs = food.macros.carbs
+        fats = food.macros.fats
+        proteins = food.macros.proteins
     }
 
     fun getFoodDetails() = UiFood(
         id = id,
         title = title,
         servingSize = PhysicalQuantity(servingSizeQuantity, servingSizeUnit),
-        macroNutrients = UiMacroNutrients(
+        macros = MacroNutrients(
             calories = calories,
             carbs = carbs,
             fats = fats,

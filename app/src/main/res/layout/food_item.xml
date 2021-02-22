@@ -42,7 +42,7 @@
                 android:layout_marginHorizontal="@dimen/standard_margin_half"
                 android:layout_marginVertical="@dimen/standard_margin_half"
                 android:gravity="end"
-                android:text="@{food.macroNutrients.toString()}"
+                android:text="@{food.macros.toString()}"
                 app:layout_constraintEnd_toStartOf="@+id/viewMoreButton"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/foodTitleTextView"

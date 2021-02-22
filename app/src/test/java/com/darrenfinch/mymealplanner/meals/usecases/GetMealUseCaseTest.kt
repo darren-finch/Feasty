@@ -16,11 +16,11 @@ import org.junit.jupiter.api.Test
 internal class GetMealUseCaseTest {
 
     private val mealId = 1
-    private val dbMealFood1 = TestDefModels.defDbMealFood.copy(id = 0, foodId = 1)
-    private val dbMealFood2 = TestDefModels.defDbMealFood.copy(id = 1, foodId = 2)
+    private val dbMealFood1 = TestDefModels.defDbMealFood.copy(id = 0, referencedFoodId = 1)
+    private val dbMealFood2 = TestDefModels.defDbMealFood.copy(id = 1, referencedFoodId = 2)
     // foodId intentionally doesn't exist so that we can test whether
     // meal foods with null food references get loaded or not
-    private val dbMealFood3 = TestDefModels.defDbMealFood.copy(id = 2, foodId = 4)
+    private val dbMealFood3 = TestDefModels.defDbMealFood.copy(id = 2, referencedFoodId = 4)
     private val dbMealFoods = listOf(dbMealFood1, dbMealFood2, dbMealFood3)
 
     private val dbFoodReference1 = TestDefModels.defDbFood.copy(id = 1)
@@ -39,9 +39,9 @@ internal class GetMealUseCaseTest {
         )
 
         coEvery { repository.getMeal(mealId) } returns dbMeal
-        coEvery { repository.getFood(dbMealFood1.foodId) } returns dbFoodReference1
-        coEvery { repository.getFood(dbMealFood2.foodId) } returns dbFoodReference2
-        coEvery { repository.getFood(dbMealFood3.foodId) } returns null
+        coEvery { repository.getFood(dbMealFood1.referencedFoodId) } returns dbFoodReference1
+        coEvery { repository.getFood(dbMealFood2.referencedFoodId) } returns dbFoodReference2
+        coEvery { repository.getFood(dbMealFood3.referencedFoodId) } returns null
         coEvery { repository.getMealFoodsForMeal(mealId) } returns dbMealFoods
     }
 

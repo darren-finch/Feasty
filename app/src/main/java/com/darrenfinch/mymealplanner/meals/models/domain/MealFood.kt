@@ -14,8 +14,8 @@ data class MealFood(
     val title: String,
     val desiredServingSize: PhysicalQuantity,
     val originalServingSize: PhysicalQuantity,
-    val originalMacroNutrients: MacroNutrients
+    val originalMacros: MacroNutrients
 ) {
-    val updatedMacroNutrients: MacroNutrients
-        get() = MacroCalculatorService.baseMacrosOnNewServingSize(originalMacroNutrients, originalServingSize, desiredServingSize)
+    val macrosBasedOnDesiredServingSize: MacroNutrients
+        get() = MacroCalculatorService.baseMacrosOnNewServingSize(originalMacros, originalServingSize, desiredServingSize)
 }

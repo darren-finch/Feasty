@@ -11,7 +11,7 @@ class GetMealUseCase(val repository: MainRepository) {
         val dbMeal = repository.getMeal(id)
         return if(dbMeal != null) {
             val dbMealFoods = repository.getMealFoodsForMeal(id)
-            val dbFoodReferences = dbMealFoods.map { dbMealFood -> repository.getFood(dbMealFood.foodId) }
+            val dbFoodReferences = dbMealFoods.map { dbMealFood -> repository.getFood(dbMealFood.referencedFoodId) }
             mealToUiMeal(dbMealToMeal(dbMeal, dbMealFoods, dbFoodReferences))
         }
         else {

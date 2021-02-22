@@ -4,16 +4,13 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
 import com.darrenfinch.mymealplanner.databinding.FragmentEditMealFoodBinding
-import com.darrenfinch.mymealplanner.databinding.FragmentSelectItemBinding
-import com.darrenfinch.mymealplanner.foods.models.presentation.UiMacroNutrients
-import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
+import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 
 class EditMealFoodViewMvcImpl(
@@ -44,7 +41,7 @@ class EditMealFoodViewMvcImpl(
     }
 
     @SuppressLint("SetTextI18n")
-    override fun bindMealFoodMacros(macroNutrients: UiMacroNutrients) {
+    override fun bindMealFoodMacros(macroNutrients: MacroNutrients) {
         binding.mealFoodMacrosTextView.text = macroNutrients.toString()
     }
 

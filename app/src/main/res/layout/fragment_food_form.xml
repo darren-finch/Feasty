@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/calories"
                 android:inputType="number"
-                android:text="@{String.valueOf(food.macroNutrients.calories)}" />
+                android:text="@{String.valueOf(food.macros.calories)}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/carbohydrates"
                 android:inputType="number"
-                android:text="@{String.valueOf(food.macroNutrients.carbs)}" />
+                android:text="@{String.valueOf(food.macros.carbs)}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/fats"
                 android:inputType="number"
-                android:text="@{String.valueOf(food.macroNutrients.fats)}" />
+                android:text="@{String.valueOf(food.macros.fats)}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -134,7 +134,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/protein"
                 android:inputType="number"
-                android:text="@{String.valueOf(food.macroNutrients.proteins)}" />
+                android:text="@{String.valueOf(food.macros.proteins)}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

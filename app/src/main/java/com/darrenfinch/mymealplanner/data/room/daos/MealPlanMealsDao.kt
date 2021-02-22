@@ -5,7 +5,7 @@ import com.darrenfinch.mymealplanner.data.room.models.mealplans.DbMealPlanMeal
 
 @Dao
 interface MealPlanMealsDao {
-    @Query("SELECT * FROM mealPlanMeals WHERE mealPlanId = :mealPlanId")
+    @Query("SELECT * FROM mealPlanMeals WHERE mealPlanOwnerId = :mealPlanId")
     suspend fun getMealsForMealPlan(mealPlanId: Int): List<DbMealPlanMeal>
 
     @Query("SELECT * FROM mealPlanMeals WHERE id = :id")

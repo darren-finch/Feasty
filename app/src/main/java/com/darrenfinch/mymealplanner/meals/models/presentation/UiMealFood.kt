@@ -1,6 +1,6 @@
 package com.darrenfinch.mymealplanner.meals.models.presentation
 
-import com.darrenfinch.mymealplanner.foods.models.presentation.UiMacroNutrients
+import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import java.io.Serializable
 
@@ -12,5 +12,5 @@ data class UiMealFood(
     val desiredServingSize: PhysicalQuantity,
     // the macro nutrients based on desired serving size are calculated on-the-fly
     val originalServingSize: PhysicalQuantity,
-    val originalMacroNutrients: UiMacroNutrients,
+    val originalMacros: MacroNutrients,
 ) : Serializable

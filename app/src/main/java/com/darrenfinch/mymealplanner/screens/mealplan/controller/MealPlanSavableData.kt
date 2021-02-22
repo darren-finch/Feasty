@@ -24,6 +24,6 @@ class MealPlanSavableData : Serializable {
     }
 
     fun getSelectedMealPlanId(): Int {
-        return mealPlanIds.elementAtOrElse(selectedMealPlanIndex) { Constants.INVALID_INDEX }
+        return mealPlanIds.elementAtOrElse(selectedMealPlanIndex) { Constants.INVALID_ID }
     }
 }

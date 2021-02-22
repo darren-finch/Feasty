@@ -2,9 +2,7 @@ package com.darrenfinch.mymealplanner.common.dialogs.editmealfood.view
 
 import android.app.Dialog
 import com.darrenfinch.mymealplanner.common.views.ObservableViewMvc
-import com.darrenfinch.mymealplanner.common.views.ProgressIndicatorViewMvc
-import com.darrenfinch.mymealplanner.foods.models.presentation.UiMacroNutrients
-import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
+import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 
 interface EditMealFoodViewMvc : ObservableViewMvc<EditMealFoodViewMvc.Listener> {
@@ -14,7 +12,7 @@ interface EditMealFoodViewMvc : ObservableViewMvc<EditMealFoodViewMvc.Listener> 
     }
 
     fun bindMealFoodTitle(title: String)
-    fun bindMealFoodMacros(macroNutrients: UiMacroNutrients)
+    fun bindMealFoodMacros(macroNutrients: MacroNutrients)
     fun bindMealFoodDesiredServingSize(servingSize: PhysicalQuantity)
     fun makeDialog(): Dialog
 }

@@ -12,7 +12,7 @@ import com.darrenfinch.mymealplanner.data.room.models.meals.DbMealFood
 
 @Database(
     entities = [DbMeal::class, DbFood::class, DbMealFood::class, DbMealPlan::class, DbMealPlanMeal::class],
-    version = 15,
+    version = 16,
     exportSchema = false
 )
 @TypeConverters(RoomConverters::class)

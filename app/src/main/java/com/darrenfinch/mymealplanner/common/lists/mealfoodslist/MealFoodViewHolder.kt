@@ -28,7 +28,7 @@ class MealFoodViewHolder(
                 mealFoodCardLayout.visibility = View.VISIBLE
 
                 foodTitleTextViewCard.text = item.title
-                mealFoodMacrosTextViewCard.text = "${item.desiredServingSize.getAsString(true)} | ${uiMealFoodToMealFood(item).updatedMacroNutrients}"
+                mealFoodMacrosTextViewCard.text = "${item.desiredServingSize.getAsString(true)} | ${uiMealFoodToMealFood(item).macrosBasedOnDesiredServingSize}"
 
                 viewMoreButtonCard.setOnClickListener {
                     PopupMenu(itemView.context, viewMoreButtonCard).apply {
@@ -49,7 +49,7 @@ class MealFoodViewHolder(
                 mealFoodRegularLayout.visibility = View.VISIBLE
 
                 foodTitleTextViewRegular.text = item.title
-                mealFoodMacrosTextViewRegular.text = "${item.desiredServingSize.getAsString(true)} | ${uiMealFoodToMealFood(item).updatedMacroNutrients}"
+                mealFoodMacrosTextViewRegular.text = "${item.desiredServingSize.getAsString(true)} | ${uiMealFoodToMealFood(item).macrosBasedOnDesiredServingSize}"
 
                 viewMoreButtonRegular.visibility = View.GONE
             }

@@ -2,7 +2,6 @@ package com.darrenfinch.mymealplanner.meals.usecases
 
 import com.darrenfinch.mymealplanner.TestDefModels
 import com.darrenfinch.mymealplanner.data.MainRepository
-import com.darrenfinch.mymealplanner.foods.usecases.DeleteFoodUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

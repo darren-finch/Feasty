@@ -36,7 +36,7 @@ internal class MealFormDataTest {
             selectedUiFood.title,
             selectedUiFood.servingSize,
             selectedUiFood.servingSize,
-            selectedUiFood.macroNutrients
+            selectedUiFood.macros
         )
 
         SUT.addMealFood(selectedUiFood)

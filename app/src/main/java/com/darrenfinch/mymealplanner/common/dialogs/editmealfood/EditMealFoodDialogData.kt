@@ -1,10 +1,8 @@
 package com.darrenfinch.mymealplanner.common.dialogs.editmealfood
 
 import com.darrenfinch.mymealplanner.common.constants.Constants
+import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
 import com.darrenfinch.mymealplanner.foods.services.MacroCalculatorService
-import com.darrenfinch.mymealplanner.foods.models.mappers.macroNutrientsToUiMacroNutrients
-import com.darrenfinch.mymealplanner.foods.models.mappers.uiMacroNutrientsToMacroNutrients
-import com.darrenfinch.mymealplanner.foods.models.presentation.UiMacroNutrients
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 import com.darrenfinch.mymealplanner.physicalquantities.units.MeasurementUnit
@@ -31,7 +29,7 @@ class EditMealFoodDialogData : Serializable {
     private fun getOriginalServingSize() =
         PhysicalQuantity(originalServingSizeQuantity, originalServingSizeUnit)
 
-    private fun getOriginalMacroNutrients() = UiMacroNutrients(
+    private fun getOriginalMacroNutrients() = MacroNutrients(
         calories = calories,
         carbs = carbs,
         fats = fats,
@@ -47,10 +45,10 @@ class EditMealFoodDialogData : Serializable {
         desiredServingSizeUnit = mealFood.desiredServingSize.unit
         originalServingSizeQuantity = mealFood.originalServingSize.quantity
         originalServingSizeUnit = mealFood.originalServingSize.unit
-        calories = mealFood.originalMacroNutrients.calories
-        carbs = mealFood.originalMacroNutrients.carbs
-        fats = mealFood.originalMacroNutrients.fats
-        proteins = mealFood.originalMacroNutrients.proteins
+        calories = mealFood.originalMacros.calories
+        carbs = mealFood.originalMacros.carbs
+        fats = mealFood.originalMacros.fats
+        proteins = mealFood.originalMacros.proteins
     }
 
     fun getMealFoodDetails() = UiMealFood(
@@ -60,18 +58,17 @@ class EditMealFoodDialogData : Serializable {
         title = title,
         originalServingSize = getOriginalServingSize(),
         desiredServingSize = getDesiredServingSize(),
-        originalMacroNutrients = getOriginalMacroNutrients()
+        originalMacros = getOriginalMacroNutrients()
     )
 
     fun getTitle() = title
 
-    fun getMacrosBasedOnDesiredServingSize() = macroNutrientsToUiMacroNutrients(
+    fun getMacrosBasedOnDesiredServingSize() =
         MacroCalculatorService.baseMacrosOnNewServingSize(
-            uiMacroNutrientsToMacroNutrients(getOriginalMacroNutrients()),
+            getOriginalMacroNutrients(),
             getOriginalServingSize(),
             getDesiredServingSize()
         )
-    )
 
     fun getDesiredServingSize() =
         PhysicalQuantity(desiredServingSizeQuantity, desiredServingSizeUnit)

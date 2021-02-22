@@ -47,7 +47,7 @@ fun uiMealPlanMealToMealPlanMeal(uiMealPlanMeal: UiMealPlanMeal) = MealPlanMeal(
 
 fun mealPlanMealToDbMealPlanMeal(mealPlanMeal: MealPlanMeal) = DbMealPlanMeal(
     id = mealPlanMeal.id,
-    mealId = mealPlanMeal.mealId,
-    mealPlanId = mealPlanMeal.mealPlanId,
+    referenceMealId = mealPlanMeal.mealId,
+    mealPlanOwnerId = mealPlanMeal.mealPlanId,
 )
 

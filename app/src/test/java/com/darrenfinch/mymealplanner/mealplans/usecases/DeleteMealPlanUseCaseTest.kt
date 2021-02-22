@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test
 internal class DeleteMealPlanUseCaseTest {
 
     private val mealPlanId = 1
-    private val dbMealPlanMeal1 = TestDefModels.defDbMealPlanMeal.copy(id = 0, mealPlanId = mealPlanId, mealId = 0)
-    private val dbMealPlanMeal2 = TestDefModels.defDbMealPlanMeal.copy(id = 1, mealPlanId = mealPlanId, mealId = 1)
+    private val dbMealPlanMeal1 = TestDefModels.defDbMealPlanMeal.copy(id = 0, mealPlanOwnerId = mealPlanId, referenceMealId = 0)
+    private val dbMealPlanMeal2 = TestDefModels.defDbMealPlanMeal.copy(id = 1, mealPlanOwnerId = mealPlanId, referenceMealId = 1)
     private val dbMealPlanMeals = listOf(dbMealPlanMeal1, dbMealPlanMeal2)
 
     private val repository = mockk<MainRepository>(relaxUnitFun = true)

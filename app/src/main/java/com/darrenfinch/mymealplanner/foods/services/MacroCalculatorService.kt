@@ -70,10 +70,10 @@ object MacroCalculatorService {
         var totalCarbohydrates = 0
         var totalFats = 0
 
-        mealFoods.forEach { food -> totalCalories += food.updatedMacroNutrients.calories }
-        mealFoods.forEach { food -> totalProteins += food.updatedMacroNutrients.proteins }
-        mealFoods.forEach { food -> totalCarbohydrates += food.updatedMacroNutrients.carbs }
-        mealFoods.forEach { food -> totalFats += food.updatedMacroNutrients.fats }
+        mealFoods.forEach { food -> totalCalories += food.macrosBasedOnDesiredServingSize.calories }
+        mealFoods.forEach { food -> totalProteins += food.macrosBasedOnDesiredServingSize.proteins }
+        mealFoods.forEach { food -> totalCarbohydrates += food.macrosBasedOnDesiredServingSize.carbs }
+        mealFoods.forEach { food -> totalFats += food.macrosBasedOnDesiredServingSize.fats }
 
         return MacroNutrients(
             totalCalories,
@@ -85,16 +85,16 @@ object MacroCalculatorService {
 
     fun calculateMealPlanMacros(mealPlan: UiMealPlan, mealPlanMeals: List<UiMealPlanMeal>): MealPlanMacros {
         val totalCalories = mealPlanMeals.sumBy { mealPlanMeal ->
-            mealPlanMeal.foods.sumBy { food -> food.originalMacroNutrients.calories }
+            mealPlanMeal.foods.sumBy { food -> food.originalMacros.calories }
         }
         val totalCarbs = mealPlanMeals.sumBy { mealPlanMeal ->
-            mealPlanMeal.foods.sumBy { food -> food.originalMacroNutrients.carbs }
+            mealPlanMeal.foods.sumBy { food -> food.originalMacros.carbs }
         }
         val totalFats = mealPlanMeals.sumBy { mealPlanMeal ->
-            mealPlanMeal.foods.sumBy { food -> food.originalMacroNutrients.fats }
+            mealPlanMeal.foods.sumBy { food -> food.originalMacros.fats }
         }
         val totalProteins = mealPlanMeals.sumBy { mealPlanMeal ->
-            mealPlanMeal.foods.sumBy { food -> food.originalMacroNutrients.proteins }
+            mealPlanMeal.foods.sumBy { food -> food.originalMacros.proteins }
         }
 
         return MealPlanMacros(

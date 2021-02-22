@@ -36,7 +36,7 @@ class MealFormData : Serializable {
             mealId = id,
             desiredServingSize = selectedFood.servingSize,
             originalServingSize = selectedFood.servingSize,
-            originalMacroNutrients = selectedFood.macroNutrients
+            originalMacros = selectedFood.macros
         )
         mealFoods.add(mealFood)
     }

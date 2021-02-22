@@ -1,19 +1,16 @@
 package com.darrenfinch.mymealplanner.meals.models.mappers
 
-import com.darrenfinch.mymealplanner.foods.models.mappers.dbMacroNutrientsToMacroNutrients
-import com.darrenfinch.mymealplanner.foods.models.mappers.macroNutrientsToUiMacroNutrients
-import com.darrenfinch.mymealplanner.foods.models.mappers.uiMacroNutrientsToMacroNutrients
-import com.darrenfinch.mymealplanner.meals.models.domain.MealFood
-import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
 import com.darrenfinch.mymealplanner.data.room.models.foods.DbFood
 import com.darrenfinch.mymealplanner.data.room.models.meals.DbMealFood
+import com.darrenfinch.mymealplanner.meals.models.domain.MealFood
+import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
 
 fun dbMealFoodToMealFood(dbMealFood: DbMealFood, dbFoodReference: DbFood) = MealFood(
     id = dbMealFood.id,
     title = dbFoodReference.title,
-    mealId = dbMealFood.mealId,
-    foodId = dbMealFood.foodId,
-    originalMacroNutrients = dbMacroNutrientsToMacroNutrients(dbFoodReference.macroNutrients),
+    mealId = dbMealFood.mealOwnerId,
+    foodId = dbMealFood.referencedFoodId,
+    originalMacros = dbFoodReference.macros,
     desiredServingSize = dbMealFood.desiredServingSize,
     originalServingSize = dbFoodReference.servingSize
 )
@@ -23,7 +20,7 @@ fun mealFoodToUiMealFood(mealFood: MealFood) = UiMealFood(
     title = mealFood.title,
     mealId = mealFood.mealId,
     foodId = mealFood.foodId,
-    originalMacroNutrients = macroNutrientsToUiMacroNutrients(mealFood.originalMacroNutrients),
+    originalMacros = mealFood.originalMacros,
     desiredServingSize = mealFood.desiredServingSize,
     originalServingSize = mealFood.originalServingSize
 )
@@ -33,15 +30,15 @@ fun uiMealFoodToMealFood(uiMealFood: UiMealFood) = MealFood(
     title = uiMealFood.title,
     mealId = uiMealFood.mealId,
     foodId = uiMealFood.foodId,
-    originalMacroNutrients = uiMacroNutrientsToMacroNutrients(uiMealFood.originalMacroNutrients),
+    originalMacros = uiMealFood.originalMacros,
     desiredServingSize = uiMealFood.desiredServingSize,
     originalServingSize = uiMealFood.originalServingSize
 )
 
 fun mealFoodToDbMealFood(mealFood: MealFood) = DbMealFood(
     id = mealFood.id,
-    mealId = mealFood.mealId,
-    foodId = mealFood.foodId,
+    mealOwnerId = mealFood.mealId,
+    referencedFoodId = mealFood.foodId,
     desiredServingSize = mealFood.desiredServingSize
 )
 
