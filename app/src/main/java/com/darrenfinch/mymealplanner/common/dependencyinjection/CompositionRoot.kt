@@ -11,9 +11,10 @@ import com.darrenfinch.mymealplanner.data.room.FeastyDatabase
 //This is the global composition root
 class CompositionRoot(private val application: Application) {
     private val database: FeastyDatabase =
-        Room.databaseBuilder(application.applicationContext, FeastyDatabase::class.java, "MealPlannerDatabase")
-            .fallbackToDestructiveMigration()
-            .build()
+        Room.databaseBuilder(
+            application.applicationContext,
+            FeastyDatabase::class.java, "MealPlannerDatabase"
+        ).build()
     private val mainRepository = MainRepository(getDatabase())
     private val dialogsEventBus = DialogsEventBus()
     private val screenDataReturnBuffer = ScreenDataReturnBuffer()
