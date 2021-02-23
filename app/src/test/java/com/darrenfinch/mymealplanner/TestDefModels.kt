@@ -7,7 +7,7 @@ object TestDefModels {
     val defDbMealPlanMeal = DefaultModels.defaultDbMealPlanMeal
     val defDbMealPlan = DefaultModels.defaultDbMealPlan
     val defDbMeal = DefaultModels.defaultDbMeal
-    val defUiMacros = DefaultModels.defaultUiMacroNutrients
+    val defMacros = DefaultModels.defaultMacros
     val defDbFood = DefaultModels.defaultDbFood
     val defMealPlanMacros = DefaultModels.defaultMealPlanMacros
     val defUiMealPlan = DefaultModels.defaultUiMealPlan

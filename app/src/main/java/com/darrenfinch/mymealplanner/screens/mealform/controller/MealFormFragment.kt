@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import com.darrenfinch.mymealplanner.common.controllers.BaseFragment
+import com.darrenfinch.mymealplanner.common.controllers.ControllerSavedState
 import com.darrenfinch.mymealplanner.screens.mealform.view.MealFormViewMvc
 
 class MealFormFragment : BaseFragment() {
@@ -60,7 +61,7 @@ class MealFormFragment : BaseFragment() {
 
     private fun restoreControllerState(savedInstanceState: Bundle?) {
         savedInstanceState?.let {
-            controller.restoreState(savedInstanceState.getSerializable(CONTROLLER_SAVED_STATE) as MealFormControllerImpl.SavedState)
+            controller.restoreState(savedInstanceState.getSerializable(CONTROLLER_SAVED_STATE) as ControllerSavedState)
         }
     }
 

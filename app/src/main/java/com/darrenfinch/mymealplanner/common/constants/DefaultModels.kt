@@ -29,7 +29,7 @@ import com.darrenfinch.mymealplanner.screens.mealplan.MealPlanMacros
 
 object DefaultModels {
     // Data models
-    val defaultMacroNutrients = MacroNutrients(
+    val defaultMacros = MacroNutrients(
         calories = DEFAULT_CALORIES,
         carbs = DEFAULT_CARBS,
         fats = DEFAULT_FATS,
@@ -39,7 +39,7 @@ object DefaultModels {
         id = NEW_ITEM_ID,
         title = "",
         servingSize = PhysicalQuantity.defaultPhysicalQuantity,
-        macros = defaultMacroNutrients
+        macros = defaultMacros
     )
     val defaultDbMealFood = DbMealFood(
         id = NEW_ITEM_ID,
@@ -95,13 +95,13 @@ object DefaultModels {
         title = DEFAULT_MEAL_FOOD_DATA_TITLE,
         desiredServingSize = PhysicalQuantity.defaultPhysicalQuantity,
         originalServingSize = PhysicalQuantity.defaultPhysicalQuantity,
-        originalMacros = defaultMacroNutrients
+        originalMacros = defaultMacros
     )
     val defaultFood = Food(
         id = NEW_ITEM_ID,
         title = DEFAULT_FOOD_DATA_TITLE,
         servingSize = PhysicalQuantity.defaultPhysicalQuantity,
-        macros = defaultMacroNutrients
+        macros = defaultMacros
     )
     val defaultMeal = Meal(
         id = NEW_ITEM_ID,
@@ -116,7 +116,7 @@ object DefaultModels {
         id = NEW_ITEM_ID,
         title = DEFAULT_FOOD_DATA_TITLE,
         servingSize = PhysicalQuantity.defaultPhysicalQuantity,
-        macros = defaultMacroNutrients
+        macros = defaultMacros
     )
     val defaultUiMeal = UiMeal(
         id = NEW_ITEM_ID,
@@ -130,7 +130,7 @@ object DefaultModels {
         title = DEFAULT_MEAL_FOOD_DATA_TITLE,
         desiredServingSize = PhysicalQuantity.defaultPhysicalQuantity,
         originalServingSize = PhysicalQuantity.defaultPhysicalQuantity,
-        originalMacros = defaultMacroNutrients,
+        originalMacros = defaultMacros,
     )
     val defaultUiMealPlan = UiMealPlan(
         id = NEW_ITEM_ID,

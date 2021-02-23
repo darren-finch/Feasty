@@ -42,7 +42,7 @@ internal class EditMealFoodControllerTest {
 
     @Test
     internal fun `bindViewStateToView() binds view state to view`() {
-        val macros = TestDefModels.defUiMacros
+        val macros = TestDefModels.defMacros
 
         every { screenData.getTitle() } returns defUiMealFood.title
         every { screenData.getMacrosBasedOnDesiredServingSize() } returns macros
@@ -60,7 +60,7 @@ internal class EditMealFoodControllerTest {
     @Test
     internal fun `onMealFoodServingSizeQuantityChange() sets desired serving size on screen data`() {
         val testQuantity = 1.0
-        every { screenData.getMacrosBasedOnDesiredServingSize() } returns TestDefModels.defUiMacros
+        every { screenData.getMacrosBasedOnDesiredServingSize() } returns TestDefModels.defMacros
 
         SUT.onMealFoodServingSizeQuantityChange(testQuantity)
 
@@ -69,22 +69,13 @@ internal class EditMealFoodControllerTest {
 
     @Test
     internal fun `onMealFoodServingSizeQuantityChange() binds macros based on desired serving size to view`() {
-        val macros = TestDefModels.defUiMacros
+        val macros = TestDefModels.defMacros
 
         every { screenData.getMacrosBasedOnDesiredServingSize() } returns macros
 
         SUT.onMealFoodServingSizeQuantityChange(0.0) // quantity doesn't matter for this test
 
         verify { viewMvc.bindMealFoodMacros(macros) }
-    }
-
-    @Test
-    internal fun `onPositiveButtonClicked() closes current dialog`() {
-        every { screenData.getMealFoodDetails() } returns defUiMealFood
-
-        SUT.onPositiveButtonClicked()
-
-        verify { dialogsManager.clearDialog() }
     }
 
     @Test

@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import com.darrenfinch.mymealplanner.common.controllers.BaseDialog
+import com.darrenfinch.mymealplanner.common.controllers.ControllerSavedState
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.view.EditMealFoodViewMvc
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
 
@@ -15,9 +16,6 @@ class EditMealFoodDialog : BaseDialog() {
         // Arguments
         const val MEAL_FOOD_ARG = "MEAL_FOOD_ARG"
         const val INDEX_ARG = "INDEX_ARG"
-
-        // Dialog results
-        const val MEAL_FOOD_RESULT = "MEAL_FOOD_RESULT"
 
         fun newInstance(mealFood: UiMealFood, index: Int): EditMealFoodDialog {
             val bundle = Bundle().apply {
@@ -58,7 +56,7 @@ class EditMealFoodDialog : BaseDialog() {
 
     private fun restoreControllerState(savedInstanceState: Bundle?) {
         savedInstanceState?.let {
-            controller.restoreState(it.getSerializable(CONTROLLER_SAVED_STATE) as EditMealFoodController.SavedState)
+            controller.restoreState(it.getSerializable(CONTROLLER_SAVED_STATE) as ControllerSavedState)
         }
     }
 

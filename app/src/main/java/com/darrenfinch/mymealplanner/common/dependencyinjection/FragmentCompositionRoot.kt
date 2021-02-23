@@ -10,7 +10,9 @@ import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.foods.usecases.*
 import com.darrenfinch.mymealplanner.mealplans.usecases.*
 import com.darrenfinch.mymealplanner.meals.usecases.*
+import com.darrenfinch.mymealplanner.screens.allfoods.AllFoodsSavableData
 import com.darrenfinch.mymealplanner.screens.allfoods.controller.AllFoodsController
+import com.darrenfinch.mymealplanner.screens.allmeals.AllMealsSavableData
 import com.darrenfinch.mymealplanner.screens.allmeals.controller.AllMealsController
 import com.darrenfinch.mymealplanner.screens.foodform.FoodFormData
 import com.darrenfinch.mymealplanner.screens.foodform.FoodFormValidator
@@ -106,27 +108,8 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
     fun getMealPlanFormValidator() = MealPlanFormValidator()
 
     // Dialog controllers
-    fun getSelectFoodForMealController(
-    ) = SelectFoodForMealController(
-        getGetAllFoodsUseCase(),
-        getScreensNavigator(),
-        getScreenDataReturnBuffer(),
-        backgroundContext,
-        uiContext
-    )
-
-    fun getSelectMealPlanMealController(
-    ) = SelectMealPlanMealController(
-        getGetAllMealsUseCase(),
-        getScreensNavigator(),
-        getScreenDataReturnBuffer(),
-        backgroundContext,
-        uiContext
-    )
-
     fun getEditMealController() = EditMealFoodController(
         getEditMealFoodData(),
-        dialogsManager = getDialogsManager(),
         dialogsEventBus = getDialogsEventBus()
     )
 
@@ -145,18 +128,24 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
 
     fun getAllFoodsController() =
         AllFoodsController(
+            getAllFoodsSavableData(),
             getScreensNavigator(),
             getGetAllFoodsUseCase(),
             getDeleteFoodUseCase(),
+            getDialogsManager(),
+            getDialogsEventBus(),
             backgroundContext,
             uiContext
         )
 
     fun getAllMealsController() =
         AllMealsController(
+            getAllMealsSavableData(),
             getScreensNavigator(),
             getGetAllMealsUseCase(),
             getDeleteMealUseCase(),
+            getDialogsManager(),
+            getDialogsEventBus(),
             backgroundContext,
             uiContext
         )
@@ -203,9 +192,29 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
         backgroundContext
     )
 
+    fun getSelectFoodForMealController(
+    ) = SelectFoodForMealController(
+        getGetAllFoodsUseCase(),
+        getScreensNavigator(),
+        getScreenDataReturnBuffer(),
+        backgroundContext,
+        uiContext
+    )
+
+    fun getSelectMealPlanMealController(
+    ) = SelectMealPlanMealController(
+        getGetAllMealsUseCase(),
+        getScreensNavigator(),
+        getScreenDataReturnBuffer(),
+        backgroundContext,
+        uiContext
+    )
+
 
     // Screen data (or view models, whatever you wish to call them)
     private fun getEditMealFoodData() = EditMealFoodDialogData()
+    private fun getAllFoodsSavableData() = AllFoodsSavableData()
+    private fun getAllMealsSavableData() = AllMealsSavableData()
     fun getFoodFormData() = FoodFormData()
     fun getMealFormData() = MealFormData()
     fun getMealPlanFormData() = MealPlanFormData()

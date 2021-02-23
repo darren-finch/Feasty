@@ -1,24 +1,31 @@
 package com.darrenfinch.mymealplanner.screens.allfoods.controller
 
 import com.darrenfinch.mymealplanner.common.constants.Constants
-import com.darrenfinch.mymealplanner.common.controllers.BaseController
+import com.darrenfinch.mymealplanner.common.controllers.StatefulController
 import com.darrenfinch.mymealplanner.common.controllers.ControllerSavedState
+import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
+import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
+import com.darrenfinch.mymealplanner.common.dialogs.prompt.PromptDialogEvent
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.foods.usecases.DeleteFoodUseCase
 import com.darrenfinch.mymealplanner.foods.usecases.GetAllFoodsUseCase
+import com.darrenfinch.mymealplanner.screens.allfoods.AllFoodsSavableData
 import com.darrenfinch.mymealplanner.screens.allfoods.view.AllFoodsViewMvc
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 class AllFoodsController(
+    private var savableData: AllFoodsSavableData,
     private val screensNavigator: ScreensNavigator,
     private val getAllFoodsUseCase: GetAllFoodsUseCase,
     private val deleteFoodUseCase: DeleteFoodUseCase,
+    private val dialogsManager: DialogsManager,
+    private val dialogsEventBus: DialogsEventBus,
     private val backgroundContext: CoroutineContext,
     private val uiContext: CoroutineContext
-) : BaseController, AllFoodsViewMvc.Listener {
+) : StatefulController, AllFoodsViewMvc.Listener, DialogsEventBus.Listener {
 
-    class SavedState : ControllerSavedState
+    data class SavedState(val savableData: AllFoodsSavableData) : ControllerSavedState
 
     private lateinit var viewMvc: AllFoodsViewMvc
 
@@ -30,10 +37,12 @@ class AllFoodsController(
 
     fun onStart() {
         viewMvc.registerListener(this)
+        dialogsEventBus.registerListener(this)
     }
 
     fun onStop() {
         viewMvc.unregisterListener(this)
+        dialogsEventBus.unregisterListener(this)
         getAllFoodsJob?.cancel()
     }
 
@@ -57,14 +66,26 @@ class AllFoodsController(
     }
 
     override fun onFoodDelete(foodId: Int) {
-        runBlocking(backgroundContext) {
-            deleteFoodUseCase.deleteFood(foodId)
-        }
-        getAllFoodsAndBindToView()
+        savableData.setPendingIdOfFoodToDelete(foodId)
+        dialogsManager.showDeleteFoodConfirmationDialog()
     }
 
-    override fun restoreState(state: ControllerSavedState) { }
+    override fun restoreState(state: ControllerSavedState) {
+        (state as SavedState).let {
+            savableData = it.savableData
+        }
+    }
     override fun getState(): ControllerSavedState {
-        return SavedState()
+        return SavedState(savableData)
+    }
+
+    override fun onDialogEvent(event: Any) {
+        if (event is PromptDialogEvent.PositiveButtonClicked) {
+            runBlocking(backgroundContext) {
+                deleteFoodUseCase.deleteFood(savableData.getPendingIdOfFoodToDelete())
+            }
+            savableData.setPendingIdOfFoodToDelete(Constants.INVALID_ID)
+            getAllFoodsAndBindToView()
+        }
     }
 }

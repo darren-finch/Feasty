@@ -64,7 +64,7 @@ class EditMealFoodDialogData : Serializable {
     fun getTitle() = title
 
     fun getMacrosBasedOnDesiredServingSize() =
-        MacroCalculatorService.baseMacrosOnNewServingSize(
+        MacroCalculatorService.baseMacrosOnDesiredServingSize(
             getOriginalMacroNutrients(),
             getOriginalServingSize(),
             getDesiredServingSize()

@@ -6,6 +6,7 @@ import android.widget.PopupMenu
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.lists.BaseViewHolder
 import com.darrenfinch.mymealplanner.databinding.MealFoodItemBinding
+import com.darrenfinch.mymealplanner.foods.services.MacroCalculatorService
 import com.darrenfinch.mymealplanner.meals.models.mappers.uiMealFoodToMealFood
 import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
 
@@ -24,11 +25,13 @@ class MealFoodViewHolder(
     @SuppressLint("SetTextI18n")
     override fun bind(item: UiMealFood) {
         binding.apply {
+            val macrosBasedOnDesiredServingSize = MacroCalculatorService.baseMacrosOnDesiredServingSize(item.originalMacros, item.originalServingSize, item.desiredServingSize)
+
             if(config.showAsFullCard) {
                 mealFoodCardLayout.visibility = View.VISIBLE
 
                 foodTitleTextViewCard.text = item.title
-                mealFoodMacrosTextViewCard.text = "${item.desiredServingSize.getAsString(true)} | ${uiMealFoodToMealFood(item).macrosBasedOnDesiredServingSize}"
+                mealFoodMacrosTextViewCard.text = "${item.desiredServingSize.getAsString(true)} | $macrosBasedOnDesiredServingSize"
 
                 viewMoreButtonCard.setOnClickListener {
                     PopupMenu(itemView.context, viewMoreButtonCard).apply {
@@ -49,7 +52,7 @@ class MealFoodViewHolder(
                 mealFoodRegularLayout.visibility = View.VISIBLE
 
                 foodTitleTextViewRegular.text = item.title
-                mealFoodMacrosTextViewRegular.text = "${item.desiredServingSize.getAsString(true)} | ${uiMealFoodToMealFood(item).macrosBasedOnDesiredServingSize}"
+                mealFoodMacrosTextViewRegular.text = "${item.desiredServingSize.getAsString(true)} | $macrosBasedOnDesiredServingSize"
 
                 viewMoreButtonRegular.visibility = View.GONE
             }

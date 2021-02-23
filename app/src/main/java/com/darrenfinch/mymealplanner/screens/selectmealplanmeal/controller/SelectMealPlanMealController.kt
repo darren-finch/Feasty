@@ -1,6 +1,6 @@
 package com.darrenfinch.mymealplanner.screens.selectmealplanmeal.controller
 
-import com.darrenfinch.mymealplanner.common.controllers.BaseController
+import com.darrenfinch.mymealplanner.common.controllers.StatefulController
 import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.view.SelectMealPlanMealViewMvc
 import com.darrenfinch.mymealplanner.common.controllers.ControllerSavedState
 import com.darrenfinch.mymealplanner.common.navigation.ScreenDataReturnBuffer
@@ -19,7 +19,7 @@ class SelectMealPlanMealController(
     private val screenDataReturnBuffer: ScreenDataReturnBuffer,
     private val backgroundContext: CoroutineContext,
     private val uiContext: CoroutineContext
-) : BaseController, SelectMealPlanMealViewMvc.Listener {
+) : StatefulController, SelectMealPlanMealViewMvc.Listener {
 
     class SavedState : ControllerSavedState
 

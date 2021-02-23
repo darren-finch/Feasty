@@ -1,6 +1,6 @@
 package com.darrenfinch.mymealplanner.screens.mealplanform.controller
 
-import com.darrenfinch.mymealplanner.common.controllers.BaseController
+import com.darrenfinch.mymealplanner.common.controllers.StatefulController
 import com.darrenfinch.mymealplanner.common.navigation.BackPressDispatcher
 import com.darrenfinch.mymealplanner.common.navigation.BackPressListener
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
@@ -23,7 +23,7 @@ class MealPlanFormController(
     private val toastsHelper: ToastsHelper,
     private val backPressDispatcher: BackPressDispatcher,
     private val backgroundContext: CoroutineContext
-) : BaseController, MealPlanFormViewMvc.Listener, BackPressListener, BaseFormValidator.Listener {
+) : StatefulController, MealPlanFormViewMvc.Listener, BackPressListener, BaseFormValidator.Listener {
 
     data class SavedState(val screenData: MealPlanFormData) :
         ControllerSavedState

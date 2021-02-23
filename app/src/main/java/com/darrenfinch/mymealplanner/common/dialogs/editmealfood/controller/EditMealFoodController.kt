@@ -1,7 +1,7 @@
 package com.darrenfinch.mymealplanner.common.dialogs.editmealfood.controller
 
 import com.darrenfinch.mymealplanner.common.constants.Constants
-import com.darrenfinch.mymealplanner.common.controllers.BaseController
+import com.darrenfinch.mymealplanner.common.controllers.StatefulController
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsManager
 import com.darrenfinch.mymealplanner.common.dialogs.editmealfood.EditMealFoodDialogEvent
@@ -12,9 +12,8 @@ import com.darrenfinch.mymealplanner.meals.models.presentation.UiMealFood
 
 class EditMealFoodController(
     private var screenData: EditMealFoodDialogData,
-    private val dialogsManager: DialogsManager,
     private val dialogsEventBus: DialogsEventBus,
-) : BaseController, EditMealFoodViewMvc.Listener {
+) : StatefulController, EditMealFoodViewMvc.Listener {
 
     data class SavedState(val screenData: EditMealFoodDialogData, val hasLoadedMealFoodDetails: Boolean, val indexArgState: Int) :
         ControllerSavedState
@@ -62,7 +61,6 @@ class EditMealFoodController(
     }
 
     override fun onPositiveButtonClicked() {
-        dialogsManager.clearDialog()
         dialogsEventBus.postEvent(
             EditMealFoodDialogEvent.OnPositiveButtonClicked(screenData.getMealFoodDetails(), indexArgState)
         )

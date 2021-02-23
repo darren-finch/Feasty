@@ -10,12 +10,6 @@ import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
 internal class DeleteMealPlanUseCaseTest {
-
-    private val mealPlanId = 1
-    private val dbMealPlanMeal1 = TestDefModels.defDbMealPlanMeal.copy(id = 0, mealPlanOwnerId = mealPlanId, referenceMealId = 0)
-    private val dbMealPlanMeal2 = TestDefModels.defDbMealPlanMeal.copy(id = 1, mealPlanOwnerId = mealPlanId, referenceMealId = 1)
-    private val dbMealPlanMeals = listOf(dbMealPlanMeal1, dbMealPlanMeal2)
-
     private val repository = mockk<MainRepository>(relaxUnitFun = true)
 
     private lateinit var SUT: DeleteMealPlanUseCase
@@ -25,26 +19,14 @@ internal class DeleteMealPlanUseCaseTest {
         SUT = DeleteMealPlanUseCase(
             repository
         )
-
-        coEvery { repository.getMealsForMealPlan(mealPlanId) } returns dbMealPlanMeals
     }
 
     @Test
-    internal fun `deleteMealPlanMeal() deletes all meals that the meal plan contained`() = runBlockingTest {
+    internal fun `deleteMealPlan() deletes meal plan from repository`() = runBlockingTest {
+        val mealPlanId = 1
+
         SUT.deleteMealPlan(mealPlanId)
 
-        coVerify {
-            repository.deleteMealPlanMeal(dbMealPlanMeal1.id)
-            repository.deleteMealPlanMeal(dbMealPlanMeal2.id)
-        }
-    }
-
-    @Test
-    internal fun `deleteMealPlanMeal() deletes meal plan meal from repository`() = runBlockingTest {
-        SUT.deleteMealPlan(mealPlanId)
-
-        coVerify {
-            repository.deleteMealPlanMeal(mealPlanId)
-        }
+        coVerify { repository.deleteMealPlan(mealPlanId) }
     }
 }

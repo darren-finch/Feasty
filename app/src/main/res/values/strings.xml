@@ -53,4 +53,9 @@
     <string name="serving_size_quantity_must_be_greater_than_zero">Serving size quantity must be more than zero</string>
     <string name="meal_must_have_at_least_one_food">A meal must have at least one food</string>
 
+    <!-- Prompt dialog -->
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="are_you_sure_you_want_to_delete_this_food">This food may be used in other meals, are you sure you want to delete it?</string>
+    <string name="are_you_sure_you_want_to_delete_this_meal">This meal might be used by other meal plans. Are you sure you want to delete it?</string>
+
 </resources>

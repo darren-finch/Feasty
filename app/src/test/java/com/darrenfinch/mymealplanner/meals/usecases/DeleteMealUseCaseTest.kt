@@ -31,16 +31,6 @@ internal class DeleteMealUseCaseTest {
     }
 
     @Test
-    internal fun `deleteMeal() deletes all invalid meal foods`() = runBlockingTest {
-        SUT.deleteMeal(mealId)
-
-        coVerify {
-            repository.deleteMealFood(0)
-            repository.deleteMealFood(1)
-        }
-    }
-
-    @Test
     internal fun `deleteMeal() deletes meal from repository`() = runBlockingTest {
         SUT.deleteMeal(mealId)
 

@@ -21,7 +21,7 @@ class ActivityCompositionRoot(
     private val fragNavController =
         FragNavController(activity.supportFragmentManager, R.id.container)
     private val screensNavigator = ScreensNavigator(fragNavController, NavigationOptions.defaultTransactionOptions)
-    private val dialogsManager = DialogsManager(fragNavController)
+    private val dialogsManager = DialogsManager(getActivity(), fragNavController)
     private val toastsHelper = ToastsHelper(activity)
     private val sharedPreferencesHelper = SharedPreferencesHelper(activity)
 

@@ -18,27 +18,27 @@ object MacroCalculatorService {
      * Takes some macro nutrients that are based on oldServingSize
      * and returns what the macro nutrients would be if they were based on newServingSize
      */
-    fun baseMacrosOnNewServingSize(
-        oldMacros: MacroNutrients,
-        oldServingSize: PhysicalQuantity,
-        newServingSize: PhysicalQuantity
+    fun baseMacrosOnDesiredServingSize(
+        originalMacros: MacroNutrients,
+        originalServingSize: PhysicalQuantity,
+        desiredServingSize: PhysicalQuantity
     ): MacroNutrients {
-        val initialCalories = oldMacros.calories
-        val initialProteins = oldMacros.proteins
-        val initialCarbs = oldMacros.carbs
-        val initialFats = oldMacros.fats
+        val originalCalories = originalMacros.calories
+        val originalProteins = originalMacros.proteins
+        val originalCarbs = originalMacros.carbs
+        val originalFats = originalMacros.fats
 
-        val caloriesPerUnit = oldServingSize.quantity / initialCalories
-        val finalCalories = newServingSize.quantity / caloriesPerUnit
+        val caloriesPerUnit = originalServingSize.quantity / originalCalories
+        val finalCalories = desiredServingSize.quantity / caloriesPerUnit
 
-        val proteinsPerUnit = oldServingSize.quantity / initialProteins
-        val finalProtein = newServingSize.quantity / proteinsPerUnit
+        val proteinsPerUnit = originalServingSize.quantity / originalProteins
+        val finalProtein = desiredServingSize.quantity / proteinsPerUnit
 
-        val carbsPerUnit = oldServingSize.quantity / initialCarbs
-        val finalCarbs = newServingSize.quantity / carbsPerUnit
+        val carbsPerUnit = originalServingSize.quantity / originalCarbs
+        val finalCarbs = desiredServingSize.quantity / carbsPerUnit
 
-        val fatsPerUnit = oldServingSize.quantity / initialFats
-        val finalFat = newServingSize.quantity / fatsPerUnit
+        val fatsPerUnit = originalServingSize.quantity / originalFats
+        val finalFat = desiredServingSize.quantity / fatsPerUnit
 
         return MacroNutrients(
             calories = finalCalories.toInt(),
@@ -67,17 +67,20 @@ object MacroCalculatorService {
     private fun calculateMacrosFromMealFoods(mealFoods: List<MealFood>): String {
         var totalCalories = 0
         var totalProteins = 0
-        var totalCarbohydrates = 0
+        var totalCarbs = 0
         var totalFats = 0
 
-        mealFoods.forEach { food -> totalCalories += food.macrosBasedOnDesiredServingSize.calories }
-        mealFoods.forEach { food -> totalProteins += food.macrosBasedOnDesiredServingSize.proteins }
-        mealFoods.forEach { food -> totalCarbohydrates += food.macrosBasedOnDesiredServingSize.carbs }
-        mealFoods.forEach { food -> totalFats += food.macrosBasedOnDesiredServingSize.fats }
+        for(food in mealFoods) {
+            val macrosBasedOnDesiredServingSize = baseMacrosOnDesiredServingSize(food.originalMacros, food.originalServingSize, food.desiredServingSize)
+            totalCalories += macrosBasedOnDesiredServingSize.calories
+            totalCarbs += macrosBasedOnDesiredServingSize.carbs
+            totalFats += macrosBasedOnDesiredServingSize.fats
+            totalProteins += macrosBasedOnDesiredServingSize.proteins
+        }
 
         return MacroNutrients(
             totalCalories,
-            totalCarbohydrates,
+            totalCarbs,
             totalProteins,
             totalFats
         ).toString()

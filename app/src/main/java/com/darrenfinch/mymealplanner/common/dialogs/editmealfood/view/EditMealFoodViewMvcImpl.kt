@@ -9,7 +9,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.common.views.BaseObservableViewMvc
-import com.darrenfinch.mymealplanner.databinding.FragmentEditMealFoodBinding
+import com.darrenfinch.mymealplanner.databinding.DialogEditMealFoodBinding
 import com.darrenfinch.mymealplanner.foods.models.domain.MacroNutrients
 import com.darrenfinch.mymealplanner.physicalquantities.PhysicalQuantity
 
@@ -17,8 +17,8 @@ class EditMealFoodViewMvcImpl(
     inflater: LayoutInflater,
     parent: ViewGroup?
 ) : EditMealFoodViewMvc, BaseObservableViewMvc<EditMealFoodViewMvc.Listener>() {
-    private var _binding: FragmentEditMealFoodBinding? =
-        DataBindingUtil.inflate(inflater, R.layout.fragment_edit_meal_food, parent, false)
+    private var _binding: DialogEditMealFoodBinding? =
+        DataBindingUtil.inflate(inflater, R.layout.dialog_edit_meal_food, parent, false)
     private val binding = _binding!!
 
     init {
