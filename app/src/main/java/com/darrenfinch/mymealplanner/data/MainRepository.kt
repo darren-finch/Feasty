@@ -38,13 +38,13 @@ class MainRepository(database: FeastyDatabase) {
     // Meals
 
     suspend fun getAllMeals() = mealsDao.getAllMeals()
+    suspend fun getMealsForQuery(query: String) = mealsDao.getMealsForQuery(query)
     suspend fun getMeal(id: Int) = mealsDao.getMeal(id)
     suspend fun insertMeal(meal: DbMeal) = mealsDao.insertMeal(meal)
     suspend fun updateMeal(meal: DbMeal) = mealsDao.updateMeal(meal)
     suspend fun deleteMeal(id: Int) = mealsDao.deleteMeal(id)
 
     // Meal Foods
-
     suspend fun getMealFoodsForMeal(mealId: Int) = mealFoodsDao.getMealFoodsForMeal(mealId)
     suspend fun getMealFoodsForFood(foodId: Int) = mealFoodsDao.getMealFoodsForMeal(foodId)
     suspend fun getMealFood(id: Int) = mealFoodsDao.getMealFood(id)
@@ -53,8 +53,8 @@ class MainRepository(database: FeastyDatabase) {
     suspend fun deleteMealFood(id: Int) = mealFoodsDao.deleteMealFood(id)
 
     // Foods
-
     suspend fun getAllFoods() = foodsDao.getAllFoods()
+    suspend fun getFoodsFromQuery(query: String) = foodsDao.getFoodsFromQuery(query)
     suspend fun getFood(id: Int) = foodsDao.getFood(id)
     suspend fun insertFood(food: DbFood) = foodsDao.insertFood(food)
     suspend fun updateFood(food: DbFood) = foodsDao.updateFood(food)

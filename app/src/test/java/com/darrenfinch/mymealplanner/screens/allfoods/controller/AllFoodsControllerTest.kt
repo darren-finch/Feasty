@@ -1,6 +1,5 @@
 package com.darrenfinch.mymealplanner.screens.allfoods.controller
 
-import com.darrenfinch.mymealplanner.R
 import com.darrenfinch.mymealplanner.TestDefModels
 import com.darrenfinch.mymealplanner.common.constants.Constants
 import com.darrenfinch.mymealplanner.common.dialogs.DialogsEventBus

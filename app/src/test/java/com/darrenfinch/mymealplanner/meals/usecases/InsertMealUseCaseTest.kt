@@ -19,7 +19,7 @@ internal class InsertMealUseCaseTest {
     private lateinit var SUT: InsertMealUseCase
 
     private val uiMealToBeInserted = TestDefModels.defUiMeal.copy(title = "defUiMeal")
-    private val dbMealToBeInserted = mealToDbMeal(uiMealToMeal(uiMealToBeInserted))
+    private val dbMealToBeInserted = mealToDbMeal(uiMealToMeal(uiMealToBeInserted.copy(id = Constants.EXISTING_ITEM_ID)))
     private val idOfInsertedMeal = 0L
 
     private val repository = mockk<MainRepository>(relaxUnitFun = true)
@@ -59,7 +59,7 @@ internal class InsertMealUseCaseTest {
                     uiMealFoodToBeInserted2
                 )
             )
-            val dbMealToBeInserted2 = mealToDbMeal(uiMealToMeal(uiMealToBeInserted2))
+            val dbMealToBeInserted2 = mealToDbMeal(uiMealToMeal(uiMealToBeInserted2.copy(id = Constants.EXISTING_ITEM_ID)))
 
             SUT.insertMeal(uiMealToBeInserted2)
 

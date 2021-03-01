@@ -4,10 +4,13 @@ import com.darrenfinch.mymealplanner.TestDefModels
 import com.darrenfinch.mymealplanner.common.navigation.ScreenDataReturnBuffer
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.meals.usecases.GetAllMealsUseCase
+import com.darrenfinch.mymealplanner.meals.usecases.GetMealsForQueryUseCase
+import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.SelectMealPlanMealSavableData
 import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.view.SelectMealPlanMealViewMvc
 import com.darrenfinch.mymealplanner.testrules.CoroutinesTestExtension
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
@@ -20,7 +23,8 @@ internal class SelectMealPlanMealControllerTest {
         TestDefModels.defUiMeal.copy(title = "defUiMeal2")
     )
 
-    private val getAllMealsUseCase = mockk<GetAllMealsUseCase>(relaxUnitFun = true)
+    private val savableData = mockk<SelectMealPlanMealSavableData>(relaxUnitFun = true)
+    private val getMealsForQueryUseCase = mockk<GetMealsForQueryUseCase>(relaxUnitFun = true)
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
     private val screenDataReturnBuffer = mockk<ScreenDataReturnBuffer>(relaxUnitFun = true)
     private val viewMvc = mockk<SelectMealPlanMealViewMvc>(relaxUnitFun = true)
@@ -34,7 +38,8 @@ internal class SelectMealPlanMealControllerTest {
     @BeforeEach
     internal fun setUp() {
         SUT = SelectMealPlanMealController(
-            getAllMealsUseCase,
+            savableData,
+            getMealsForQueryUseCase,
             screensNavigator,
             screenDataReturnBuffer,
             coroutinesTestExtension.testDispatcher,
@@ -65,12 +70,18 @@ internal class SelectMealPlanMealControllerTest {
     }
 
     @Test
-    internal fun `getAllMeals() gets meals from use case and binds them to view mvc`() {
-        coEvery { getAllMealsUseCase.getAllMeals() } returns getAllMealsUseCaseResult
+    internal fun `getAllMeals() - shows then hides progress indication, gets meals from cur query and binds them to view mvc`() = runBlockingTest {
+        val query = "asd"
+        every { savableData.getCurQuery() } returns query
+        coEvery { getMealsForQueryUseCase.getMealsForQuery(query) } returns getAllMealsUseCaseResult
 
         SUT.getAllMeals()
 
-        verify { viewMvc.bindMeals(getAllMealsUseCaseResult) }
+        verifyOrder {
+            viewMvc.showProgressIndication()
+            viewMvc.hideProgressIndication()
+            viewMvc.bindMeals(getAllMealsUseCaseResult)
+        }
     }
 
     @Test
@@ -89,6 +100,21 @@ internal class SelectMealPlanMealControllerTest {
         verifySequence {
             screenDataReturnBuffer.putData(chosenMeal, SelectMealPlanMealFragment.ASYNC_COMPLETION_TOKEN)
             screensNavigator.navigateUp()
+        }
+    }
+
+    @Test
+    internal fun `onQuerySubmitted - saves submitted query and refreshes meal plan meals`() = runBlockingTest {
+        val query = "asd"
+        val uiMeals = listOf(TestDefModels.defUiMeal.copy(id = 0), TestDefModels.defUiMeal.copy(id = 1))
+        coEvery { savableData.getCurQuery() } returns query
+        coEvery { getMealsForQueryUseCase.getMealsForQuery(query) } returns uiMeals
+
+        SUT.onQuerySubmitted(query)
+
+        coVerify {
+            savableData.setCurQuery(query)
+            getMealsForQueryUseCase.getMealsForQuery(query)
         }
     }
 }

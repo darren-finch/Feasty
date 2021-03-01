@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import com.darrenfinch.mymealplanner.common.helpers.KeyboardHelper
 import com.darrenfinch.mymealplanner.common.misc.BaseObservable
 import com.darrenfinch.mymealplanner.screens.allfoods.controller.AllFoodsFragment
 import com.darrenfinch.mymealplanner.screens.allmeals.controller.AllMealsFragment
@@ -18,14 +19,10 @@ import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavTransactionOptions
 
 class ScreensNavigator(
+    private val keyboardHelper: KeyboardHelper,
     private val navController: FragNavController,
     private val defaultTransactionOptions: FragNavTransactionOptions
 ) {
-
-    companion object {
-        private const val CUR_SCREEN_RESULT = "CUR_SCREEN_RESULT"
-    }
-
     private val rootFragmentListener = object : FragNavController.RootFragmentListener {
         override val numberOfRootFragments = 3
 
@@ -52,6 +49,7 @@ class ScreensNavigator(
         return if (navController.isRootFragment) {
             false
         } else {
+            keyboardHelper.hideKeyboard()
             navController.popFragment(
                 defaultTransactionOptions
             )

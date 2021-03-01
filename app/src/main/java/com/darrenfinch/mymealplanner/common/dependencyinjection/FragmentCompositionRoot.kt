@@ -28,7 +28,9 @@ import com.darrenfinch.mymealplanner.screens.mealplan.controller.MealPlanControl
 import com.darrenfinch.mymealplanner.screens.mealplanform.MealPlanFormData
 import com.darrenfinch.mymealplanner.screens.mealplanform.MealPlanFormValidator
 import com.darrenfinch.mymealplanner.screens.mealplanform.controller.MealPlanFormController
+import com.darrenfinch.mymealplanner.screens.selectfoodformeal.SelectFoodForMealSavableData
 import com.darrenfinch.mymealplanner.screens.selectfoodformeal.controller.SelectFoodForMealController
+import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.SelectMealPlanMealSavableData
 import com.darrenfinch.mymealplanner.screens.selectmealplanmeal.controller.SelectMealPlanMealController
 import kotlinx.coroutines.Dispatchers
 
@@ -60,20 +62,20 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
 
     // Use cases
     private fun getGetAllFoodsUseCase() = GetAllFoodsUseCase(getMainRepository())
+    private fun getGetFoodsFromQueryUseCase() = GetFoodsFromQueryUseCase(getMainRepository())
     private fun getGetFoodUseCase() = GetFoodUseCase(getMainRepository())
     private fun getUpsertFoodUseCase() = UpsertFoodUseCase(getMainRepository())
     private fun getDeleteFoodUseCase() = DeleteFoodUseCase(getMainRepository())
 
     private fun getGetAllMealsUseCase() =
         GetAllMealsUseCase(getMainRepository(), getGetMealUseCase())
-
+    private fun getGetMealsFromQueryUseCase() =
+        GetMealsForQueryUseCase(getMainRepository(), getGetMealUseCase())
     private fun getGetMealUseCase() = GetMealUseCase(getMainRepository())
     private fun getUpsertMealUseCase() =
         UpsertMealUseCase(getInsertMealUseCase(), getUpdateMealUseCase())
-
     private fun getInsertMealUseCase() =
         InsertMealUseCase(getMainRepository(), getInsertMealFoodUseCase())
-
     private fun getUpdateMealUseCase() = UpdateMealUseCase(
         getMainRepository(),
         getInsertMealFoodUseCase(),
@@ -194,7 +196,8 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
 
     fun getSelectFoodForMealController(
     ) = SelectFoodForMealController(
-        getGetAllFoodsUseCase(),
+        getSelectFoodForMealSavableData(),
+        getGetFoodsFromQueryUseCase(),
         getScreensNavigator(),
         getScreenDataReturnBuffer(),
         backgroundContext,
@@ -203,7 +206,8 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
 
     fun getSelectMealPlanMealController(
     ) = SelectMealPlanMealController(
-        getGetAllMealsUseCase(),
+        getSelectMealPlanMealSavableData(),
+        getGetMealsFromQueryUseCase(),
         getScreensNavigator(),
         getScreenDataReturnBuffer(),
         backgroundContext,
@@ -213,6 +217,8 @@ class FragmentCompositionRoot(private val activityCompositionRoot: ActivityCompo
 
     // Screen data (or view models, whatever you wish to call them)
     private fun getEditMealFoodData() = EditMealFoodDialogData()
+    private fun getSelectFoodForMealSavableData() = SelectFoodForMealSavableData()
+    private fun getSelectMealPlanMealSavableData() = SelectMealPlanMealSavableData()
     private fun getAllFoodsSavableData() = AllFoodsSavableData()
     private fun getAllMealsSavableData() = AllMealsSavableData()
     fun getFoodFormData() = FoodFormData()

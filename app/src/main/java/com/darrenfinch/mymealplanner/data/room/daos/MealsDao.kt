@@ -8,6 +8,9 @@ interface MealsDao {
     @Query("SELECT * FROM meals")
     suspend fun getAllMeals(): List<DbMeal>
 
+    @Query("SELECT * FROM meals WHERE title LIKE :query")
+    suspend fun getMealsForQuery(query: String): List<DbMeal>
+
     @Query("SELECT * FROM meals WHERE id = :id")
     suspend fun getMeal(id: Int): DbMeal?
 
@@ -19,7 +22,6 @@ interface MealsDao {
 
     @Query("DELETE FROM meals WHERE id = :id")
     suspend fun deleteMeal(id: Int)
-
     @Query("DELETE FROM meals")
     suspend fun deleteAllMeals()
 }

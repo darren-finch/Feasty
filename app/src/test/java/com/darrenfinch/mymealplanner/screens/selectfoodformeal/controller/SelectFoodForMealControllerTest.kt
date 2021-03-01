@@ -4,10 +4,13 @@ import com.darrenfinch.mymealplanner.TestDefModels
 import com.darrenfinch.mymealplanner.common.navigation.ScreenDataReturnBuffer
 import com.darrenfinch.mymealplanner.common.navigation.ScreensNavigator
 import com.darrenfinch.mymealplanner.foods.usecases.GetAllFoodsUseCase
+import com.darrenfinch.mymealplanner.foods.usecases.GetFoodsFromQueryUseCase
+import com.darrenfinch.mymealplanner.screens.selectfoodformeal.SelectFoodForMealSavableData
 import com.darrenfinch.mymealplanner.screens.selectfoodformeal.view.SelectFoodForMealViewMvc
 import com.darrenfinch.mymealplanner.testrules.CoroutinesTestExtension
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
@@ -15,12 +18,13 @@ import org.junit.jupiter.api.extension.RegisterExtension
 @ExperimentalCoroutinesApi
 internal class SelectFoodForMealControllerTest {
 
-    private val getAllFoodsUseCaseResult = listOf(
+    private val foodsList = listOf(
         TestDefModels.defUiFood.copy(title = "defUiFood1"),
         TestDefModels.defUiFood.copy(title = "defUiFood2")
     )
 
-    private val getAllFoodsUseCase = mockk<GetAllFoodsUseCase>(relaxUnitFun = true)
+    private val savableData = mockk<SelectFoodForMealSavableData>(relaxUnitFun = true)
+    private val getFoodsFromQueryUseCase = mockk<GetFoodsFromQueryUseCase>(relaxUnitFun = true)
     private val screensNavigator = mockk<ScreensNavigator>(relaxUnitFun = true)
     private val screenDataReturnBuffer = mockk<ScreenDataReturnBuffer>(relaxUnitFun = true)
     private val viewMvc = mockk<SelectFoodForMealViewMvc>(relaxUnitFun = true)
@@ -34,7 +38,8 @@ internal class SelectFoodForMealControllerTest {
     @BeforeEach
     internal fun setUp() {
         SUT = SelectFoodForMealController(
-            getAllFoodsUseCase,
+            savableData,
+            getFoodsFromQueryUseCase,
             screensNavigator,
             screenDataReturnBuffer,
             coroutinesTestExtension.testDispatcher,
@@ -65,12 +70,19 @@ internal class SelectFoodForMealControllerTest {
     }
 
     @Test
-    internal fun `getAllFoods() gets foods from use case and binds them to view mvc`() {
-        coEvery { getAllFoodsUseCase.getAllFoods() } returns getAllFoodsUseCaseResult
+    internal fun `getFoods() - cur query is not empty - shows then hides progress indication, gets foods from query use case, and binds them to view mvc`() = runBlockingTest {
+        val query = "asd"
+        every { savableData.getCurQuery() } returns query
+        coEvery { getFoodsFromQueryUseCase.getFoodsFromQuery(query) } returns foodsList
 
-        SUT.getAllFoods()
+        SUT.getFoods()
 
-        verify { viewMvc.bindFoods(getAllFoodsUseCaseResult) }
+        coVerifyOrder {
+            viewMvc.showProgressIndication()
+            getFoodsFromQueryUseCase.getFoodsFromQuery(query)
+            viewMvc.hideProgressIndication()
+            viewMvc.bindFoods(foodsList)
+        }
     }
 
     @Test
@@ -92,6 +104,20 @@ internal class SelectFoodForMealControllerTest {
                 SelectFoodForMealFragment.ASYNC_COMPLETION_TOKEN
             )
             screensNavigator.navigateUp()
+        }
+    }
+
+    @Test
+    internal fun `onQuerySubmit() - sets cur query and refreshes food list`() = runBlockingTest {
+        val query = "asd"
+        every { savableData.getCurQuery() } returns query
+        coEvery { getFoodsFromQueryUseCase.getFoodsFromQuery(query) } returns foodsList
+
+        SUT.onQuerySubmitted(query)
+
+        coVerifyOrder {
+            savableData.setCurQuery(query)
+            getFoodsFromQueryUseCase.getFoodsFromQuery(query)
         }
     }
 }

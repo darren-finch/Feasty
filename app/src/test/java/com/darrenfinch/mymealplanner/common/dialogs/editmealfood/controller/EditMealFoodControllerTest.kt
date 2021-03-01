@@ -31,7 +31,6 @@ internal class EditMealFoodControllerTest {
     fun setUp() {
         SUT = EditMealFoodController(
             screenData,
-            dialogsManager,
             dialogsEventBus,
         )
 

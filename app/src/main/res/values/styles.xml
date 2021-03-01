@@ -13,6 +13,7 @@
         <item name="textInputStyle">@style/AppTheme.TextInputStyle</item>
         <item name="actionOverflowButtonStyle">@style/AppTheme.ToolbarStyle.OverflowButtonStyle</item>
         <item name="imageButtonStyle">@style/AppTheme.ImageButtonStyle</item>
+        <item name="searchViewStyle">@style/AppTheme.SearchViewStyle</item>
 
         <!-- Text styles -->
 
@@ -45,6 +46,14 @@
 
     <style name="AppTheme.ImageButtonStyle" parent="Widget.AppCompat.ImageButton">
         <item name="android:tint">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="AppTheme.SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="queryBackground">?attr/colorOnPrimary</item>
+        <item name="submitBackground">?attr/colorOnPrimary</item>
+        <item name="searchIcon">@drawable/ic_search</item>
+        <item name="closeIcon">@drawable/ic_close</item>
+        <item name="goIcon">@drawable/ic_go</item>
     </style>
 
     <style name="AppTheme.ToolbarStyle.OverflowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">

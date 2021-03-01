@@ -1,7 +1,9 @@
 package com.darrenfinch.mymealplanner.screens.selectmealplanmeal.view
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.darrenfinch.mymealplanner.R
@@ -54,7 +56,28 @@ class SelectMealPlanMealViewMvcImpl(
             itemsRecyclerView.adapter = adapter
             itemsRecyclerView.layoutManager = LinearLayoutManager(getContext())
             itemsRecyclerView.addItemDecoration(MarginItemDecoration(16))
+
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    if (query != null) {
+                        for (listener in getListeners()) {
+                            listener.onQuerySubmitted(query)
+                        }
+                        return true
+                    }
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    // no-op
+                    return false
+                }
+            })
         }
+    }
+
+    override fun setQuery(query: String) {
+        binding.searchView.setQuery(query, false)
     }
 
     override fun bindMeals(meals: List<UiMeal>) {
@@ -63,5 +86,13 @@ class SelectMealPlanMealViewMvcImpl(
 
     override fun releaseViewRefs() {
         _binding = null
+    }
+
+    override fun showProgressIndication() {
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgressIndication() {
+        binding.progressBar.visibility = View.VISIBLE
     }
 }
